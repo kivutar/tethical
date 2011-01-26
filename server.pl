@@ -2,6 +2,7 @@
 use Modern::Perl;
 use Dancer;
 use Data::Dumper qw<Dumper>;
+logger 'console';
 
 sub loadmap {
     my $name = shift;
@@ -127,8 +128,8 @@ sub getadjacentwalkables {
     @$w2;
 }
 
-get '/char/:id/walkables' => sub {
-    my $id = params->{id};
+sub getwalkables {
+    my $id = shift;
     my $char = $$chars{$id};
     my $tile = getcharcoords $id;
     my @walkables = ( $tile );
@@ -139,7 +140,38 @@ get '/char/:id/walkables' => sub {
     
     @walkables = map { $_->[0] == $tile->[0] && $_->[1] == $tile->[1] ? () : $_ } @walkables;
 
-    to_json \@walkables;
+    return \@walkables;
+}
+
+sub is_walkable {
+    my ($id, $y, $x) = @_;
+
+    my $walkables = getwalkables($id);
+
+    for ( @$walkables ) {
+        return 1 if $y == $_->[0] && $x == $_->[1];
+    }
+
+    undef;
+}
+
+get '/char/:id/walkables' => sub {
+    to_json getwalkables params->{id};
+};
+
+get '/char/:id/moveto/:y/:x' => sub {
+    my $id = params->{id};
+    my $y  = params->{y};
+    my $x  = params->{x};
+
+    if ( is_walkable($id, $y, $x) ) {
+        my $tile = getcharcoords $id;
+        $$map{tiles}[$tile->[0]][$tile->[1]]{char} = 0;
+        $$map{tiles}[$y][$x]{char} = $id;
+        return 1;
+    } else {
+        send_error("Not allowed", 403);
+    }
 };
 
 dance;

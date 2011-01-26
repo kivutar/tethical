@@ -1,9 +1,33 @@
-function walkables(walkables) {
-    for (var tile in walkables) {
-        $('#'+walkables[tile][0]+'-'+walkables[tile][1]).addClass('walkable');
-    }
+// tmp
+function char_is_active(id) {
+    return id == 11;
 }
 
+// Draw walkable tiles
+function walkables(walkables, id, active) {
+
+    for (var tile in walkables) {
+        var i = '#'+walkables[tile][0]+'-'+walkables[tile][1];
+        $(i).addClass('walkable');
+        if ( active === true ) {
+            $(i).addClass('active');
+        }
+    }
+
+    // Moving
+    $('.active.walkable').click(function() {
+        var coord = $(this).attr('id').split('-');
+        var y = coord[0];
+        var x = coord[1];
+        if ( confirm('Are you sure you want to move to '+y+','+x+'?') ) {
+            $.getJSON('http://localhost:3000/char/'+id+'/moveto/'+y+'/'+x, function(data) {
+                $.getJSON('http://localhost:3000/map', map);
+            });
+        }
+    });
+}
+
+// Build the html map
 function map(map) {
     var table = '<table id="map">';
     for (var y in map['tiles']) {
@@ -26,15 +50,18 @@ function map(map) {
     table += '</table>';
     $('body').html(table);
     
+    // Clicking on a character
     $('.char').click(function() {
         var id = $(this).attr('id').replace('char','');
-        $.get('http://localhost:3000/char/'+id+'/walkables', walkables, 'json');
+        $.getJSON('http://localhost:3000/char/'+id+'/walkables', function(data) { walkables(data, id, char_is_active(id)); } );
     });
     
-    $("td").click(function() { $('td').removeClass('walkable'); });
+    // Remove walkable overlay on focus out
+    $("td[class!='walkable']").click(function() { $('td').removeClass('walkable').removeClass('active'); });
 }
 
+// Starting point
 $(document).ready(function() {
-    $.get('http://localhost:3000/map',map,'json');
+    $.getJSON('http://localhost:3000/map', map);
 });
 
