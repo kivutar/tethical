@@ -100,7 +100,28 @@ my $chars = { '11' => { 'hp'    => 10
                       , 'move'  => 5 }
 };
 
+sub getnextactive {
+    for my $id ( keys %$chars ) {
+        my $char = $$chars{$id};
+        return if defined $$char{active} && $$char{active} == 1;
+    }
+
+    CT: while ( 1 ) {
+        for my $id ( keys %$chars ) {
+            my $char = $$chars{$id};
+            $$char{ct}--;
+            if ( $$char{ct} == 0 ) {
+                $$char{active}  = 1;
+                $$char{canmove} = 1;
+                $$char{canact}  = 1;
+                last CT;
+            }
+        }
+    }
+}
+
 get '/map' => sub {
+    getnextactive;
     to_json $map;
 };
 
@@ -168,6 +189,10 @@ get '/char/:id/moveto/:y/:x' => sub {
         my $tile = getcharcoords $id;
         $$map{tiles}[$tile->[0]][$tile->[1]]{char} = 0;
         $$map{tiles}[$y][$x]{char} = $id;
+        $$chars{$id}{active} = 0;
+        $$chars{$id}{canmove} = 0;
+        $$chars{$id}{canact} = 0;
+        $$chars{$id}{ct} = $$chars{$id}{ctmax};
         return 1;
     } else {
         send_error("Not allowed", 403);

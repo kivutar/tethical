@@ -1,15 +1,11 @@
-// tmp
-function char_is_active(id) {
-    return id == 11;
-}
 
 // Draw walkable tiles
-function walkables(walkables, id, active) {
+function walkables(walkables, id, character) {
 
     for (var tile in walkables) {
         var i = '#'+walkables[tile][0]+'-'+walkables[tile][1];
         $(i).addClass('walkable');
-        if ( active === true ) {
+        if ( character['active'] == 1 ) {
             $(i).addClass('active');
         }
     }
@@ -27,13 +23,41 @@ function walkables(walkables, id, active) {
     });
 }
 
+function get_character(id) {
+    var character;
+    $.ajax({
+        url: 'http://localhost:3000/char/'+id,
+        type: 'get',
+        dataType: 'json',
+        async: false,
+        success: function(data) {
+            character = data;
+        }
+    });
+    return character;
+}
+
 // Build the html map
 function map(map) {
     var table = '<table id="map">';
     for (var y in map['tiles']) {
         table += '<tr>';
         for (var x in map['tiles'][y]) {
-            var character = map['tiles'][y][x]['char'] > 0 ? '<img id="char'+map['tiles'][y][x]['char']+'" class="char" src="images/char.png">' : '';
+
+            var img;
+            if ( map['tiles'][y][x]['char'] > 0 ) {
+                var id = map['tiles'][y][x]['char'];
+                var character = get_character(id);
+                img = '<img id="char'+id+'" class="char';
+                img += ' team'+character['team'];
+                if ( character['active'] == 1 ) {
+                    img += ' active';
+                }
+                img += '" src="images/char.png">';
+            } else {
+                img = '';
+            }
+
             var height = map['tiles'][y][x]['height'];
             var ground = map['tiles'][y][x]['ground'];
             
@@ -42,7 +66,7 @@ function map(map) {
             table += ' height'+height;
             table += ' ground'+ground;
             table += '">';
-            table += character;
+            table += img;
             table += '</td>';
         }
         table += '</tr>';
@@ -53,7 +77,7 @@ function map(map) {
     // Clicking on a character
     $('.char').click(function() {
         var id = $(this).attr('id').replace('char','');
-        $.getJSON('http://localhost:3000/char/'+id+'/walkables', function(data) { walkables(data, id, char_is_active(id)); } );
+        $.getJSON('http://localhost:3000/char/'+id+'/walkables', function(data) { walkables(data, id, get_character(id)); } );
     });
     
     // Remove walkable overlay on focus out
