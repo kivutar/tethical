@@ -35,3 +35,19 @@
     outline: 2px solid blue;
 }
 
+.char.team1 {
+    background-image: url('images/red_circle.png');
+}
+.char.team2 {
+    background-image: url('images/blue_circle.png');;
+}
+
+.char.active {
+    outline: 2px solid yellow;
+}
+.char.active.team1 {
+    background-color: rgba(255, 255, 0, .3);
+}
+.char.active.team2 {
+    background-color: rgba(0, 255, 255, .3);
+}
