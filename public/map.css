@@ -1,0 +1,37 @@
+#map {
+    border-collapse: collapse;
+    margin: auto;
+}
+
+#map * {
+    margin: 0;
+    padding: 0;
+}
+
+#map td {
+    width: 32px;
+    height: 32px;
+    z-index: 1;
+}
+
+#map td.height1 { opacity: 1.00; }
+#map td.height2 { opacity: 0.95; }
+#map td.height3 { opacity: 0.90; }
+#map td.height4 { opacity: 0.85; }
+
+#map td.ground0 { background: blue; }
+#map td.ground1 { background: url('images/1.png'); }
+
+#map td:hover {
+    outline: 2px solid white;
+    z-index: 9999;
+}
+
+#map td.walkable {
+    background: cyan;
+}
+
+#map td.walkable:hover {
+    outline: 2px solid blue;
+}
+
