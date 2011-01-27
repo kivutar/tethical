@@ -1,6 +1,8 @@
 #map {
     border-collapse: collapse;
+    border-spacing: 0;
     margin: auto;
+    border: 5px solid black;
 }
 
 #map * {
@@ -12,6 +14,8 @@
     width: 32px;
     height: 32px;
     z-index: 1;
+    line-height: 0px;
+    border: 1px dotted grey;
 }
 
 #map td.height1 { opacity: 1.00; }
