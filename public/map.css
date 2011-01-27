@@ -1,8 +1,6 @@
-#map {
+#map>table {
     border-collapse: collapse;
     border-spacing: 0;
-    margin: auto;
-    border: 5px solid black;
 }
 
 #map * {
@@ -16,6 +14,7 @@
     z-index: 1;
     line-height: 0px;
     border: 1px dotted grey;
+    position: relative;
 }
 
 #map td.height1 { opacity: 1.00; }
@@ -55,3 +54,4 @@
 .char.active.team2 {
     background-color: rgba(0, 255, 255, .3);
 }
+

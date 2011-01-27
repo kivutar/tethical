@@ -1,0 +1,53 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+#map {
+    float: left;
+    background: cyan;
+}
+
+#gui {
+    float: left;
+}
+
+.box {
+    background: blue;
+    color: white;
+    -moz-border-radius: 5px;
+    border: 5px solid;
+    -moz-border-bottom-colors: #000 #fff #fff #fff #000;
+    -moz-border-top-colors:    #000 #fff #fff #fff #000;
+    -moz-border-left-colors:   #000 #fff #fff #fff #000;
+    -moz-border-right-colors:  #000 #fff #fff #fff #000;
+    font-family: Monospace;
+    font-weight: bold;
+}
+
+#menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#menu li {
+    padding: 5px;
+}
+
+#menu li.disabled {
+    color: grey;
+}
+
+#menu li:hover {
+    background: black;
+}
+
