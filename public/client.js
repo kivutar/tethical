@@ -53,7 +53,8 @@ function map(map) {
                 if ( character['active'] == 1 ) {
                     img += ' active';
                 }
-                img += '" src="images/char.png">';
+                var direction = character['direction'];
+                img += '" src="images/char'+direction+'.png">';
             } else {
                 img = '';
             }

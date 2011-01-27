@@ -55,49 +55,57 @@ my $chars = { '11' => { 'hp'    => 10
                       , 'ct'    => 12
                       , 'ctmax' => 12
                       , 'team'  => 1
-                      , 'move'  => 5 }
+                      , 'move'  => 5
+                      , 'direction' => 1 }
             , '12' => { 'hp'    => 15
                       , 'hpmax' => 15
                       , 'ct'    => 10
                       , 'ctmax' => 10
                       , 'team'  => 1
-                      , 'move'  => 4 }
+                      , 'move'  => 4
+                      , 'direction' => 1 }
             , '13' => { 'hp'    => 12
                       , 'hpmax' => 12
                       , 'ct'    => 11
                       , 'ctmax' => 11
                       , 'team'  => 1
-                      , 'move'  => 6 }
+                      , 'move'  => 6
+                      , 'direction' => 1 }
             , '14' => { 'hp'    => 13
                       , 'hpmax' => 13
                       , 'ct'    => 13
                       , 'ctmax' => 13
                       , 'team'  => 1
-                      , 'move'  => 5 }
+                      , 'move'  => 5
+                      , 'direction' => 1 }
             , '21' => { 'hp'    => 10
                       , 'hpmax' => 10
                       , 'ct'    => 12
                       , 'ctmax' => 12
                       , 'team'  => 2
-                      , 'move'  => 5 }
+                      , 'move'  => 5
+                      , 'direction' => 0 }
             , '22' => { 'hp'    => 15
                       , 'hpmax' => 15
                       , 'ct'    => 10
                       , 'ctmax' => 10
                       , 'team'  => 2
-                      , 'move'  => 4 }
+                      , 'move'  => 4
+                      , 'direction' => 0 }
             , '23' => { 'hp'    => 12
                       , 'hpmax' => 12
                       , 'ct'    => 11
                       , 'ctmax' => 11
                       , 'team'  => 2
-                      , 'move'  => 6 }
+                      , 'move'  => 6
+                      , 'direction' => 0 }
             , '24' => { 'hp'    => 13
                       , 'hpmax' => 13
                       , 'ct'    => 13
                       , 'ctmax' => 13
                       , 'team'  => 2
-                      , 'move'  => 5 }
+                      , 'move'  => 5
+                      , 'direction' => 0 }
 };
 
 sub getnextactive {
@@ -180,15 +188,32 @@ get '/char/:id/walkables' => sub {
     to_json getwalkables params->{id};
 };
 
+sub getnewdirection {
+    my ($y1, $x1, $y2, $x2) = @_;
+
+    my $dy = $y2 - $y1;
+    my $dx = $x2 - $x1;
+    if ( $dy*$dy > $dx*$dx ) {
+        return $dy > 0 ? 1 : 0;
+    } else {
+        return $dx > 0 ? 2 : 3;
+    }
+}
+
 get '/char/:id/moveto/:y/:x' => sub {
     my $id = params->{id};
-    my $y  = params->{y};
-    my $x  = params->{x};
+    my $y2  = params->{y};
+    my $x2  = params->{x};
 
-    if ( is_walkable($id, $y, $x) ) {
+    if ( is_walkable($id, $y2, $x2) ) {
         my $tile = getcharcoords $id;
-        $$map{tiles}[$tile->[0]][$tile->[1]]{char} = 0;
-        $$map{tiles}[$y][$x]{char} = $id;
+        my $y1 = $tile->[0];
+        my $x1 = $tile->[1];
+
+        $$map{tiles}[$y1][$x1]{char} = 0;
+        $$map{tiles}[$y2][$x2]{char} = $id;
+
+        $$chars{$id}{direction} = getnewdirection($y1, $x1, $y2, $x2);
         $$chars{$id}{active} = 0;
         $$chars{$id}{canmove} = 0;
         $$chars{$id}{canact} = 0;
