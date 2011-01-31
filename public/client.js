@@ -13,7 +13,7 @@ function display_walkables(walkables, id) {
     }
 
     // Moving
-    $('.active.walkable').click(function() {
+    $('.active.walkable').click(function(e) {
         var coord = $(this).attr('id').split('-');
         var y = coord[0];
         var x = coord[1];
@@ -26,7 +26,7 @@ function display_walkables(walkables, id) {
                     async: false,
                     success: map
                 });
-                display_menu(id);
+                display_menu(id, e);
             });
         }
     });
@@ -99,9 +99,9 @@ function map(map) {
     $('#map').html(table);
     
     // Clicking on a character
-    $('.char').click(function() {
+    $('.char').click(function(e) {
         var id = $(this).attr('id').replace('char','');
-        display_menu(id);
+        display_menu(id, e);
     });
     
     // Remove walkable overlay on focus out
@@ -112,9 +112,13 @@ function map(map) {
     $('#menu').empty();
 }
 
-function modal(content) {
+function modal(content, e) {
     var modal = $('<div id="modal"><div class="overlay"></div><div class="menu">'+content+'<ul></div></div>');
     $('body').append(modal);
+    if ( e ) {
+        $('#modal>.menu').css('top' , e.pageY);
+        $('#modal>.menu').css('left', e.pageX);
+    }
     $('.overlay').click(function() {
         modal.remove();
     });
@@ -130,7 +134,7 @@ function display_status(id) {
     modal(status);
 }
 
-function display_menu(id) {
+function display_menu(id, e) {
     var character = get_character(id);
 
     var menu = '<ul>';
@@ -150,7 +154,7 @@ function display_menu(id) {
         menu += '<li id="btnWait">Wait</li>';
     }
     menu += '</ul>';
-    var mdl = modal(menu);
+    var mdl = modal(menu, e);
 
     $('#btnMove').click(function() {
         $.getJSON('http://localhost:3000/char/'+id+'/walkables', function(data) { mdl.remove(); display_walkables(data, id); } );
