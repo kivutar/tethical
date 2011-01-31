@@ -13,41 +13,59 @@ body {
 
 #map {
     float: left;
-    background: cyan;
 }
 
-#gui {
-    float: left;
+.overlay {
+    background-color: #000;
+    opacity: 0.5;
+    min-width: 100%;
+    min-height: 100%;
+    position: absolute;float: left;
 }
 
-.box {
+.menu {
     background: blue;
     color: white;
     -moz-border-radius: 5px;
-    border: 5px solid;
-    -moz-border-bottom-colors: #000 #fff #fff #fff #000;
-    -moz-border-top-colors:    #000 #fff #fff #fff #000;
-    -moz-border-left-colors:   #000 #fff #fff #fff #000;
-    -moz-border-right-colors:  #000 #fff #fff #fff #000;
+    -webkit-border-radius: 5px;
+    -moz-box-shadow:    0 0 10px #000;
+    -webkit-box-shadow: 0 0 10px #000;
+    box-shadow:         0 0 10px #000;
+    border: 5px solid white;
     font-family: Monospace;
     font-weight: bold;
+    position: absolute;
+    top: 50px;
+    left: 50px;
 }
 
-#menu ul {
+.menu ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-#menu li {
-    padding: 5px;
+.menu li {
+    padding: 5px 10px;
+    position: relative;
 }
 
-#menu li.disabled {
+.menu li.disabled {
     color: grey;
 }
 
-#menu li:hover {
+.menu li:hover {
     background: black;
+    cursor: pointer;
+}
+
+.menu ul ul {
+    display: none;
+}
+
+.menu ul li:hover ul {
+    display: block;
+    margin-left: 10px;
+    top: 0;
 }
 
