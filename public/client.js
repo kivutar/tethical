@@ -101,12 +101,31 @@ function map(map) {
     // Clicking on a character
     $('.char').click(function(e) {
         var id = $(this).attr('id').replace('char','');
-        display_menu(id, e);
+        
+        if ( $(this).parent().hasClass('attackable') ) {
+            if ( confirm('Are you sure you want to attack '+id+'?') ) {
+                $.getJSON('http://localhost:3000/char/'+11+'/attack/'+id, function(data) {
+                    $.ajax({
+                        url: 'http://localhost:3000/map',
+                        type: 'get',
+                        dataType: 'json',
+                        async: false,
+                        success: map
+                    });
+                    alert('Infliged '+data+' damages.');
+                    display_menu(id, e);
+                });
+            }
+        } else {
+            display_menu(id, e);
+        }
     });
     
     // Remove walkable overlay on focus out
-    $("td[class!='walkable']").click(function() {
-        $('td').removeClass('walkable').removeClass('active');
+    $("td").click(function() {
+        $('td').removeClass('walkable')
+               .removeClass('active')
+               .removeClass('attackable');
     });
     
     $('#menu').empty();

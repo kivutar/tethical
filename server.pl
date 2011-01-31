@@ -189,7 +189,7 @@ get '/char/:id/wait/:direction' => sub {
     # if Move or Act has not be consumed
     $$char{ct} = $$char{canmove}
                | $$char{canact} 
-               ? $$char{ctmax} / 2 
+               ? round( $$char{ctmax} / 2 ) 
                : $$char{ctmax};
     
     # set the character direction
@@ -204,6 +204,27 @@ get '/char/:id/wait/:direction' => sub {
     session chars => $chars;
     
     return 1;
+};
+
+# Attack action
+get '/char/:id1/attack/:id2' => sub {
+    my $id1 = params->{id1};
+    my $id2 = params->{id2};
+    
+    my $chars = session('chars');
+    my $char1 = $$chars{$id1};
+    my $char2 = $$chars{$id2};
+    
+    send_error("Not allowed", 403) unless $$char1{active} == 1;
+    
+    $$char2{hp} -= 5;
+    $$char2{hp} = 0 if $$char2{hp} < 0;
+    
+    $$char1{canact} = 0;
+    
+    session chars => $chars;
+    
+    return 5;
 };
 
 dance;
