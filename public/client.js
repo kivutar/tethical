@@ -32,6 +32,15 @@ function display_walkables(walkables, id) {
     });
 }
 
+// Draw attackables tiles
+function display_attackables(attackables, id) {
+
+    for (var tile in attackables) {
+        var i = '#'+attackables[tile][0]+'-'+attackables[tile][1];
+        $(i).addClass('attackable');
+    }
+}
+
 function is_active(id) {
     var character = get_character(id);
     return character['active'] == 1;
@@ -130,7 +139,7 @@ function display_menu(id) {
         var canmove = character['canmove'] == 1 ? 'enabled' : 'disabled';
         menu += '<li id="btnMove" class="'+canmove+'">Move</li>';
         var canact = character['canact'] == 1 ? 'enabled' : 'disabled';
-        menu += '<li class="'+canact+'">Action<ul class="menu"><li class="btnAttack">Attack</li></ul></li>';
+        menu += '<li class="'+canact+'">Action<ul class="menu"><li id="btnAttack">Attack</li></ul></li>';
     } else {
         menu += '<li id="btnMove">Show Move</li>';
     }
@@ -148,7 +157,7 @@ function display_menu(id) {
     });
 
     $('#btnAttack').click(function() {
-        $.getJSON('http://localhost:3000/char/'+id+'/attackables', function(data) { display_attackables(data, id); } );
+        $.getJSON('http://localhost:3000/char/'+id+'/attackables', function(data) { mdl.remove(); display_attackables(data, id); } );
     });
 
     $('#btnStatus').click(function() {

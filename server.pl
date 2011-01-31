@@ -4,6 +4,7 @@ use Dancer;
 use Data::Dumper qw<Dumper>;
 use Thetical::Battle::Map;
 use Thetical::Battle::Move;
+use Thetical::Battle::Attack;
 use Thetical::Battle::Character;
 set 'session'     => 'Simple';
 set 'logger'      => 'console';
@@ -128,6 +129,14 @@ get '/char/:id/walkables' => sub {
     my $chars = session('chars');
     my $char  = $$chars{ params->{id} };
     to_json Thetical::Battle::Move::GetWalkables( $map, $char );
+};
+
+# Returns the list of attackables tiles for a character
+get '/char/:id/attackables' => sub {
+    my $map   = session('map');
+    my $chars = session('chars');
+    my $char  = $$chars{ params->{id} };
+    to_json Thetical::Battle::Attack::GetAttackables( $map, $char );
 };
 
 # Move action

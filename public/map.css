@@ -27,7 +27,7 @@
 
 #map td:hover {
     outline: 2px solid white;
-    z-index: 9999;
+    z-index: 9997;
 }
 
 #map td.walkable {
@@ -36,6 +36,14 @@
 
 #map td.walkable:hover {
     outline: 2px solid blue;
+}
+
+#map td.attackable {
+    background: pink;
+}
+
+#map td.attackable:hover {
+    outline: 2px solid red;
 }
 
 .char.team1 {

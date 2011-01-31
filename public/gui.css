@@ -16,6 +16,7 @@ body {
 }
 
 .overlay {
+    z-index: 9998;
     background-color: #000;
     opacity: 0.5;
     min-width: 100%;
@@ -24,6 +25,7 @@ body {
 }
 
 .menu {
+    z-index: 9999;
     background: blue;
     color: white;
     -moz-border-radius: 5px;
