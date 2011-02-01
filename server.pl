@@ -189,7 +189,7 @@ get '/char/:id/wait/:direction' => sub {
     # if Move or Act has not be consumed
     $$char{ct} = $$char{canmove}
                | $$char{canact} 
-               ? round( $$char{ctmax} / 2 ) 
+               ? int( $$char{ctmax} / 2 )
                : $$char{ctmax};
     
     # set the character direction
