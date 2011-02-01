@@ -28,12 +28,16 @@ sub GetAttackables {
 
 # Used to check if a tile is walkable for a character
 sub IsAttackable {
-    my ( $map, $char, $y, $x ) = @_;
+    my ( $map, $char1, $char2 ) = @_;
 
-    my $attackables = GetAttackables( $map, $char );
+    my $attackables = GetAttackables( $map, $char1 );
+
+    my $tile2 = Thetical::Battle::Character::Coords( $map, $char2 );
+    my $y2 = $tile2->[0];
+    my $x2 = $tile2->[1];
 
     for ( @$attackables ) {
-        return 1 if $y == $_->[0] && $x == $_->[1];
+        return 1 if $y2 == $_->[0] && $x2 == $_->[1];
     }
 
     undef;

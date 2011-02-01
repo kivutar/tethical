@@ -211,11 +211,13 @@ get '/char/:id1/attack/:id2' => sub {
     my $id1 = params->{id1};
     my $id2 = params->{id2};
     
+    my $map   = session('map');
     my $chars = session('chars');
     my $char1 = $$chars{$id1};
     my $char2 = $$chars{$id2};
     
     send_error("Not allowed", 403) unless $$char1{active} == 1;
+    send_error("Not allowed", 403) unless Thetical::Battle::Attack::IsAttackable( $map, $char1, $char2 );
     
     $$char2{hp} -= 5;
     $$char2{hp} = 0 if $$char2{hp} < 0;
