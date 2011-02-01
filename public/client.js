@@ -33,12 +33,31 @@ function display_walkables(walkables, id) {
 }
 
 // Draw attackables tiles
-function display_attackables(attackables, id) {
+function display_attackables(attackables, id1) {
 
     for (var tile in attackables) {
         var i = '#'+attackables[tile][0]+'-'+attackables[tile][1];
         $(i).addClass('attackable');
     }
+
+    // Attacking
+    $('.attackable>.char').click(function(e) {
+        var id2 = $(this).attr('id').replace('char','');
+
+        if ( confirm('Are you sure you want to attack '+id2+'?') ) {
+            $.getJSON('http://localhost:3000/char/'+id1+'/attack/'+id2, function(data) {
+                $.ajax({
+                    url: 'http://localhost:3000/map',
+                    type: 'get',
+                    dataType: 'json',
+                    async: false,
+                    success: map
+                });
+                alert('Infliged '+data+' damages.');
+                display_menu(id1, e);
+            });
+        }
+    });
 }
 
 function is_active(id) {
@@ -102,21 +121,7 @@ function map(map) {
     $('.char').click(function(e) {
         var id = $(this).attr('id').replace('char','');
         
-        if ( $(this).parent().hasClass('attackable') ) {
-            if ( confirm('Are you sure you want to attack '+id+'?') ) {
-                $.getJSON('http://localhost:3000/char/'+11+'/attack/'+id, function(data) {
-                    $.ajax({
-                        url: 'http://localhost:3000/map',
-                        type: 'get',
-                        dataType: 'json',
-                        async: false,
-                        success: map
-                    });
-                    alert('Infliged '+data+' damages.');
-                    display_menu(id, e);
-                });
-            }
-        } else {
+        if ( ! $(this).parent().hasClass('attackable') ) {
             display_menu(id, e);
         }
     });
