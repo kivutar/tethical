@@ -5,7 +5,7 @@ sub Load {
     my $name = shift;
 
     my $map = {};
-    for my $layer ( qw<heights chars walkables ground> ) {
+    for my $layer ( qw<heights walkables ground> ) {
         open FH, "maps/$name.$layer";
         $$map{$layer} = [ map { chomp $_; [ split /,/ ] } <FH> ];
         close FH;
@@ -22,7 +22,6 @@ sub Load {
         for my $x (0..$width-1) {
 
             $$map2{tiles}[$y][$x] = { 'height'   => $$map{heights  }[$y][$x]
-                                    , 'char'     => $$map{chars    }[$y][$x]
                                     , 'walkable' => $$map{walkables}[$y][$x]
                                     , 'ground'   => $$map{ground   }[$y][$x] };
         }

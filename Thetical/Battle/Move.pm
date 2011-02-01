@@ -5,7 +5,7 @@ use Thetical::Battle::Character;
 # Used in walkable tiles computation and pathfinding
 sub _getadjacentwalkables {
     my $map = shift;
-    my $w2;
+    my @w2;
 
     for my $t1 ( @_ ) {
         my ($y1, $x1) = @$t1;
@@ -17,13 +17,13 @@ sub _getadjacentwalkables {
                 my ($y2, $x2) = @$tx;
                 my $t2 = $$map{tiles}[$y2][$x2];
                 if ( $t2 && ! $$t2{char} > 0 ) {
-                    push @$w2, [$y2, $x2];
+                    push @w2, [$y2, $x2];
                 }
             };
         }
     }
 
-    @$w2;
+    @w2;
 }
 
 # Compute the list of walkable tiles for a character

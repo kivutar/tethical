@@ -20,11 +20,11 @@ function display_walkables(walkables, id) {
         if ( confirm('Are you sure you want to move to '+y+','+x+'?') ) {
             $.getJSON('http://localhost:3000/char/'+id+'/moveto/'+y+'/'+x, function(data) {
                 $.ajax({
-                    url: 'http://localhost:3000/map',
+                    url: 'http://localhost:3000/battle',
                     type: 'get',
                     dataType: 'json',
                     async: false,
-                    success: map
+                    success: battle
                 });
                 display_menu(id, e);
             });
@@ -47,11 +47,11 @@ function display_attackables(attackables, id1) {
         if ( confirm('Are you sure you want to attack '+id2+'?') ) {
             $.getJSON('http://localhost:3000/char/'+id1+'/attack/'+id2, function(data) {
                 $.ajax({
-                    url: 'http://localhost:3000/map',
+                    url: 'http://localhost:3000/battle',
                     type: 'get',
                     dataType: 'json',
                     async: false,
-                    success: map
+                    success: battle
                 });
                 alert('Infliged '+data+' damages.');
                 display_menu(id1, e);
@@ -79,61 +79,68 @@ function get_character(id) {
     return character;
 }
 
-// Build the html map
-function map(map) {
-    var table = '<table>';
-    for (var y in map['tiles']) {
-        table += '<tr>';
-        for (var x in map['tiles'][y]) {
+// Battle main callback
+function battle(party) {
+    if ( 0 ) { //! party['yourturn'] ) {
+        alert('Wait. Not your turn');
+    } else {
+        var map = party['map'];
+        var table = '<table>';
+        for (var y in map['tiles']) {
+            table += '<tr>';
+            for (var x in map['tiles'][y]) {
 
-            var img;
-            if ( map['tiles'][y][x]['char'] > 0 ) {
-                var id = map['tiles'][y][x]['char'];
-                var character = get_character(id);
-                img = '<img id="char'+id+'" class="char';
-                img += ' team'+character['team'];
-                if ( character['active'] == 1 ) {
-                    img += ' active';
+                var img;
+                if ( map['tiles'][y][x]['char'] > 0 ) {
+                    var id = map['tiles'][y][x]['char'];
+                    var character = get_character(id);
+                    img = '<img id="char'+id+'" class="char';
+                    img += ' team'+character['team'];
+                    if ( character['hp'] > 0 ) {
+                        if ( character['active'] == 1 ) {
+                            img += ' active';
+                        }
+                        var direction = character['direction'];
+                        img += '" src="images/char'+direction+'.png">';
+                    } else {
+                        img += '" src="images/char_dead.png">';
+                    }
+                } else {
+                    img = '';
                 }
-                var direction = character['direction'];
-                img += '" src="images/char'+direction+'.png">';
-            } else {
-                img = '';
-            }
 
-            var height = map['tiles'][y][x]['height'];
-            var ground = map['tiles'][y][x]['ground'];
-            
-            table += '<td id="'+y+'-'+x+'"';
-            table += ' class="';
-            table += ' height'+height;
-            table += ' ground'+ground;
-            table += '">';
-            table += img;
-            table += '</td>';
+                var height = map['tiles'][y][x]['height'];
+                var ground = map['tiles'][y][x]['ground'];
+                
+                table += '<td id="'+y+'-'+x+'"';
+                table += ' class="';
+                table += ' height'+height;
+                table += ' ground'+ground;
+                table += '">';
+                table += img;
+                table += '</td>';
+            }
+            table += '</tr>';
         }
-        table += '</tr>';
-    }
-    table += '</table>';
-    $('#map').html(table);
-    
-    // Clicking on a character
-    $('.char').click(function(e) {
-        var id = $(this).attr('id').replace('char','');
+        table += '</table>';
+        $('#map').html(table);
         
-        if ( ! $(this).parent().hasClass('attackable') ) {
-            display_menu(id, e);
-        }
-    });
-    
-    // Remove walkable overlay on focus out
-    $("td").click(function() {
-        $('td').removeClass('walkable')
-               .removeClass('active')
-               .removeClass('attackable');
-    });
-    
-    $('#menu').empty();
+        // Clicking on a character
+        $('.char').click(function(e) {
+            var id = $(this).attr('id').replace('char','');
+            
+            if ( ! $(this).parent().hasClass('attackable') ) {
+                display_menu(id, e);
+            }
+        });
+        
+        // Remove walkable overlay on focus out
+        $("td").click(function() {
+            $('td').removeClass('walkable')
+                   .removeClass('active')
+                   .removeClass('attackable');
+        });
+    }
 }
 
 function modal(content, e) {
@@ -195,13 +202,13 @@ function display_menu(id, e) {
     $('#btnWait').click(function() {
         $.getJSON(
             'http://localhost:3000/char/'+id+'/wait/'+character['direction'], 
-            function(data) { mdl.remove(); $.getJSON('http://localhost:3000/map', map);
+            function(data) { mdl.remove(); $.getJSON('http://localhost:3000/battle', battle);
         } );
     });
 }
 
 // Starting point
 $(document).ready(function() {
-    $.getJSON('http://localhost:3000/map', map);
+    $.getJSON('http://localhost:3000/battle', battle);
 });
 
