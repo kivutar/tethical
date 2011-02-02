@@ -85,7 +85,7 @@ function battle(party) {
         alert('Wait. Not your turn');
     } else {
         var map = party['map'];
-        var table = '<table>';
+        var table = '<div id="map"><table>';
         for (var y in map['tiles']) {
             table += '<tr>';
             for (var x in map['tiles'][y]) {
@@ -123,7 +123,19 @@ function battle(party) {
             table += '</tr>';
         }
         table += '</table>';
-        $('#map').html(table);
+        table += '<p><button id="refresh">Refresh</button></p>';
+        table += '</div>';
+        $('body').html(table);
+        
+        $('button#refresh').click(function() {
+            $.ajax({
+                url: 'http://localhost:3000/battle',
+                type: 'get',
+                dataType: 'json',
+                async: false,
+                success: battle,
+            });
+        });
         
         // Clicking on a character
         $('.char').click(function(e) {
@@ -207,8 +219,207 @@ function display_menu(id, e) {
     });
 }
 
+function refresh_battle_begins() {
+    $.ajax({
+        url: 'http://localhost:3000/party',
+        type: 'get',
+        dataType: 'json',
+        async: false,
+        success: function(party) {
+            if ( party['player1started'] && party['player2started'] ) {
+                $.ajax({
+                    url: 'http://localhost:3000/battle',
+                    type: 'get',
+                    dataType: 'json',
+                    async: false,
+                    success: battle,
+                });
+            }
+        }
+    });
+}
+
+function battle_begins() {
+    var html  = '<h1>Waiting for the other player</h1>';
+        html += '<p><button id="refresh">Refresh</button></p>';
+    $('body').html(html);
+    
+    refresh_battle_begins();
+    $('button#refresh').click( refresh_battle_begins );
+}
+
+function characters_selected(e) {
+    e.preventDefault();
+    
+    var data = {};
+    $('input[type="text"]').each(function() {
+        data[$(this).attr('name')] = $(this).val();
+    });
+    
+    $.ajax({
+        url: 'http://localhost:3000/startbattle',
+        type: 'post',
+        dataType: 'json',
+        async: false,
+        data: data,
+        success: battle_begins,
+    });
+}
+
+function character_selection() {
+     $.ajax({
+        url: 'http://localhost:3000/choosechar',
+        type: 'get',
+        dataType: 'json',
+        async: false,
+        success: function(tiles) {
+            var html  = '<h1>Character selection</h1>';
+                html += '<form method="post">';
+                html += '   <fieldset>';
+                for ( k in tiles ) {
+                    html += '   <p><strong>'+tiles[k][0]+'-'+tiles[k][1]+': </strong><input type="text" name="'+tiles[k][0]+'-'+tiles[k][1]+'"></p>';
+                }
+                html += '       <p><input type="submit" value="Battle!" /></p>'
+                html += '   </fieldset>';
+                html += '</form>';
+            $('body').html(html);
+            
+            $('input[type="submit"]').click( characters_selected );
+        },
+    });   
+}
+
+function refresh_party() {
+    $.ajax({
+        url: 'http://localhost:3000/party',
+        type: 'get',
+        dataType: 'json',
+        async: false,
+        success: function(party) {
+            var html = '';
+            if ( party['player2'] ) {
+                html += '<p><strong>Player2: </strong>'+party['player2']+'</p>';
+                html += '<p><button id="start">Start character selection</button></p>';
+            } else {
+                html += '<p>Waiting for player2...</p>';
+            }
+            $('div').html(html);
+            $('button#start').click( character_selection );
+        },
+    });
+}
+
+function party(party) {
+    var html  = '<h1>Party: '+party['name']+'</h1>';
+        html += '<p><strong>Created by: </strong>'+party['creator']+'</p>';
+        html += '<p><strong>Map: </strong>'+party['mapname']+'</p>';
+        html += '<p><strong>Player1: </strong>'+party['player1']+'</p>';
+        html += '<div></div>';
+        html += '<p><button id="refresh">Refresh</button></p>';
+    $('body').html(html);
+    
+    refresh_party();
+    $('button#refresh').click( refresh_party );
+}
+
+function ownparty(e) {
+    e.preventDefault();
+
+    var name    = $('input[name="name"    ]').val();
+    var mapname = $('select[name="mapname"]').val();
+
+    $.ajax({
+        url: 'http://localhost:3000/ownparty',
+        type: 'post',
+        dataType: 'json',
+        async: false,
+        data: { name: name, mapname: mapname },
+        success: party,
+    });
+}
+
+function joinparty() {
+    var name = $(this).attr('id');
+    $.ajax({
+        url: 'http://localhost:3000/joinparty/'+name,
+        type: 'post',
+        dataType: 'json',
+        async: false,
+        success: party,
+    });
+}
+
+function refresh_parties() {
+    $('tbody').empty();
+    $.ajax({
+        url: 'http://localhost:3000/parties',
+        type: 'get',
+        dataType: 'json',
+        async: false,
+        success: function(parties) {
+            for ( key in parties ) {
+                $('tbody').append('<tr><td>'+key+'</td><td>'+parties[key]['mapname']+'</td><td>'+parties[key]['creator']+'</td><td><button class="join" id="'+key+'">Join</button></td></tr>');
+            }
+        },
+    });
+    $('button.join').click( joinparty );
+    //setTimeout(refresh_parties, 1000);
+}
+
+function parties() {
+    var html  = '<h1>Party list</h1>';
+        html += '<table>';
+        html += '<thead><tr><td>Name</td><td>Map</td><td>Created by</td><td>Join</td></tr></thead>';
+        html += '<tbody></tbody>';
+        html += '</table>';
+        html += '<p><button id="refresh">Refresh</button></p>';
+        html += '<form method="post">';
+        html += '    <fieldset>';
+        html += '        <legend>Create a party</legend>';
+        html += '        <p><strong>Name: </strong><input type="text" name="name" /></p>';
+        html += '        <p><strong>Map: </strong>';
+        html += '            <select name="mapname">';
+        html += '                <option value="demo">demo</option>';
+        html += '            </select>';
+        html += '        </p>';
+        html += '        <p><input type="submit" value="Create" /></p>';
+        html += '    </fieldset>';
+        html += '</form>';
+    $('body').html(html);
+    
+    $('input[type="submit"]').click( ownparty );
+    $('button#refresh').click( refresh_parties );
+}
+
+function login(e) {
+    e.preventDefault();
+
+    var login = $('input[name="login"]').val();
+    var pass  = $('input[name="pass" ]').val();
+    
+    $.ajax({
+        url: 'http://localhost:3000/login',
+        type: 'post',
+        dataType: 'json',
+        async: false,
+        data: { login: login, pass: pass },
+        success: parties,
+    });
+}
+
 // Starting point
 $(document).ready(function() {
-    $.getJSON('http://localhost:3000/battle', battle);
+    var html  = '<h1>Tethical</h1>';
+        html += '<form method="post">';
+        html += '   <fieldset>';
+        html += '       <legend>Login</legend>';
+        html += '       <p><strong>Login: </strong><input type="text" name="login" /></p>';
+        html += '       <p><strong>Pass: </strong><input type="password" name="pass" /></p>';
+        html += '       <p><input type="submit" value="Login" /></p>';
+        html += '   </fieldset>';
+        html += '</form>';
+    $('body').html(html);
+    
+    $('input[type="submit"]').click( login );
 });
 

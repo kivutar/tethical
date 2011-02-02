@@ -15,182 +15,117 @@ set 'warnings'    => 1;
 
 my $parties = {};
 
-get '/' => sub {
-    if ( session('loggedin') ) {
-        redirect '/parties';
-    } else {
-        return '
-        <h1>Tethical</h1>
-        <form method="post" action="/login">
-            <fieldset>
-                <legend>Login</legend>
-                <p><strong>Login: </strong><input type="text" name="login" /></p>
-                <p><strong>Pass: </strong><input type="password" name="pass" /></p>
-                <p><input type="submit" value="Login" /></p>
-            </fieldset>
-        </form>';
-    }
-};
+any '/login' => sub {
+    return send_error("Already logged in", 403) if session->{loggedin};
 
-post '/login' => sub {
-    if ( params->{login} eq 'kivu' and params->{pass} eq 'kivu'
-    or   params->{login} eq 'test' and params->{pass} eq 'test' ) {
-        session loggedin => 1;
-        session login    => params->{login};
-        redirect '/parties';
-    } else {
-        redirect '/';
-    }
+    return send_error("Wrong credentials", 403)
+    unless params->{login} eq 'kivu' and params->{pass} eq 'kivu'
+    or     params->{login} eq 'test' and params->{pass} eq 'test';
+    
+    session loggedin => 1;
+    session login    => params->{login};
+    1;
 };
 
 any '/logout' => sub {
-    if ( session('loggedin') ) {
-        session loggedin => 0;
-        redirect '/';
-    } else {
-        redirect '/parties';
-    }
+    return send_error("Not logged in", 403) unless session->{loggedin};
+    session loggedin => 0;
+    1;
 };
 
 get '/parties' => sub {
-    if ( session('loggedin') ) {
-        my $html = "<h1>Party list</h1><table><tr><td>Name</td><td>Map</td><td>Created by</td><td>Join</td></tr>";
-        for ( keys %$parties ) {
-            my $p = $$parties{$_};
-            $html .= "<tr><td>$$p{name}</td><td>$$p{mapname}</td><td>$$p{creator}</td><td><a href=\"/joinparty/$$p{name}\">Join</a></td></tr>";
-        }
-        $html .= '<table>';
-        $html .= '
-        <form method="post" action="/ownparty">
-            <fieldset>
-                <legend>Create a party</legend>
-                <p><strong>Name: </strong><input type="text" name="name" /></p>
-                <p><strong>Map: </strong>
-                    <select name="mapname">
-                        <option value="demo">demo</option>
-                    </select>
-                </p>
-                <p><input type="submit" value="Create" /></p>
-            </fieldset>
-        </form>';
-    } else {
-        redirect '/';
-    }
+    return send_error("Not logged in", 403) unless session->{loggedin};
+    to_json $parties;
 };
 
 post '/ownparty' => sub {
-    if ( session('loggedin') ) {
-        my $name = params->{name};
+    return send_error("Not logged in", 403) unless session->{loggedin};
 
-        my $party = {};
-        $$party{name}    = $name;
-        $$party{mapname} = params->{mapname};
-        $$party{map}     = Thetical::Battle::Map::Load( params->{mapname} );
-        $$party{chars}   = {};
-        $$party{creator} = session->{login};
-        $$party{player1} = session->{login};
-        
-        $$parties{$name} = $party;
-        session party => $name;
-        session player => 1;
-        
-        return "
-            <h1>$$party{name}</h1>
-            <p><strong>Map: $$party{mapname}</strong></p>
-            <a href=\"/choosechar\">Start</a>";
-    } else {
-        redirect '/';
-    }
+    my $name = params->{name};
+
+    my $party = { 'name'    => $name
+                , 'mapname' => params->{mapname}
+                , 'map'     => Thetical::Battle::Map::Load( params->{mapname} )
+                , 'chars'   => {}
+                , 'creator' => session->{login}
+                , 'player1' => session->{login} };
+    
+    $$parties{$name} = $party;
+    session party  => $name;
+    session player => 1;
+    
+    to_json $party;
 };
 
-get '/joinparty/:name' => sub {
-    if ( session('loggedin') ) {
-        my $party        = $$parties{params->{name}};
-        $$party{player2} = session->{login};
-        session party   => params->{name};
-        session player  => 2;
-        
-        return "
-            <h1>$$party{name}</h1>
-            <p><strong>Map: $$party{mapname}</strong></p>
-            <p><strong>Creator: $$party{creator}</strong></p>
-            <a href=\"/choosechar\">Start</a>";
-    } else {
-        redirect '/';
-    }
+any '/joinparty/:name' => sub {
+    return send_error("Not logged in", 403) unless session->{loggedin};
+
+    my $party        = $$parties{params->{name}};
+    $$party{player2} = session->{login};
+    session party   => params->{name};
+    session player  => 2;
+    
+    to_json $party;
+};
+
+get '/party' => sub {
+    return send_error("Not logged in", 403) unless session->{loggedin};
+    to_json $$parties{ session->{party} };
 };
 
 get '/choosechar' => sub {
-    if ( session('loggedin') ) {
-        my $name = session('party');
-        my $player = session('player');
-        my $party = $$parties{$name};
+    return send_error("Not logged in", 403) unless session->{loggedin};
 
-        if ( $$party{player1} and $$party{player2} ) {
-            my @tiles;
-            if ( $player == 1 ) {
-                @tiles = ( [1,5], [1,6], [1,7], [1,8], [1,9] );
-            } elsif ( $player == 2 ) {
-                @tiles = ( [19,5], [19,6], [19,7], [19,8], [19,9] );
-            }
-            
-            my $html = '<form method="post" action="/startbattle">';
-            $html .= '<p><strong>'.$_->[0].'-'.$_->[1].': </strong><input type="text" name="'.$_->[0].'-'.$_->[1].'"></p>' for @tiles;
-            $html .= '<p><input type="submit" value="Battle!" /></p>';
-            $html .= '</from>';
-            
-            return $html;
-        } else {
-            return 0;
-        }
-    } else {
-        redirect '/';
-    }    
+    my $name = session('party');
+    my $player = session('player');
+    my $party = $$parties{$name};
+
+    return send_error("Party not full", 403) unless $$party{player1} and $$party{player2};
+
+    my @tiles;
+    if ( $player == 1 ) {
+        @tiles = ( [1,5], [1,6], [1,7], [1,8], [1,9] );
+    } elsif ( $player == 2 ) {
+        @tiles = ( [19,5], [19,6], [19,7], [19,8], [19,9] );
+    }
+
+    to_json \@tiles;
 };
 
 any '/startbattle' => sub {
-     if ( session('loggedin') ) {
+    return send_error("Not logged in", 403) unless session->{loggedin};
      
-        my $name = session('party');
-        my $player = session('player');
-        my $party = $$parties{$name};
-        
-        if ( $$party{player1started} and $$party{player2started} ) {
-            redirect '/client.html';
-        } else {
-            my %params = params;
-            for my $k ( keys %params ) {
-                if ( params->{$k} ) {
-                    my ($y, $x) = split '-', $k;
-                    my $charid  = params->{$k};
-                    
-                    $$party{map}{tiles}[$y][$x]{char} = $charid;
-                    my $char = { 'id'        => $charid
-                               , 'hp'        => 10
-                               , 'hpmax'     => 10
-                               , 'ct'        => 12
-                               , 'ctmax'     => 12
-                               , 'team'      => $player
-                               , 'move'      => 5
-                               , 'direction' => 1
-                               , 'active'    => 0 };
-                    $$party{chars}{$charid} = $char;
-                }
-            }
+    my $name = session('party');
+    my $player = session('player');
+    my $party = $$parties{$name};
+    
+    return send_error("Battle already started", 403) if $player == 1 and $$party{player1started};
+    return send_error("Battle already started", 403) if $player == 2 and $$party{player2started};
+
+    my %params = params;
+    for my $k ( keys %params ) {
+        if ( params->{$k} ) {
+            my ($y, $x) = split '-', $k;
+            my $charid  = params->{$k};
             
-            if ( $player == 1 ) {
-                $$party{player1started} = 1;
-            } elsif ( $player == 2 ) {
-                $$party{player2started} = 1;
-            }
-            
-            if ( $$party{player1started} and $$party{player2started} ) {
-                redirect '/client.html';
-            }
+            $$party{map}{tiles}[$y][$x]{char} = $charid;
+            my $char = { 'id'        => $charid
+                       , 'hp'        => 10
+                       , 'hpmax'     => 10
+                       , 'ct'        => 12
+                       , 'ctmax'     => 12
+                       , 'team'      => $player
+                       , 'move'      => 5
+                       , 'direction' => 1
+                       , 'active'    => 0 };
+            $$party{chars}{$charid} = $char;
         }
-    } else {
-        redirect '/';
-    }     
+    }
+
+    $$party{player1started} = 1 if $player == 1;
+    $$party{player2started} = 1 if $player == 2;
+
+    1;
 };
 
 # Decrements all characters CT until a CT hits 0
@@ -225,9 +160,9 @@ sub getnextactive {
 
 # Battle main callback
 get '/battle' => sub {
-    return send_error("Not allowed", 403) unless session('loggedin');
+    return send_error("Not logged in", 403) unless session('loggedin');
     my $party = $$parties{session('party')};
-    return send_error("Not allowed", 403) unless $$party{player1started} and $$party{player2started};
+    return send_error("Party not started for all players", 403) unless $$party{player1started} and $$party{player2started};
     getnextactive;
     to_json $party;
 };
