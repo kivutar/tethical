@@ -103,7 +103,7 @@ class World(DirectObject):
 
         self.coords = OnscreenText(text = '', pos = (0.9, 0.9), scale = 0.1)
         
-        self.drawBackground()
+        #self.drawBackground()
 
         # Events
         self.hightlightTileTask = taskMgr.add(self.hightlightTileTask, 'hightlightTileTask')
