@@ -380,6 +380,7 @@ function parties() {
         html += '        <p><strong>Map: </strong>';
         html += '            <select name="mapname">';
         html += '                <option value="demo">demo</option>';
+        html += '                <option value="Test City">Test City</option>';
         html += '            </select>';
         html += '        </p>';
         html += '        <p><input type="submit" value="Create" /></p>';

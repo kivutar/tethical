@@ -2,10 +2,10 @@
 use Modern::Perl;
 use Dancer;
 use Data::Dumper qw<Dumper>;
-use Thetical::Battle::Map;
-use Thetical::Battle::Move;
-use Thetical::Battle::Attack;
-use Thetical::Battle::Character;
+use Tethical::Battle::Map;
+use Tethical::Battle::Move;
+use Tethical::Battle::Attack;
+use Tethical::Battle::Character;
 set 'session'     => 'Simple';
 set 'logger'      => 'console';
 set 'log'         => 'debug';
@@ -45,7 +45,7 @@ post '/ownparty' => sub {
 
     my $party = { 'name'    => $name
                 , 'mapname' => params->{mapname}
-                , 'map'     => Thetical::Battle::Map::Load( params->{mapname} )
+                , 'map'     => Tethical::Battle::Map::Load( params->{mapname} )
                 , 'chars'   => {}
                 , 'creator' => session->{login}
                 , 'player1' => session->{login} };
@@ -182,7 +182,7 @@ get '/char/:id/walkables' => sub {
     return send_error("Not allowed", 403) unless $$party{player1started} and $$party{player2started};
     my $map   = $$party{map};
     my $char  = $$party{chars}{ params->{id} };
-    to_json Thetical::Battle::Move::GetWalkables( $map, $char );
+    to_json Tethical::Battle::Move::GetWalkables( $map, $char );
 };
 
 # Returns the list of attackables tiles for a character
@@ -192,7 +192,7 @@ get '/char/:id/attackables' => sub {
     return send_error("Not allowed", 403) unless $$party{player1started} and $$party{player2started};
     my $map   = $$party{map};
     my $char  = $$party{chars}{ params->{id} };
-    to_json Thetical::Battle::Attack::GetAttackables( $map, $char );
+    to_json Tethical::Battle::Attack::GetAttackables( $map, $char );
 };
 
 # Move action
@@ -210,23 +210,23 @@ get '/char/:id/moveto/:y/:x' => sub {
 
     # permissions checks
     return send_error("Not this character's turn",             403) unless $$char{active} == 1;
-    return send_error("Tile not walkable",                     403) unless Thetical::Battle::Move::IsWalkable( $map, $char, $y2, $x2 );
+    return send_error("Tile not walkable",                     403) unless Tethical::Battle::Move::IsWalkable( $map, $char, $y2, $x2 );
     return send_error("This character does not belong to you", 403) unless $$char{team} == session->{player};
 
     # get actual coordinates
-    my $tile = Thetical::Battle::Character::Coords( $map, $char );
+    my $tile = Tethical::Battle::Character::Coords( $map, $char );
     my $y1 = $tile->[0];
     my $x1 = $tile->[1];
 
     # get path to return before switching positions
-    my $path = Thetical::Battle::Move::GetPath( $map, $char, $y1, $x1, $y2, $x2 );
+    my $path = Tethical::Battle::Move::GetPath( $map, $char, $y1, $x1, $y2, $x2 );
 
     # switch positions
     $$map{tiles}[$y1][$x1]{char} = 0;
     $$map{tiles}[$y2][$x2]{char} = $id;
 
     # set new direction and remove the ability to walk for this turn
-    $$char{direction} = Thetical::Battle::Move::GetNewDirection( $y1, $x1, $y2, $x2 );
+    $$char{direction} = Tethical::Battle::Move::GetNewDirection( $y1, $x1, $y2, $x2 );
     $$char{canmove} = 0;
 
     return to_json $path;
@@ -278,7 +278,7 @@ get '/char/:id1/attack/:id2' => sub {
     my $char2 = $$chars{$id2};
     
     return send_error("Not allowed", 403) unless $$char1{active} == 1;
-    return send_error("Not allowed", 403) unless Thetical::Battle::Attack::IsAttackable( $map, $char1, $char2 );
+    return send_error("Not allowed", 403) unless Tethical::Battle::Attack::IsAttackable( $map, $char1, $char2 );
     return send_error("Not allowed", 403) unless $$char1{team} == session->{player};
     
     $$char2{hp} -= 5;
