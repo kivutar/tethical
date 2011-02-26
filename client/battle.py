@@ -16,9 +16,9 @@ import GUI
 import json
 from pandac.PandaModules import GeomVertexFormat, GeomVertexData, GeomVertexWriter, Geom, GeomTristrips, GeomLines, GeomNode, VBase4, TransparencyAttrib
 
-class World(DirectObject):
+class Battle(DirectObject):
 
-    def __init__(self):
+    def __init__(self, party):
 
         CameraHandler.CameraHandler()
 
@@ -258,5 +258,5 @@ class World(DirectObject):
             origin = destination
         s1.start()
 
-w = World()
-run()
+#w = World()
+#run()

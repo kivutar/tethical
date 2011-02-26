@@ -82,14 +82,7 @@ get '/choosechar' => sub {
 
     return send_error("Party not full", 403) unless $$party{player1} and $$party{player2};
 
-    my @tiles;
-    if ( $player == 1 ) {
-        @tiles = ( [1,5], [1,6], [1,7], [1,8], [1,9] );
-    } elsif ( $player == 2 ) {
-        @tiles = ( [19,5], [19,6], [19,7], [19,8], [19,9] );
-    }
-
-    to_json \@tiles;
+    to_json $$party{'map'}{chartiles}{$player};
 };
 
 any '/startbattle' => sub {
@@ -105,10 +98,10 @@ any '/startbattle' => sub {
     my %params = params;
     for my $k ( keys %params ) {
         if ( params->{$k} ) {
-            my ($y, $x) = split '-', $k;
+            my ($x, $y, $z) = split '-', $k;
             my $charid  = params->{$k};
             
-            $$party{map}{tiles}[$y][$x]{char} = $charid;
+            $$party{map}{tiles}[$x][$y][$z]{char} = $charid;
             my $char = { 'id'        => $charid
                        , 'hp'        => 10
                        , 'hpmax'     => 10

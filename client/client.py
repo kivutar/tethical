@@ -5,23 +5,27 @@ from pandac.PandaModules import *
 import urllib2
 from urllib import urlencode
 import cookielib
-from panda3d.core import AmbientLight, DirectionalLight, LightAttrib
 import json
 from direct.task.Task import Task
 import time
+import battle
 
-class Teest:
+class Client:
 
     def __init__(self):
     
         self.cookies = cookielib.CookieJar()
         self.cookies.clear()
         
+        self.party = False
+        
+        self.refreshparties = False
+        self.refreshPartiesTask = taskMgr.add(self.refreshPartiesTask, 'refreshPartiesTask')
+        
         self.refreshparty = False
         self.refreshPartyTask = taskMgr.add(self.refreshPartyTask, 'refreshPartyTask')
         
         self.logingui()
-        #self.partygui()
 
     def logingui(self):
         self.loginFrame = DirectFrame( color = (0, 0, 0, 0.5), frameSize = ( -.35, .35, -.25, .25 ) )
@@ -86,6 +90,43 @@ class Teest:
         createPartyButton = DirectButton( scale = .05, text  = ("Create", "Create", "Create", "disabled"), command = self.createparty )
         createPartyButton.reparentTo( self.createPartyFrame )
         createPartyButton.setPos(0.5, 0, 0)
+        
+        self.refreshparties = True
+
+    def refreshPartiesTask(self, task):
+        if self.refreshparties:
+            #time.sleep(1)
+            try:
+                opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
+                urllib2.install_opener(opener)
+                rsp = opener.open('http://localhost:3000/parties')
+            except IOError:
+                print 'fail'
+            else:
+                parties = json.loads(rsp.read())
+                rsp.close()
+                for key in parties:
+                    partyName = OnscreenText(text = 'Name: '+parties[key]['name'], pos = (0, 0), scale = 0.05, parent = self.partiesFrame)
+                    joinPartyButton = DirectButton( scale = .05, text  = ("Join", "Join", "Join", "disabled"), command = self.joinparty, extraArgs = [key] )
+                    joinPartyButton.reparentTo( self.partiesFrame )
+                    joinPartyButton.setPos(0.5, 0, 0)
+                
+        return Task.cont    
+
+    def joinparty(self, key):
+        try:
+            opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
+            urllib2.install_opener(opener)
+            rsp = opener.open('http://localhost:3000/joinparty/'+key)
+        except IOError:
+            print 'fail'
+        else:
+            self.party = json.loads(rsp.read())
+            rsp.close()
+            self.refreshparties = False
+            self.partiesFrame.destroy()
+            self.createPartyFrame.destroy()
+            self.partygui()        
 
     def createparty(self):
         name = self.partyNameEntry.get()
@@ -98,46 +139,28 @@ class Teest:
         except IOError:
             print 'fail'
         else:
-            party = json.loads(rsp.read())
-            print party
+            self.party = json.loads(rsp.read())
             rsp.close()
+            self.refreshparties = False
             self.partiesFrame.destroy()
             self.createPartyFrame.destroy()
-            self.partygui(party)
+            self.partygui()
 
-    def partygui(self, party):
-
-        #base.setBackgroundColor( 0.5,0.5,1 )
-        
-        terrain = loader.loadModel( 'models/maps/Test City.egg' )
-        terrain.reparentTo( render )
-        terrain.setScale( 0.5 )
-        terrain.setPos( 0,0,0 )
-        
-        base.disableMouse()
-        base.camera.lookAt(0, 0, 0)
-        lens = OrthographicLens()
-        lens.setFilmSize(30, 20)
-        base.cam.node().setLens(lens)
-        camera.setPosHpr(-20, -20, 24, -45, -35, 0)
-        
-        ambientLight = AmbientLight( "ambientLight" )
-        ambientLight.setColor( Vec4(1, 1, 1, 1) )
-        render.setLight( render.attachNewNode( ambientLight ) )
+    def partygui(self):
         
         self.partyFrame = DirectFrame( color = (0, 0, 0, 0.5), frameSize = ( -1, 1, -0.9, 0.9 ) )
         self.partyFrame.setTransparency(True)
         self.partyFrame.setPos(0, 0, 0)
         
-        partyName = OnscreenText(text = 'Party: '+party['name'],         pos = (0, 0.8), scale = 0.07, parent = self.partyFrame)
-        createdBy = OnscreenText(text = 'Created by: '+party['creator'], pos = (0, 0.7), scale = 0.05, parent = self.partyFrame)
-        waitingFor = OnscreenText(text = 'Waiting for second character', pos = (0, 0.0), scale = 0.05, parent = self.partyFrame)
+        partyName  = OnscreenText(text = 'Party: '+self.party['name'],         pos = (0, 0.8), scale = 0.07, parent = self.partyFrame)
+        createdBy  = OnscreenText(text = 'Created by: '+self.party['creator'], pos = (0, 0.7), scale = 0.05, parent = self.partyFrame)
+        waitingFor = OnscreenText(text = 'Waiting for second character',       pos = (0, 0.0), scale = 0.05, parent = self.partyFrame)
         
         self.refreshparty = True
 
     def refreshPartyTask(self, task):
         if self.refreshparty:
-            time.sleep(1)
+            #time.sleep(1)
             try:
                 opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
                 urllib2.install_opener(opener)
@@ -145,15 +168,44 @@ class Teest:
             except IOError:
                 print 'fail'
             else:
-                party = json.loads(rsp.read())
+                self.party = json.loads(rsp.read())
                 rsp.close()
-                if party.has_key('player2'):
+                if self.party.has_key('player2'):
                     self.partyFrame.destroy()
-                    self.selectchargui(party)
+                    self.refreshparty = False
+                    self.selectchargui()
         return Task.cont
 
-    def selectchargui(self, party):
-        print 'selectchar'
+    def selectchargui(self):
+        try:
+            opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
+            urllib2.install_opener(opener)
+            rsp = opener.open('http://localhost:3000/choosechar')
+        except IOError:
+            print 'fail'
+        else:
+            tiles = json.loads(rsp.read())
+            rsp.close()
+            values = {}
+            for i, tile in enumerate(tiles):
+                (x,y,z) = tile
+                values[str(x)+'-'+str(y)+'-'+str(z)] = i+1
+            self.characters_selected(values)
 
-Teest()
+    def characters_selected(self, values):
+        try:
+            opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
+            urllib2.install_opener(opener)
+            rsp = opener.open('http://localhost:3000/startbattle', urlencode(values))
+        except IOError:
+            print 'fail'
+        else:
+            res = json.loads(rsp.read())
+            rsp.close()
+            self.battle_begins()
+
+    def battle_begins(self):
+        b = battle.Battle(self.party)
+
+Client()
 run()

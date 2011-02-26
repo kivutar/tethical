@@ -277,7 +277,7 @@ function character_selection() {
                 html += '<form method="post">';
                 html += '   <fieldset>';
                 for ( k in tiles ) {
-                    html += '   <p><strong>'+tiles[k][0]+'-'+tiles[k][1]+': </strong><input type="text" name="'+tiles[k][0]+'-'+tiles[k][1]+'"></p>';
+                    html += '   <p><strong>'+tiles[k][0]+'-'+tiles[k][1]+'-'+tiles[k][2]+': </strong><input type="text" name="'+tiles[k][0]+'-'+tiles[k][1]+'"></p>';
                 }
                 html += '       <p><input type="submit" value="Battle!" /></p>'
                 html += '   </fieldset>';
