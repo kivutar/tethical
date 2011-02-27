@@ -18,6 +18,7 @@ class Client:
         self.cookies.clear()
         
         self.party = False
+        self.parties = []
         
         self.refreshparties = False
         self.refreshPartiesTask = taskMgr.add(self.refreshPartiesTask, 'refreshPartiesTask')
@@ -105,11 +106,13 @@ class Client:
             else:
                 parties = json.loads(rsp.read())
                 rsp.close()
-                for key in parties:
-                    partyName = OnscreenText(text = 'Name: '+parties[key]['name'], pos = (0, 0), scale = 0.05, parent = self.partiesFrame)
-                    joinPartyButton = DirectButton( scale = .05, text  = ("Join", "Join", "Join", "disabled"), command = self.joinparty, extraArgs = [key] )
-                    joinPartyButton.reparentTo( self.partiesFrame )
-                    joinPartyButton.setPos(0.5, 0, 0)
+                if parties != self.parties:
+                    self.parties = parties
+                    for key in parties:
+                        partyName = OnscreenText(text = 'Name: '+parties[key]['name'], pos = (0, 0), scale = 0.05, parent = self.partiesFrame)
+                        joinPartyButton = DirectButton( scale = .05, text  = ("Join", "Join", "Join", "disabled"), command = self.joinparty, extraArgs = [key] )
+                        joinPartyButton.reparentTo( self.partiesFrame )
+                        joinPartyButton.setPos(0.5, 0, 0)
                 
         return Task.cont    
 
