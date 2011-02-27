@@ -11,19 +11,17 @@ sub Load {
     $map = decode_json <FH>;
     close FH;
     
-    $map2 = { chartiles => $$map{chartiles} };
-    
-    my $height = $$map{y};
-    my $width  = $$map{x};
-    
     for my $tile ( @{$$map{tiles}} ) {
         $x = $$tile{x};
         $y = $$tile{y};
         $z = $$tile{z};
-        $$map2{tiles}[$x][$y][$z] = { walkable => $$tile{walkable} };
+        $$map{tiles2}[$x][$y][$z] = $tile;
     }
     
-    return $map2;
+    $$map{tiles} = $$map{tiles2};
+    $$map{tiles2} = undef;
+    
+    return $map;
 }
 
 1;

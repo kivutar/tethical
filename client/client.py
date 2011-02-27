@@ -187,9 +187,8 @@ class Client:
             tiles = json.loads(rsp.read())
             rsp.close()
             values = {}
-            for i, tile in enumerate(tiles):
-                (x,y,z) = tile
-                values[str(x)+'-'+str(y)+'-'+str(z)] = i+1
+            for i,tile in enumerate(tiles):
+                values[str(tile['x'])+'-'+str(tile['y'])+'-'+str(tile['z'])+'-'+str(tile['direction'])] = str(tile['x'])+str(tile['y'])+str(tile['z'])
             self.characters_selected(values)
 
     def characters_selected(self, values):
@@ -205,7 +204,7 @@ class Client:
             self.battle_begins()
 
     def battle_begins(self):
-        b = battle.Battle(self.party)
+        b = battle.Battle(self.cookies)
 
 Client()
 run()

@@ -8,16 +8,22 @@ sub _getadjacentwalkables {
     my @w2;
 
     for my $t1 ( @_ ) {
-        my ($y1, $x1) = @$t1;
-        for my $tx ( ( [$y1-1, $x1  ]
-                     , [$y1+1, $x1  ]
-                     , [$y1  , $x1-1]
-                     , [$y1  , $x1+1] ) ) {
+        my ($x1, $y1, $z1) = @$t1;
+        for my $tx ( ( [$x1-1, $y1  ]
+                     , [$x1+1, $y1  ]
+                     , [$x1  , $y1-1]
+                     , [$x1  , $y1+1] ) ) {
             eval {
-                my ($y2, $x2) = @$tx;
-                my $t2 = $$map{tiles}[$y2][$x2];
-                if ( $t2 && ! $$t2{char} > 0 ) {
-                    push @w2, [$y2, $x2];
+                my ($x2, $y2) = @$tx;
+                my $t2 = $$map{tiles}[$x2][$y2];
+                
+                if ( $t2 && $x2 >= 0 && $y2 >= 0 ) {
+                    for (my $z2=0; $z2 < @$t2; $z2++ ) {
+                        my $t3 = $$map{tiles}[$x2][$y2][$z2];
+                        if ( $t3 && ! $$t3{char} > 0 ) {
+                            push @w2, [$x2, $y2, $z2];
+                        }
+                    }
                 }
             };
         }
@@ -38,19 +44,19 @@ sub GetWalkables {
     }
 
     # Remove character's tile from the list
-    @walkables = map { $_->[0] == $tile->[0] && $_->[1] == $tile->[1] ? () : $_ } @walkables;
+    @walkables = map { $_->[0] == $tile->[0] && $_->[1] == $tile->[1] && $_->[2] == $tile->[2] ? () : $_ } @walkables;
 
     return \@walkables;
 }
 
 # Used to check if a tile is walkable for a character
 sub IsWalkable {
-    my ( $map, $char, $y, $x ) = @_;
+    my ( $map, $char, $x, $y, $z ) = @_;
 
     my $walkables = GetWalkables( $map, $char );
 
     for ( @$walkables ) {
-        return 1 if $y == $_->[0] && $x == $_->[1];
+        return 1 if $x == $_->[0] && $y == $_->[1] && $z == $_->[2];
     }
 
     undef;
@@ -59,11 +65,11 @@ sub IsWalkable {
 # Returns the character's new direction after a move
 # 0 = up, 1 = down, 2 = left, 3 = right
 sub GetNewDirection {
-    my ( $y1, $x1, $y2, $x2 ) = @_;
+    my ( $x1, $y1, $x2, $y2 ) = @_;
 
     # compute the move vector
-    my $dy = $y2 - $y1;
     my $dx = $x2 - $x1;
+    my $dy = $y2 - $y1;
     
     # was the move more hortizontal of vertical ?
     if ( $dy*$dy > $dx*$dx ) {
@@ -76,10 +82,10 @@ sub GetNewDirection {
 # Returns the character path from one tile to another
 # the path is of the form ['5-5','4-5','4-4']
 sub GetPath {
-    my ( $map, $char, $y1, $x1, $y2, $x2 ) = @_;
+    my ( $map, $char, $x1, $y1, $z1, $x2, $y2, $z2 ) = @_;
 
-    my $tree = { "$y1-$x1" => {} };
-    _buildtree( $map, $tree, $$char{move}-1, "$y2-$x2" );
+    my $tree = { "$x1-$y1-$z1" => {} };
+    _buildtree( $map, $tree, $$char{move}-1, "$x2-$y2-$z2" );
 
     my $paths = [];
     _findpathes( $tree, [], $paths );

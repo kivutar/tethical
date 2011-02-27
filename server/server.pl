@@ -98,7 +98,7 @@ any '/startbattle' => sub {
     my %params = params;
     for my $k ( keys %params ) {
         if ( params->{$k} ) {
-            my ($x, $y, $z) = split '-', $k;
+            my ($x, $y, $z, $direction) = split '-', $k;
             my $charid  = params->{$k};
             
             $$party{map}{tiles}[$x][$y][$z]{char} = $charid;
@@ -108,8 +108,8 @@ any '/startbattle' => sub {
                        , 'ct'        => 12
                        , 'ctmax'     => 12
                        , 'team'      => $player
-                       , 'move'      => 5
-                       , 'direction' => 1
+                       , 'move'      => 4
+                       , 'direction' => $direction
                        , 'active'    => 0 };
             $$party{chars}{$charid} = $char;
         }
@@ -155,7 +155,7 @@ sub getnextactive {
 get '/battle' => sub {
     return send_error("Not logged in", 403) unless session('loggedin');
     my $party = $$parties{session('party')};
-    return send_error("Party not started for all players", 403) unless $$party{player1started} and $$party{player2started};
+    #return send_error("Party not started for all players", 403) unless $$party{player1started} and $$party{player2started};
     getnextactive;
     to_json $party;
 };
