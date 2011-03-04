@@ -25,15 +25,16 @@ class Sprite:
     def setRealDir(self, direction):
         self.realdir = direction
 
-    def updateDisplayDir(self, camX):
-        if camX >=    0 and camX <  90:
-            self.camdir = 1
-        if camX >=  -90 and camX <   0:
+    def updateDisplayDir(self, h):
+        h = self.normalizeh(h)
+        if h >=    0 and h <  90:
             self.camdir = 2
-        if camX >= -180 and camX < -90:
+        if h >=  -90 and h <   0:
             self.camdir = 3
-        if camX >=   90 and camX < 180:
+        if h >= -180 and h < -90:
             self.camdir = 4
+        if h >=   90 and h < 180:
+            self.camdir = 1
         
         tmpdir = self.realdir + self.camdir
         if tmpdir > 4:
@@ -41,4 +42,11 @@ class Sprite:
         if tmpdir != self.displaydir:
             self.sprite2d.playAnim( self.status+str(tmpdir), loop=True)
             self.displaydir = tmpdir
+
+    def normalizeh(self, h):
+        while h > 180:
+            h -= 360
+        while h < -180:
+            h += 360
+        return h
 

@@ -34,7 +34,7 @@ class Battle(DirectObject):
             self.party = json.loads(rsp.read())
             rsp.close()
 
-        CameraHandler.CameraHandler()
+        self.camhandler = CameraHandler.CameraHandler()
 
         # Collision stuff
         self.picker = CollisionTraverser()
@@ -213,9 +213,9 @@ class Battle(DirectObject):
 
     # Updates the displayed direction of a character according to the camera angle
     def characterDirectionTask(self, task):
-        camHpr = base.camera.getHpr()
+        h = self.camhandler.container.getH()
         for char in self.chars:
-            char['sprite'].updateDisplayDir( camHpr.getX() );
+            char['sprite'].updateDisplayDir( h );
         return Task.cont
 
     def testmove(self):

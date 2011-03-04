@@ -2,6 +2,7 @@ from direct.directbase import DirectStart
 from direct.showbase import DirectObject
 from panda3d.core import OrthographicLens
 from pandac.PandaModules import Vec3
+from direct.interval.IntervalGlobal import LerpScaleInterval, LerpHprInterval, Sequence
 import math
 
 class CameraHandler(DirectObject.DirectObject):
@@ -9,96 +10,52 @@ class CameraHandler(DirectObject.DirectObject):
     def __init__(self):
 
         base.disableMouse()
-        base.camera.lookAt(0, 0, 0)
-        
+
         lens = OrthographicLens()
         lens.setFilmSize(40, 30)
         lens.setNear(10)
         lens.setFar(100)
         base.cam.node().setLens(lens)
-        
-        camera.setPosHpr(-20, -20, 24, -45, -35, 0)
-        
-        self.rotating = False
-        self.moving = False
-        self.target = Vec3()
-        self.camDist = 40
-        self.mx, self.my = 0, 0 
-        self.setTarget(0, 0, 0)
-        self.turnCameraAroundPoint(0, 0, self.target, self.camDist)
-        
-        self.accept("mouse3",     self.startRotate)
-        self.accept("mouse3-up",  self.stopRotate)
-        #self.accept("mouse1",     self.startMove)
-        #self.accept("mouse1-up",  self.stopMove)
-        self.accept("wheel_up",   self.zoomIn)
-        self.accept("wheel_down", self.zoomOut)
-        
-        taskMgr.add(self.rotateTask, 'rotateTask')
-        taskMgr.add(self.moveTask,   'moveTask'  )
 
-    def turnCameraAroundPoint(self, tx, ty, p, dist):
-        newCamHpr=Vec3()         
-        camHpr=base.camera.getHpr()
-        newCamHpr.setX(camHpr.getX()+tx)
-        newCamHpr.setY(camHpr.getY()-ty)
-        base.camera.setHpr(newCamHpr)
-        angleradiansX = newCamHpr.getX() * (math.pi / 180.0)
-        angleradiansY = newCamHpr.getY() * (math.pi / 180.0)
-        base.camera.setPos( dist*math.sin(angleradiansX)*math.cos(angleradiansY)+p.getX(),
-                           -dist*math.cos(angleradiansX)*math.cos(angleradiansY)+p.getY(),
-                           24.0 )
+        self.container = render.attachNewNode('camContainer')
+        base.camera.reparentTo( self.container )
+        base.camera.setPos( -20, 0, 24 )
         base.camera.lookAt(0, 0, 0)
+        self.container.setHpr(45, 0, 0)
 
-    def setTarget(self, x, y, z):
-        self.target.setX(x)
-        self.target.setY(y)
-        self.target.setZ(z)
+        self.zoomed = False
+        self.r      = False
 
-    def startRotate(self):
-        self.rotating=True
+        self.accept("e", self.toggleZoom        )
+        self.accept("r", self.toggleR           )
+        self.accept("a", lambda: self.turn( 90) )
+        self.accept("z", lambda: self.turn(-90) )
 
-    def stopRotate(self):
-        self.rotating=False
+    def toggleZoom(self):
+        if self.container.getScale()[0] in (0.5, 1.0):
+            if self.zoomed:
+                i = LerpScaleInterval(self.container, 0.5, 1.0, 0.5)
+            else:
+                i = LerpScaleInterval(self.container, 0.5, 0.5, 1.0)
+            s = Sequence(i)
+            s.start()
+            self.zoomed = not self.zoomed
 
-    def startMove(self):
-        self.moving=True
+    def toggleR(self):
+        (h, p, r) = self.container.getHpr()
+        if r in (0.0, -25.0):
+            if self.r:
+                i = LerpHprInterval(self.container, 0.5, (h, p, r+25), (h, p, r))
+            else:
+                i = LerpHprInterval(self.container, 0.5, (h, p, r-25), (h, p, r))
+            s = Sequence(i)
+            s.start()
+            self.r = not self.r
 
-    def stopMove(self):
-        self.moving=False
-
-    def zoomIn(self):
-        if base.mouseWatcherNode.hasMouse():
-            lens = base.cam.node().getLens()
-            size = lens.getFilmSize()
-            lens.setFilmSize(size / 1.1)
-
-    def zoomOut(self):
-        if base.mouseWatcherNode.hasMouse():
-            lens = base.cam.node().getLens()
-            size = lens.getFilmSize()
-            lens.setFilmSize(size * 1.1)
-
-    def rotateTask(self, task):
-        if base.mouseWatcherNode.hasMouse():
-            mpos = base.mouseWatcherNode.getMouse() 
-            if self.rotating:
-                self.turnCameraAroundPoint(
-                    (self.mx-mpos.getX())*100,
-                    0,
-                    self.target,self.camDist)
-            self.mx=mpos.getX()
-            self.my=mpos.getY()                               
-        return task.cont
-
-    def moveTask(self, task):
-        if base.mouseWatcherNode.hasMouse():
-            mpos = base.mouseWatcherNode.getMouse() 
-            if self.moving:
-                newCamHpr=Vec3()
-                camHpr=base.camera.getHpr()
-                #newCamHpr.setZ(mpos.getY())
-                base.camera.setHpr(newCamHpr)
-                base.camera.lookAt(0, 0, 0)                           
-        return task.cont
+    def turn(self, delta):
+        (h, p, r) = self.container.getHpr()
+        if (h-45)%90 == 0.0:
+            i = LerpHprInterval(self.container, 0.5, (h+delta, p, r), (h, p, r))
+            s = Sequence(i)
+            s.start()
 
