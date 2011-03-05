@@ -2,7 +2,7 @@ from direct.directbase import DirectStart
 from direct.showbase import DirectObject
 from panda3d.core import OrthographicLens
 from pandac.PandaModules import Vec3
-from direct.interval.IntervalGlobal import LerpScaleInterval, LerpHprInterval, Sequence
+from direct.interval.IntervalGlobal import LerpPosInterval, LerpScaleInterval, LerpHprInterval, Sequence
 import math
 
 class CameraHandler(DirectObject.DirectObject):
@@ -58,4 +58,10 @@ class CameraHandler(DirectObject.DirectObject):
             i = LerpHprInterval(self.container, 0.5, (h+delta, p, r), (h, p, r))
             s = Sequence(i)
             s.start()
+
+    def move(self, dest):
+        orig = self.container.getPos()
+        i = LerpPosInterval(self.container, 0.5, dest, startPos=orig)
+        s = Sequence(i)
+        s.start()
 

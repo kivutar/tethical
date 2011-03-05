@@ -179,6 +179,8 @@ class Battle(DirectObject):
     # You clicked on a tile
     def clicked(self):
         if self.hix is not False:
+            self.camhandler.move(self.logic2terrain((self.hix, self.hiy, self.hiz)))
+
             walkable = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('walkable')
             if not walkable or walkable != '1':
                 for x,xs in enumerate(self.party['map']['tiles']):
