@@ -2,20 +2,15 @@ import direct.directbase.DirectStart
 from direct.gui.OnscreenText import OnscreenText
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
-import urllib2
-from urllib import urlencode
-import cookielib
-import json
 from direct.task.Task import Task
-import time
 import battle
+import Network
 
 class Client:
 
     def __init__(self):
     
-        self.cookies = cookielib.CookieJar()
-        self.cookies.clear()
+        self.con = Network.ServerConnection()
         
         self.party = False
         self.parties = []
@@ -51,16 +46,9 @@ class Client:
     def login(self):
         login = self.loginEntry.get()
         password = self.passwordEntry.get()
-        values = { 'login': login, 'pass': password }
-        try:
-            opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
-            urllib2.install_opener(opener)
-            rsp = opener.open('http://localhost:3000/login', urlencode(values))
-        except IOError:
-            print 'fail'
-        else:
-            print rsp.read()
-            rsp.close()
+
+        rsp = self.con.Send('login', { 'login': login, 'pass': password })
+        if rsp:
             self.loginFrame.destroy()
             self.partiesgui()
 
@@ -99,54 +87,34 @@ class Client:
 
     def refreshPartiesTask(self, task):
         if self.refreshparties:
-            #time.sleep(1)
-            try:
-                opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
-                urllib2.install_opener(opener)
-                rsp = opener.open('http://localhost:3000/parties')
-            except IOError:
-                print 'fail'
-            else:
-                parties = json.loads(rsp.read())
-                rsp.close()
-                if parties != self.parties:
-                    self.parties = parties
-                    for key in parties:
-                        partyName = OnscreenText(text = 'Name: '+parties[key]['name'], pos = (0, 0), scale = 0.05, parent = self.partiesFrame)
-                        joinPartyButton = DirectButton( scale = .05, text  = ("Join", "Join", "Join", "disabled"), command = self.joinparty, extraArgs = [key] )
-                        joinPartyButton.reparentTo( self.partiesFrame )
-                        joinPartyButton.setPos(0.5, 0, 0)
-                
+
+            parties = self.con.Send('parties')
+            if parties and parties != self.parties:
+                self.parties = parties
+                for key in parties:
+                    partyName = OnscreenText(text = 'Name: '+parties[key]['name'], pos = (0, 0), scale = 0.05, parent = self.partiesFrame)
+                    joinPartyButton = DirectButton( scale = .05, text  = ("Join", "Join", "Join", "disabled"), command = self.joinparty, extraArgs = [key] )
+                    joinPartyButton.reparentTo( self.partiesFrame )
+                    joinPartyButton.setPos(0.5, 0, 0)
+
         return Task.cont    
 
     def joinparty(self, key):
-        try:
-            opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
-            urllib2.install_opener(opener)
-            rsp = opener.open('http://localhost:3000/joinparty/'+key)
-        except IOError:
-            print 'fail'
-        else:
-            self.party = json.loads(rsp.read())
-            rsp.close()
+        party = self.con.Send('joinparty/'+key)
+        if party:
+            self.party = party
             self.refreshparties = False
             self.partiesFrame.destroy()
             self.createPartyFrame.destroy()
-            self.partygui()        
+            self.partygui()
 
     def createparty(self):
         name = self.partyNameEntry.get()
         mapname = self.mapMenu.get()
-        values = { 'name': name, 'mapname': mapname }
-        try:
-            opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
-            urllib2.install_opener(opener)
-            rsp = opener.open('http://localhost:3000/ownparty', urlencode(values))
-        except IOError:
-            print 'fail'
-        else:
-            self.party = json.loads(rsp.read())
-            rsp.close()
+
+        party = self.con.Send('ownparty', { 'name': name, 'mapname': mapname })
+        if party:
+            self.party = party
             self.refreshparties = False
             self.partiesFrame.destroy()
             self.createPartyFrame.destroy()
@@ -166,67 +134,42 @@ class Client:
 
     def refreshPartyTask(self, task):
         if self.refreshparty:
-            #time.sleep(1)
-            try:
-                opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
-                urllib2.install_opener(opener)
-                rsp = opener.open('http://localhost:3000/party')
-            except IOError:
-                print 'fail'
-            else:
-                self.party = json.loads(rsp.read())
-                rsp.close()
-                if self.party.has_key('player2'):
-                    self.partyFrame.destroy()
-                    self.refreshparty = False
-                    self.selectchargui()
+            
+            party = self.con.Send('party')
+            if party and party.has_key('player2'):
+                self.party = party
+                self.partyFrame.destroy()
+                self.refreshparty = False
+                self.selectchargui()
+
         return Task.cont
 
     def selectchargui(self):
-        try:
-            opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
-            urllib2.install_opener(opener)
-            rsp = opener.open('http://localhost:3000/choosechar')
-        except IOError:
-            print 'fail'
-        else:
-            tiles = json.loads(rsp.read())
-            rsp.close()
+        tiles = self.con.Send('choosechar')
+        if tiles:
             values = {}
             for i,tile in enumerate(tiles):
                 values[str(tile['x'])+'-'+str(tile['y'])+'-'+str(tile['z'])+'-'+str(tile['direction'])] = str(tile['x'])+str(tile['y'])+str(tile['z'])
             self.characters_selected(values)
 
     def characters_selected(self, values):
-        try:
-            opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
-            urllib2.install_opener(opener)
-            rsp = opener.open('http://localhost:3000/startbattle', urlencode(values))
-        except IOError:
-            print 'fail'
-        else:
-            res = json.loads(rsp.read())
-            rsp.close()
+        res = self.con.Send('startbattle', values)
+        if res:
             self.refreshbattle = True
 
     def refreshBattleTask(self, task):
         if self.refreshbattle:
-            #time.sleep(1)
-            try:
-                opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
-                urllib2.install_opener(opener)
-                rsp = opener.open('http://localhost:3000/battle')
-            except IOError:
-                print 'fail'
-            else:
-                self.party = json.loads(rsp.read())
-                rsp.close()
+
+            party = self.con.Send('battle')
+            if party:
+                self.party = party
                 self.refreshbattle = False
                 self.battle_begins()
+
         return Task.cont
 
     def battle_begins(self):
-        b = battle.Battle(self.cookies, self.party)
+        b = battle.Battle(self.con, self.party)
 
 Client()
 run()

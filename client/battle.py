@@ -17,12 +17,13 @@ import json
 from pandac.PandaModules import GeomVertexFormat, GeomVertexData, GeomVertexWriter, Geom, GeomTristrips, GeomLines, GeomNode, VBase4, TransparencyAttrib
 import urllib2
 from urllib import urlencode
+import Network
 
 class Battle(DirectObject):
 
-    def __init__(self, cookies, party):
+    def __init__(self, con, party):
     
-        self.cookies = cookies
+        self.con = con
         self.party = party
 
         self.camhandler = CameraHandler.CameraHandler()
@@ -186,16 +187,8 @@ class Battle(DirectObject):
                 if self.party['chars'][charid]['active']:
                     print 'active'
                 else:
-                    try:
-                        opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
-                        urllib2.install_opener(opener)
-                        rsp = opener.open('http://localhost:3000/char/'+charid+'/walkables')
-                    except IOError, e:
-                        print e.code
-                        print e.read()
-                    else:
-                        walkables = json.loads(rsp.read())
-                        rsp.close()
+                    walkables = self.con.Send('char/'+charid+'/walkables')
+                    if walkables:
                         self.drawWalkables(walkables)
 
     def drawWalkables(self, walkables):
