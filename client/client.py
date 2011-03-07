@@ -26,6 +26,9 @@ class Client:
         self.refreshparty = False
         self.refreshPartyTask = taskMgr.add(self.refreshPartyTask, 'refreshPartyTask')
         
+        self.refreshbattle = False
+        self.refreshBattleTask = taskMgr.add(self.refreshBattleTask, 'refreshBattleTask')
+
         self.logingui()
 
     def logingui(self):
@@ -204,10 +207,26 @@ class Client:
         else:
             res = json.loads(rsp.read())
             rsp.close()
-            self.battle_begins()
+            self.refreshbattle = True
+
+    def refreshBattleTask(self, task):
+        if self.refreshbattle:
+            #time.sleep(1)
+            try:
+                opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
+                urllib2.install_opener(opener)
+                rsp = opener.open('http://localhost:3000/battle')
+            except IOError:
+                print 'fail'
+            else:
+                self.party = json.loads(rsp.read())
+                rsp.close()
+                self.refreshbattle = False
+                self.battle_begins()
+        return Task.cont
 
     def battle_begins(self):
-        b = battle.Battle(self.cookies)
+        b = battle.Battle(self.cookies, self.party)
 
 Client()
 run()

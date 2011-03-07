@@ -20,19 +20,10 @@ from urllib import urlencode
 
 class Battle(DirectObject):
 
-    def __init__(self, cookies):
+    def __init__(self, cookies, party):
     
         self.cookies = cookies
-    
-        try:
-            opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1), urllib2.HTTPCookieProcessor(self.cookies))
-            urllib2.install_opener(opener)
-            rsp = opener.open('http://localhost:3000/battle')
-        except IOError:
-            print 'fail'
-        else:
-            self.party = json.loads(rsp.read())
-            rsp.close()
+        self.party = party
 
         self.camhandler = CameraHandler.CameraHandler()
 

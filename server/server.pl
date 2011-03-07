@@ -155,7 +155,7 @@ sub getnextactive {
 get '/battle' => sub {
     return send_error("Not logged in", 403) unless session('loggedin');
     my $party = $$parties{session('party')};
-    #return send_error("Party not started for all players", 403) unless $$party{player1started} and $$party{player2started};
+    return send_error("Party not started for all players", 403) unless $$party{player1started} and $$party{player2started};
     getnextactive;
     to_json $party;
 };
