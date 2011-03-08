@@ -8,25 +8,30 @@ from pandac.PandaModules import *
 
 class Menu:
 
-    def __init__(self):
+    def __init__(self, movecommand):
     
         texture = loader.loadTexture('textures/gui/gui.png')
         texture.setMagfilter(Texture.FTNearest)
         texture.setMinfilter(Texture.FTNearest)
 
         #create a frame
-        frame = DirectFrame(
+        self.frame = DirectFrame(
             frameTexture = texture,
             frameSize    = ( -.25, .25, -.25, .25 ),
             )
-        frame.setTransparency(True)
+        self.frame.setTransparency(True)
 
         moveBtn = DirectButton(
             text  = ("Move", "Move", "Move", "disabled"), 
-            scale = 0.05
+            scale = 0.05,
+            command = lambda: self.commandanddestroy(movecommand)
             )
-        moveBtn.reparentTo( frame )
+        moveBtn.reparentTo( self.frame )
         moveBtn.setPos(0, 0, 0)
 
-        frame.setPos(0.5, 0, 0)
+        self.frame.setPos(0.5, 0, 0)
+
+    def commandanddestroy(self, command):
+        self.frame.destroy()
+        command()
 

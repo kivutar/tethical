@@ -9,14 +9,11 @@ from direct.interval.IntervalGlobal import LerpPosInterval, Sequence, Func
 from direct.showbase.DirectObject import DirectObject
 from direct.task.Task import Task
 from direct.gui.OnscreenText import OnscreenText
-import sys
+import sys, time
 import Sprite
 import CameraHandler
 import GUI
-import json
 from pandac.PandaModules import GeomVertexFormat, GeomVertexData, GeomVertexWriter, Geom, GeomTristrips, GeomLines, GeomNode, VBase4, TransparencyAttrib
-import urllib2
-from urllib import urlencode
 import Network
 
 class Battle(DirectObject):
@@ -65,7 +62,7 @@ class Battle(DirectObject):
         # Place highlightable tiles on the map
         self.tileRoot = render.attachNewNode( "tileRoot" )
         self.tiles = [ [ [ None for z in range(self.party['map']['z']) ] for y in range(self.party['map']['y']) ] for x in range(self.party['map']['x']) ]
-        self.chars = []
+        self.chars = {}
         
         for x,xs in enumerate(self.party['map']['tiles']):
             for y,ys in enumerate(xs):
@@ -97,19 +94,37 @@ class Battle(DirectObject):
                             sprite.node.reparentTo( render )
                             char['sprite'] = sprite
                             self.tiles[x][y][z].find("**/polygon").node().setTag('char', str(charid))
-                            self.chars.append(char)
+                            self.chars[charid] = char
                             
         self.coords = OnscreenText(text = '', pos = (0.9, 0.9), scale = 0.1)
         
         self.drawBackground()
 
         # Events
-        self.hightlightTileTask = taskMgr.add(self.hightlightTileTask, 'hightlightTileTask')
+        self.hightlightTileTask     = taskMgr.add(self.hightlightTileTask    , 'hightlightTileTask'    )
         self.characterDirectionTask = taskMgr.add(self.characterDirectionTask, 'characterDirectionTask')
+        self.otherPlayersTask       = taskMgr.add(self.otherPlayersTask      , 'otherPlayersTask'      )
 
-        self.accept("mouse1", self.clicked)
-        self.accept("b",      self.testmove) # tmp event to test character moves
+        self.accept("mouse1", self.tileclicked)
         self.accept('escape', sys.exit)
+        
+        self.turn()
+
+    def turn(self):
+        party = self.con.Send('battle')
+        if party:
+            self.party = party
+            
+            for x,xs in enumerate(self.party['map']['tiles']):
+                for y,ys in enumerate(xs):
+                    for z,zs in enumerate(ys):
+                        if not self.party['map']['tiles'][x][y][z] is None:
+                            if self.party['map']['tiles'][x][y][z].has_key('char') and self.party['map']['tiles'][x][y][z]['char'] != 0:
+                                charid = self.party['map']['tiles'][x][y][z]['char']
+                                char = self.party['chars'][charid]
+                                
+                                if char['active']:
+                                    self.camhandler.move(self.logic2terrain((x, y, z)))
 
     def drawBackground(self):
         vdata = GeomVertexData('name_me', GeomVertexFormat.getV3c4(), Geom.UHStatic)
@@ -169,85 +184,105 @@ class Battle(DirectObject):
         return Task.cont
 
     # You clicked on a tile
-    def clicked(self):
-        if self.hix is not False:
+    def tileclicked(self):
+        if self.hix is not False and self.party['yourturn']:
             self.camhandler.move(self.logic2terrain((self.hix, self.hiy, self.hiz)))
+
+            active = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('active')
+            if active and active != '0':
+                self.path(active, self.hix, self.hiy, self.hiz)
 
             walkable = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('walkable')
             if not walkable or walkable != '1':
-                for x,xs in enumerate(self.party['map']['tiles']):
-                    for y,ys in enumerate(xs):
-                        for z,zs in enumerate(ys):
-                            if not self.party['map']['tiles'][x][y][z] is None:
-                                self.tiles[x][y][z].setColor(0, 0, 0, 0)
-                                self.tiles[x][y][z].find("**/polygon").node().setTag('walkable', '0')
-        
+                self.clearWalkables()
+
             charid = self.pq.getEntry(0).getIntoNode().getTag('char')
             if charid != '0':
-                if self.party['chars'][charid]['active']:
-                    print 'active'
+                self.charstats(charid)
+                if self.party['chars'][charid]['active'] and self.party['yourturn']:
+                    menu = GUI.Menu( lambda: self.moveclicked(charid) )
                 else:
                     walkables = self.con.Send('char/'+charid+'/walkables')
                     if walkables:
                         self.drawWalkables(walkables)
 
+    def moveclicked(self, charid):
+        walkables = self.con.Send('char/'+charid+'/walkables')
+        if walkables:
+            self.drawWalkables(walkables)
+            self.markWalkables(charid, walkables, True)
+
+    def path(self, charid, x, y, z):
+        path = self.con.Send('char/'+charid+'/path/'+str(x)+'/'+str(y)+'/'+str(z))
+        if path:
+            seq = self.getcharmoveseq(charid, path)
+            seq.append( Func(self.clearWalkables) )
+            seq.start()
+            # ask confirmation
+            time.sleep(1)
+            self.moveto(charid, x, y, z)
+
+    def moveto(self, charid, x, y, z):
+        res = self.con.Send('char/'+charid+'/moveto/'+str(x)+'/'+str(y)+'/'+str(z))
+        if res:
+            self.tiles[x][y][z].find("**/polygon").node().setTag('char', str(charid))
+            self.turn()
+
+    # Draw blue tile zone
     def drawWalkables(self, walkables):
         for tile in walkables:
             (x, y, z) = tile
             self.tiles[x][y][z].setColor(0.0, 0.0, 1.0, 0.75)
+
+    def markWalkables(self, charid, walkables, active=False):
+        for tile in walkables:
+            (x, y, z) = tile
             self.tiles[x][y][z].find("**/polygon").node().setTag('walkable', '1')
+            if active:
+                self.tiles[x][y][z].find("**/polygon").node().setTag('active', charid)
+
+    # Clear blue tile zone
+    def clearWalkables(self):
+        for x,xs in enumerate(self.party['map']['tiles']):
+            for y,ys in enumerate(xs):
+                for z,zs in enumerate(ys):
+                    if not self.party['map']['tiles'][x][y][z] is None:
+                        self.tiles[x][y][z].setColor(0, 0, 0, 0)
+                        self.tiles[x][y][z].find("**/polygon").node().setTag('walkable', '0')
+                        self.tiles[x][y][z].find("**/polygon").node().setTag('active',   '0')
+
+    def charstats(self, charid):
+        stats = self.con.Send('char/'+charid)
+        if stats:
+            print stats
+
+    def otherPlayersTask(self, task):
+        if not self.party['yourturn']:
+            log = self.con.Send('otherplayers')
+            if log:
+                if log['act'] == 'move':
+                    seq = Sequence()
+                    seq.append( Func(self.drawWalkables, log['walkables']) )
+                    seq.append( self.getcharmoveseq(log['charid'], log['path']) )
+                    seq.append( Func(self.clearWalkables) )
+                    seq.start()
+        return Task.cont
 
     # Updates the displayed direction of a character according to the camera angle
     def characterDirectionTask(self, task):
         h = self.camhandler.container.getH()
-        for char in self.chars:
-            char['sprite'].updateDisplayDir( h );
+        for charid in self.chars:
+            self.chars[charid]['sprite'].updateDisplayDir( h );
         return Task.cont
-
-    def testmove(self):
-        path = [ ( 3, 0, 6)
-        
-               , ( 3, 1, 6)
-               , ( 3, 2, 6)
-               , ( 3, 3, 6)
-
-               , ( 4, 3, 6)
-
-               , ( 4, 4, 6)
-               , ( 4, 5, 6)
-               , ( 4, 6, 6)
-
-               , ( 4, 7, 8)
-               , ( 4, 8,10)
-               , ( 4, 9,12)
-
-               , ( 3, 9,12)
-               , ( 2, 9,12)
-
-               , ( 2, 8,12)
-               , ( 2, 7,12)
-               , ( 2, 6,12)
-
-               , ( 1, 6,12)
-               , ( 0, 6,12)
-
-               , ( 0, 5,12)
-               , ( 0, 4,12)
-               
-               , ( 0, 3,10)
-               
-               , ( 1, 3, 6)
-
-               ]
-        self.charmove(self.chars[0], path)
     
     def logic2terrain(self, tile):
         (x, y, z) = tile
         return Point3(x-4, y-5, z/4.0)
     
     # Move a character along a path
-    def charmove(self, char, path):
-        s1 = Sequence()
+    def getcharmoveseq(self, charid, path):
+        char = self.chars[charid]
+        seq = Sequence()
         origin = False
         for destination in path:
             if origin:
@@ -262,7 +297,7 @@ class Battle(DirectObject):
                     i1 = Func(char['sprite'].setRealDir, 2)
                 elif y2 < y1:
                     i1 = Func(char['sprite'].setRealDir, 4)
-                s1.append(i1)
+                seq.append(i1)
             
                 i2 = LerpPosInterval(
                     char['sprite'].node, 
@@ -270,7 +305,7 @@ class Battle(DirectObject):
                     self.logic2terrain(destination), 
                     startPos=self.logic2terrain(origin)
                 )
-                s1.append(i2)
+                seq.append(i2)
             origin = destination
-        s1.start()
+        return seq
 

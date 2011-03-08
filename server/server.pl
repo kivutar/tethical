@@ -47,6 +47,7 @@ post '/ownparty' => sub {
                 , 'mapname' => params->{mapname}
                 , 'map'     => Tethical::Battle::Map::Load( params->{mapname} )
                 , 'chars'   => {}
+                , 'log'     => {}
                 , 'creator' => session->{login}
                 , 'player1' => session->{login} };
     
@@ -127,6 +128,7 @@ sub getnextactive {
     my $chars = $$party{chars};
 
     for ( keys %$chars ) {
+        $$party{yourturn} = $$chars{$_}{team} == session->{player};
         return if $$chars{$_}{active};
     }
 
@@ -147,8 +149,6 @@ sub getnextactive {
             }
         }
     }
-    
-    
 }
 
 # Battle main callback
@@ -188,41 +188,76 @@ get '/char/:id/attackables' => sub {
     to_json Tethical::Battle::Attack::GetAttackables( $map, $char );
 };
 
-# Move action
-get '/char/:id/moveto/:y/:x' => sub {
+# Get path from tile to tile
+get '/char/:id/path/:x/:y/:z' => sub {
     return send_error("Not logged in", 403) unless session('loggedin');
     my $party = $$parties{session('party')};
     return send_error("Not in a started party", 403) unless $$party{player1started} and $$party{player2started};
 
     my $id = params->{id};
-    my $y2 = params->{y};
     my $x2 = params->{x};
+    my $y2 = params->{y};
+    my $z2 = params->{z};
 
     my $map   = $$party{map};
     my $char  = $$party{chars}{ params->{id} };
 
     # permissions checks
     return send_error("Not this character's turn",             403) unless $$char{active} == 1;
-    return send_error("Tile not walkable",                     403) unless Tethical::Battle::Move::IsWalkable( $map, $char, $y2, $x2 );
+    return send_error("Tile not walkable",                     403) unless Tethical::Battle::Move::IsWalkable( $map, $char, $x2, $y2, $z2 );
     return send_error("This character does not belong to you", 403) unless $$char{team} == session->{player};
 
     # get actual coordinates
     my $tile = Tethical::Battle::Character::Coords( $map, $char );
-    my $y1 = $tile->[0];
-    my $x1 = $tile->[1];
+    my $x1 = $tile->[0];
+    my $y1 = $tile->[1];
+    my $z1 = $tile->[2];
 
-    # get path to return before switching positions
-    my $path = Tethical::Battle::Move::GetPath( $map, $char, $y1, $x1, $y2, $x2 );
-
-    # switch positions
-    $$map{tiles}[$y1][$x1]{char} = 0;
-    $$map{tiles}[$y2][$x2]{char} = $id;
-
-    # set new direction and remove the ability to walk for this turn
-    $$char{direction} = Tethical::Battle::Move::GetNewDirection( $y1, $x1, $y2, $x2 );
-    $$char{canmove} = 0;
+    my $path = Tethical::Battle::Move::GetPath( $map, $char, $x1, $y1, $z1, $x2, $y2, $z2 );
 
     return to_json $path;
+};
+
+# Move action
+get '/char/:id/moveto/:x/:y/:z' => sub {
+    return send_error("Not logged in", 403) unless session('loggedin');
+    my $party = $$parties{session('party')};
+    return send_error("Not in a started party", 403) unless $$party{player1started} and $$party{player2started};
+
+    my $id = params->{id};
+    my $x2 = params->{x};
+    my $y2 = params->{y};
+    my $z2 = params->{z};
+
+    my $map   = $$party{map};
+    my $char  = $$party{chars}{ params->{id} };
+
+    # permissions checks
+    return send_error("Not this character's turn",             403) unless $$char{active} == 1;
+    return send_error("Tile not walkable",                     403) unless Tethical::Battle::Move::IsWalkable( $map, $char, $x2, $y2, $z2 );
+    return send_error("This character does not belong to you", 403) unless $$char{team} == session->{player};
+
+    # get actual coordinates
+    my $tile = Tethical::Battle::Character::Coords( $map, $char );
+    my $x1 = $tile->[0];
+    my $y1 = $tile->[1];
+    my $z1 = $tile->[2];
+    
+    # get and walkables path to log before switching positions
+    my $path = Tethical::Battle::Move::GetPath( $map, $char, $x1, $y1, $z1, $x2, $y2, $z2 );
+    my $walkables = Tethical::Battle::Move::GetWalkables( $map, $char );
+
+    # switch positions
+    $$map{tiles}[$x1][$y1][$z1]{char} = 0;
+    $$map{tiles}[$x2][$y2][$z2]{char} = $id;
+
+    # set new direction and remove the ability to walk for this turn
+    $$char{direction} = Tethical::Battle::Move::GetNewDirection( $x1, $y1, $x2, $y2 );
+    $$char{canmove} = 0;
+    
+    $$party{log} = { act => 'move', charid => $id, walkables => $walkables, path => $path };
+
+    1;
 };
 
 # Wait action: this is where charecter's turn ends
@@ -280,6 +315,18 @@ get '/char/:id1/attack/:id2' => sub {
     $$char1{canact} = 0;
     
     return 5;
+};
+
+# Get actions performed by the other players
+get '/otherplayers' => sub {
+    return send_error("Not allowed", 403) unless session('loggedin');
+    my $party = $$parties{session('party')};
+    return send_error("Not allowed", 403) unless $$party{player1started} and $$party{player2started};
+
+    my $log = $$party{log};
+    $$party{log} = {};
+
+    return to_json $log;
 };
 
 dance;

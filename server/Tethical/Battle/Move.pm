@@ -80,7 +80,7 @@ sub GetNewDirection {
 }
 
 # Returns the character path from one tile to another
-# the path is of the form ['5-5','4-5','4-4']
+# the path is of the form ['5-5-2','4-5-2','4-4-2']
 sub GetPath {
     my ( $map, $char, $x1, $y1, $z1, $x2, $y2, $z2 ) = @_;
 
@@ -90,7 +90,7 @@ sub GetPath {
     my $paths = [];
     _findpathes( $tree, [], $paths );
 
-    return $paths->[0];
+    return [ map { [ map { int($_) } split '-', $_ ] } @{ $paths->[0] } ];
 }
 
 # Recursively builds the paths tree
