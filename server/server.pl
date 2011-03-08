@@ -236,6 +236,7 @@ get '/char/:id/moveto/:x/:y/:z' => sub {
     return send_error("Not this character's turn",             403) unless $$char{active} == 1;
     return send_error("Tile not walkable",                     403) unless Tethical::Battle::Move::IsWalkable( $map, $char, $x2, $y2, $z2 );
     return send_error("This character does not belong to you", 403) unless $$char{team} == session->{player};
+    return send_error("This character can't move",             403) unless $$char{canmove};
 
     # get actual coordinates
     my $tile = Tethical::Battle::Character::Coords( $map, $char );
@@ -269,7 +270,7 @@ get '/char/:id/wait/:direction' => sub {
     my $id = params->{id};
     
     # permissions checks
-    my $char = $$party{chars}{ params->{id} };
+    my $char = $$party{chars}{$id};
     return send_error("Not allowed", 403) unless $$char{active} == 1;
     return send_error("Not allowed", 403) unless $$char{team} == session->{player};
     
@@ -287,6 +288,8 @@ get '/char/:id/wait/:direction' => sub {
     $$char{active } = 0;
     $$char{canmove} = 0;
     $$char{canact } = 0;
+    
+    $$party{log} = { act => 'wait', charid => $id, direction => $$char{direction} };
     
     return 1;
 };

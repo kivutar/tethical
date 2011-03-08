@@ -86,9 +86,6 @@ class Battle(DirectObject):
                         if self.party['map']['tiles'][x][y][z].has_key('char'):
                             charid = self.party['map']['tiles'][x][y][z]['char']
                             char = self.party['chars'][charid]
-                            char['x'] = x
-                            char['y'] = y
-                            char['z'] = z
                             sprite = Sprite.Sprite('textures/sprites/misty.png', int(char['direction']))
                             sprite.node.setPos(self.logic2terrain((x,y,z)))
                             sprite.node.reparentTo( render )
@@ -183,6 +180,16 @@ class Battle(DirectObject):
 
         return Task.cont
 
+    # Returns the logic coordinates of a character
+    def getcharcoords(self, charid):
+        for x,xs in enumerate(self.party['map']['tiles']):
+            for y,ys in enumerate(xs):
+                for z,zs in enumerate(ys):
+                    if not self.party['map']['tiles'][x][y][z] is None:
+                        if self.party['map']['tiles'][x][y][z].has_key('char') and self.party['map']['tiles'][x][y][z]['char'] != 0:
+                            if charid == self.party['map']['tiles'][x][y][z]['char']:
+                                return (x, y, z)
+
     # You clicked on a tile
     def tileclicked(self):
         if self.hix is not False and self.party['yourturn']:
@@ -190,7 +197,8 @@ class Battle(DirectObject):
 
             active = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('active')
             if active and active != '0':
-                self.path(active, self.hix, self.hiy, self.hiz)
+                dest = (self.hix, self.hiy, self.hiz)
+                self.path(active, dest)
 
             walkable = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('walkable')
             if not walkable or walkable != '1':
@@ -198,9 +206,10 @@ class Battle(DirectObject):
 
             charid = self.pq.getEntry(0).getIntoNode().getTag('char')
             if charid != '0':
-                self.charstats(charid)
                 if self.party['chars'][charid]['active'] and self.party['yourturn']:
-                    menu = GUI.Menu( lambda: self.moveclicked(charid) )
+                    menu = GUI.Menu( lambda: self.moveclicked(charid), 
+                                     lambda: self.attackclicked(charid),
+                                     lambda: self.waitclicked(charid) )
                 else:
                     walkables = self.con.Send('char/'+charid+'/walkables')
                     if walkables:
@@ -212,20 +221,32 @@ class Battle(DirectObject):
             self.drawWalkables(walkables)
             self.markWalkables(charid, walkables, True)
 
-    def path(self, charid, x, y, z):
+    def attackclicked(self, charid):
+        pass
+
+    def waitclicked(self, charid):
+        res = self.con.Send('char/'+charid+'/wait/1')
+        if res:
+            self.chars[charid]['sprite'].setRealDir(1)
+            self.turn()
+
+    def path(self, charid, dest):
+        (x, y, z) = dest
         path = self.con.Send('char/'+charid+'/path/'+str(x)+'/'+str(y)+'/'+str(z))
         if path:
             seq = self.getcharmoveseq(charid, path)
             seq.append( Func(self.clearWalkables) )
             seq.start()
             # ask confirmation
-            time.sleep(1)
-            self.moveto(charid, x, y, z)
+            self.moveto(charid, dest)
 
-    def moveto(self, charid, x, y, z):
-        res = self.con.Send('char/'+charid+'/moveto/'+str(x)+'/'+str(y)+'/'+str(z))
+    def moveto(self, charid, dest):
+        (x1, y1, z1) = self.getcharcoords(charid)
+        (x2, y2, z2) = dest
+        res = self.con.Send('char/'+charid+'/moveto/'+str(x2)+'/'+str(y2)+'/'+str(z2))
         if res:
-            self.tiles[x][y][z].find("**/polygon").node().setTag('char', str(charid))
+            self.tiles[x1][y1][z1].find("**/polygon").node().setTag('char', '0')
+            self.tiles[x2][y2][z2].find("**/polygon").node().setTag('char', str(charid))
             self.turn()
 
     # Draw blue tile zone
@@ -261,11 +282,21 @@ class Battle(DirectObject):
             log = self.con.Send('otherplayers')
             if log:
                 if log['act'] == 'move':
+                    charid    = log['charid']
+                    walkables = log['walkables']
+                    path      = log['path']
+                    (x1, y1, z1) = path[0]
+                    (x2, y2, z2) = path[-1]
+                    self.tiles[x1][y1][z1].find("**/polygon").node().setTag('char', '0')
+                    self.tiles[x2][y2][z2].find("**/polygon").node().setTag('char', str(charid))
                     seq = Sequence()
-                    seq.append( Func(self.drawWalkables, log['walkables']) )
-                    seq.append( self.getcharmoveseq(log['charid'], log['path']) )
+                    seq.append( Func(self.drawWalkables, walkables) )
+                    seq.append( self.getcharmoveseq(charid, path) )
                     seq.append( Func(self.clearWalkables) )
                     seq.start()
+                if log['act'] == 'wait':
+                    self.chars[log['charid']]['sprite'].setRealDir(log['direction'])
+                    self.turn()
         return Task.cont
 
     # Updates the displayed direction of a character according to the camera angle

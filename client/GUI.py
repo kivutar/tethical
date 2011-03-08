@@ -8,7 +8,7 @@ from pandac.PandaModules import *
 
 class Menu:
 
-    def __init__(self, movecommand):
+    def __init__(self, movecommand, attackcommand, waitcommand):
     
         texture = loader.loadTexture('textures/gui/gui.png')
         texture.setMagfilter(Texture.FTNearest)
@@ -27,7 +27,31 @@ class Menu:
             command = lambda: self.commandanddestroy(movecommand)
             )
         moveBtn.reparentTo( self.frame )
-        moveBtn.setPos(0, 0, 0)
+        moveBtn.setPos(0, 0, 0.1)
+
+        attackBtn = DirectButton(
+            text  = ("Attack", "Attack", "Attack", "disabled"), 
+            scale = 0.05,
+            command = lambda: self.commandanddestroy(attackcommand),
+            )
+        attackBtn.reparentTo( self.frame )
+        attackBtn.setPos(0, 0, 0.0)
+
+        waitBtn = DirectButton(
+            text  = ("Wait", "Wait", "Wait", "disabled"), 
+            scale = 0.05,
+            command = lambda: self.commandanddestroy(waitcommand),
+            )
+        waitBtn.reparentTo( self.frame )
+        waitBtn.setPos(0, 0, -0.1)
+
+        cancelBtn = DirectButton(
+            text  = ("Cancel", "Cancel", "Cancel", "disabled"), 
+            scale = 0.05,
+            command = self.frame.destroy
+            )
+        cancelBtn.reparentTo( self.frame )
+        cancelBtn.setPos(0, 0, -0.2)
 
         self.frame.setPos(0.5, 0, 0)
 

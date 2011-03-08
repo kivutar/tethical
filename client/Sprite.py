@@ -23,7 +23,7 @@ class Sprite:
         self.sprite2d.createAnim('walk4', (19,20,21,22,23,22,21,20), fps=10)
 
     def setRealDir(self, direction):
-        self.realdir = direction
+        self.realdir = int(direction)
 
     def updateDisplayDir(self, h):
         h = self.normalizeh(h)
