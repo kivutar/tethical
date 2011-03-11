@@ -26,10 +26,11 @@ class CameraHandler(DirectObject.DirectObject):
         self.zoomed = False
         self.r      = False
 
-        self.accept("e", self.toggleZoom        )
-        self.accept("r", self.toggleR           )
-        self.accept("a", lambda: self.turn( 90) )
-        self.accept("z", lambda: self.turn(-90) )
+        self.accept("e",            self.toggleZoom  )
+        self.accept("r",            self.toggleR     )
+        self.accept("a",    lambda: self.turn( 90)   )
+        self.accept("z",    lambda: self.turn(-90)   )
+        self.accept('window-event', self.windowEvent )
 
     def toggleZoom(self):
         if self.container.getScale()[0] in (0.5, 1.0):
@@ -64,4 +65,8 @@ class CameraHandler(DirectObject.DirectObject):
         i = LerpPosInterval(self.container, 0.5, dest, startPos=orig)
         s = Sequence(i)
         s.start()
+
+    def windowEvent(self, window):
+        ratio = float(window.getXSize()) / float(window.getYSize())
+        base.cam.node().getLens().setAspectRatio( ratio )
 
