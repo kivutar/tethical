@@ -151,9 +151,12 @@ class Battle(DirectObject):
     def hightlightTileTask(self, task):
 
         if self.hix is not False:
-            walkable = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('walkable')
+            walkable   = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('walkable')
+            attackable = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('attackable')
             if walkable == '1':
                 self.tiles[self.hix][self.hiy][self.hiz].setColor(0.0, 0.0, 1.0, 0.75)
+            elif attackable and attackable != '0':
+                self.tiles[self.hix][self.hiy][self.hiz].setColor(1.0, 0.0, 0.0, 0.75)
             else:
                 self.tiles[self.hix][self.hiy][self.hiz].setColor(0, 0, 0, 0)
             self.coords.setText('')
@@ -193,37 +196,57 @@ class Battle(DirectObject):
     # You clicked on a tile
     def tileclicked(self):
         if self.hix is not False and self.party['yourturn']:
+        
+            # focus the camera on the selected tile
             self.camhandler.move(self.logic2terrain((self.hix, self.hiy, self.hiz)))
 
+            # we clicked an active walkable tile, let's move the character
             active = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('active')
             if active and active != '0':
                 dest = (self.hix, self.hiy, self.hiz)
                 self.path(active, dest)
 
+            # cancel walkable
             walkable = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('walkable')
             if not walkable or walkable != '1':
                 self.clearWalkables()
 
+            # cancel attackable
+            attackable = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('attackable')
+            if not attackable or attackable == '0':
+                self.clearAttackables()
+
+            # we clicked on a character
             charid = self.pq.getEntry(0).getIntoNode().getTag('char')
             if charid != '0':
-                if self.party['chars'][charid]['active'] and self.party['yourturn']:
+            
+                # we clicked on a target, let's attack it!
+                if attackable and attackable != '0':
+                    self.attack(attackable, charid)
+            
+                # we clicked on the currently active character, let's display the menu
+                elif self.party['chars'][charid]['active'] and self.party['yourturn']:
                     menu = GUI.Menu( lambda: self.moveclicked(charid), 
                                      lambda: self.attackclicked(charid),
                                      lambda: self.waitclicked(charid) )
+                
+                # we clicked on a random character, let's draw its walkable zone
                 else:
                     walkables = self.con.Send('char/'+charid+'/walkables')
                     if walkables:
                         self.drawWalkables(walkables)
-                        self.markWalkables(charid, walkables, False)
+                        self.tagWalkables(charid, walkables, False)
 
     def moveclicked(self, charid):
         walkables = self.con.Send('char/'+charid+'/walkables')
         if walkables:
             self.drawWalkables(walkables)
-            self.markWalkables(charid, walkables, True)
+            self.tagWalkables(charid, walkables, True)
 
     def attackclicked(self, charid):
-        pass
+        attackables = self.con.Send('char/'+charid+'/attackables')
+        if attackables:
+            self.drawAndTagAttackables(charid, attackables)
 
     def waitclicked(self, charid):
         res = self.con.Send('char/'+charid+'/wait/1')
@@ -241,6 +264,11 @@ class Battle(DirectObject):
             # ask confirmation
             self.moveto(charid, dest)
 
+    def attack(self, charid, targetid):
+        damages = self.con.Send('char/'+charid+'/attack/'+targetid)
+        if damages:
+            print damages
+
     def moveto(self, charid, dest):
         (x1, y1, z1) = self.getcharcoords(charid)
         (x2, y2, z2) = dest
@@ -256,22 +284,43 @@ class Battle(DirectObject):
             (x, y, z) = tile
             self.tiles[x][y][z].setColor(0.0, 0.0, 1.0, 0.75)
 
-    def markWalkables(self, charid, walkables, active=False):
+    # Tag a zone as walkable or active-walkable
+    def tagWalkables(self, charid, walkables, active=False):
         for tile in walkables:
             (x, y, z) = tile
             self.tiles[x][y][z].find("**/polygon").node().setTag('walkable', '1')
             if active:
                 self.tiles[x][y][z].find("**/polygon").node().setTag('active', charid)
 
-    # Clear blue tile zone
+    # Draw and tag the red tile zone
+    def drawAndTagAttackables(self, charid, attackables):
+        for tile in attackables:
+            (x, y, z) = tile
+            self.tiles[x][y][z].setColor(1.0, 0.0, 0.0, 0.75)
+            self.tiles[x][y][z].find("**/polygon").node().setTag('attackable', charid)
+
+    # Clear walkable tile zone
     def clearWalkables(self):
         for x,xs in enumerate(self.party['map']['tiles']):
             for y,ys in enumerate(xs):
                 for z,zs in enumerate(ys):
                     if not self.party['map']['tiles'][x][y][z] is None:
-                        self.tiles[x][y][z].setColor(0, 0, 0, 0)
-                        self.tiles[x][y][z].find("**/polygon").node().setTag('walkable', '0')
-                        self.tiles[x][y][z].find("**/polygon").node().setTag('active',   '0')
+                        walkable = self.tiles[x][y][z].find("**/polygon").node().getTag('walkable')
+                        if walkable and walkable != '0':
+                            self.tiles[x][y][z].setColor(0, 0, 0, 0)
+                            self.tiles[x][y][z].find("**/polygon").node().setTag('walkable', '0')
+                            self.tiles[x][y][z].find("**/polygon").node().setTag('active',   '0')
+
+    # Clear attackable tile zone
+    def clearAttackables(self):
+        for x,xs in enumerate(self.party['map']['tiles']):
+            for y,ys in enumerate(xs):
+                for z,zs in enumerate(ys):
+                    if not self.party['map']['tiles'][x][y][z] is None:
+                        attackable = self.tiles[x][y][z].find("**/polygon").node().getTag('attackable')
+                        if attackable and attackable != '0':
+                            self.tiles[x][y][z].setColor(0, 0, 0, 0)
+                            self.tiles[x][y][z].find("**/polygon").node().setTag('attackable', '0')
 
     def charstats(self, charid):
         stats = self.con.Send('char/'+charid)
@@ -292,9 +341,15 @@ class Battle(DirectObject):
                     self.tiles[x2][y2][z2].find("**/polygon").node().setTag('char', str(charid))
                     seq = Sequence()
                     seq.append( Func(self.drawWalkables, walkables) )
+                    seq.append( Func(self.tagWalkables, charid, walkables, False) )
                     seq.append( self.getcharmoveseq(charid, path) )
                     seq.append( Func(self.clearWalkables) )
                     seq.start()
+                if log['act'] == 'attack':
+                    charid   = log['charid']
+                    targetid = log['targetid']
+                    damages  = log['targetid']
+                    print charid, ' inflicted ', damages, ' damages to ', targetid
                 if log['act'] == 'wait':
                     self.chars[log['charid']]['sprite'].setRealDir(log['direction'])
                     self.turn()

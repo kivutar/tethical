@@ -308,16 +308,21 @@ get '/char/:id1/attack/:id2' => sub {
     my $char1 = $$chars{$id1};
     my $char2 = $$chars{$id2};
     
-    return send_error("Not allowed", 403) unless $$char1{active} == 1;
-    return send_error("Not allowed", 403) unless Tethical::Battle::Attack::IsAttackable( $map, $char1, $char2 );
-    return send_error("Not allowed", 403) unless $$char1{team} == session->{player};
+    return send_error("Not this character's turn",             403) unless $$char1{active} == 1;
+    return send_error("Tile not attackable",                   403) unless Tethical::Battle::Attack::IsAttackable( $map, $char1, $char2 );
+    return send_error("This character does not belong to you", 403) unless $$char1{team} == session->{player};
+    return send_error("This character can't act",              403) unless $$char1{canact};
     
-    $$char2{hp} -= 5;
+    my $damages = 5;
+    
+    $$char2{hp} -= $damages;
     $$char2{hp} = 0 if $$char2{hp} < 0;
     
     $$char1{canact} = 0;
     
-    return 5;
+    $$party{log} = { act => 'attack', charid => $id1, targetid => $id2, damages => $damages };
+    
+    return $damages;
 };
 
 # Get actions performed by the other players
