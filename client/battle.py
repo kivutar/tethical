@@ -104,7 +104,7 @@ class Battle(DirectObject):
 
         self.accept("mouse1", self.tileclicked)
         self.accept('escape', sys.exit)
-        
+
         self.turn()
 
     def turn(self):
@@ -214,6 +214,7 @@ class Battle(DirectObject):
                     walkables = self.con.Send('char/'+charid+'/walkables')
                     if walkables:
                         self.drawWalkables(walkables)
+                        self.markWalkables(charid, walkables, False)
 
     def moveclicked(self, charid):
         walkables = self.con.Send('char/'+charid+'/walkables')
