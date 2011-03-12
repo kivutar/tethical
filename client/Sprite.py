@@ -22,10 +22,10 @@ class Sprite:
         self.sprite2d.createAnim('walk3', (29,30,31,32,33,32,31,30), fps=10)
         self.sprite2d.createAnim('walk4', (43,44,45,46,47,46,45,44), fps=10)
         
-        self.sprite2d.createAnim('hit1', ( 6, 6), fps=1)
-        self.sprite2d.createAnim('hit2', (20,20), fps=1)
-        self.sprite2d.createAnim('hit3', (34,34), fps=1)
-        self.sprite2d.createAnim('hit4', (48,48), fps=1)
+        self.sprite2d.createAnim('hit1', ( 6, 6), fps=10)
+        self.sprite2d.createAnim('hit2', (20,20), fps=10)
+        self.sprite2d.createAnim('hit3', (34,34), fps=10)
+        self.sprite2d.createAnim('hit4', (48,48), fps=10)
         
         self.sprite2d.createAnim('weak1', ( 7, 7), fps=1)
         self.sprite2d.createAnim('weak2', (21,21), fps=1)

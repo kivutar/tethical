@@ -195,9 +195,9 @@ class Sprite2d:
    
     def playAnim(self, animName, loop=False):
         """ Sets the sprite to animate the given named animation. Booleon to loop animation"""
-        #if hasattr(self, "task"):
-        #    if not self.task.isRemoved():
-        #        taskMgr.remove(self.task)
+        if hasattr(self, "task"):
+            #if not self.task.isRemoved():
+            taskMgr.remove(self.task)
         self.frameInterrupt = False # Clear any previous interrupt flags
         self.loopAnim = loop
         self.currentAnim = self.animations[animName]
