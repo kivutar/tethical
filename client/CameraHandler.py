@@ -19,7 +19,7 @@ class CameraHandler(DirectObject.DirectObject):
 
         self.container = render.attachNewNode('camContainer')
         base.camera.reparentTo( self.container )
-        base.camera.setPos( -20, 0, 24 )
+        base.camera.setPos( -20, 0, 20 )
         base.camera.lookAt(0, 0, 0)
         self.container.setHpr(45, 0, 0)
 

@@ -10,12 +10,12 @@ class Sprite:
         self.displaydir = 1
         self.status = 'walk'
     
-        self.sprite2d = Sprite2d.Sprite2d(sheet, cols=14, rows=4, scale=2.25, anchorX='Center')
+        self.sprite2d = Sprite2d.Sprite2d(sheet, cols=14, rows=4, scale=2.5, anchorX='Center')
 
         self.node = NodePath("dummy")
         self.node.setBillboardPointEye()
         self.sprite2d.node.reparentTo( self.node )
-        self.sprite2d.node.setPos( 0, -0.65, -0.65 )
+        self.sprite2d.node.setPos( 0, -0.55, -0.55 )
         
         self.sprite2d.createAnim('walk1', ( 1, 2, 3, 4, 5, 4, 3, 2), fps=10)
         self.sprite2d.createAnim('walk2', (15,16,17,18,19,18,17,16), fps=10)
