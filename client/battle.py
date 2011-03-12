@@ -5,7 +5,7 @@ from panda3d.core import AmbientLight, DirectionalLight, LightAttrib
 from panda3d.core import TransparencyAttrib
 from panda3d.core import TextNode
 from panda3d.core import Point3, Vec3, Vec4, BitMask32
-from direct.interval.IntervalGlobal import LerpPosInterval, Sequence, Func
+from direct.interval.IntervalGlobal import LerpPosInterval, Sequence, Func, Wait
 from direct.showbase.DirectObject import DirectObject
 from direct.task.Task import Task
 from direct.gui.OnscreenText import OnscreenText
@@ -258,8 +258,11 @@ class Battle(DirectObject):
         (x, y, z) = dest
         path = self.con.Send('char/'+charid+'/path/'+str(x)+'/'+str(y)+'/'+str(z))
         if path:
-            seq = self.getcharmoveseq(charid, path)
+            seq = Sequence()
+            seq.append( Func(self.updatespritestatus, charid, 'walk') )
+            seq.append( self.getcharmoveseq(charid, path) )
             seq.append( Func(self.clearWalkables) )
+            seq.append( Func(self.updatespritestatus, charid) )
             seq.start()
             # ask confirmation
             self.moveto(charid, dest)
@@ -268,6 +271,49 @@ class Battle(DirectObject):
         damages = self.con.Send('char/'+charid+'/attack/'+targetid)
         if damages:
             print damages
+            self.attackanim(charid, targetid)
+            self.turn()
+
+    def charlookat(self, charid, targetid):
+        (x1, y1, z1) = self.getcharcoords(charid)
+        (x2, y2, z2) = self.getcharcoords(targetid)
+        if x1 > x2:
+            self.chars[charid]['sprite'].setRealDir(3)
+        if x1 < x2:
+            self.chars[charid]['sprite'].setRealDir(1)
+        if y1 > y2:
+            self.chars[charid]['sprite'].setRealDir(4)
+        if y1 < y2:
+            self.chars[charid]['sprite'].setRealDir(2)
+
+    def attackanim(self, charid, targetid):
+        seq = Sequence()
+        seq.append( Func(self.charlookat, charid, targetid          ) )
+        seq.append( Func(self.updatespritestatus, charid,   'attack') )
+        seq.append( Wait(0.5) )
+        seq.append( Func(self.updatespritestatus, targetid, 'hit'   ) )
+        seq.append( Wait(0.5) )
+        seq.append( Func(self.updatespritestatus, charid            ) )
+        seq.append( Wait(0.5) )
+        seq.append( Func(self.updatespritestatus, targetid          ) )
+        seq.append( Wait(0.5) )
+        seq.start()
+
+    def updatespritestatus(self, charid, status=False):
+        if status:
+            self.chars[charid]['sprite'].status = status
+        else:
+            stats = self.con.Send('char/'+charid)
+            if stats:
+                print stats
+                if stats['hp'] >= (stats['hpmax']/2):
+                    self.chars[charid]['sprite'].status = 'walk'
+                if stats['hp'] < (stats['hpmax']/2):
+                    self.chars[charid]['sprite'].status = 'weak'
+                if stats['hp'] == 0:
+                    self.chars[charid]['sprite'].status = 'dead'
+        h = self.camhandler.container.getH()
+        self.chars[charid]['sprite'].updateDisplayDir( h, True );
 
     def moveto(self, charid, dest):
         (x1, y1, z1) = self.getcharcoords(charid)
@@ -341,15 +387,19 @@ class Battle(DirectObject):
                     self.tiles[x2][y2][z2].find("**/polygon").node().setTag('char', str(charid))
                     seq = Sequence()
                     seq.append( Func(self.drawWalkables, walkables) )
+                    seq.append( Wait(0.5) )
                     seq.append( Func(self.tagWalkables, charid, walkables, False) )
+                    seq.append( Func(self.updatespritestatus, charid, 'walk') )
                     seq.append( self.getcharmoveseq(charid, path) )
-                    seq.append( Func(self.clearWalkables) )
+                    seq.append( Wait(0.5) )
+                    seq.append( Func(self.updatespritestatus, charid) )
+                    seq.append( Func(self.clearWalkables) )                    
                     seq.start()
                 if log['act'] == 'attack':
                     charid   = log['charid']
                     targetid = log['targetid']
                     damages  = log['targetid']
-                    print charid, ' inflicted ', damages, ' damages to ', targetid
+                    self.attackanim(charid, targetid)
                 if log['act'] == 'wait':
                     self.chars[log['charid']]['sprite'].setRealDir(log['direction'])
                     self.turn()

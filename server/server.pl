@@ -313,7 +313,7 @@ get '/char/:id1/attack/:id2' => sub {
     return send_error("This character does not belong to you", 403) unless $$char1{team} == session->{player};
     return send_error("This character can't act",              403) unless $$char1{canact};
     
-    my $damages = 5;
+    my $damages = 3;
     
     $$char2{hp} -= $damages;
     $$char2{hp} = 0 if $$char2{hp} < 0;
