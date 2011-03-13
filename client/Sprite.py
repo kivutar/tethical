@@ -5,10 +5,10 @@ class Sprite:
 
     def __init__(self, sheet, realdir=1):
     
-        self.realdir = realdir
-        self.camdir = 1
+        self.realdir    = realdir
+        self.camdir     = 1
         self.displaydir = 1
-        self.status = 'walk'
+        self.animation  = 'walk'
     
         self.sprite2d = Sprite2d.Sprite2d(sheet, cols=14, rows=4, scale=2.5, anchorX='Center')
 
@@ -46,7 +46,7 @@ class Sprite:
         self.realdir = int(direction)
 
     def updateDisplayDir(self, h, force=False):
-        h = self.normalizeh(h)
+        h = self.normalizeH(h)
         if h >=    0 and h <  90:
             self.camdir = 2
         if h >=  -90 and h <   0:
@@ -60,10 +60,10 @@ class Sprite:
         if tmpdir > 4:
             tmpdir -= 4
         if tmpdir != self.displaydir or force:
-            self.sprite2d.playAnim( self.status+str(tmpdir), loop=True)
+            self.sprite2d.playAnim( self.animation+str(tmpdir), loop=True)
             self.displaydir = tmpdir
 
-    def normalizeh(self, h):
+    def normalizeH(self, h):
         while h > 180:
             h -= 360
         while h < -180:

@@ -13,7 +13,7 @@ class CameraHandler(DirectObject.DirectObject):
 
         lens = OrthographicLens()
         lens.setFilmSize(40, 30)
-        lens.setNear(10)
+        lens.setNear(1)
         lens.setFar(100)
         base.cam.node().setLens(lens)
 

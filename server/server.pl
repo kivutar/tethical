@@ -244,7 +244,7 @@ get '/char/:id/moveto/:x/:y/:z' => sub {
     my $y1 = $tile->[1];
     my $z1 = $tile->[2];
     
-    # get and walkables path to log before switching positions
+    # get walkables and path to log before switching positions
     my $path = Tethical::Battle::Move::GetPath( $map, $char, $x1, $y1, $z1, $x2, $y2, $z2 );
     my $walkables = Tethical::Battle::Move::GetWalkables( $map, $char );
 
@@ -320,7 +320,9 @@ get '/char/:id1/attack/:id2' => sub {
     
     $$char1{canact} = 0;
     
-    $$party{log} = { act => 'attack', charid => $id1, targetid => $id2, damages => $damages };
+    my $attackables = Tethical::Battle::Attack::GetAttackables( $map, $char1 );
+    
+    $$party{log} = { act => 'attack', charid => $id1, targetid => $id2, damages => $damages, attackables => $attackables };
     
     return $damages;
 };
