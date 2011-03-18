@@ -43,7 +43,7 @@ class Battle(DirectObject):
         # Display the terrain
         terrain = loader.loadModel( 'models/maps/'+self.party['map']['model']+'.egg' )
         terrain.reparentTo( render )
-        terrain.setScale( 0.5 )
+        terrain.setScale( 1.5 )
         
         # Play the background music
         #music = base.loader.loadSfx('music/'+self.party['map']['music']+'.mp3')
@@ -63,6 +63,7 @@ class Battle(DirectObject):
                         self.tiles[x][y][z] = loader.loadModel( "models/slopes/"+slope )
                         self.tiles[x][y][z].reparentTo( self.tileRoot )
                         self.tiles[x][y][z].setPos(self.logic2terrain( (x, y, z+0.05) ))
+                        self.tiles[x][y][z].setScale(3.0)
                         self.tiles[x][y][z].setTransparency(TransparencyAttrib.MAlpha)
                         self.tiles[x][y][z].setColor( 0, 0, 0, 0 )
                         
@@ -422,7 +423,7 @@ class Battle(DirectObject):
 
     def logic2terrain(self, tile):
         (x, y, z) = tile
-        return Point3(x-4, y-5, z/4.0)
+        return Point3((x-4)*3.0, (y-5)*3.0, (z/4.0)*3.0)
 
     # Used for debug purpose
     def charStats(self, charid):
