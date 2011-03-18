@@ -1,4 +1,5 @@
-from panda3d.core import NodePath
+from panda3d.core import NodePath, TransparencyAttrib
+from pandac.PandaModules import Texture, TextureStage
 import Sprite2d
 
 class Sprite:
@@ -12,11 +13,31 @@ class Sprite:
     
         self.sprite2d = Sprite2d.Sprite2d(sheet, cols=14, rows=4, scale=1.0, anchorX='Center')
 
-        self.node = NodePath("dummy")
-        self.node.setBillboardPointEye()
-        self.sprite2d.node.reparentTo( self.node )
+        # the main container
+        self.node = NodePath("dummy1")
+
+        # the billboard container
+        self.node2 = NodePath("dummy2")
+        self.node2.setBillboardPointEye()
+        self.node2.reparentTo( self.node )
+        self.sprite2d.node.reparentTo( self.node2 )
         self.sprite2d.node.setPos( 0, -1.2, -1.2 )
         
+        # shadow
+        self.shadow = loader.loadModel( "models/slopes/flat.egg" )
+        self.shadow.setZ(0.005)
+        self.shadow.setScale(3.0)
+        self.shadow.setTransparency(TransparencyAttrib.MAlpha)
+        self.shadowtexture = loader.loadTexture( "textures/shadow.png" )
+        self.shadowtexture.setMagfilter(Texture.FTNearest)
+        self.shadowtexture.setMinfilter(Texture.FTNearest)
+        self.shadowtexture.setWrapU(Texture.WMRepeat)
+        self.shadowtexture.setWrapV(Texture.WMClamp)
+        self.shadow.setTexture( self.shadowtexture )
+        self.shadow.reparentTo( self.node )
+
+        # animations
+
         self.sprite2d.createAnim('walk1', ( 1, 2, 3, 4, 5, 4, 3, 2), fps=10)
         self.sprite2d.createAnim('walk2', (15,16,17,18,19,18,17,16), fps=10)
         self.sprite2d.createAnim('walk3', (29,30,31,32,33,32,31,30), fps=10)
