@@ -25,7 +25,7 @@ class Sprite:
         
         # shadow
         self.shadow = loader.loadModel( "models/slopes/flat.egg" )
-        self.shadow.setZ(0.005)
+        self.shadow.setZ(0.075)
         self.shadow.setScale(3.0)
         self.shadow.setTransparency(TransparencyAttrib.MAlpha)
         self.shadowtexture = loader.loadTexture( "textures/shadow.png" )
