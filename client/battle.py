@@ -84,7 +84,7 @@ class Battle(DirectObject):
                             self.tiles[x][y][z].find("**/polygon").node().setTag('char', str(charid))
                             self.chars[charid] = char
                             
-        self.coords = OnscreenText(text = '', pos = (0.9, 0.9), scale = 0.1)
+        self.coords = OnscreenText(text = '', pos = (0.9, 0.8), scale = 0.2, fg = (0.82,1,055,1), shadow = (0,0,0.08,1) )
         
         self.drawBackground()
 
@@ -412,7 +412,7 @@ class Battle(DirectObject):
                 y = int(self.pq.getEntry(0).getIntoNode().getTag('y'))
                 z = int(self.pq.getEntry(0).getIntoNode().getTag('z'))
                 self.tiles[x][y][z].setColor(0.0,1.0,0.0,0.75)
-                self.coords.setText(str(x)+','+str(y)+','+str(z/2.0))
+                self.coords.setText(str(z/2.0)+'h')
                 self.hix = x
                 self.hiy = y
                 self.hiz = z
