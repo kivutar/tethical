@@ -6,6 +6,8 @@ from direct.actor import Actor
 from direct.interval.IntervalGlobal import *
 from pandac.PandaModules import *
 
+u = 1.0/128.0
+
 class Menu(object):
 
     displayed = False
@@ -14,50 +16,68 @@ class Menu(object):
     
         if not Menu.displayed:
 
-            texture = loader.loadTexture('textures/gui/gui.png')
-            texture.setMagfilter(Texture.FTNearest)
-            texture.setMinfilter(Texture.FTNearest)
+            # Menu frame
+            menutexture = loader.loadTexture('textures/gui/menu.png')
+            menutexture.setMagfilter(Texture.FTNearest)
+            menutexture.setMinfilter(Texture.FTNearest)
 
-            #create a frame
-            self.frame = DirectFrame(
-                frameTexture = texture,
-                frameSize    = ( -.25, .25, -.25, .25 ),
-                )
+            self.frame = DirectFrame(frameTexture = menutexture,
+                                    frameColor=(1, 1, 1, 1),
+                                    frameSize = ( -.25, .25, -.5, .5 ))
+            self.frame.setPos(.75, 0, 0)
             self.frame.setTransparency(True)
 
-            moveBtn = DirectButton(
-                text  = ("Move", "Move", "Move", "disabled"), 
-                scale = 0.05,
-                command = lambda: self.commandanddestroy(movecommand)
-                )
-            moveBtn.reparentTo( self.frame )
-            moveBtn.setPos(0, 0, 0.1)
+            # Move button
+            movemaps = loader.loadModel('models/gui/move_btn.egg')
+            movebtn  = DirectButton(geom = (movemaps.find('**/move_btn_ready'),
+                                            movemaps.find('**/move_btn_pushed'),
+                                            movemaps.find('**/move_btn_hover'),
+                                            movemaps.find('**/move_btn_disabled')),
+                                    command = lambda: self.commandanddestroy(movecommand),
+                                    relief=None)
+            movebtn.reparentTo(self.frame)
+            movebtn.setScale(.5, -1, .125)
+            movebtn.setPos(-u*12, 0, u*22)
+            movebtn.setTransparency(True)
 
-            attackBtn = DirectButton(
-                text  = ("Attack", "Attack", "Attack", "disabled"), 
-                scale = 0.05,
-                command = lambda: self.commandanddestroy(attackcommand),
-                )
-            attackBtn.reparentTo( self.frame )
-            attackBtn.setPos(0, 0, 0.0)
+            # Attack button
+            attackmaps = loader.loadModel('models/gui/attack_btn.egg')
+            attackbtn  = DirectButton(geom = (attackmaps.find('**/attack_btn_ready'),
+                                              attackmaps.find('**/attack_btn_pushed'),
+                                              attackmaps.find('**/attack_btn_hover'),
+                                              attackmaps.find('**/attack_btn_disabled')),
+                                      command = lambda: self.commandanddestroy(attackcommand),
+                                      relief=None)
+            attackbtn.reparentTo(self.frame)
+            attackbtn.setScale(.5, -1, .125)
+            attackbtn.setPos(-u*12, 0, u*6)
+            attackbtn.setTransparency(True)
 
-            waitBtn = DirectButton(
-                text  = ("Wait", "Wait", "Wait", "disabled"), 
-                scale = 0.05,
-                command = lambda: self.commandanddestroy(waitcommand),
-                )
-            waitBtn.reparentTo( self.frame )
-            waitBtn.setPos(0, 0, -0.1)
+            # Wait button
+            waitmaps = loader.loadModel('models/gui/wait_btn.egg')
+            waitbtn  = DirectButton(geom = (waitmaps.find('**/wait_btn_ready'),
+                                            waitmaps.find('**/wait_btn_pushed'),
+                                            waitmaps.find('**/wait_btn_hover'),
+                                            waitmaps.find('**/wait_btn_disabled')),
+                                    command = lambda: self.commandanddestroy(waitcommand),
+                                    relief=None)
+            waitbtn.reparentTo(self.frame)
+            waitbtn.setScale(.5, -1, .125)
+            waitbtn.setPos(-u*12, 0, u*-10)
+            waitbtn.setTransparency(True)
 
-            cancelBtn = DirectButton(
-                text  = ("Cancel", "Cancel", "Cancel", "disabled"), 
-                scale = 0.05,
-                command = self.destroy
-                )
-            cancelBtn.reparentTo( self.frame )
-            cancelBtn.setPos(0, 0, -0.2)
-
-            self.frame.setPos(0.5, 0, 0)
+            # Cancel button
+            cancelmaps = loader.loadModel('models/gui/cancel_btn.egg')
+            cancelbtn  = DirectButton(geom = (cancelmaps.find('**/cancel_btn_ready'),
+                                              cancelmaps.find('**/cancel_btn_pushed'),
+                                              cancelmaps.find('**/cancel_btn_hover'),
+                                              cancelmaps.find('**/cancel_btn_disabled')),
+                                      command = self.destroy,
+                                      relief=None)
+            cancelbtn.reparentTo(self.frame)
+            cancelbtn.setScale(.5, -1, .125)
+            cancelbtn.setPos(-u*12, 0, u*-26)
+            cancelbtn.setTransparency(True)
 
             Menu.displayed = True
 
