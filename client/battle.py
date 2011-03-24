@@ -37,6 +37,9 @@ class Battle(DirectObject):
         self.hix = False
         self.hiy = False
         self.hiz = False
+        self.ox = False
+        self.oy = False
+        self.oz = False
         
         self.lightScene()
         
@@ -46,8 +49,16 @@ class Battle(DirectObject):
         terrain.setScale( 1.5 )
         
         # Play the background music
-        #music = base.loader.loadSfx('music/'+self.party['map']['music']+'.mp3')
-        #music.play()
+        music = base.loader.loadSfx('music/'+self.party['map']['music']+'.ogg')
+        music.setLoop(True)
+        music.play()
+        
+        # Load sounds
+        self.hover_snd   = base.loader.loadSfx("sounds/hover.ogg")
+        self.clicked_snd = base.loader.loadSfx("sounds/clicked.ogg")
+        self.cancel_snd  = base.loader.loadSfx("sounds/cancel.ogg")
+        self.attack_snd  = base.loader.loadSfx("sounds/attack.ogg")
+        self.die_snd    = base.loader.loadSfx("sounds/die.ogg")
         
         # Place highlightable tiles on the map
         self.tileRoot = render.attachNewNode( "tileRoot" )
@@ -173,6 +184,7 @@ class Battle(DirectObject):
         seq.append( Func(self.updateSpriteAnimation, charid, 'attack') )
         seq.append( Wait(0.5) )
         seq.append( Func(self.updateSpriteAnimation, targetid, 'hit') )
+        seq.append( Func(self.attack_snd.play) )
         seq.append( Wait(0.5) )
         seq.append( Func(self.updateSpriteAnimation, charid) )
         seq.append( Wait(0.5) )
@@ -194,6 +206,7 @@ class Battle(DirectObject):
                     self.chars[charid]['sprite'].animation = 'weak'
                 if stats['hp'] == 0:
                     self.chars[charid]['sprite'].animation = 'dead'
+                    self.die_snd.play()
         h = self.camhandler.container.getH()
         self.chars[charid]['sprite'].updateDisplayDir( h, True );
 
@@ -277,28 +290,36 @@ class Battle(DirectObject):
     def onTileClicked(self):
         if self.hix is not False and self.party['yourturn']:
         
+            charid = self.pq.getEntry(0).getIntoNode().getTag('char')
+        
             # focus the camera on the selected tile
             self.camhandler.move(self.logic2terrain((self.hix, self.hiy, self.hiz)))
 
             # we clicked an active walkable tile, let's move the character
             active = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('active')
             if active and active != '0':
+                self.clicked_snd.play()
                 dest = (self.hix, self.hiy, self.hiz)
                 self.path(active, dest)
+                return
 
             # cancel walkable
             walkable = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('walkable')
             if not walkable or walkable != '1':
                 self.clearWalkables()
+                if charid == '0':
+                    self.cancel_snd.play()
 
             # cancel attackable
             attackable = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('attackable')
             if not attackable or attackable == '0':
                 self.clearAttackables()
+                if charid == '0':
+                    self.cancel_snd.play()
 
             # we clicked on a character
-            charid = self.pq.getEntry(0).getIntoNode().getTag('char')
             if charid != '0':
+                self.clicked_snd.play()
 
                 # we clicked on a target, let's attack it!
                 if attackable and attackable != '0':
@@ -407,6 +428,7 @@ class Battle(DirectObject):
             self.picker.traverse(self.tileRoot)
             
             if self.pq.getNumEntries() > 0:
+                
                 self.pq.sortEntries()
                 x = int(self.pq.getEntry(0).getIntoNode().getTag('x'))
                 y = int(self.pq.getEntry(0).getIntoNode().getTag('y'))
@@ -416,6 +438,12 @@ class Battle(DirectObject):
                 self.hix = x
                 self.hiy = y
                 self.hiz = z
+                
+                if self.ox != x or self.oy != y or self.oz != z:
+                    self.hover_snd.play()
+                    self.ox = x
+                    self.oy = y
+                    self.oz = z
 
         return Task.cont
 

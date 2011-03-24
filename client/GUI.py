@@ -7,6 +7,8 @@ from direct.interval.IntervalGlobal import *
 from pandac.PandaModules import *
 
 u = 1.0/128.0
+hover_snd = base.loader.loadSfx("sounds/hover.ogg")
+clicked_snd = base.loader.loadSfx("sounds/clicked.ogg")
 
 class Menu(object):
 
@@ -34,7 +36,10 @@ class Menu(object):
                                             movemaps.find('**/move_btn_hover'),
                                             movemaps.find('**/move_btn_disabled')),
                                     command = lambda: self.commandanddestroy(movecommand),
-                                    relief=None)
+                                    rolloverSound=hover_snd,
+                                    clickSound=clicked_snd,
+                                    relief=None,
+                                    pressEffect=0)
             movebtn.reparentTo(self.frame)
             movebtn.setScale(.5, -1, .125)
             movebtn.setPos(-u*12, 0, u*22)
@@ -47,7 +52,10 @@ class Menu(object):
                                               attackmaps.find('**/attack_btn_hover'),
                                               attackmaps.find('**/attack_btn_disabled')),
                                       command = lambda: self.commandanddestroy(attackcommand),
-                                      relief=None)
+                                      rolloverSound=hover_snd,
+                                      clickSound=clicked_snd,
+                                      relief=None,
+                                      pressEffect=0)
             attackbtn.reparentTo(self.frame)
             attackbtn.setScale(.5, -1, .125)
             attackbtn.setPos(-u*12, 0, u*6)
@@ -60,7 +68,10 @@ class Menu(object):
                                             waitmaps.find('**/wait_btn_hover'),
                                             waitmaps.find('**/wait_btn_disabled')),
                                     command = lambda: self.commandanddestroy(waitcommand),
-                                    relief=None)
+                                    rolloverSound=hover_snd,
+                                    clickSound=clicked_snd,
+                                    relief=None,
+                                    pressEffect=0)
             waitbtn.reparentTo(self.frame)
             waitbtn.setScale(.5, -1, .125)
             waitbtn.setPos(-u*12, 0, u*-10)
@@ -73,7 +84,10 @@ class Menu(object):
                                               cancelmaps.find('**/cancel_btn_hover'),
                                               cancelmaps.find('**/cancel_btn_disabled')),
                                       command = self.destroy,
-                                      relief=None)
+                                      rolloverSound=hover_snd,
+                                      clickSound=clicked_snd,
+                                      relief=None,
+                                      pressEffect=0)
             cancelbtn.reparentTo(self.frame)
             cancelbtn.setScale(.5, -1, .125)
             cancelbtn.setPos(-u*12, 0, u*-26)

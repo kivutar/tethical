@@ -25,16 +25,20 @@ class CameraHandler(DirectObject.DirectObject):
 
         self.zoomed = True
         self.r      = False
+        
+        # Load sounds
+        self.toggle_r_snd = base.loader.loadSfx("sounds/camera_toggle_r.ogg")
+        self.rotate_snd   = base.loader.loadSfx("sounds/camera_rotate.ogg")
 
         self.accept("e",            self.toggleZoom  )
         self.accept("r",            self.toggleR     )
-        self.accept("a",    lambda: self.turn( 90)   )
-        self.accept("z",    lambda: self.turn(-90)   )
+        self.accept("a",    lambda: self.rotate( 90) )
+        self.accept("z",    lambda: self.rotate(-90) )
         self.accept('window-event', self.windowEvent )
 
     def toggleZoom(self):
-        print self.container.getScale()[0]*10
         if round(self.container.getScale()[0]*10) in (10, 14):
+            self.toggle_r_snd.play()
             if self.zoomed:
                 i = LerpScaleInterval(self.container, 0.25, 1.4, 1.0)
             else:
@@ -46,6 +50,7 @@ class CameraHandler(DirectObject.DirectObject):
     def toggleR(self):
         (h, p, r) = self.container.getHpr()
         if r in (0.0, 15.0):
+            self.toggle_r_snd.play()
             if self.r:
                 i = LerpHprInterval(self.container, 0.25, (h, p, r-15), (h, p, r))
             else:
@@ -54,9 +59,10 @@ class CameraHandler(DirectObject.DirectObject):
             s.start()
             self.r = not self.r
 
-    def turn(self, delta):
+    def rotate(self, delta):
         (h, p, r) = self.container.getHpr()
         if (h-45)%90 == 0.0:
+            self.rotate_snd.play()
             i = LerpHprInterval(self.container, 0.5, (h+delta, p, r), (h, p, r))
             s = Sequence(i)
             s.start()
