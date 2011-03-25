@@ -15,6 +15,7 @@ import CameraHandler
 import GUI
 from pandac.PandaModules import GeomVertexFormat, GeomVertexData, GeomVertexWriter, Geom, GeomTristrips, GeomLines, GeomNode, VBase4, TransparencyAttrib
 import Network
+import Direction
 
 class Battle(DirectObject):
 
@@ -353,9 +354,11 @@ class Battle(DirectObject):
 
     # Wait button clicked
     def onWaitClicked(self, charid):
-        res = self.con.Send('char/'+charid+'/wait/1')
+        Direction.Chooser(charid, self.chars[charid]['sprite'], self.directionChosen)
+
+    def directionChosen(self, charid, direction):
+        res = self.con.Send('char/'+charid+'/wait/'+direction)
         if res:
-            self.chars[charid]['sprite'].setRealDir(1)
             self.turn()
 
 ### Tasks
