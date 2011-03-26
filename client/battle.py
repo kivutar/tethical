@@ -128,10 +128,13 @@ class Battle(DirectObject):
                                 
                                 if char['active']:
                                     self.camhandler.move(self.logic2terrain((x, y, z)))
-                                    #if self.party['yourturn']:
-                                    #    menu = GUI.Menu( lambda: self.onMoveClicked(charid), 
-                                    #                     lambda: self.onAttackClicked(charid),
-                                    #                     lambda: self.onWaitClicked(charid) )
+                                    if self.party['yourturn']:
+                                        self.showMenu(charid)
+
+    def showMenu(self, charid):
+        menu = GUI.Menu( lambda: self.onMoveClicked(charid),
+                         lambda: self.onAttackClicked(charid),
+                         lambda: self.onWaitClicked(charid) )
 
     # Get the path from the server, and makes the character walk on it
     def path(self, charid, dest):
@@ -143,9 +146,9 @@ class Battle(DirectObject):
             seq.append( self.getCharacterMoveSequence(charid, path) )
             seq.append( Func(self.clearWalkables) )
             seq.append( Func(self.updateSpriteAnimation, charid) )
+            seq.append( Func(self.moveCharacterTo, charid, dest) )
             seq.start()
-            # ask confirmation
-            self.moveCharacterTo(charid, dest)
+            # TODO: ask confirmation
 
     # Send the moveto packet and update the map tags with new char coords
     def moveCharacterTo(self, charid, dest):
