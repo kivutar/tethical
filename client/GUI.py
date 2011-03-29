@@ -14,7 +14,7 @@ class Menu(object):
 
     displayed = False
 
-    def __init__(self, movecommand, attackcommand, waitcommand):
+    def __init__(self, movecommand, attackcommand, waitcommand, cancelcommand):
     
         if not Menu.displayed:
 
@@ -83,7 +83,7 @@ class Menu(object):
                                               cancelmaps.find('**/cancel_btn_pushed'),
                                               cancelmaps.find('**/cancel_btn_hover'),
                                               cancelmaps.find('**/cancel_btn_disabled')),
-                                      command = self.destroy,
+                                      command = lambda: self.commandanddestroy(cancelcommand),
                                       rolloverSound=hover_snd,
                                       clickSound=clicked_snd,
                                       relief=None,

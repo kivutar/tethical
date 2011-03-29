@@ -4,11 +4,12 @@ from direct.task.Task import Task
 
 class Chooser(DirectObject.DirectObject):
     
-    def __init__(self, charid, sprite, callback):
+    def __init__(self, charid, sprite, callback, cancelcallback):
     
         self.charid   = charid
         self.sprite   = sprite
         self.callback = callback
+        self.cancelcallback = cancelcallback
         self.initdir  = self.sprite.realdir
 
         # Collision stuff
@@ -76,6 +77,7 @@ class Chooser(DirectObject.DirectObject):
         else:
             self.cancel_snd.play()
             self.sprite.setRealDir(self.initdir)
+            self.cancelcallback()
 
     def hightlightDirectionTask(self, task):
         for directionbutton in self.directionbuttons:

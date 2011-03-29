@@ -23,6 +23,7 @@ class Battle(DirectObject):
     
         self.con = con
         self.party = party
+        self.phase = None
 
         self.camhandler = CameraHandler.CameraHandler()
 
@@ -98,6 +99,16 @@ class Battle(DirectObject):
                             
         self.coords = OnscreenText(text = '', pos = (0.9, 0.8), scale = 0.2, fg = (0.82,1,055,1), shadow = (0,0,0.08,1) )
         
+        self.atcontainer = render.attachNewNode("atcontainer")
+        self.atcontainer.setPos(0,0,3.5)
+        self.atcontainer.setBillboardPointEye()
+        at = loader.loadModel('models/gui/AT.egg')
+        at.setTransparency(True)
+        at.reparentTo(self.atcontainer)
+        at.setPos(.75,0,0)
+        at.setScale(1.75)
+        self.hideAT()
+
         self.drawBackground()
 
         # Tasks
@@ -128,13 +139,20 @@ class Battle(DirectObject):
                                 
                                 if char['active']:
                                     self.camhandler.move(self.logic2terrain((x, y, z)))
+                                    self.showAT(self.chars[charid]['sprite'])
                                     if self.party['yourturn']:
-                                        self.showMenu(charid)
+                                        if char['canmove'] or char['canact']:
+                                            self.showMenu(charid)
+                                        else:
+                                            self.onWaitClicked(charid)
 
     def showMenu(self, charid):
+        self.phase = 'gui'
+        self.camhandler.phase = 'gui'
         menu = GUI.Menu( lambda: self.onMoveClicked(charid),
                          lambda: self.onAttackClicked(charid),
-                         lambda: self.onWaitClicked(charid) )
+                         lambda: self.onWaitClicked(charid),
+                         lambda: self.onCancelClicked(charid) )
 
     # Get the path from the server, and makes the character walk on it
     def path(self, charid, dest):
@@ -142,6 +160,7 @@ class Battle(DirectObject):
         path = self.con.Send('char/'+charid+'/path/'+str(x)+'/'+str(y)+'/'+str(z))
         if path:
             seq = Sequence()
+            seq.append( Func(self.hideAT) )
             seq.append( Func(self.updateSpriteAnimation, charid, 'walk') )
             seq.append( self.getCharacterMoveSequence(charid, path) )
             seq.append( Func(self.clearWalkables) )
@@ -165,8 +184,10 @@ class Battle(DirectObject):
         damages = self.con.Send('char/'+charid+'/attack/'+targetid)
         if damages:
             print damages
-            self.playAttackAnimation(charid, targetid)
-            self.turn()
+            seq = Sequence()
+            seq.append( self.getCharacterAttackSequence(charid, targetid) )
+            seq.append( Func(self.turn) )
+            seq.start()
 
     # Makes a character look at another one
     def characterLookAt(self, charid, targetid):
@@ -181,9 +202,10 @@ class Battle(DirectObject):
         if y1 < y2:
             self.chars[charid]['sprite'].setRealDir(2)
 
-    # Plays the attack animation
-    def playAttackAnimation(self, charid, targetid):
+    # Returns the sequence of a character punching another
+    def getCharacterAttackSequence(self, charid, targetid):
         seq = Sequence()
+        seq.append( Func(self.hideAT) )
         seq.append( Func(self.characterLookAt,       charid, targetid) )
         seq.append( Func(self.updateSpriteAnimation, charid, 'attack') )
         seq.append( Wait(0.5) )
@@ -195,7 +217,7 @@ class Battle(DirectObject):
         seq.append( Func(self.updateSpriteAnimation, targetid) )
         seq.append( Wait(0.5) )
         seq.append( Func(self.clearAttackables) )
-        seq.start()
+        return seq
 
     # Update the status (animation) of a sprite after something happened
     def updateSpriteAnimation(self, charid, animation=False):
@@ -292,7 +314,7 @@ class Battle(DirectObject):
 
     # You clicked on a tile, this can mean different things, so this is a dispatcher
     def onTileClicked(self):
-        if self.hix is not False and self.party['yourturn']:
+        if self.phase == 'tile' and self.hix is not False and self.party['yourturn']:
         
             charid = self.pq.getEntry(0).getIntoNode().getTag('char')
         
@@ -331,9 +353,7 @@ class Battle(DirectObject):
             
                 # we clicked on the currently active character, let's display the menu
                 elif self.party['chars'][charid]['active'] and self.party['yourturn']:
-                    menu = GUI.Menu( lambda: self.onMoveClicked(charid), 
-                                     lambda: self.onAttackClicked(charid),
-                                     lambda: self.onWaitClicked(charid) )
+                    self.turn()
                 
                 # we clicked on a random character, let's draw its walkable zone
                 else:
@@ -346,6 +366,8 @@ class Battle(DirectObject):
     def onMoveClicked(self, charid):
         walkables = self.con.Send('char/'+charid+'/walkables')
         if walkables:
+            self.phase = 'tile'
+            self.camhandler.phase = 'tile'
             self.drawWalkables(walkables)
             self.tagWalkables(charid, walkables, True)
 
@@ -353,11 +375,21 @@ class Battle(DirectObject):
     def onAttackClicked(self, charid):
         attackables = self.con.Send('char/'+charid+'/attackables')
         if attackables:
+            self.phase = 'tile'
+            self.camhandler.phase = 'tile'
             self.drawAndTagAttackables(charid, attackables)
 
     # Wait button clicked
     def onWaitClicked(self, charid):
-        Direction.Chooser(charid, self.chars[charid]['sprite'], self.directionChosen)
+        self.phase = 'direction'
+        self.camhandler.phase = 'direction'
+        self.hideAT()
+        Direction.Chooser(charid, self.chars[charid]['sprite'], self.directionChosen, self.turn)
+
+    # Cancel button clicked
+    def onCancelClicked(self, charid):
+        self.phase = 'tile'
+        self.camhandler.phase = 'tile'
 
     def directionChosen(self, charid, direction):
         res = self.con.Send('char/'+charid+'/wait/'+direction)
@@ -375,9 +407,10 @@ class Battle(DirectObject):
 
     # This task is responsible of rendering the other player's actions
     def otherPlayersTask(self, task):
-        if not self.party['yourturn']:
+        if not self.party['yourturn'] and self.phase != 'animation':
             log = self.con.Send('otherplayers')
             if log:
+                self.setPhase('animation')
                 if log['act'] == 'move':
                     charid    = log['charid']
                     walkables = log['walkables']
@@ -390,66 +423,77 @@ class Battle(DirectObject):
                     seq.append( Func(self.drawWalkables, walkables) )
                     seq.append( Wait(0.5) )
                     seq.append( Func(self.tagWalkables, charid, walkables, False) )
+                    seq.append( Func(self.hideAT) )
                     seq.append( Func(self.updateSpriteAnimation, charid, 'walk') )
                     seq.append( self.getCharacterMoveSequence(charid, path) )
                     seq.append( Wait(0.5) )
                     seq.append( Func(self.updateSpriteAnimation, charid) )
-                    seq.append( Func(self.clearWalkables) )                    
+                    seq.append( Func(self.clearWalkables) )
+                    seq.append( Func(self.setPhase, 'listen') )
+                    seq.append( Func(self.turn) )
                     seq.start()
                 if log['act'] == 'attack':
                     charid      = log['charid']
                     targetid    = log['targetid']
                     damages     = log['targetid']
                     attackables = log['attackables']
-                    self.drawAndTagAttackables(charid, attackables)
-                    self.playAttackAnimation(charid, targetid)
+                    seq = Sequence()
+                    seq.append( Func(self.drawAndTagAttackables, charid, attackables) )
+                    seq.append( self.getCharacterAttackSequence(charid, targetid) )
+                    seq.append( Func(self.setPhase, 'listen') )
+                    seq.append( Func(self.turn) )
+                    seq.start()
                 if log['act'] == 'wait':
+                    self.hideAT()
                     self.chars[log['charid']]['sprite'].setRealDir(log['direction'])
+                    self.setPhase('listen')
                     self.turn()
         return Task.cont
 
     # This task highlights the tile on mouse over
     def hightlightTileTask(self, task):
 
-        # unhighlight previous tile
-        if self.hix is not False:
-            walkable   = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('walkable')
-            attackable = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('attackable')
-            if walkable == '1':
-                self.tiles[self.hix][self.hiy][self.hiz].setColor(0.0, 0.0, 1.0, 0.75)
-            elif attackable and attackable != '0':
-                self.tiles[self.hix][self.hiy][self.hiz].setColor(1.0, 0.0, 0.0, 0.75)
-            else:
-                self.tiles[self.hix][self.hiy][self.hiz].setColor(0, 0, 0, 0)
-            self.coords.setText('')
-            self.hix = False
-            self.hiy = False
-            self.hiz = False
+        if self.phase == 'tile':
 
-        # highlight new tile
-        if base.mouseWatcherNode.hasMouse():
-            mpos = base.mouseWatcherNode.getMouse()
+            # unhighlight previous tile
+            if self.hix is not False:
+                walkable   = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('walkable')
+                attackable = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('attackable')
+                if walkable == '1':
+                    self.tiles[self.hix][self.hiy][self.hiz].setColor(0.0, 0.0, 1.0, 0.75)
+                elif attackable and attackable != '0':
+                    self.tiles[self.hix][self.hiy][self.hiz].setColor(1.0, 0.0, 0.0, 0.75)
+                else:
+                    self.tiles[self.hix][self.hiy][self.hiz].setColor(0, 0, 0, 0)
+                self.coords.setText('')
+                self.hix = False
+                self.hiy = False
+                self.hiz = False
 
-            self.pickerRay.setFromLens(base.camNode, mpos.getX(), mpos.getY())
-            self.picker.traverse(self.tileRoot)
-            
-            if self.pq.getNumEntries() > 0:
-                
-                self.pq.sortEntries()
-                x = int(self.pq.getEntry(0).getIntoNode().getTag('x'))
-                y = int(self.pq.getEntry(0).getIntoNode().getTag('y'))
-                z = int(self.pq.getEntry(0).getIntoNode().getTag('z'))
-                self.tiles[x][y][z].setColor(0.0,1.0,0.0,0.75)
-                self.coords.setText(str(z/2.0)+'h')
-                self.hix = x
-                self.hiy = y
-                self.hiz = z
-                
-                if self.ox != x or self.oy != y or self.oz != z:
-                    self.hover_snd.play()
-                    self.ox = x
-                    self.oy = y
-                    self.oz = z
+            # highlight new tile
+            if base.mouseWatcherNode.hasMouse():
+                mpos = base.mouseWatcherNode.getMouse()
+
+                self.pickerRay.setFromLens(base.camNode, mpos.getX(), mpos.getY())
+                self.picker.traverse(self.tileRoot)
+
+                if self.pq.getNumEntries() > 0:
+
+                    self.pq.sortEntries()
+                    x = int(self.pq.getEntry(0).getIntoNode().getTag('x'))
+                    y = int(self.pq.getEntry(0).getIntoNode().getTag('y'))
+                    z = int(self.pq.getEntry(0).getIntoNode().getTag('z'))
+                    self.tiles[x][y][z].setColor(0.0,1.0,0.0,0.75)
+                    self.coords.setText(str(z/2.0)+'h')
+                    self.hix = x
+                    self.hiy = y
+                    self.hiz = z
+
+                    if self.ox != x or self.oy != y or self.oz != z:
+                        self.hover_snd.play()
+                        self.ox = x
+                        self.oy = y
+                        self.oz = z
 
         return Task.cont
 
@@ -474,6 +518,9 @@ class Battle(DirectObject):
                         if self.party['map']['tiles'][x][y][z].has_key('char') and self.party['map']['tiles'][x][y][z]['char'] != 0:
                             if charid == self.party['map']['tiles'][x][y][z]['char']:
                                 return (x, y, z)
+
+    def setPhase(self, phase):
+        self.phase = phase
 
 # Graphic
 
@@ -514,4 +561,10 @@ class Battle(DirectObject):
                 ambientLight = AmbientLight( "ambientLight"+str(i) )
                 ambientLight.setColor( Vec4( *light['color'] ) )
                 render.setLight( render.attachNewNode( ambientLight ) )
+
+    def showAT(self, sprite):
+        self.atcontainer.reparentTo(sprite.node)
+
+    def hideAT(self):
+        self.atcontainer.detachNode()
 

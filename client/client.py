@@ -171,5 +171,3 @@ class Client:
     def battle_begins(self):
         b = battle.Battle(self.con, self.party)
 
-Client()
-run()
