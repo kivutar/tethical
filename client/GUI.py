@@ -14,7 +14,7 @@ class Menu(object):
 
     displayed = False
 
-    def __init__(self, movecommand, attackcommand, waitcommand, cancelcommand):
+    def __init__(self, char, movecommand, attackcommand, waitcommand, cancelcommand):
     
         if not Menu.displayed:
 
@@ -45,6 +45,9 @@ class Menu(object):
             movebtn.setPos(-u*12, 0, u*22)
             movebtn.setTransparency(True)
 
+            if not char['canmove']:
+                movebtn['state'] = DGG.DISABLED
+
             # Attack button
             attackmaps = loader.loadModel('models/gui/attack_btn.egg')
             attackbtn  = DirectButton(geom = (attackmaps.find('**/attack_btn_ready'),
@@ -60,6 +63,9 @@ class Menu(object):
             attackbtn.setScale(.5, -1, .125)
             attackbtn.setPos(-u*12, 0, u*6)
             attackbtn.setTransparency(True)
+
+            if not char['canact']:
+                attackbtn['state'] = DGG.DISABLED
 
             # Wait button
             waitmaps = loader.loadModel('models/gui/wait_btn.egg')

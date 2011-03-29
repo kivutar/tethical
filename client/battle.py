@@ -149,10 +149,11 @@ class Battle(DirectObject):
     def showMenu(self, charid):
         self.phase = 'gui'
         self.camhandler.phase = 'gui'
-        menu = GUI.Menu( lambda: self.onMoveClicked(charid),
-                         lambda: self.onAttackClicked(charid),
-                         lambda: self.onWaitClicked(charid),
-                         lambda: self.onCancelClicked(charid) )
+        menu = GUI.Menu( self.party['chars'][charid],
+            lambda: self.onMoveClicked(charid),
+            lambda: self.onAttackClicked(charid),
+            lambda: self.onWaitClicked(charid),
+            lambda: self.onCancelClicked(charid) )
 
     # Get the path from the server, and makes the character walk on it
     def path(self, charid, dest):
