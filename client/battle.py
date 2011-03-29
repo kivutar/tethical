@@ -65,7 +65,7 @@ class Battle(DirectObject):
         # Place highlightable tiles on the map
         self.tileRoot = render.attachNewNode( "tileRoot" )
         self.tiles = [ [ [ None for z in range(self.party['map']['z']) ] for y in range(self.party['map']['y']) ] for x in range(self.party['map']['x']) ]
-        self.chars = {}
+        self.sprites = {}
         
         for x,xs in enumerate(self.party['map']['tiles']):
             for y,ys in enumerate(xs):
@@ -93,9 +93,9 @@ class Battle(DirectObject):
                             sprite = Sprite.Sprite('textures/sprites/misty.png', int(char['direction']))
                             sprite.node.setPos(self.logic2terrain((x,y,z)))
                             sprite.node.reparentTo( render )
-                            char['sprite'] = sprite
+                            self.sprites[charid] = sprite
                             self.tiles[x][y][z].find("**/polygon").node().setTag('char', str(charid))
-                            self.chars[charid] = char
+                            
                             
         self.coords = OnscreenText(text = '', pos = (0.9, 0.8), scale = 0.2, fg = (0.82,1,055,1), shadow = (0,0,0.08,1) )
         
@@ -139,7 +139,7 @@ class Battle(DirectObject):
                                 
                                 if char['active']:
                                     self.camhandler.move(self.logic2terrain((x, y, z)))
-                                    self.showAT(self.chars[charid]['sprite'])
+                                    self.showAT(self.sprites[charid])
                                     if self.party['yourturn']:
                                         if char['canmove'] or char['canact']:
                                             self.showMenu(charid)
@@ -195,13 +195,13 @@ class Battle(DirectObject):
         (x1, y1, z1) = self.getCharacterCoords(charid)
         (x2, y2, z2) = self.getCharacterCoords(targetid)
         if x1 > x2:
-            self.chars[charid]['sprite'].setRealDir(3)
+            self.sprites[charid].setRealDir(3)
         if x1 < x2:
-            self.chars[charid]['sprite'].setRealDir(1)
+            self.sprites[charid].setRealDir(1)
         if y1 > y2:
-            self.chars[charid]['sprite'].setRealDir(4)
+            self.sprites[charid].setRealDir(4)
         if y1 < y2:
-            self.chars[charid]['sprite'].setRealDir(2)
+            self.sprites[charid].setRealDir(2)
 
     # Returns the sequence of a character punching another
     def getCharacterAttackSequence(self, charid, targetid):
@@ -223,19 +223,19 @@ class Battle(DirectObject):
     # Update the status (animation) of a sprite after something happened
     def updateSpriteAnimation(self, charid, animation=False):
         if animation:
-            self.chars[charid]['sprite'].animation = animation
+            self.sprites[charid].animation = animation
         else:
             stats = self.con.Send('char/'+charid)
             if stats:
                 if stats['hp'] >= (stats['hpmax']/2):
-                    self.chars[charid]['sprite'].animation = 'walk'
+                    self.sprites[charid].animation = 'walk'
                 if stats['hp'] < (stats['hpmax']/2):
-                    self.chars[charid]['sprite'].animation = 'weak'
+                    self.sprites[charid].animation = 'weak'
                 if stats['hp'] == 0:
-                    self.chars[charid]['sprite'].animation = 'dead'
+                    self.sprites[charid].animation = 'dead'
                     self.die_snd.play()
         h = self.camhandler.container.getH()
-        self.chars[charid]['sprite'].updateDisplayDir( h, True );
+        self.sprites[charid].updateDisplayDir( h, True );
 
     # Draw blue tile zone
     def drawWalkables(self, walkables):
@@ -283,7 +283,7 @@ class Battle(DirectObject):
 
     # Returns a sequence showing the character moving through a path
     def getCharacterMoveSequence(self, charid, path):
-        char = self.chars[charid]
+        sprite = self.sprites[charid]
         seq = Sequence()
         origin = False
         for destination in path:
@@ -292,17 +292,17 @@ class Battle(DirectObject):
                 (x1, y1, z1) = origin
                 (x2, y2, z2) = destination
                 if x2 > x1:
-                    i1 = Func(char['sprite'].setRealDir, 1)
+                    i1 = Func(sprite.setRealDir, 1)
                 elif x2 < x1:
-                    i1 = Func(char['sprite'].setRealDir, 3)
+                    i1 = Func(sprite.setRealDir, 3)
                 elif y2 > y1:
-                    i1 = Func(char['sprite'].setRealDir, 2)
+                    i1 = Func(sprite.setRealDir, 2)
                 elif y2 < y1:
-                    i1 = Func(char['sprite'].setRealDir, 4)
+                    i1 = Func(sprite.setRealDir, 4)
                 seq.append(i1)
             
                 i2 = LerpPosInterval(
-                    char['sprite'].node, 
+                    sprite.node, 
                     1, 
                     self.logic2terrain(destination), 
                     startPos=self.logic2terrain(origin)
@@ -385,7 +385,7 @@ class Battle(DirectObject):
         self.phase = 'direction'
         self.camhandler.phase = 'direction'
         self.hideAT()
-        Direction.Chooser(charid, self.chars[charid]['sprite'], self.directionChosen, self.turn)
+        Direction.Chooser(charid, self.sprites[charid], self.directionChosen, self.turn)
 
     # Cancel button clicked
     def onCancelClicked(self, charid):
@@ -402,8 +402,8 @@ class Battle(DirectObject):
     # Updates the displayed direction of a character according to the camera angle
     def characterDirectionTask(self, task):
         h = self.camhandler.container.getH()
-        for charid in self.chars:
-            self.chars[charid]['sprite'].updateDisplayDir( h );
+        for charid in self.sprites:
+            self.sprites[charid].updateDisplayDir( h );
         return Task.cont
 
     # This task is responsible of rendering the other player's actions
@@ -446,7 +446,7 @@ class Battle(DirectObject):
                     seq.start()
                 if log['act'] == 'wait':
                     self.hideAT()
-                    self.chars[log['charid']]['sprite'].setRealDir(log['direction'])
+                    self.sprites[log['charid']].setRealDir(log['direction'])
                     self.setPhase('listen')
                     self.turn()
         return Task.cont
