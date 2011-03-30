@@ -308,7 +308,7 @@ class Battle(DirectObject):
             
                 i2 = LerpPosInterval(
                     sprite.node, 
-                    1, 
+                    0.5, 
                     self.logic2terrain(destination), 
                     startPos=self.logic2terrain(origin)
                 )
