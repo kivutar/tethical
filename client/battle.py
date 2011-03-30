@@ -24,6 +24,7 @@ class Battle(DirectObject):
         self.con = con
         self.party = party
         self.phase = None
+        self.queue = []
 
         self.camhandler = CameraHandler.CameraHandler()
 
@@ -115,6 +116,7 @@ class Battle(DirectObject):
         self.hightlightTileTask     = taskMgr.add(self.hightlightTileTask    , 'hightlightTileTask'    )
         self.characterDirectionTask = taskMgr.add(self.characterDirectionTask, 'characterDirectionTask')
         self.otherPlayersTask       = taskMgr.add(self.otherPlayersTask      , 'otherPlayersTask'      )
+        self.dequeue                = taskMgr.add(self.dequeue               , 'dequeue'      )
 
         # Inputs
         self.accept("mouse1", self.onTileClicked)
@@ -125,26 +127,29 @@ class Battle(DirectObject):
 
     # The main dispatcher
     def turn(self):
+        self.updateParty()
+
+        for x,xs in enumerate(self.party['map']['tiles']):
+            for y,ys in enumerate(xs):
+                for z,zs in enumerate(ys):
+                    if not self.party['map']['tiles'][x][y][z] is None:
+                        if self.party['map']['tiles'][x][y][z].has_key('char') and self.party['map']['tiles'][x][y][z]['char'] != 0:
+                            charid = self.party['map']['tiles'][x][y][z]['char']
+                            char = self.party['chars'][charid]
+
+                            if char['active']:
+                                self.camhandler.move(self.logic2terrain((x, y, z)))
+                                self.showAT(self.sprites[charid])
+                                if self.party['yourturn']:
+                                    if char['canmove'] or char['canact']:
+                                        self.showMenu(charid)
+                                    else:
+                                        self.onWaitClicked(charid)
+
+    def updateParty(self):
         party = self.con.Send('battle')
         if party:
             self.party = party
-            
-            for x,xs in enumerate(self.party['map']['tiles']):
-                for y,ys in enumerate(xs):
-                    for z,zs in enumerate(ys):
-                        if not self.party['map']['tiles'][x][y][z] is None:
-                            if self.party['map']['tiles'][x][y][z].has_key('char') and self.party['map']['tiles'][x][y][z]['char'] != 0:
-                                charid = self.party['map']['tiles'][x][y][z]['char']
-                                char = self.party['chars'][charid]
-                                
-                                if char['active']:
-                                    self.camhandler.move(self.logic2terrain((x, y, z)))
-                                    self.showAT(self.sprites[charid])
-                                    if self.party['yourturn']:
-                                        if char['canmove'] or char['canact']:
-                                            self.showMenu(charid)
-                                        else:
-                                            self.onWaitClicked(charid)
 
     def showMenu(self, charid):
         self.phase = 'gui'
@@ -406,49 +411,61 @@ class Battle(DirectObject):
             self.sprites[charid].updateDisplayDir( h );
         return Task.cont
 
+    def dequeue(self, task):
+        if len(self.queue) and self.phase != 'animation':
+            self.updateParty()
+            self.setPhase('animation')
+            log = self.queue.pop(0)
+            if log['act'] == 'move':
+                charid    = log['charid']
+                walkables = log['walkables']
+                path      = log['path']
+                (x1, y1, z1) = path[0]
+                (x2, y2, z2) = path[-1]
+                self.tiles[x1][y1][z1].find("**/polygon").node().setTag('char', '0')
+                self.tiles[x2][y2][z2].find("**/polygon").node().setTag('char', str(charid))
+                seq = Sequence()
+                seq.append( Func(self.drawWalkables, walkables) )
+                seq.append( Wait(0.5) )
+                seq.append( Func(self.tagWalkables, charid, walkables, False) )
+                seq.append( Func(self.hideAT) )
+                seq.append( Func(self.updateSpriteAnimation, charid, 'walk') )
+                seq.append( self.getCharacterMoveSequence(charid, path) )
+                seq.append( Wait(0.5) )
+                seq.append( Func(self.updateSpriteAnimation, charid) )
+                seq.append( Func(self.clearWalkables) )
+                seq.append( Func(self.showAT, self.sprites[charid]) )
+                seq.append( Func(self.setPhase, 'listen') )
+                seq.start()
+            if log['act'] == 'attack':
+                charid      = log['charid']
+                targetid    = log['targetid']
+                damages     = log['targetid']
+                attackables = log['attackables']
+                seq = Sequence()
+                seq.append( Func(self.drawAndTagAttackables, charid, attackables) )
+                seq.append( self.getCharacterAttackSequence(charid, targetid) )
+                seq.append( Func(self.setPhase, 'listen') )
+                seq.start()
+            if log['act'] == 'wait':
+                seq = Sequence()
+                seq.append( Func(self.hideAT) )
+                seq.append( Wait(0.5) )
+                seq.append( Func(self.sprites[log['charid']].setRealDir, log['direction']) )
+                seq.append( Wait(0.5) )
+                seq.append( Func(self.setPhase, 'listen') )
+                seq.append( Func(self.turn) )
+                seq.start()
+
+        return Task.cont
+
     # This task is responsible of rendering the other player's actions
     def otherPlayersTask(self, task):
-        if not self.party['yourturn'] and self.phase != 'animation':
+        if not self.party['yourturn']:
             log = self.con.Send('otherplayers')
             if log:
-                self.setPhase('animation')
-                if log['act'] == 'move':
-                    charid    = log['charid']
-                    walkables = log['walkables']
-                    path      = log['path']
-                    (x1, y1, z1) = path[0]
-                    (x2, y2, z2) = path[-1]
-                    self.tiles[x1][y1][z1].find("**/polygon").node().setTag('char', '0')
-                    self.tiles[x2][y2][z2].find("**/polygon").node().setTag('char', str(charid))
-                    seq = Sequence()
-                    seq.append( Func(self.drawWalkables, walkables) )
-                    seq.append( Wait(0.5) )
-                    seq.append( Func(self.tagWalkables, charid, walkables, False) )
-                    seq.append( Func(self.hideAT) )
-                    seq.append( Func(self.updateSpriteAnimation, charid, 'walk') )
-                    seq.append( self.getCharacterMoveSequence(charid, path) )
-                    seq.append( Wait(0.5) )
-                    seq.append( Func(self.updateSpriteAnimation, charid) )
-                    seq.append( Func(self.clearWalkables) )
-                    seq.append( Func(self.setPhase, 'listen') )
-                    seq.append( Func(self.turn) )
-                    seq.start()
-                if log['act'] == 'attack':
-                    charid      = log['charid']
-                    targetid    = log['targetid']
-                    damages     = log['targetid']
-                    attackables = log['attackables']
-                    seq = Sequence()
-                    seq.append( Func(self.drawAndTagAttackables, charid, attackables) )
-                    seq.append( self.getCharacterAttackSequence(charid, targetid) )
-                    seq.append( Func(self.setPhase, 'listen') )
-                    seq.append( Func(self.turn) )
-                    seq.start()
-                if log['act'] == 'wait':
-                    self.hideAT()
-                    self.sprites[log['charid']].setRealDir(log['direction'])
-                    self.setPhase('listen')
-                    self.turn()
+                self.queue.append(log)
+
         return Task.cont
 
     # This task highlights the tile on mouse over
