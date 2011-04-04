@@ -56,7 +56,7 @@ class Client:
         self.partiesFrame = DirectFrame( color = (0, 0, 0, 0.5), frameSize = ( -1.2, 1.2, -0.7, 0.7 ) )
         self.partiesFrame.setTransparency(True)
         self.partiesFrame.setPos(0, 0, 0.15)
-        
+
         self.createPartyFrame = DirectFrame( color = (0, 0, 0, 0.5), frameSize = ( -1.2, 1.2, 0.1, -0.1 ) )
         self.createPartyFrame.setTransparency(True)
         self.createPartyFrame.setPos(0, 0, -0.75)
@@ -90,12 +90,27 @@ class Client:
 
             parties = self.con.Send('parties')
             if parties and parties != self.parties:
+
+                if self.partiesFrame:
+                    self.partiesFrame.destroy()
+                self.partiesFrame = DirectFrame( color = (0, 0, 0, 0.5), frameSize = ( -1.2, 1.2, -0.7, 0.7 ) )
+                self.partiesFrame.setTransparency(True)
+                self.partiesFrame.setPos(0, 0, 0.15)
+                nameHeader    = OnscreenText(text = 'Name',    pos = (-1.0, .6), scale = 0.05, parent = self.partiesFrame)
+                creatorHeader = OnscreenText(text = 'Creator', pos = (-0.5, .6), scale = 0.05, parent = self.partiesFrame)
+                mapHeader     = OnscreenText(text = 'Map',     pos = ( 0.0, .6), scale = 0.05, parent = self.partiesFrame)
+
                 self.parties = parties
-                for key in parties:
-                    partyName = OnscreenText(text = 'Name: '+parties[key]['name'], pos = (0, 0), scale = 0.05, parent = self.partiesFrame)
-                    joinPartyButton = DirectButton( scale = .05, text  = ("Join", "Join", "Join", "disabled"), command = self.joinparty, extraArgs = [key] )
+                for i,key in enumerate(parties):
+                    nameLabel    = OnscreenText(text = parties[key]['name'],        pos = (-1.0, -i/10.0+.5), scale = 0.05, parent = self.partiesFrame)
+                    creatorLabel = OnscreenText(text = parties[key]['creator'],     pos = (-0.5, -i/10.0+.5), scale = 0.05, parent = self.partiesFrame)
+                    mapLabel     = OnscreenText(text = parties[key]['map']['name'], pos = ( 0.0, -i/10.0+.5), scale = 0.05, parent = self.partiesFrame)
+                    joinPartyButton = DirectButton( scale = .05, text  = ("Join", "Join", "Join", "Full"), command = self.joinparty, extraArgs = [key] )
                     joinPartyButton.reparentTo( self.partiesFrame )
-                    joinPartyButton.setPos(0.5, 0, 0)
+                    joinPartyButton.setPos(0.5, 0, -i/10.0+.5)
+
+                    if parties[key].has_key('player1') and parties[key].has_key('player2'):
+                        joinPartyButton['state'] = DGG.DISABLED
 
         return Task.cont    
 

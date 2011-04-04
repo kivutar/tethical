@@ -13,15 +13,15 @@ set 'show_errors' => 1;
 set 'access_log'  => 1;
 set 'warnings'    => 1;
 
+my $players = [];
 my $parties = {};
 
 any '/login' => sub {
     return send_error("Already logged in", 403) if session->{loggedin};
+    return send_error("Wrong credentials", 403) unless params->{login} eq params->{pass};
+    return send_error("Username already in use", 403) if grep { $_ eq params->{login} } @$players;
 
-    return send_error("Wrong credentials", 403)
-    unless params->{login} eq 'kivu' and params->{pass} eq 'kivu'
-    or     params->{login} eq 'test' and params->{pass} eq 'test';
-    
+    push @$players, params->{login};
     session loggedin => 1;
     session login    => params->{login};
     1;
