@@ -27,21 +27,86 @@ class Client:
         self.logingui()
 
     def logingui(self):
-        self.loginFrame = DirectFrame( color = (0, 0, 0, 0.5), frameSize = ( -.35, .35, -.25, .25 ) )
-        self.loginFrame.setTransparency(True)
-        self.loginFrame.setPos(0, 0, -0.33)
 
-        self.loginEntry = DirectEntry( scale = .05, numLines = 1, focus = 1 )
-        self.loginEntry.reparentTo( self.loginFrame )
-        self.loginEntry.setPos(-0.25, 0, 0.1)
+        bgtexture = loader.loadTexture('textures/gui/loadingbackground.png')
+        bgtexture.setMagfilter(Texture.FTNearest)
+        bgtexture.setMinfilter(Texture.FTNearest)
 
-        self.passwordEntry = DirectEntry( scale = .05, numLines = 1, obscured = True )
-        self.passwordEntry.reparentTo( self.loginFrame )
-        self.passwordEntry.setPos(-0.25, 0, -0.025)
+        base.setBackgroundColor(.03125, .03125, .03125)
 
-        connectButton = DirectButton( scale = .05, text  = ("Connect", "Connect", "Connect", "disabled"), command = self.login )
-        connectButton.reparentTo( self.loginFrame )
-        connectButton.setPos(0, 0, -0.15)
+        self.loginBackground = DirectFrame( color = (1, 1, 1, 1), frameTexture = bgtexture, frameSize = ( -1.33, 1.33, -1, 1 ) )
+        self.loginBackground.setTransparency(True)
+    
+        self.loginWindow = DirectFrame( color = (.62, .6, .5, 1), frameSize = ( -.35, .35, -.1, .15 ) )
+        self.loginWindow.setTransparency(True)
+        self.loginWindow.reparentTo( self.loginBackground )
+        self.loginWindow.setPos(0, 0, -0.33)
+
+        font = loader.loadFont('fonts/fft.egg')
+        winHeight = base.win.getYSize()
+        ppu = 12
+        scale = (4.0 * ppu) / winHeight      
+
+        self.loginLabel = DirectLabel(
+            text = 'Login:',
+            color = (.62, .6, .5, 0),
+            scale = scale,
+            text_font = font,
+            text_fg = (.0625,.3125,.5,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            text_align = TextNode.ALeft
+        )
+        self.loginLabel.reparentTo( self.loginWindow )
+        self.loginLabel.setPos(-0.3, 0, 0.05)
+
+        self.loginEntry = DirectEntry(
+            color = (.62, .6, .5, 0),
+            scale = scale,
+            numLines = 1,
+            focus = 1,
+            text_font = font,
+            text_fg = (.1875,.15625,.125,1),
+            text_shadow = (.5,.46484375,.40625,1)
+        )
+        self.loginEntry.reparentTo( self.loginWindow )
+        self.loginEntry.setPos(-0.1, 0, 0.05)
+
+        self.passwordLabel = DirectLabel(
+            text = 'Pass:',
+            color = (.62, .6, .5, 0),
+            scale = scale,
+            text_font = font,
+            text_fg = (.0625,.3125,.5,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            text_align = TextNode.ALeft
+        )
+        self.passwordLabel.reparentTo( self.loginWindow )
+        self.passwordLabel.setPos(-0.3, 0, -0.05)
+
+        self.passwordEntry = DirectEntry(
+            color = (.62, .6, .5, 0),
+            scale = scale,
+            numLines = 1,
+            text_font = font,
+            text_fg = (.1875,.15625,.125,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            obscured = True
+        )
+        self.passwordEntry.reparentTo( self.loginWindow )
+        self.passwordEntry.setPos(-0.1, 0, -0.05)
+
+        connectButton = DirectButton(
+            scale = scale,
+            text  = ("Connect", "Connect", "Connect", "disabled"),
+            command = self.login,
+            color = (.62, .6, .5, 1),
+            text_font = font,
+            text_fg = (.1875,.15625,.125,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            pad = (.15,.15)
+        )
+        connectButton.reparentTo( self.loginWindow )
+        connectButton.setPos(0.2, 0, -0.2)
 
     def login(self):
         login = self.loginEntry.get()
@@ -49,7 +114,7 @@ class Client:
 
         rsp = self.con.Send('login', { 'login': login, 'pass': password })
         if rsp:
-            self.loginFrame.destroy()
+            self.loginBackground.destroy()
             self.partiesgui()
 
     def partiesgui(self):
