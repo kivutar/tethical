@@ -111,6 +111,7 @@ any '/startbattle' => sub {
                        , 'team'      => $player
                        , 'move'      => 4
                        , 'direction' => $direction
+                       , 'sprite'    => $player eq 1 ? 'misty' : 'ramza'
                        , 'active'    => 0 };
             $$party{chars}{$charid} = $char;
         }

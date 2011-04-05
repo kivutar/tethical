@@ -91,7 +91,7 @@ class Battle(DirectObject):
                         if self.party['map']['tiles'][x][y][z].has_key('char'):
                             charid = self.party['map']['tiles'][x][y][z]['char']
                             char = self.party['chars'][charid]
-                            sprite = Sprite.Sprite('textures/sprites/misty.png', int(char['direction']))
+                            sprite = Sprite.Sprite('textures/sprites/'+char['sprite']+'.png', int(char['direction']))
                             sprite.node.setPos(self.logic2terrain((x,y,z)))
                             sprite.node.reparentTo( render )
                             self.sprites[charid] = sprite
