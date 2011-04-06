@@ -7,6 +7,10 @@ from direct.interval.IntervalGlobal import LerpScaleInterval, Sequence, Func, Wa
 import battle
 import Network
 
+font = loader.loadFont('fonts/fft.egg')
+u = 1.0/128.0
+scale = u*12.0
+
 class Client:
 
     def __init__(self):
@@ -50,10 +54,6 @@ class Client:
         self.loginWindow.setTransparency(True)
         self.loginWindow.reparentTo( self.loginBackground )
         self.loginWindow.setPos(0, 0, 0)
-
-        font = loader.loadFont('fonts/fft.egg')
-        u = 1.0/128.0
-        scale = u*12.0
 
         self.loginLabel = DirectLabel(
             text = 'Username:',
@@ -136,9 +136,14 @@ class Client:
             seq.start()
 
     def partiesgui(self):
-        self.partiesFrame = DirectFrame( color = (0, 0, 0, 0.5), frameSize = ( -1.2, 1.2, -0.7, 0.7 ) )
-        self.partiesFrame.setTransparency(True)
-        self.partiesFrame.setPos(0, 0, 0.15)
+    
+        bgtex = loader.loadTexture('textures/gui/parties_window.png')
+        bgtex.setMagfilter(Texture.FTNearest)
+        bgtex.setMinfilter(Texture.FTNearest)
+    
+        self.partiesWindow = DirectFrame( frameTexture = bgtex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -1, 1 ) )
+        self.partiesWindow.setTransparency(True)
+        self.partiesWindow.setPos(0, 0, 0.15)
 
         self.createPartyFrame = DirectFrame( color = (0, 0, 0, 0.5), frameSize = ( -1.2, 1.2, 0.1, -0.1 ) )
         self.createPartyFrame.setTransparency(True)
@@ -174,23 +179,67 @@ class Client:
             parties = self.con.Send('parties')
             if parties and parties != self.parties:
 
-                if self.partiesFrame:
-                    self.partiesFrame.destroy()
-                self.partiesFrame = DirectFrame( color = (0, 0, 0, 0.5), frameSize = ( -1.2, 1.2, -0.7, 0.7 ) )
-                self.partiesFrame.setTransparency(True)
-                self.partiesFrame.setPos(0, 0, 0.15)
-                nameHeader    = OnscreenText(text = 'Name',    pos = (-1.0, .6), scale = 0.05, parent = self.partiesFrame)
-                creatorHeader = OnscreenText(text = 'Creator', pos = (-0.5, .6), scale = 0.05, parent = self.partiesFrame)
-                mapHeader     = OnscreenText(text = 'Map',     pos = ( 0.0, .6), scale = 0.05, parent = self.partiesFrame)
+                if hasattr(self, 'partiesWindow'):
+                    self.partiesWindow.destroy()
+
+                bgtex = loader.loadTexture('textures/gui/parties_window.png')
+                bgtex.setMagfilter(Texture.FTNearest)
+                bgtex.setMinfilter(Texture.FTNearest)
+
+                self.partiesWindow = DirectFrame( frameTexture = bgtex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -1, 1 ) )
+                self.partiesWindow.setTransparency(True)
+                self.partiesWindow.setPos(0, 0, 0.15)
 
                 self.parties = parties
                 for i,key in enumerate(parties):
-                    nameLabel    = OnscreenText(text = parties[key]['name'],        pos = (-1.0, -i/10.0+.5), scale = 0.05, parent = self.partiesFrame)
-                    creatorLabel = OnscreenText(text = parties[key]['creator'],     pos = (-0.5, -i/10.0+.5), scale = 0.05, parent = self.partiesFrame)
-                    mapLabel     = OnscreenText(text = parties[key]['map']['name'], pos = ( 0.0, -i/10.0+.5), scale = 0.05, parent = self.partiesFrame)
-                    joinPartyButton = DirectButton( scale = .05, text  = ("Join", "Join", "Join", "Full"), command = self.joinparty, extraArgs = [key] )
-                    joinPartyButton.reparentTo( self.partiesFrame )
-                    joinPartyButton.setPos(0.5, 0, -i/10.0+.5)
+                    nameLabel = DirectLabel(
+                        color = (0,0,0,0),
+                        text = parties[key]['name'],
+                        scale = scale,
+                        text_font = font,
+                        text_fg = (.1875,.15625,.125,1),
+                        text_shadow = (.5,.46484375,.40625,1),
+                        text_align = TextNode.ALeft,
+                        parent = self.partiesWindow
+                    )
+                    nameLabel.setPos(-u*93, 0, u*49 - i*u*16)
+
+                    creatorLabel = DirectLabel(
+                        color = (0,0,0,0),
+                        text = parties[key]['creator'],
+                        scale = scale,
+                        text_font = font,
+                        text_fg = (.1875,.15625,.125,1),
+                        text_shadow = (.5,.46484375,.40625,1),
+                        text_align = TextNode.ALeft,
+                        parent = self.partiesWindow
+                    )
+                    creatorLabel.setPos(-u*30, 0, u*49 - i*u*16)
+
+                    mapLabel = DirectLabel(
+                        color = (0,0,0,0),
+                        text = parties[key]['map']['name'],
+                        scale = scale,
+                        text_font = font,
+                        text_fg = (.1875,.15625,.125,1),
+                        text_shadow = (.5,.46484375,.40625,1),
+                        text_align = TextNode.ALeft,
+                        parent = self.partiesWindow
+                    )
+                    mapLabel.setPos(u*20, 0, u*49 - i*u*16)
+                    
+                    joinPartyButton = DirectButton(
+                        text  = ("Join", "Join", "Join", "Full"),
+                        command = self.joinparty,
+                        extraArgs = [key],
+                        scale = scale,
+                        text_font = font,
+                        text_fg = (.1875,.15625,.125,1),
+                        text_shadow = (.5,.46484375,.40625,1),
+                        text_align = TextNode.ALeft,
+                        parent = self.partiesWindow
+                    )
+                    joinPartyButton.setPos(u*80, 0, u*49 - i*u*16)
 
                     if parties[key].has_key('player1') and parties[key].has_key('player2'):
                         joinPartyButton['state'] = DGG.DISABLED
@@ -202,7 +251,7 @@ class Client:
         if party:
             self.party = party
             self.refreshparties = False
-            self.partiesFrame.destroy()
+            self.partiesWindow.destroy()
             self.createPartyFrame.destroy()
             self.partygui()
 
@@ -214,7 +263,7 @@ class Client:
         if party:
             self.party = party
             self.refreshparties = False
-            self.partiesFrame.destroy()
+            self.partiesWindow.destroy()
             self.createPartyFrame.destroy()
             self.partygui()
 
@@ -262,6 +311,7 @@ class Client:
             if party:
                 self.party = party
                 self.refreshbattle = False
+                self.loginBackground.destroy()
                 self.battle_begins()
 
         return Task.cont
