@@ -3,6 +3,7 @@ from direct.gui.OnscreenText import OnscreenText
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from direct.task.Task import Task
+from direct.interval.IntervalGlobal import LerpScaleInterval, Sequence, Func, Wait
 import battle
 import Network
 
@@ -23,32 +24,39 @@ class Client:
         
         self.refreshbattle = False
         self.refreshBattleTask = taskMgr.add(self.refreshBattleTask, 'refreshBattleTask')
-
-        self.logingui()
-
-    def logingui(self):
-
-        bgtexture = loader.loadTexture('textures/gui/loadingbackground.png')
-        bgtexture.setMagfilter(Texture.FTNearest)
-        bgtexture.setMinfilter(Texture.FTNearest)
+        
+        bgtex = loader.loadTexture('textures/gui/loadingbackground.png')
+        bgtex.setMagfilter(Texture.FTNearest)
+        bgtex.setMinfilter(Texture.FTNearest)
 
         base.setBackgroundColor(.03125, .03125, .03125)
 
-        self.loginBackground = DirectFrame( color = (1, 1, 1, 1), frameTexture = bgtexture, frameSize = ( -1.33, 1.33, -1, 1 ) )
-        self.loginBackground.setTransparency(True)
+        self.loginBackground = DirectFrame( color = (1, 1, 1, 1), frameTexture = bgtex, frameSize = ( -1.33, 1.33, -1, 1 ), scale = 10 )
+        
+        seq = Sequence()
+        i = LerpScaleInterval(self.loginBackground, 0.1, 1, startScale=10 )
+        seq.append(i)
+        seq.append( Wait(0.5) )
+        seq.append( Func(self.logingui) )
+        seq.start()
+
+    def logingui(self):
     
-        self.loginWindow = DirectFrame( color = (.62, .6, .5, 1), frameSize = ( -.35, .35, -.1, .15 ) )
+        bgtex = loader.loadTexture('textures/gui/login_window.png')
+        bgtex.setMagfilter(Texture.FTNearest)
+        bgtex.setMinfilter(Texture.FTNearest)
+
+        self.loginWindow = DirectFrame( frameTexture = bgtex, color = (1, 1, 1, 1), frameSize = ( -.5, .5, -.25, .25 ), scale = 0.1 )
         self.loginWindow.setTransparency(True)
         self.loginWindow.reparentTo( self.loginBackground )
-        self.loginWindow.setPos(0, 0, -0.33)
+        self.loginWindow.setPos(0, 0, 0)
 
         font = loader.loadFont('fonts/fft.egg')
-        winHeight = base.win.getYSize()
-        ppu = 12
-        scale = (4.0 * ppu) / winHeight      
+        u = 1.0/128.0
+        scale = u*12.0
 
         self.loginLabel = DirectLabel(
-            text = 'Login:',
+            text = 'Username:',
             color = (.62, .6, .5, 0),
             scale = scale,
             text_font = font,
@@ -57,7 +65,7 @@ class Client:
             text_align = TextNode.ALeft
         )
         self.loginLabel.reparentTo( self.loginWindow )
-        self.loginLabel.setPos(-0.3, 0, 0.05)
+        self.loginLabel.setPos(-u*50, 0, u*3)
 
         self.loginEntry = DirectEntry(
             color = (.62, .6, .5, 0),
@@ -69,10 +77,10 @@ class Client:
             text_shadow = (.5,.46484375,.40625,1)
         )
         self.loginEntry.reparentTo( self.loginWindow )
-        self.loginEntry.setPos(-0.1, 0, 0.05)
+        self.loginEntry.setPos(-u*6, 0, u*3)
 
         self.passwordLabel = DirectLabel(
-            text = 'Pass:',
+            text = 'Password:',
             color = (.62, .6, .5, 0),
             scale = scale,
             text_font = font,
@@ -81,7 +89,7 @@ class Client:
             text_align = TextNode.ALeft
         )
         self.passwordLabel.reparentTo( self.loginWindow )
-        self.passwordLabel.setPos(-0.3, 0, -0.05)
+        self.passwordLabel.setPos(-u*50, 0, -u*13)
 
         self.passwordEntry = DirectEntry(
             color = (.62, .6, .5, 0),
@@ -93,7 +101,7 @@ class Client:
             obscured = True
         )
         self.passwordEntry.reparentTo( self.loginWindow )
-        self.passwordEntry.setPos(-0.1, 0, -0.05)
+        self.passwordEntry.setPos(-u*6, 0, -u*13)
 
         connectButton = DirectButton(
             scale = scale,
@@ -106,7 +114,12 @@ class Client:
             pad = (.15,.15)
         )
         connectButton.reparentTo( self.loginWindow )
-        connectButton.setPos(0.2, 0, -0.2)
+        connectButton.setPos(u*38, 0, -u*40)
+        
+        seq = Sequence()
+        i = LerpScaleInterval(self.loginWindow, 0.1, 1, startScale=0.1 )
+        seq.append(i)
+        seq.start()
 
     def login(self):
         login = self.loginEntry.get()
@@ -114,8 +127,13 @@ class Client:
 
         rsp = self.con.Send('login', { 'login': login, 'pass': password })
         if rsp:
-            self.loginBackground.destroy()
-            self.partiesgui()
+            seq = Sequence()
+            i = LerpScaleInterval(self.loginWindow, 0.1, 0.1, startScale=1 )
+            seq.append(i)
+            seq.append( Func(self.loginWindow.destroy) )
+            seq.append( Wait(0.5) )
+            seq.append( Func(self.partiesgui) )
+            seq.start()
 
     def partiesgui(self):
         self.partiesFrame = DirectFrame( color = (0, 0, 0, 0.5), frameSize = ( -1.2, 1.2, -0.7, 0.7 ) )
