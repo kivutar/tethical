@@ -137,39 +137,58 @@ class Client:
 
     def partiesgui(self):
     
-        bgtex = loader.loadTexture('textures/gui/parties_window.png')
-        bgtex.setMagfilter(Texture.FTNearest)
-        bgtex.setMinfilter(Texture.FTNearest)
+        pwbgtex = loader.loadTexture('textures/gui/parties_window.png')
+        pwbgtex.setMagfilter(Texture.FTNearest)
+        pwbgtex.setMinfilter(Texture.FTNearest)
     
-        self.partiesWindow = DirectFrame( frameTexture = bgtex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -1, 1 ) )
+        self.partiesWindow = DirectFrame( frameTexture = pwbgtex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -1, 1 ) )
         self.partiesWindow.setTransparency(True)
-        self.partiesWindow.setPos(0, 0, 0.15)
+        self.partiesWindow.setPos(0, 0, u*21)
+        
+        npwbgtex = loader.loadTexture('textures/gui/newparty_window.png')
+        npwbgtex.setMagfilter(Texture.FTNearest)
+        npwbgtex.setMinfilter(Texture.FTNearest)
 
-        self.createPartyFrame = DirectFrame( color = (0, 0, 0, 0.5), frameSize = ( -1.2, 1.2, 0.1, -0.1 ) )
+        self.createPartyFrame = DirectFrame( frameTexture = npwbgtex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -.25, .25 ) )
         self.createPartyFrame.setTransparency(True)
-        self.createPartyFrame.setPos(0, 0, -0.75)
+        self.createPartyFrame.setPos(0, 0, -u*80)
         
-        partyNameLabel = DirectLabel( scale = .05, text  = ("Name", "Name", "Name", "disabled") )
-        partyNameLabel.reparentTo( self.createPartyFrame  )
-        partyNameLabel.setPos(-1.0, 0, 0)
+        self.partyNameEntry = DirectEntry(
+            color = (0,0,0,0),
+            scale = scale,
+            numLines = 1,
+            focus = 1,
+            text_font = font,
+            text_fg = (.1875,.15625,.125,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            parent = self.createPartyFrame,
+        )
+        self.partyNameEntry.setPos(-u*93, 0, -u*7)
+
+        self.mapMenu = DirectOptionMenu(
+            text = "options",
+            scale = scale, 
+            items = [ "Test City", "Test City 3", "Test City 65" ],
+            highlightColor = ( 0.65, 0.65, 0.65, 1 ),
+            text_font = font,
+            text_fg = (.1875,.15625,.125,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            text_align = TextNode.ALeft,
+            parent = self.createPartyFrame,
+        )
+        self.mapMenu.setPos(-u*10, 0, -u*7)
         
-        self.partyNameEntry = DirectEntry( scale = .05, numLines = 1, focus = 1 )
-        self.partyNameEntry.reparentTo( self.createPartyFrame  )
-        self.partyNameEntry.setPos(-0.8, 0, 0)
-        
-        mapLabel = DirectLabel( scale = .05, text  = ("Map", "Map", "Map", "disabled") )
-        mapLabel.reparentTo( self.createPartyFrame  )
-        mapLabel.setPos(-0.1, 0, 0)
-        
-        self.mapMenu = DirectOptionMenu( text = "options", scale = 0.05, 
-                                         items = [ "Test City" ],
-                                         highlightColor = ( 0.65, 0.65, 0.65, 1 ) )
-        self.mapMenu.reparentTo( self.createPartyFrame  )
-        self.mapMenu.setPos(0, 0, 0)
-        
-        createPartyButton = DirectButton( scale = .05, text  = ("Create", "Create", "Create", "disabled"), command = self.createparty )
-        createPartyButton.reparentTo( self.createPartyFrame )
-        createPartyButton.setPos(0.5, 0, 0)
+        createPartyButton = DirectButton(
+            text  = ("Create", "Create", "Create", "disabled"),
+            scale = scale,
+            text_font = font,
+            text_fg = (.1875,.15625,.125,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            text_align = TextNode.ALeft,
+            parent = self.createPartyFrame,
+            command = self.createparty
+        )
+        createPartyButton.setPos(u*70, 0, -u*7)
         
         self.refreshparties = True
 
