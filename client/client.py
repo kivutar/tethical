@@ -141,15 +141,21 @@ class Client:
         pwbgtex.setMagfilter(Texture.FTNearest)
         pwbgtex.setMinfilter(Texture.FTNearest)
     
-        self.partiesWindow = DirectFrame( frameTexture = pwbgtex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -1, 1 ) )
+        self.partiesWindow = DirectFrame( frameTexture = pwbgtex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -1, 1 ), scale=0.1 )
         self.partiesWindow.setTransparency(True)
         self.partiesWindow.setPos(0, 0, u*21)
+        
+        seq = Sequence()
+        i = LerpScaleInterval(self.partiesWindow, 0.1, 1, startScale=0.1 )
+        seq.append(i)
+        seq.append(Func(self.refreshParties))
+        seq.start()
         
         npwbgtex = loader.loadTexture('textures/gui/newparty_window.png')
         npwbgtex.setMagfilter(Texture.FTNearest)
         npwbgtex.setMinfilter(Texture.FTNearest)
 
-        self.createPartyFrame = DirectFrame( frameTexture = npwbgtex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -.25, .25 ) )
+        self.createPartyFrame = DirectFrame( frameTexture = npwbgtex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -.25, .25 ), scale=0.1 )
         self.createPartyFrame.setTransparency(True)
         self.createPartyFrame.setPos(0, 0, -u*80)
         
@@ -190,6 +196,12 @@ class Client:
         )
         createPartyButton.setPos(u*70, 0, -u*7)
         
+        seq2 = Sequence()
+        i2 = LerpScaleInterval(self.createPartyFrame, 0.1, 1, startScale=0.1 )
+        seq2.append(i2)
+        seq2.start()
+
+    def refreshParties(self):
         self.refreshparties = True
 
     def refreshPartiesTask(self, task):
