@@ -3,7 +3,7 @@ from direct.gui.OnscreenText import OnscreenText
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from direct.task.Task import Task
-from direct.interval.IntervalGlobal import LerpScaleInterval, Sequence, Func, Wait
+from direct.interval.IntervalGlobal import LerpScaleInterval, LerpColorInterval, Sequence, Func, Wait
 import battle
 import Network
 
@@ -14,6 +14,11 @@ scale = u*12.0
 class Client:
 
     def __init__(self):
+    
+        # Play the background music
+        self.music = base.loader.loadSfx('music/24.ogg')
+        self.music.setLoop(True)
+        self.music.play()
     
         self.con = Network.ServerConnection()
         
@@ -35,7 +40,7 @@ class Client:
 
         base.setBackgroundColor(.03125, .03125, .03125)
 
-        self.loginBackground = DirectFrame( color = (1, 1, 1, 1), frameTexture = bgtex, frameSize = ( -1.33, 1.33, -1, 1 ), scale = 10 )
+        self.loginBackground = DirectFrame( color = (1, 1, 1, 1), frameTexture = bgtex, frameSize = ( -2.2, 2.2, -2.2, 2.2 ), scale = 10 )
         
         seq = Sequence()
         i = LerpScaleInterval(self.loginBackground, 0.1, 1, startScale=10 )
@@ -316,7 +321,6 @@ class Client:
             party = self.con.Send('party')
             if party and party.has_key('player2'):
                 self.party = party
-                self.partyFrame.destroy()
                 self.refreshparty = False
                 self.selectchargui()
 
@@ -348,5 +352,12 @@ class Client:
         return Task.cont
 
     def battle_begins(self):
-        b = battle.Battle(self.con, self.party)
+        self.transitionframe = DirectFrame( frameSize = ( -2, 2, -2, 2 ) )
+        self.transitionframe.setTransparency(True)
+        seq = Sequence()
+        seq.append(LerpColorInterval(self.transitionframe, 2, (0,0,0,1), startColor=(0,0,0,0)))
+        seq.append(Func(self.partyFrame.destroy))
+        seq.append(Func(self.music.stop))
+        seq.append(Func(battle.Battle, self.con, self.party, self.transitionframe))
+        seq.start()
 

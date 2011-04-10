@@ -5,7 +5,7 @@ from panda3d.core import AmbientLight, DirectionalLight, LightAttrib
 from panda3d.core import TransparencyAttrib
 from panda3d.core import TextNode
 from panda3d.core import Point3, Vec3, Vec4, BitMask32
-from direct.interval.IntervalGlobal import LerpPosInterval, Sequence, Func, Wait
+from direct.interval.IntervalGlobal import LerpPosInterval, LerpColorInterval, LerpHprInterval, Sequence, Func, Wait, Parallel
 from direct.showbase.DirectObject import DirectObject
 from direct.task.Task import Task
 from direct.gui.OnscreenText import OnscreenText
@@ -19,7 +19,7 @@ import Direction
 
 class Battle(DirectObject):
 
-    def __init__(self, con, party):
+    def __init__(self, con, party, transitionframe):
     
         self.con = con
         self.party = party
@@ -121,9 +121,18 @@ class Battle(DirectObject):
         # Inputs
         self.accept("mouse1", self.onTileClicked)
         self.accept('escape', sys.exit)
-        self.accept('t'     , self.turn)
 
-        self.turn()
+        seq = Sequence()
+        i1 = LerpColorInterval(transitionframe, 5, (0,0,0,0), startColor=(0,0,0,1))
+        (cx, cy, cz) = self.camhandler.container.getPos()
+        i2 = LerpPosInterval(self.camhandler.container, 5, (cx,cy,cz+5), startPos=(cx,cy,cz+50))
+        (ch, cp, cr) = self.camhandler.container.getHpr()
+        i3 = LerpHprInterval(self.camhandler.container, 5, (ch+90, cp, cr), (ch-180, cp, cr))
+        p1 = Parallel(i1,i2,i3)
+        seq.append(p1)
+        seq.append(Func(transitionframe.destroy))
+        seq.append(Func(self.turn))
+        seq.start()
 
     # The main dispatcher
     def turn(self):
