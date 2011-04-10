@@ -19,8 +19,8 @@ class CameraHandler(DirectObject.DirectObject):
 
         self.container = render.attachNewNode('camContainer')
         base.camera.reparentTo( self.container )
-        base.camera.setPos( -40, 0, 20 )
-        base.camera.lookAt(0, 0, 0)
+        base.camera.setPos( -40, 0, 23 )
+        base.camera.lookAt(0, 0, 3)
         self.container.setHpr(45, 0, 0)
 
         self.zoomed = True

@@ -381,10 +381,16 @@ class Battle(DirectObject):
     def onMoveClicked(self, charid):
         walkables = self.con.Send('char/'+charid+'/walkables')
         if walkables:
-            self.phase = 'tile'
-            self.camhandler.phase = 'tile'
-            self.drawWalkables(walkables)
-            self.tagWalkables(charid, walkables, True)
+            GUI.Help(
+                'move_help',
+                lambda: self.setupTileChooser(charid, walkables)
+            )
+    
+    def setupTileChooser(self, charid, walkables):
+        self.phase = 'tile'
+        self.camhandler.phase = 'tile'
+        self.drawWalkables(walkables)
+        self.tagWalkables(charid, walkables, True)
 
     # Attack button clicked
     def onAttackClicked(self, charid):
@@ -396,6 +402,12 @@ class Battle(DirectObject):
 
     # Wait button clicked
     def onWaitClicked(self, charid):
+        GUI.Help(
+            'direction_help',
+            lambda: self.setupDirectionChooser(charid)
+        )
+    
+    def setupDirectionChooser(self, charid):
         self.phase = 'direction'
         self.camhandler.phase = 'direction'
         self.hideAT()

@@ -1,4 +1,5 @@
 import direct.directbase.DirectStart
+from direct.showbase import DirectObject
 from direct.gui.OnscreenText import OnscreenText 
 from direct.gui.DirectGui import *
 from direct.task import Task
@@ -108,4 +109,28 @@ class Menu(object):
     def commandanddestroy(self, command):
         command()
         self.destroy()
+
+class Help(DirectObject.DirectObject):
+
+    def __init__(self, message, command):
+
+        tex = loader.loadTexture('textures/gui/'+message+'.png')
+        tex.setMagfilter(Texture.FTNearest)
+        tex.setMinfilter(Texture.FTNearest)
+
+        self.frame = DirectFrame(
+            frameTexture = tex,
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -1.0, 1.0, -.25, .25 )
+        )
+        self.frame.setPos(0, 0, .25)
+        self.frame.setTransparency(True)
+
+        self.accept("mouse1", lambda: self.commandanddestroy(command) )
+
+    def commandanddestroy(self, command):
+        self.ignoreAll()
+        clicked_snd.play()
+        command()
+        self.frame.destroy()
 
