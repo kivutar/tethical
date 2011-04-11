@@ -152,6 +152,15 @@ class Battle(DirectObject):
                             if char['active']:
                                 self.camhandler.move(self.logic2terrain((x, y, z)))
                                 self.showAT(self.sprites[charid])
+
+                                if self.charcard:
+                                    self.charcard.hide()
+                                self.charcard = GUI.CharCard(char)
+
+                                if self.charcard2:
+                                    self.charcard2.hide()
+                                self.charcard2 = GUI.CharCard2(char)
+
                                 if self.party['yourturn']:
                                     if char['canmove'] or char['canact']:
                                         self.showMenu(charid)
