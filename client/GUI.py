@@ -10,6 +10,8 @@ from pandac.PandaModules import *
 u = 1.0/128.0
 hover_snd = base.loader.loadSfx("sounds/hover.ogg")
 clicked_snd = base.loader.loadSfx("sounds/clicked.ogg")
+scale = u*12.0
+font = loader.loadFont('fonts/fft.egg')
 
 class Menu(object):
 
@@ -133,4 +135,148 @@ class Help(DirectObject.DirectObject):
         clicked_snd.play()
         command()
         self.frame.destroy()
+
+class CharCard:
+
+    def __init__(self, char):
+        tex = loader.loadTexture('textures/gui/char_card1.png')
+        tex.setMagfilter(Texture.FTNearest)
+        tex.setMinfilter(Texture.FTNearest)
+
+        self.frame = DirectFrame(
+            frameTexture = tex, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -.5, .5, -.25, .25 )
+        )
+        self.frame.setTransparency(True)
+        self.frame.setPos(-2, 0, -u*85)
+        
+        facetex = loader.loadTexture('textures/sprites/'+char['sprite']+'_face.png')
+        facetex.setMagfilter(Texture.FTNearest)
+        facetex.setMinfilter(Texture.FTNearest)
+        
+        self.face = DirectFrame(
+            frameTexture = facetex, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( 0, u*32, 0, u*64 ),
+            parent = self.frame
+        )
+        self.face.setPos(-u*59, 0, -u*31)
+        
+        tex2 = loader.loadTexture('textures/gui/char_card2.png')
+        tex2.setMagfilter(Texture.FTNearest)
+        tex2.setMinfilter(Texture.FTNearest)
+
+        self.frame2 = DirectFrame(
+            frameTexture = tex2, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -.5, .5, -.25, .25 ),
+            parent = self.frame
+        )
+        self.frame2.setTransparency(True)
+        
+        i1 = LerpPosInterval(self.frame, 0.2, (-u*55,0,-u*85), (-2,0,-u*85))
+        s = Sequence(i1)
+        s.start()
+
+    def hide(self):
+        if self.frame:
+            i1 = LerpPosInterval(self.frame, 0.2, (-2,0,-u*85), (-u*55,0,-u*85))
+            i2 = Func( self.frame.destroy )
+            s = Sequence(i1,i2)
+            s.start()
+
+class CharCard2:
+
+    def __init__(self, char):
+        blacktex = loader.loadTexture('textures/gui/black.png')
+        blacktex.setMagfilter(Texture.FTNearest)
+        blacktex.setMinfilter(Texture.FTNearest)
+
+        self.blackframe = DirectFrame(frameTexture = blacktex, 
+                                 frameColor=(1, 1, 1, 1),
+                                 frameSize = ( -1, 1, -.5, .5 ))
+        self.blackframe.reparentTo(render2d)
+        self.blackframe.setTransparency(True)
+        self.blackframe.setPos(0, 0, u*-85)
+
+        tex = loader.loadTexture('textures/gui/char_card3.png')
+        tex.setMagfilter(Texture.FTNearest)
+        tex.setMinfilter(Texture.FTNearest)
+
+        self.frame = DirectFrame(
+            frameTexture = tex, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -.5, .5, -.25, .25 )
+        )
+        self.frame.setTransparency(True)
+        self.frame.setPos(2, 0, -u*85)
+
+        self.name = DirectLabel(
+            text = 'Ramza',
+            color = (.62, .6, .5, 0),
+            scale = scale,
+            text_font = font,
+            text_fg = (.1875,.15625,.125,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            text_align = TextNode.ALeft,
+            parent = self.frame
+        )
+        self.name.setPos(-u*33, 0, u*12)
+
+        self.name = DirectLabel(
+            text = 'Squire',
+            color = (.62, .6, .5, 0),
+            scale = scale,
+            text_font = font,
+            text_fg = (.1875,.15625,.125,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            text_align = TextNode.ALeft,
+            parent = self.frame
+        )
+        self.name.setPos(-u*33, 0, -u*4)
+
+        ledtex = loader.loadTexture('textures/gui/char_card_blue.png')
+        ledtex.setMagfilter(Texture.FTNearest)
+        ledtex.setMinfilter(Texture.FTNearest)
+
+        self.led = DirectFrame(
+            frameTexture = ledtex, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -.0625, .0625, -.0625, .0625 ),
+            parent = self.frame
+        )
+        self.led.setTransparency(True)
+        self.led.setPos(-u*49, 0, u*18)
+
+        signtex = loader.loadTexture('textures/gui/aries.png')
+        signtex.setMagfilter(Texture.FTNearest)
+        signtex.setMinfilter(Texture.FTNearest)
+
+        self.sign = DirectFrame(
+            frameTexture = signtex, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -.125, .125, -.125, .125 ),
+            parent = self.frame
+        )
+        self.sign.setTransparency(True)
+        self.sign.setPos(-u*42, 0, -u*12)
+
+        i1 = LerpScaleInterval(self.blackframe, 0.1, (1,1,1), (1,1,0))
+        i2 = LerpColorInterval(self.blackframe, 0.1, (1,1,1,1), (1,1,1,0))
+        i3 = LerpPosInterval(  self.frame,      0.2, (u*63,0,-u*85), (2,0,-u*85))
+        p1 = Parallel(i1,i2,i3)
+        s = Sequence(p1)
+        s.start()
+
+    def hide(self):
+        if self.frame:
+            i1 = LerpScaleInterval(self.blackframe, 0.1, (1,1,0), (1,1,1))
+            i2 = LerpColorInterval(self.blackframe, 0.1, (1,1,1,0), (1,1,1,1))
+            i3 = LerpPosInterval(  self.frame,      0.2, (2,0,-u*85), (.5,0,-u*85))
+            p1 = Parallel(i1,i2,i3)
+            i4 = Func( self.blackframe.destroy )
+            i5 = Func( self.frame.destroy )
+            s = Sequence(p1,i4,i5)
+            s.start()
 

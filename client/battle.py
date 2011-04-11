@@ -109,6 +109,9 @@ class Battle(DirectObject):
         at.setPos(.75,0,0)
         at.setScale(1.75)
         self.hideAT()
+        
+        self.charcard = None
+        self.charcard2 = None
 
         self.drawBackground()
 
@@ -330,7 +333,10 @@ class Battle(DirectObject):
     # You clicked on a tile, this can mean different things, so this is a dispatcher
     def onTileClicked(self):
         if self.phase == 'tile' and self.hix is not False and self.party['yourturn']:
-        
+
+            if self.charcard2:
+                self.charcard2.hide()
+
             charid = self.pq.getEntry(0).getIntoNode().getTag('char')
         
             # focus the camera on the selected tile
@@ -372,6 +378,7 @@ class Battle(DirectObject):
                 
                 # we clicked on a random character, let's draw its walkable zone
                 else:
+                    self.charcard2 = GUI.CharCard2(None)
                     walkables = self.con.Send('char/'+charid+'/walkables')
                     if walkables:
                         self.drawWalkables(walkables)
@@ -522,6 +529,7 @@ class Battle(DirectObject):
                     x = int(self.pq.getEntry(0).getIntoNode().getTag('x'))
                     y = int(self.pq.getEntry(0).getIntoNode().getTag('y'))
                     z = int(self.pq.getEntry(0).getIntoNode().getTag('z'))
+                    charid = self.pq.getEntry(0).getIntoNode().getTag('char')
                     self.tiles[x][y][z].setColor(0.0,1.0,0.0,0.75)
                     self.coords.setText(str(z/2.0)+'h')
                     self.hix = x
@@ -533,6 +541,13 @@ class Battle(DirectObject):
                         self.ox = x
                         self.oy = y
                         self.oz = z
+                        
+                        if self.charcard:
+                            self.charcard.hide()
+                        
+                        if charid and charid != '0':
+                            char = self.party['chars'][charid]
+                            self.charcard = GUI.CharCard(char)
 
         return Task.cont
 
