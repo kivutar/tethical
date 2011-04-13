@@ -104,6 +104,9 @@ any '/startbattle' => sub {
             
             $$party{map}{tiles}[$x][$y][$z]{char} = $charid;
             my $char = { 'id'        => $charid
+                       , 'name'      => $charid
+                       , 'job'       => 'Unknown'
+                       , 'sign'      => 1
                        , 'hp'        => 10
                        , 'hpmax'     => 10
                        , 'ct'        => 12

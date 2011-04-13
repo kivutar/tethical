@@ -213,7 +213,7 @@ class CharCard2:
         self.frame.setPos(2, 0, -u*85)
 
         self.name = DirectLabel(
-            text = 'Ramza',
+            text = char['name'],
             color = (.62, .6, .5, 0),
             scale = scale,
             text_font = font,
@@ -225,7 +225,7 @@ class CharCard2:
         self.name.setPos(-u*33, 0, u*12)
 
         self.name = DirectLabel(
-            text = 'Squire',
+            text = char['job'],
             color = (.62, .6, .5, 0),
             scale = scale,
             text_font = font,
@@ -236,7 +236,8 @@ class CharCard2:
         )
         self.name.setPos(-u*33, 0, -u*4)
 
-        ledtex = loader.loadTexture('textures/gui/char_card_blue.png')
+        teamcolors = ['','blue','red']
+        ledtex = loader.loadTexture('textures/gui/char_card_'+teamcolors[int(char['team'])]+'.png')
         ledtex.setMagfilter(Texture.FTNearest)
         ledtex.setMinfilter(Texture.FTNearest)
 
@@ -249,7 +250,8 @@ class CharCard2:
         self.led.setTransparency(True)
         self.led.setPos(-u*49, 0, u*18)
 
-        signtex = loader.loadTexture('textures/gui/aries.png')
+        signs = ['aries','scorpio']
+        signtex = loader.loadTexture('textures/gui/'+signs[int(char['sign'])]+'.png')
         signtex.setMagfilter(Texture.FTNearest)
         signtex.setMinfilter(Texture.FTNearest)
 

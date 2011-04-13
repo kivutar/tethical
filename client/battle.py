@@ -387,7 +387,7 @@ class Battle(DirectObject):
                 
                 # we clicked on a random character, let's draw its walkable zone
                 else:
-                    self.charcard2 = GUI.CharCard2(None)
+                    self.charcard2 = GUI.CharCard2(self.party['chars'][charid])
                     walkables = self.con.Send('char/'+charid+'/walkables')
                     if walkables:
                         self.drawWalkables(walkables)
