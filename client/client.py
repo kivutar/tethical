@@ -10,6 +10,8 @@ import Network
 font = loader.loadFont('fonts/fft.egg')
 u = 1.0/128.0
 scale = u*12.0
+hover_snd = base.loader.loadSfx("sounds/hover.ogg")
+clicked_snd = base.loader.loadSfx("sounds/clicked.ogg")
 
 class Client:
 
@@ -116,6 +118,9 @@ class Client:
             text_font = font,
             text_fg = (.1875,.15625,.125,1),
             text_shadow = (.5,.46484375,.40625,1),
+            rolloverSound = hover_snd,
+            clickSound = clicked_snd,
+            pressEffect = 0,
             pad = (.15,.15)
         )
         connectButton.reparentTo( self.loginWindow )
@@ -185,6 +190,9 @@ class Client:
             text_fg = (.1875,.15625,.125,1),
             text_shadow = (.5,.46484375,.40625,1),
             text_align = TextNode.ALeft,
+            rolloverSound = hover_snd,
+            clickSound = clicked_snd,
+            pressEffect = 0,
             parent = self.createPartyFrame,
         )
         self.mapMenu.setPos(-u*10, 0, -u*7)
@@ -197,6 +205,9 @@ class Client:
             text_shadow = (.5,.46484375,.40625,1),
             text_align = TextNode.ALeft,
             parent = self.createPartyFrame,
+            rolloverSound = hover_snd,
+            clickSound = clicked_snd,
+            pressEffect = 0,
             command = self.createparty
         )
         createPartyButton.setPos(u*70, 0, -u*7)
@@ -273,6 +284,9 @@ class Client:
                         text_fg = (.1875,.15625,.125,1),
                         text_shadow = (.5,.46484375,.40625,1),
                         text_align = TextNode.ALeft,
+                        rolloverSound = hover_snd,
+                        clickSound = clicked_snd,
+                        pressEffect = 0,
                         parent = self.partiesWindow
                     )
                     joinPartyButton.setPos(u*80, 0, u*49 - i*u*16)
