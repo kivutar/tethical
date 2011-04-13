@@ -134,6 +134,7 @@ class Battle(DirectObject):
         p1 = Parallel(i1,i2,i3)
         seq.append(p1)
         seq.append(Func(transitionframe.destroy))
+        seq.append(Wait(1))
         seq.append(Func(self.turn))
         seq.start()
 
