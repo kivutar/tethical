@@ -26,16 +26,7 @@ class Client:
         
         self.party = False
         self.parties = []
-        
-        self.refreshparties = False
-        self.refreshPartiesTask = taskMgr.add(self.refreshPartiesTask, 'refreshPartiesTask')
-        
-        self.refreshparty = False
-        self.refreshPartyTask = taskMgr.add(self.refreshPartyTask, 'refreshPartyTask')
-        
-        self.refreshbattle = False
-        self.refreshBattleTask = taskMgr.add(self.refreshBattleTask, 'refreshBattleTask')
-        
+
         bgtex = loader.loadTexture('textures/gui/loadingbackground.png')
         bgtex.setMagfilter(Texture.FTNearest)
         bgtex.setMinfilter(Texture.FTNearest)
@@ -218,89 +209,87 @@ class Client:
         seq2.start()
 
     def refreshParties(self):
-        self.refreshparties = True
+        self.refreshpartiestask = taskMgr.doMethodLater(1, self.refreshPartiesTask, 'refreshPartiesTask')
 
     def refreshPartiesTask(self, task):
-        if self.refreshparties:
+        parties = self.con.Send('parties')
+        if parties and parties != self.parties:
 
-            parties = self.con.Send('parties')
-            if parties and parties != self.parties:
+            if hasattr(self, 'partiesWindow'):
+                self.partiesWindow.destroy()
 
-                if hasattr(self, 'partiesWindow'):
-                    self.partiesWindow.destroy()
+            bgtex = loader.loadTexture('textures/gui/parties_window.png')
+            bgtex.setMagfilter(Texture.FTNearest)
+            bgtex.setMinfilter(Texture.FTNearest)
 
-                bgtex = loader.loadTexture('textures/gui/parties_window.png')
-                bgtex.setMagfilter(Texture.FTNearest)
-                bgtex.setMinfilter(Texture.FTNearest)
+            self.partiesWindow = DirectFrame( frameTexture = bgtex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -1, 1 ) )
+            self.partiesWindow.setTransparency(True)
+            self.partiesWindow.setPos(0, 0, 0.15)
 
-                self.partiesWindow = DirectFrame( frameTexture = bgtex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -1, 1 ) )
-                self.partiesWindow.setTransparency(True)
-                self.partiesWindow.setPos(0, 0, 0.15)
+            self.parties = parties
+            for i,key in enumerate(parties):
+                nameLabel = DirectLabel(
+                    color = (0,0,0,0),
+                    text = parties[key]['name'],
+                    scale = scale,
+                    text_font = font,
+                    text_fg = (.1875,.15625,.125,1),
+                    text_shadow = (.5,.46484375,.40625,1),
+                    text_align = TextNode.ALeft,
+                    parent = self.partiesWindow
+                )
+                nameLabel.setPos(-u*93, 0, u*49 - i*u*16)
 
-                self.parties = parties
-                for i,key in enumerate(parties):
-                    nameLabel = DirectLabel(
-                        color = (0,0,0,0),
-                        text = parties[key]['name'],
-                        scale = scale,
-                        text_font = font,
-                        text_fg = (.1875,.15625,.125,1),
-                        text_shadow = (.5,.46484375,.40625,1),
-                        text_align = TextNode.ALeft,
-                        parent = self.partiesWindow
-                    )
-                    nameLabel.setPos(-u*93, 0, u*49 - i*u*16)
+                creatorLabel = DirectLabel(
+                    color = (0,0,0,0),
+                    text = parties[key]['creator'],
+                    scale = scale,
+                    text_font = font,
+                    text_fg = (.1875,.15625,.125,1),
+                    text_shadow = (.5,.46484375,.40625,1),
+                    text_align = TextNode.ALeft,
+                    parent = self.partiesWindow
+                )
+                creatorLabel.setPos(-u*30, 0, u*49 - i*u*16)
 
-                    creatorLabel = DirectLabel(
-                        color = (0,0,0,0),
-                        text = parties[key]['creator'],
-                        scale = scale,
-                        text_font = font,
-                        text_fg = (.1875,.15625,.125,1),
-                        text_shadow = (.5,.46484375,.40625,1),
-                        text_align = TextNode.ALeft,
-                        parent = self.partiesWindow
-                    )
-                    creatorLabel.setPos(-u*30, 0, u*49 - i*u*16)
+                mapLabel = DirectLabel(
+                    color = (0,0,0,0),
+                    text = parties[key]['map']['name'],
+                    scale = scale,
+                    text_font = font,
+                    text_fg = (.1875,.15625,.125,1),
+                    text_shadow = (.5,.46484375,.40625,1),
+                    text_align = TextNode.ALeft,
+                    parent = self.partiesWindow
+                )
+                mapLabel.setPos(u*20, 0, u*49 - i*u*16)
+                
+                joinPartyButton = DirectButton(
+                    text  = ("Join", "Join", "Join", "Full"),
+                    command = self.joinparty,
+                    extraArgs = [key],
+                    scale = scale,
+                    text_font = font,
+                    text_fg = (.1875,.15625,.125,1),
+                    text_shadow = (.5,.46484375,.40625,1),
+                    text_align = TextNode.ALeft,
+                    rolloverSound = hover_snd,
+                    clickSound = clicked_snd,
+                    pressEffect = 0,
+                    parent = self.partiesWindow
+                )
+                joinPartyButton.setPos(u*80, 0, u*49 - i*u*16)
 
-                    mapLabel = DirectLabel(
-                        color = (0,0,0,0),
-                        text = parties[key]['map']['name'],
-                        scale = scale,
-                        text_font = font,
-                        text_fg = (.1875,.15625,.125,1),
-                        text_shadow = (.5,.46484375,.40625,1),
-                        text_align = TextNode.ALeft,
-                        parent = self.partiesWindow
-                    )
-                    mapLabel.setPos(u*20, 0, u*49 - i*u*16)
-                    
-                    joinPartyButton = DirectButton(
-                        text  = ("Join", "Join", "Join", "Full"),
-                        command = self.joinparty,
-                        extraArgs = [key],
-                        scale = scale,
-                        text_font = font,
-                        text_fg = (.1875,.15625,.125,1),
-                        text_shadow = (.5,.46484375,.40625,1),
-                        text_align = TextNode.ALeft,
-                        rolloverSound = hover_snd,
-                        clickSound = clicked_snd,
-                        pressEffect = 0,
-                        parent = self.partiesWindow
-                    )
-                    joinPartyButton.setPos(u*80, 0, u*49 - i*u*16)
+                if parties[key].has_key('player1') and parties[key].has_key('player2'):
+                    joinPartyButton['state'] = DGG.DISABLED
 
-                    if parties[key].has_key('player1') and parties[key].has_key('player2'):
-                        joinPartyButton['state'] = DGG.DISABLED
-
-        return Task.cont    
+        return Task.again    
 
     def joinparty(self, key):
         party = self.con.Send('joinparty/'+key)
         if party:
             self.party = party
-            self.refreshparties = False
+            taskMgr.remove(self.refreshpartiestask)
             self.partiesWindow.destroy()
             self.createPartyFrame.destroy()
             self.partygui()
@@ -312,7 +301,7 @@ class Client:
         party = self.con.Send('ownparty', { 'name': name, 'mapname': mapname })
         if party:
             self.party = party
-            self.refreshparties = False
+            taskMgr.remove(self.refreshpartiestask)
             self.partiesWindow.destroy()
             self.createPartyFrame.destroy()
             self.partygui()
@@ -326,19 +315,17 @@ class Client:
         partyName  = OnscreenText(text = 'Party: '+self.party['name'],         pos = (0, 0.8), scale = 0.07, parent = self.partyFrame)
         createdBy  = OnscreenText(text = 'Created by: '+self.party['creator'], pos = (0, 0.7), scale = 0.05, parent = self.partyFrame)
         waitingFor = OnscreenText(text = 'Waiting for second character',       pos = (0, 0.0), scale = 0.05, parent = self.partyFrame)
-        
-        self.refreshparty = True
+
+        self.refreshpartytask = taskMgr.doMethodLater(1, self.refreshPartyTask, 'refreshPartyTask')
 
     def refreshPartyTask(self, task):
-        if self.refreshparty:
-            
-            party = self.con.Send('party')
-            if party and party.has_key('player2'):
-                self.party = party
-                self.refreshparty = False
-                self.selectchargui()
+        party = self.con.Send('party')
+        if party and party.has_key('player2'):
+            self.party = party
+            self.selectchargui()
+            return Task.done
 
-        return Task.cont
+        return Task.again
 
     def selectchargui(self):
         tiles = self.con.Send('choosechar')
@@ -351,19 +338,17 @@ class Client:
     def characters_selected(self, values):
         res = self.con.Send('startbattle', values)
         if res:
-            self.refreshbattle = True
+            self.refreshbattletask = taskMgr.doMethodLater(1, self.refreshBattleTask, 'refreshBattleTask')
 
     def refreshBattleTask(self, task):
-        if self.refreshbattle:
+        party = self.con.Send('battle')
+        if party:
+            self.party = party
+            self.loginBackground.destroy()
+            self.battle_begins()
+            return Task.done
 
-            party = self.con.Send('battle')
-            if party:
-                self.party = party
-                self.refreshbattle = False
-                self.loginBackground.destroy()
-                self.battle_begins()
-
-        return Task.cont
+        return Task.again
 
     def battle_begins(self):
         self.transitionframe = DirectFrame( frameSize = ( -2, 2, -2, 2 ) )
