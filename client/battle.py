@@ -467,6 +467,7 @@ class Battle(DirectObject):
                 seq.append( Func(self.tagWalkables, charid, walkables, False) )
                 seq.append( Func(self.hideAT) )
                 seq.append( Func(self.updateSpriteAnimation, charid, 'walk') )
+                seq.append( Func(self.camhandler.move, self.logic2terrain((x2, y2, z2))) )
                 seq.append( self.getCharacterMoveSequence(charid, path) )
                 seq.append( Wait(0.5) )
                 seq.append( Func(self.updateSpriteAnimation, charid) )
@@ -481,7 +482,9 @@ class Battle(DirectObject):
                 attackables = log['attackables']
                 seq = Sequence()
                 seq.append( Func(self.drawAndTagAttackables, charid, attackables) )
+                seq.append( Func(self.camhandler.move, self.logic2terrain(self.getCharacterCoords(targetid))) )
                 seq.append( self.getCharacterAttackSequence(charid, targetid) )
+                seq.append( Func(self.camhandler.move, self.logic2terrain(self.getCharacterCoords(charid))) )
                 seq.append( Func(self.setPhase, 'listen') )
                 seq.start()
             if log['act'] == 'wait':
