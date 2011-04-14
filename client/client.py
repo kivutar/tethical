@@ -6,6 +6,7 @@ from direct.task.Task import Task
 from direct.interval.IntervalGlobal import LerpScaleInterval, LerpColorInterval, Sequence, Func, Wait
 import battle
 import Network
+import GUI
 
 font = loader.loadFont('fonts/fft.egg')
 u = 1.0/128.0
@@ -27,20 +28,7 @@ class Client:
         self.party = False
         self.parties = []
 
-        bgtex = loader.loadTexture('textures/gui/loadingbackground.png')
-        bgtex.setMagfilter(Texture.FTNearest)
-        bgtex.setMinfilter(Texture.FTNearest)
-
-        base.setBackgroundColor(.03125, .03125, .03125)
-
-        self.loginBackground = DirectFrame( color = (1, 1, 1, 1), frameTexture = bgtex, frameSize = ( -2.2, 2.2, -2.2, 2.2 ), scale = 10 )
-        
-        seq = Sequence()
-        i = LerpScaleInterval(self.loginBackground, 0.1, 1, startScale=10 )
-        seq.append(i)
-        seq.append( Wait(0.5) )
-        seq.append( Func(self.logingui) )
-        seq.start()
+        self.background = GUI.Background(self.logingui)
 
     def logingui(self):
     
@@ -50,8 +38,6 @@ class Client:
 
         self.loginWindow = DirectFrame( frameTexture = bgtex, color = (1, 1, 1, 1), frameSize = ( -.5, .5, -.25, .25 ), scale = 0.1 )
         self.loginWindow.setTransparency(True)
-        self.loginWindow.reparentTo( self.loginBackground )
-        self.loginWindow.setPos(0, 0, 0)
 
         self.loginLabel = DirectLabel(
             text = 'Username:',
@@ -344,7 +330,6 @@ class Client:
         party = self.con.Send('battle')
         if party:
             self.party = party
-            self.loginBackground.destroy()
             self.battle_begins()
             return Task.done
 
@@ -356,6 +341,7 @@ class Client:
         seq = Sequence()
         seq.append(LerpColorInterval(self.transitionframe, 2, (0,0,0,1), startColor=(0,0,0,0)))
         seq.append(Func(self.partyFrame.destroy))
+        seq.append(Func(self.background.frame.destroy))
         seq.append(Func(self.music.stop))
         seq.append(Func(battle.Battle, self.con, self.party, self.transitionframe))
         seq.start()

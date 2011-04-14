@@ -13,6 +13,25 @@ clicked_snd = base.loader.loadSfx("sounds/clicked.ogg")
 scale = u*12.0
 font = loader.loadFont('fonts/fft.egg')
 
+class Background(DirectObject.DirectObject):
+
+    def __init__(self, command):
+        
+        tex = loader.loadTexture('textures/gui/loadingbackground.png')
+        tex.setMagfilter(Texture.FTNearest)
+        tex.setMinfilter(Texture.FTNearest)
+
+        base.setBackgroundColor(.03125, .03125, .03125)
+
+        self.frame = DirectFrame( color = (1, 1, 1, 1), frameTexture = tex, frameSize = ( -2.2, 2.2, -2.2, 2.2 ), scale = 10 )
+
+        seq = Sequence()
+        i = LerpScaleInterval(self.frame, 0.1, 1, startScale=10 )
+        seq.append(i)
+        seq.append( Wait(0.5) )
+        seq.append( Func(command) )
+        seq.start()
+
 class Menu(object):
 
     displayed = False
