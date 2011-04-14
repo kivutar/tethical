@@ -121,6 +121,66 @@ class LoginWindow(DirectObject.DirectObject):
         seq.append( Func(command) )
         seq.start()
 
+class PartyCreationWindow(DirectObject.DirectObject):
+
+    def __init__(self, command):
+
+        tex = loader.loadTexture('textures/gui/newparty_window.png')
+        tex.setMagfilter(Texture.FTNearest)
+        tex.setMinfilter(Texture.FTNearest)
+
+        self.frame = DirectFrame( frameTexture = tex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -.25, .25 ), scale=0.1 )
+        self.frame.setTransparency(True)
+        self.frame.setPos(0, 0, -u*80)
+
+        self.nameEntry = DirectEntry(
+            color = (0,0,0,0),
+            scale = scale,
+            numLines = 1,
+            focus = 1,
+            text_font = font,
+            text_fg = (.1875,.15625,.125,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            parent = self.frame,
+        )
+        self.nameEntry.setPos(-u*93, 0, -u*7)
+
+        self.mapOptionMenu = DirectOptionMenu(
+            text = "options",
+            scale = scale, 
+            items = [ "Test City", "Test City 3", "Test City 65" ],
+            highlightColor = ( 0.65, 0.65, 0.65, 1 ),
+            text_font = font,
+            text_fg = (.1875,.15625,.125,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            text_align = TextNode.ALeft,
+            rolloverSound = hover_snd,
+            clickSound = clicked_snd,
+            pressEffect = 0,
+            parent = self.frame,
+        )
+        self.mapOptionMenu.setPos(-u*10, 0, -u*7)
+        
+        button = DirectButton(
+            text  = ("Create", "Create", "Create", "disabled"),
+            scale = scale,
+            text_font = font,
+            text_fg = (.1875,.15625,.125,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            text_align = TextNode.ALeft,
+            parent = self.frame,
+            rolloverSound = hover_snd,
+            clickSound = clicked_snd,
+            pressEffect = 0,
+            command = command
+        )
+        button.setPos(u*70, 0, -u*7)
+        
+        seq2 = Sequence()
+        i2 = LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1 )
+        seq2.append(i2)
+        seq2.start()
+
 class Menu(object):
 
     displayed = False

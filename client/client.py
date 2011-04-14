@@ -58,61 +58,7 @@ class Client:
         seq.append(Func(self.refreshParties))
         seq.start()
         
-        npwbgtex = loader.loadTexture('textures/gui/newparty_window.png')
-        npwbgtex.setMagfilter(Texture.FTNearest)
-        npwbgtex.setMinfilter(Texture.FTNearest)
-
-        self.createPartyFrame = DirectFrame( frameTexture = npwbgtex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -.25, .25 ), scale=0.1 )
-        self.createPartyFrame.setTransparency(True)
-        self.createPartyFrame.setPos(0, 0, -u*80)
-        
-        self.partyNameEntry = DirectEntry(
-            color = (0,0,0,0),
-            scale = scale,
-            numLines = 1,
-            focus = 1,
-            text_font = font,
-            text_fg = (.1875,.15625,.125,1),
-            text_shadow = (.5,.46484375,.40625,1),
-            parent = self.createPartyFrame,
-        )
-        self.partyNameEntry.setPos(-u*93, 0, -u*7)
-
-        self.mapMenu = DirectOptionMenu(
-            text = "options",
-            scale = scale, 
-            items = [ "Test City", "Test City 3", "Test City 65" ],
-            highlightColor = ( 0.65, 0.65, 0.65, 1 ),
-            text_font = font,
-            text_fg = (.1875,.15625,.125,1),
-            text_shadow = (.5,.46484375,.40625,1),
-            text_align = TextNode.ALeft,
-            rolloverSound = hover_snd,
-            clickSound = clicked_snd,
-            pressEffect = 0,
-            parent = self.createPartyFrame,
-        )
-        self.mapMenu.setPos(-u*10, 0, -u*7)
-        
-        createPartyButton = DirectButton(
-            text  = ("Create", "Create", "Create", "disabled"),
-            scale = scale,
-            text_font = font,
-            text_fg = (.1875,.15625,.125,1),
-            text_shadow = (.5,.46484375,.40625,1),
-            text_align = TextNode.ALeft,
-            parent = self.createPartyFrame,
-            rolloverSound = hover_snd,
-            clickSound = clicked_snd,
-            pressEffect = 0,
-            command = self.createparty
-        )
-        createPartyButton.setPos(u*70, 0, -u*7)
-        
-        seq2 = Sequence()
-        i2 = LerpScaleInterval(self.createPartyFrame, 0.1, 1, startScale=0.1 )
-        seq2.append(i2)
-        seq2.start()
+        self.partycreationwindow = GUI.PartyCreationWindow(self.createparty)
 
     def refreshParties(self):
         self.refreshpartiestask = taskMgr.doMethodLater(1, self.refreshPartiesTask, 'refreshPartiesTask')
@@ -197,19 +143,19 @@ class Client:
             self.party = party
             taskMgr.remove(self.refreshpartiestask)
             self.partiesWindow.destroy()
-            self.createPartyFrame.destroy()
+            self.partycreationwindow.frame.destroy()
             self.partygui()
 
     def createparty(self):
-        name = self.partyNameEntry.get()
-        mapname = self.mapMenu.get()
+        name = self.partycreationwindow.nameEntry.get()
+        mapname = self.partycreationwindow.mapOptionMenu.get()
 
         party = self.con.Send('ownparty', { 'name': name, 'mapname': mapname })
         if party:
             self.party = party
             taskMgr.remove(self.refreshpartiestask)
             self.partiesWindow.destroy()
-            self.createPartyFrame.destroy()
+            self.partycreationwindow.frame.destroy()
             self.partygui()
 
     def partygui(self):
