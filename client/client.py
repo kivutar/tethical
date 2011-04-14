@@ -8,12 +8,6 @@ import battle
 import Network
 import GUI
 
-font = loader.loadFont('fonts/fft.egg')
-u = 1.0/128.0
-scale = u*12.0
-hover_snd = base.loader.loadSfx("sounds/hover.ogg")
-clicked_snd = base.loader.loadSfx("sounds/clicked.ogg")
-
 class Client:
 
     def __init__(self):
@@ -43,21 +37,7 @@ class Client:
             self.loginwindow.commandanddestroy(self.partiesgui)
 
     def partiesgui(self):
-    
-        pwbgtex = loader.loadTexture('textures/gui/parties_window.png')
-        pwbgtex.setMagfilter(Texture.FTNearest)
-        pwbgtex.setMinfilter(Texture.FTNearest)
-    
-        self.partiesWindow = DirectFrame( frameTexture = pwbgtex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -1, 1 ), scale=0.1 )
-        self.partiesWindow.setTransparency(True)
-        self.partiesWindow.setPos(0, 0, u*21)
-        
-        seq = Sequence()
-        i = LerpScaleInterval(self.partiesWindow, 0.1, 1, startScale=0.1 )
-        seq.append(i)
-        seq.append(Func(self.refreshParties))
-        seq.start()
-        
+        self.partylistwindow = GUI.PartyListWindow(self.refreshParties, self.joinparty)
         self.partycreationwindow = GUI.PartyCreationWindow(self.createparty)
 
     def refreshParties(self):
@@ -66,75 +46,8 @@ class Client:
     def refreshPartiesTask(self, task):
         parties = self.con.Send('parties')
         if parties and parties != self.parties:
-
-            if hasattr(self, 'partiesWindow'):
-                self.partiesWindow.destroy()
-
-            bgtex = loader.loadTexture('textures/gui/parties_window.png')
-            bgtex.setMagfilter(Texture.FTNearest)
-            bgtex.setMinfilter(Texture.FTNearest)
-
-            self.partiesWindow = DirectFrame( frameTexture = bgtex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -1, 1 ) )
-            self.partiesWindow.setTransparency(True)
-            self.partiesWindow.setPos(0, 0, 0.15)
-
+            self.partylistwindow.refresh(parties)
             self.parties = parties
-            for i,key in enumerate(parties):
-                nameLabel = DirectLabel(
-                    color = (0,0,0,0),
-                    text = parties[key]['name'],
-                    scale = scale,
-                    text_font = font,
-                    text_fg = (.1875,.15625,.125,1),
-                    text_shadow = (.5,.46484375,.40625,1),
-                    text_align = TextNode.ALeft,
-                    parent = self.partiesWindow
-                )
-                nameLabel.setPos(-u*93, 0, u*49 - i*u*16)
-
-                creatorLabel = DirectLabel(
-                    color = (0,0,0,0),
-                    text = parties[key]['creator'],
-                    scale = scale,
-                    text_font = font,
-                    text_fg = (.1875,.15625,.125,1),
-                    text_shadow = (.5,.46484375,.40625,1),
-                    text_align = TextNode.ALeft,
-                    parent = self.partiesWindow
-                )
-                creatorLabel.setPos(-u*30, 0, u*49 - i*u*16)
-
-                mapLabel = DirectLabel(
-                    color = (0,0,0,0),
-                    text = parties[key]['map']['name'],
-                    scale = scale,
-                    text_font = font,
-                    text_fg = (.1875,.15625,.125,1),
-                    text_shadow = (.5,.46484375,.40625,1),
-                    text_align = TextNode.ALeft,
-                    parent = self.partiesWindow
-                )
-                mapLabel.setPos(u*20, 0, u*49 - i*u*16)
-                
-                joinPartyButton = DirectButton(
-                    text  = ("Join", "Join", "Join", "Full"),
-                    command = self.joinparty,
-                    extraArgs = [key],
-                    scale = scale,
-                    text_font = font,
-                    text_fg = (.1875,.15625,.125,1),
-                    text_shadow = (.5,.46484375,.40625,1),
-                    text_align = TextNode.ALeft,
-                    rolloverSound = hover_snd,
-                    clickSound = clicked_snd,
-                    pressEffect = 0,
-                    parent = self.partiesWindow
-                )
-                joinPartyButton.setPos(u*80, 0, u*49 - i*u*16)
-
-                if parties[key].has_key('player1') and parties[key].has_key('player2'):
-                    joinPartyButton['state'] = DGG.DISABLED
-
         return Task.again    
 
     def joinparty(self, key):
@@ -142,7 +55,7 @@ class Client:
         if party:
             self.party = party
             taskMgr.remove(self.refreshpartiestask)
-            self.partiesWindow.destroy()
+            self.partylistwindow.frame.destroy()
             self.partycreationwindow.frame.destroy()
             self.partygui()
 
@@ -154,7 +67,7 @@ class Client:
         if party:
             self.party = party
             taskMgr.remove(self.refreshpartiestask)
-            self.partiesWindow.destroy()
+            self.partylistwindow.frame.destroy()
             self.partycreationwindow.frame.destroy()
             self.partygui()
 
