@@ -32,6 +32,95 @@ class Background(DirectObject.DirectObject):
         seq.append( Func(command) )
         seq.start()
 
+class LoginWindow(DirectObject.DirectObject):
+
+    def __init__(self, command):
+        
+        tex = loader.loadTexture('textures/gui/login_window.png')
+        tex.setMagfilter(Texture.FTNearest)
+        tex.setMinfilter(Texture.FTNearest)
+
+        self.frame = DirectFrame( frameTexture = tex, color = (1, 1, 1, 1), frameSize = ( -.5, .5, -.25, .25 ), scale = 0.1 )
+        self.frame.setTransparency(True)
+
+        self.loginLabel = DirectLabel(
+            text = 'Username:',
+            color = (.62, .6, .5, 0),
+            scale = scale,
+            text_font = font,
+            text_fg = (.0625,.3125,.5,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            text_align = TextNode.ALeft,
+            parent = self.frame
+        )
+        self.loginLabel.setPos(-u*50, 0, u*3)
+
+        self.loginEntry = DirectEntry(
+            color = (.62, .6, .5, 0),
+            scale = scale,
+            numLines = 1,
+            focus = 1,
+            text_font = font,
+            text_fg = (.1875,.15625,.125,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            parent = self.frame
+        )
+        self.loginEntry.setPos(-u*6, 0, u*3)
+
+        self.passwordLabel = DirectLabel(
+            text = 'Password:',
+            color = (.62, .6, .5, 0),
+            scale = scale,
+            text_font = font,
+            text_fg = (.0625,.3125,.5,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            text_align = TextNode.ALeft,
+            parent = self.frame
+        )
+        self.passwordLabel.setPos(-u*50, 0, -u*13)
+
+        self.passwordEntry = DirectEntry(
+            color = (.62, .6, .5, 0),
+            scale = scale,
+            numLines = 1,
+            text_font = font,
+            text_fg = (.1875,.15625,.125,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            obscured = True,
+            parent = self.frame
+        )
+        self.passwordEntry.setPos(-u*6, 0, -u*13)
+
+        connectButton = DirectButton(
+            scale = scale,
+            text  = ("Connect", "Connect", "Connect", "disabled"),
+            command = command,
+            color = (.62, .6, .5, 1),
+            text_font = font,
+            text_fg = (.1875,.15625,.125,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            rolloverSound = hover_snd,
+            clickSound = clicked_snd,
+            pressEffect = 0,
+            pad = (.15,.15),
+            parent = self.frame
+        )
+        connectButton.setPos(u*38, 0, -u*40)
+
+        seq = Sequence()
+        i = LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1 )
+        seq.append(i)
+        seq.start()
+
+    def commandanddestroy(self, command):
+        seq = Sequence()
+        i = LerpScaleInterval(self.frame, 0.1, 0.1, startScale=1 )
+        seq.append(i)
+        seq.append( Func(self.frame.destroy) )
+        seq.append( Wait(0.5) )
+        seq.append( Func(command) )
+        seq.start()
+
 class Menu(object):
 
     displayed = False

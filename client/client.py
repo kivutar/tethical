@@ -31,96 +31,16 @@ class Client:
         self.background = GUI.Background(self.logingui)
 
     def logingui(self):
-    
-        bgtex = loader.loadTexture('textures/gui/login_window.png')
-        bgtex.setMagfilter(Texture.FTNearest)
-        bgtex.setMinfilter(Texture.FTNearest)
 
-        self.loginWindow = DirectFrame( frameTexture = bgtex, color = (1, 1, 1, 1), frameSize = ( -.5, .5, -.25, .25 ), scale = 0.1 )
-        self.loginWindow.setTransparency(True)
-
-        self.loginLabel = DirectLabel(
-            text = 'Username:',
-            color = (.62, .6, .5, 0),
-            scale = scale,
-            text_font = font,
-            text_fg = (.0625,.3125,.5,1),
-            text_shadow = (.5,.46484375,.40625,1),
-            text_align = TextNode.ALeft
-        )
-        self.loginLabel.reparentTo( self.loginWindow )
-        self.loginLabel.setPos(-u*50, 0, u*3)
-
-        self.loginEntry = DirectEntry(
-            color = (.62, .6, .5, 0),
-            scale = scale,
-            numLines = 1,
-            focus = 1,
-            text_font = font,
-            text_fg = (.1875,.15625,.125,1),
-            text_shadow = (.5,.46484375,.40625,1)
-        )
-        self.loginEntry.reparentTo( self.loginWindow )
-        self.loginEntry.setPos(-u*6, 0, u*3)
-
-        self.passwordLabel = DirectLabel(
-            text = 'Password:',
-            color = (.62, .6, .5, 0),
-            scale = scale,
-            text_font = font,
-            text_fg = (.0625,.3125,.5,1),
-            text_shadow = (.5,.46484375,.40625,1),
-            text_align = TextNode.ALeft
-        )
-        self.passwordLabel.reparentTo( self.loginWindow )
-        self.passwordLabel.setPos(-u*50, 0, -u*13)
-
-        self.passwordEntry = DirectEntry(
-            color = (.62, .6, .5, 0),
-            scale = scale,
-            numLines = 1,
-            text_font = font,
-            text_fg = (.1875,.15625,.125,1),
-            text_shadow = (.5,.46484375,.40625,1),
-            obscured = True
-        )
-        self.passwordEntry.reparentTo( self.loginWindow )
-        self.passwordEntry.setPos(-u*6, 0, -u*13)
-
-        connectButton = DirectButton(
-            scale = scale,
-            text  = ("Connect", "Connect", "Connect", "disabled"),
-            command = self.login,
-            color = (.62, .6, .5, 1),
-            text_font = font,
-            text_fg = (.1875,.15625,.125,1),
-            text_shadow = (.5,.46484375,.40625,1),
-            rolloverSound = hover_snd,
-            clickSound = clicked_snd,
-            pressEffect = 0,
-            pad = (.15,.15)
-        )
-        connectButton.reparentTo( self.loginWindow )
-        connectButton.setPos(u*38, 0, -u*40)
-        
-        seq = Sequence()
-        i = LerpScaleInterval(self.loginWindow, 0.1, 1, startScale=0.1 )
-        seq.append(i)
-        seq.start()
+        self.loginwindow = GUI.LoginWindow(self.login)
 
     def login(self):
-        login = self.loginEntry.get()
-        password = self.passwordEntry.get()
+        login = self.loginwindow.loginEntry.get()
+        password = self.loginwindow.passwordEntry.get()
 
         rsp = self.con.Send('login', { 'login': login, 'pass': password })
         if rsp:
-            seq = Sequence()
-            i = LerpScaleInterval(self.loginWindow, 0.1, 0.1, startScale=1 )
-            seq.append(i)
-            seq.append( Func(self.loginWindow.destroy) )
-            seq.append( Wait(0.5) )
-            seq.append( Func(self.partiesgui) )
-            seq.start()
+            self.loginwindow.commandanddestroy(self.partiesgui)
 
     def partiesgui(self):
     
