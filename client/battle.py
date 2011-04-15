@@ -1,10 +1,8 @@
 import direct.directbase.DirectStart
-from panda3d.core import CollisionTraverser, CollisionNode
-from panda3d.core import CollisionHandlerQueue, CollisionRay
 from panda3d.core import AmbientLight, DirectionalLight, LightAttrib
 from panda3d.core import TransparencyAttrib
 from panda3d.core import TextNode
-from panda3d.core import Point3, Vec3, Vec4, BitMask32
+from panda3d.core import Point3, Vec3, Vec4
 from direct.interval.IntervalGlobal import LerpPosInterval, LerpColorInterval, LerpHprInterval, Sequence, Func, Wait, Parallel
 from direct.showbase.DirectObject import DirectObject
 from direct.task.Task import Task
@@ -24,25 +22,10 @@ class Battle(DirectObject):
         self.con = con
         self.party = party
         self.phase = None
+        self.subphase = None
         self.queue = []
 
         self.camhandler = CameraHandler.CameraHandler()
-
-        # Collision stuff
-        self.picker = CollisionTraverser()
-        self.pq     = CollisionHandlerQueue()
-        self.pickerNode = CollisionNode('mouseRay')
-        self.pickerNP = camera.attachNewNode(self.pickerNode)
-        self.pickerNode.setFromCollideMask(BitMask32.bit(1))
-        self.pickerRay = CollisionRay()
-        self.pickerNode.addSolid(self.pickerRay)
-        self.picker.addCollider(self.pickerNP, self.pq)
-        self.hix = False
-        self.hiy = False
-        self.hiz = False
-        self.ox = False
-        self.oy = False
-        self.oz = False
         
         self.lightScene()
         
@@ -82,7 +65,6 @@ class Battle(DirectObject):
                         self.tiles[x][y][z].setColor( 0, 0, 0, 0 )
                         
                         # Collision stuff
-                        self.tiles[x][y][z].find("**/polygon").node().setIntoCollideMask( BitMask32.bit(1) )
                         self.tiles[x][y][z].find("**/polygon").node().setTag('x', str(x))
                         self.tiles[x][y][z].find("**/polygon").node().setTag('y', str(y))
                         self.tiles[x][y][z].find("**/polygon").node().setTag('z', str(z))
@@ -116,15 +98,34 @@ class Battle(DirectObject):
         self.drawBackground()
 
         # Tasks
-        self.hightlightTileTask     = taskMgr.add(self.hightlightTileTask    , 'hightlightTileTask'    )
         self.characterDirectionTask = taskMgr.add(self.characterDirectionTask, 'characterDirectionTask')
         self.otherPlayersTask       = taskMgr.add(self.otherPlayersTask      , 'otherPlayersTask'      )
         self.dequeue                = taskMgr.add(self.dequeue               , 'dequeue'      )
 
         # Inputs
-        self.accept("mouse1", self.onTileClicked)
+        self.accept("b", self.onCircleClicked)
+        self.accept("space", self.onCrossClicked)
+        self.accept("arrow_up", lambda: self.onArrowClicked('up'))
+        self.accept("arrow_down", lambda: self.onArrowClicked('down'))
+        self.accept("arrow_left", lambda: self.onArrowClicked('left'))
+        self.accept("arrow_right", lambda: self.onArrowClicked('right'))
+        self.accept("arrow_up-repeat", lambda: self.onArrowClicked('up'))
+        self.accept("arrow_down-repeat", lambda: self.onArrowClicked('down'))
+        self.accept("arrow_left-repeat", lambda: self.onArrowClicked('left'))
+        self.accept("arrow_right-repeat", lambda: self.onArrowClicked('right'))
         self.accept('escape', sys.exit)
 
+        # Cursor stuff
+        self.cux = False
+        self.cuy = False
+        self.cuz = False
+        self.cursor = loader.loadModel( "models/slopes/"+slope )
+        self.cursor.reparentTo( self.tileRoot )
+        self.cursor.setScale(3.0)
+        self.cursor.setTransparency(TransparencyAttrib.MAlpha)
+        self.cursor.setColor( 1, 1, 1, .5 )
+
+        # Battle intro animation
         seq = Sequence()
         i1 = LerpColorInterval(transitionframe, 5, (0,0,0,0), startColor=(0,0,0,1))
         (cx, cy, cz) = self.camhandler.container.getPos()
@@ -154,9 +155,7 @@ class Battle(DirectObject):
                                 self.camhandler.move(self.logic2terrain((x, y, z)))
                                 self.showAT(self.sprites[charid])
 
-                                if self.charcard:
-                                    self.charcard.hide()
-                                self.charcard = GUI.CharCard(char)
+                                self.updateCursorPos((x,y,z))
 
                                 if self.charcard2:
                                     self.charcard2.hide()
@@ -340,39 +339,41 @@ class Battle(DirectObject):
 
 ### Events
 
+    def updateCursorPos(self, pos):
+        self.camhandler.move(self.logic2terrain(pos))
+        self.cursor.setPos(self.logic2terrain((pos[0], pos[1], pos[2]+0.05)))
+        self.cux = pos[0]
+        self.cuy = pos[1]
+        self.cuz = pos[2]
+
+        charid = self.tiles[self.cux][self.cuy][self.cuz].find("**/polygon").node().getTag('char')
+        
+        if self.charcard:
+            self.charcard.hide()
+        
+        if charid and charid != '0':
+            char = self.party['chars'][charid]
+            self.charcard = GUI.CharCard(char)
+
     # You clicked on a tile, this can mean different things, so this is a dispatcher
-    def onTileClicked(self):
-        if self.phase == 'tile' and self.hix is not False and self.party['yourturn']:
+    def onCircleClicked(self):
+        if self.phase == 'tile' and self.cux is not False and self.party['yourturn']:
 
             if self.charcard2:
                 self.charcard2.hide()
 
-            charid = self.pq.getEntry(0).getIntoNode().getTag('char')
-        
-            # focus the camera on the selected tile
-            self.camhandler.move(self.logic2terrain((self.hix, self.hiy, self.hiz)))
-
+            charid = self.tiles[self.cux][self.cuy][self.cuz].find("**/polygon").node().getTag('char')
+            
             # we clicked an active walkable tile, let's move the character
-            active = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('active')
+            active = self.tiles[self.cux][self.cuy][self.cuz].find("**/polygon").node().getTag('active')
             if active and active != '0':
                 self.clicked_snd.play()
-                dest = (self.hix, self.hiy, self.hiz)
+                dest = (self.cux, self.cuy, self.cuz)
                 self.path(active, dest)
                 return
-
-            # cancel walkable
-            walkable = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('walkable')
-            if not walkable or walkable != '1':
-                self.clearWalkables()
-                if charid == '0':
-                    self.cancel_snd.play()
-
-            # cancel attackable
-            attackable = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('attackable')
-            if not attackable or attackable == '0':
-                self.clearAttackables()
-                if charid == '0':
-                    self.cancel_snd.play()
+            
+            walkable = self.tiles[self.cux][self.cuy][self.cuz].find("**/polygon").node().getTag('walkable')
+            attackable = self.tiles[self.cux][self.cuy][self.cuz].find("**/polygon").node().getTag('attackable')
 
             # we clicked on a character
             if charid != '0':
@@ -385,14 +386,89 @@ class Battle(DirectObject):
                 # we clicked on the currently active character, let's display the menu
                 elif self.party['chars'][charid]['active'] and self.party['yourturn']:
                     self.turn()
-                
-                # we clicked on a random character, let's draw its walkable zone
-                else:
-                    self.charcard2 = GUI.CharCard2(self.party['chars'][charid])
+            else:
+                self.clicked_snd.play()
+                self.turn()
+    
+    def onCrossClicked(self):
+        if self.phase == 'tile' and self.cux is not False and self.party['yourturn']:
+
+            if self.subphase == 'free':
+                charid = self.tiles[self.cux][self.cuy][self.cuz].find("**/polygon").node().getTag('char')
+
+                # we clicked on a character
+                if charid != '0':
                     walkables = self.con.Send('char/'+charid+'/walkables')
                     if walkables:
+                        self.clicked_snd.play()
                         self.drawWalkables(walkables)
                         self.tagWalkables(charid, walkables, False)
+                        self.subphase = 'passivewalkables'
+
+            elif self.subphase == 'passivewalkables':
+                self.clearWalkables()
+                self.cancel_snd.play()
+                self.subphase = 'free'
+
+            elif self.subphase == 'move':
+                self.clearWalkables()
+                self.cancel_snd.play()
+                self.subphase = None
+                self.turn()
+    
+    def onArrowClicked(self, direction):
+        h = self.camhandler.container.getH()
+        while h > 180:
+            h -= 360
+        while h < -180:
+            h += 360
+
+        if direction == 'up':
+            if h >=    0 and h <  90:
+                self.findTileAndUpdateCursorPos((self.cux+1,self.cuy))
+            if h >=  -90 and h <   0:
+                self.findTileAndUpdateCursorPos((self.cux,self.cuy-1))
+            if h >= -180 and h < -90:
+                self.findTileAndUpdateCursorPos((self.cux-1,self.cuy))
+            if h >=   90 and h < 180:
+                self.findTileAndUpdateCursorPos((self.cux,self.cuy+1))
+        elif direction == 'down':
+            if h >=    0 and h <  90:
+                self.findTileAndUpdateCursorPos((self.cux-1,self.cuy))
+            if h >=  -90 and h <   0:
+                self.findTileAndUpdateCursorPos((self.cux,self.cuy+1))
+            if h >= -180 and h < -90:
+                self.findTileAndUpdateCursorPos((self.cux+1,self.cuy))
+            if h >=   90 and h < 180:
+                self.findTileAndUpdateCursorPos((self.cux,self.cuy-1))
+        elif direction == 'left':
+            if h >=    0 and h <  90:
+                self.findTileAndUpdateCursorPos((self.cux,self.cuy+1))
+            if h >=  -90 and h <   0:
+                self.findTileAndUpdateCursorPos((self.cux+1,self.cuy))
+            if h >= -180 and h < -90:
+                self.findTileAndUpdateCursorPos((self.cux,self.cuy-1))
+            if h >=   90 and h < 180:
+                self.findTileAndUpdateCursorPos((self.cux-1,self.cuy))
+        elif direction == 'right':
+            if h >=    0 and h <  90:
+                self.findTileAndUpdateCursorPos((self.cux,self.cuy-1))
+            if h >=  -90 and h <   0:
+                self.findTileAndUpdateCursorPos((self.cux-1,self.cuy))
+            if h >= -180 and h < -90:
+                self.findTileAndUpdateCursorPos((self.cux,self.cuy+1))
+            if h >=   90 and h < 180:
+                self.findTileAndUpdateCursorPos((self.cux+1,self.cuy))
+
+    def findTileAndUpdateCursorPos(self, pos):
+        cux, cuy = pos
+        for x,xs in enumerate(self.party['map']['tiles']):
+            for y,ys in enumerate(xs):
+                for z,zs in enumerate(ys):
+                    if not self.party['map']['tiles'][x][y][z] is None:
+                        if cux == x and cuy == y:
+                            self.hover_snd.play()
+                            self.updateCursorPos((x, y, z))
 
     # Move button clicked
     def onMoveClicked(self, charid):
@@ -400,14 +476,17 @@ class Battle(DirectObject):
         if walkables:
             GUI.Help(
                 'move_help',
-                lambda: self.setupTileChooser(charid, walkables)
+                lambda: self.setupWalkableTileChooser(charid, walkables)
             )
     
-    def setupTileChooser(self, charid, walkables):
+    def setupWalkableTileChooser(self, charid, walkables):
         self.phase = 'tile'
+        self.subphase = 'move'
         self.camhandler.phase = 'tile'
         self.drawWalkables(walkables)
         self.tagWalkables(charid, walkables, True)
+        if self.charcard2:
+            self.charcard2.hide()
 
     # Attack button clicked
     def onAttackClicked(self, charid):
@@ -433,7 +512,10 @@ class Battle(DirectObject):
     # Cancel button clicked
     def onCancelClicked(self, charid):
         self.phase = 'tile'
+        self.subphase = 'free'
         self.camhandler.phase = 'tile'
+        if self.charcard2:
+            self.charcard2.hide()
 
     def directionChosen(self, charid, direction):
         res = self.con.Send('char/'+charid+'/wait/'+direction)
@@ -506,61 +588,6 @@ class Battle(DirectObject):
             log = self.con.Send('otherplayers')
             if log:
                 self.queue.append(log)
-
-        return Task.cont
-
-    # This task highlights the tile on mouse over
-    def hightlightTileTask(self, task):
-
-        if self.phase == 'tile':
-
-            # unhighlight previous tile
-            if self.hix is not False:
-                walkable   = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('walkable')
-                attackable = self.tiles[self.hix][self.hiy][self.hiz].find("**/polygon").node().getTag('attackable')
-                if walkable == '1':
-                    self.tiles[self.hix][self.hiy][self.hiz].setColor(0.0, 0.0, 1.0, 0.75)
-                elif attackable and attackable != '0':
-                    self.tiles[self.hix][self.hiy][self.hiz].setColor(1.0, 0.0, 0.0, 0.75)
-                else:
-                    self.tiles[self.hix][self.hiy][self.hiz].setColor(0, 0, 0, 0)
-                self.coords.setText('')
-                self.hix = False
-                self.hiy = False
-                self.hiz = False
-
-            # highlight new tile
-            if base.mouseWatcherNode.hasMouse():
-                mpos = base.mouseWatcherNode.getMouse()
-
-                self.pickerRay.setFromLens(base.camNode, mpos.getX(), mpos.getY())
-                self.picker.traverse(self.tileRoot)
-
-                if self.pq.getNumEntries() > 0:
-
-                    self.pq.sortEntries()
-                    x = int(self.pq.getEntry(0).getIntoNode().getTag('x'))
-                    y = int(self.pq.getEntry(0).getIntoNode().getTag('y'))
-                    z = int(self.pq.getEntry(0).getIntoNode().getTag('z'))
-                    charid = self.pq.getEntry(0).getIntoNode().getTag('char')
-                    self.tiles[x][y][z].setColor(0.0,1.0,0.0,0.75)
-                    self.coords.setText(str(z/2.0)+'h')
-                    self.hix = x
-                    self.hiy = y
-                    self.hiz = z
-
-                    if self.ox != x or self.oy != y or self.oz != z:
-                        self.hover_snd.play()
-                        self.ox = x
-                        self.oy = y
-                        self.oz = z
-                        
-                        if self.charcard:
-                            self.charcard.hide()
-                        
-                        if charid and charid != '0':
-                            char = self.party['chars'][charid]
-                            self.charcard = GUI.CharCard(char)
 
         return Task.cont
 
