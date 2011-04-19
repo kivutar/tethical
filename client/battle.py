@@ -100,20 +100,7 @@ class Battle(DirectObject):
         # Tasks
         self.characterDirectionTask = taskMgr.add(self.characterDirectionTask, 'characterDirectionTask')
         self.otherPlayersTask       = taskMgr.add(self.otherPlayersTask      , 'otherPlayersTask'      )
-        self.dequeue                = taskMgr.add(self.dequeue               , 'dequeue'      )
-
-        # Inputs
-        self.accept("b", self.onCircleClicked)
-        self.accept("space", self.onCrossClicked)
-        self.accept("arrow_up", lambda: self.onArrowClicked('up'))
-        self.accept("arrow_down", lambda: self.onArrowClicked('down'))
-        self.accept("arrow_left", lambda: self.onArrowClicked('left'))
-        self.accept("arrow_right", lambda: self.onArrowClicked('right'))
-        self.accept("arrow_up-repeat", lambda: self.onArrowClicked('up'))
-        self.accept("arrow_down-repeat", lambda: self.onArrowClicked('down'))
-        self.accept("arrow_left-repeat", lambda: self.onArrowClicked('left'))
-        self.accept("arrow_right-repeat", lambda: self.onArrowClicked('right'))
-        self.accept('escape', sys.exit)
+        self.dequeue                = taskMgr.add(self.dequeue               , 'dequeue'               )
 
         # Cursor stuff
         self.cux = False
@@ -611,6 +598,20 @@ class Battle(DirectObject):
     def setPhase(self, phase):
         self.phase = phase
         self.camhandler.phase = phase
+        
+        if phase == 'tile':
+            self.accept("b", self.onCircleClicked)
+            self.accept("space", self.onCrossClicked)
+            self.accept("arrow_up", lambda: self.onArrowClicked('up'))
+            self.accept("arrow_down", lambda: self.onArrowClicked('down'))
+            self.accept("arrow_left", lambda: self.onArrowClicked('left'))
+            self.accept("arrow_right", lambda: self.onArrowClicked('right'))
+            self.accept("arrow_up-repeat", lambda: self.onArrowClicked('up'))
+            self.accept("arrow_down-repeat", lambda: self.onArrowClicked('down'))
+            self.accept("arrow_left-repeat", lambda: self.onArrowClicked('left'))
+            self.accept("arrow_right-repeat", lambda: self.onArrowClicked('right'))
+        else:
+            self.ignoreAll()
 
 # Graphic
 
