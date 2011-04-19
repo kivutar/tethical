@@ -460,6 +460,7 @@ class Battle(DirectObject):
     def onMoveClicked(self, charid):
         walkables = self.con.Send('char/'+charid+'/walkables')
         if walkables:
+            self.setPhase('gui')
             GUI.Help(
                 'move_help',
                 lambda: self.setupWalkableTileChooser(charid, walkables)
@@ -482,6 +483,7 @@ class Battle(DirectObject):
 
     # Wait button clicked
     def onWaitClicked(self, charid):
+        self.setPhase('gui')
         GUI.Help(
             'direction_help',
             lambda: self.setupDirectionChooser(charid)
@@ -490,7 +492,7 @@ class Battle(DirectObject):
     def setupDirectionChooser(self, charid):
         self.setPhase('direction')
         self.hideAT()
-        Direction.Chooser(charid, self.sprites[charid], self.directionChosen, self.turn)
+        Direction.Chooser(charid, self.sprites[charid], self.camhandler, self.directionChosen, self.turn)
 
     # Cancel button clicked
     def onCancelClicked(self, charid):

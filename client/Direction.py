@@ -4,25 +4,15 @@ from direct.task.Task import Task
 
 class Chooser(DirectObject.DirectObject):
     
-    def __init__(self, charid, sprite, callback, cancelcallback):
+    def __init__(self, charid, sprite, camhandler, callback, cancelcallback):
     
-        self.charid   = charid
-        self.sprite   = sprite
+        self.charid = charid
+        self.sprite = sprite
+        self.camhandler = camhandler
         self.callback = callback
         self.cancelcallback = cancelcallback
         self.initdir  = self.sprite.realdir
-
-        # Collision stuff
-        self.picker = CollisionTraverser()
-        self.pq     = CollisionHandlerQueue()
-        pickerNode = CollisionNode('mouseRay')
-        pickerNP = camera.attachNewNode(pickerNode)
-        pickerNode.setFromCollideMask(BitMask32.bit(1))
-        self.pickerRay = CollisionRay()
-        pickerNode.addSolid(self.pickerRay)
-        self.picker.addCollider(pickerNP, self.pq)
         self.hidir = None
-        self.odir = False
 
         # Textures
         self.readytex = loader.loadTexture('textures/gui/direction.png')
@@ -42,7 +32,6 @@ class Chooser(DirectObject.DirectObject):
 
         # Buttons container
         self.directionRoot = sprite.node.attachNewNode( "directionRoot" )
-        #self.directionRoot.setPos(-.5,0,0)
 
         directionsdata = [
             { 'direction': '1', 'pos': ( 1.45, 0.0, 5) },
@@ -60,45 +49,98 @@ class Chooser(DirectObject.DirectObject):
             card.reparentTo(self.directionRoot)
             card.setPos(directiondata['pos'])
             card.setScale(.8)
-            card.node().setIntoCollideMask( BitMask32.bit(1) )
-            card.node().setTag('direction', directiondata['direction'])
+
             self.directionbuttons.append(card)
 
-        self.directiontask = taskMgr.add( self.hightlightDirectionTask, 'hightlightDirectionTask' )
-        self.accept("mouse1", self.clicked)
+            if int(directiondata['direction']) == int(self.initdir):
+                self.hidir = directiondata['direction']
+                card.setTexture(self.hovertex)
 
-    def clicked(self):
-        self.directiontask.remove()
+        self.accept("b", self.onCircleClicked)
+        self.accept("space", self.onCrossClicked)
+        self.accept("arrow_up", lambda: self.onArrowClicked('up'))
+        self.accept("arrow_down", lambda: self.onArrowClicked('down'))
+        self.accept("arrow_left", lambda: self.onArrowClicked('left'))
+        self.accept("arrow_right", lambda: self.onArrowClicked('right'))
+
+    def onCircleClicked(self):
         self.directionRoot.removeNode()
         self.ignoreAll()
-        if self.hidir:
-            self.clicked_snd.play()
-            self.callback(self.charid, self.hidir)
-        else:
-            self.cancel_snd.play()
-            self.sprite.setRealDir(self.initdir)
-            self.cancelcallback()
+        self.clicked_snd.play()
+        self.callback(self.charid, self.hidir)
 
-    def hightlightDirectionTask(self, task):
+    def onCrossClicked(self):
+        self.directionRoot.removeNode()
+        self.ignoreAll()
+        self.cancel_snd.play()
+        self.sprite.setRealDir(self.initdir)
+        self.cancelcallback()
+
+    def onArrowClicked(self, direction):
+
+        self.hover_snd.play()
+
         for directionbutton in self.directionbuttons:
             directionbutton.setTexture(self.readytex)
-        self.hidir = None
 
-        if base.mouseWatcherNode.hasMouse():
-            mpos = base.mouseWatcherNode.getMouse()
-            self.pickerRay.setFromLens(base.camNode, mpos.getX(), mpos.getY())
-            self.picker.traverse(self.directionRoot)
+        h = self.camhandler.container.getH()
+        while h > 180:
+            h -= 360
+        while h < -180:
+            h += 360
 
-            if self.pq.getNumEntries() > 0:
-                self.pq.sortEntries()
-                NodePath(self.pq.getEntry(0).getIntoNode()).setTexture(self.hovertex)
-                self.hidir = self.pq.getEntry(0).getIntoNode().getTag('direction')
-                if not self.odir:
-                    self.hover_snd.play()
-                    self.sprite.setRealDir(self.hidir)
-                    self.odir = True
-            else:
-                self.odir = False
+        if direction == 'up':
+            if h >=    0 and h <  90:
+                self.directionbuttons[0].setTexture(self.hovertex)
+                self.hidir = '1'
+            if h >=  -90 and h <   0:
+                self.directionbuttons[3].setTexture(self.hovertex)
+                self.hidir = '4'
+            if h >= -180 and h < -90:
+                self.directionbuttons[2].setTexture(self.hovertex)
+                self.hidir = '3'
+            if h >=   90 and h < 180:
+                self.directionbuttons[1].setTexture(self.hovertex)
+                self.hidir = '2'
+        elif direction == 'down':
+            if h >=    0 and h <  90:
+                self.directionbuttons[2].setTexture(self.hovertex)
+                self.hidir = '3'
+            if h >=  -90 and h <   0:
+                self.directionbuttons[1].setTexture(self.hovertex)
+                self.hidir = '2'
+            if h >= -180 and h < -90:
+                self.directionbuttons[0].setTexture(self.hovertex)
+                self.hidir = '1'
+            if h >=   90 and h < 180:
+                self.directionbuttons[3].setTexture(self.hovertex)
+                self.hidir = '4'
+        elif direction == 'left':
+            if h >=    0 and h <  90:
+                self.directionbuttons[1].setTexture(self.hovertex)
+                self.hidir = '2'
+            if h >=  -90 and h <   0:
+                self.directionbuttons[0].setTexture(self.hovertex)
+                self.hidir = '1'
+            if h >= -180 and h < -90:
+                self.directionbuttons[3].setTexture(self.hovertex)
+                self.hidir = '4'
+            if h >=   90 and h < 180:
+                self.directionbuttons[2].setTexture(self.hovertex)
+                self.hidir = '3'
+        elif direction == 'right':
+            if h >=    0 and h <  90:
+                self.directionbuttons[3].setTexture(self.hovertex)
+                self.hidir = '4'
+            if h >=  -90 and h <   0:
+                self.directionbuttons[2].setTexture(self.hovertex)
+                self.hidir = '3'
+            if h >= -180 and h < -90:
+                self.directionbuttons[1].setTexture(self.hovertex)
+                self.hidir = '2'
+            if h >=   90 and h < 180:
+                self.directionbuttons[0].setTexture(self.hovertex)
+                self.hidir = '1'
 
-        return Task.cont
+        self.sprite.setRealDir(self.hidir)
 
