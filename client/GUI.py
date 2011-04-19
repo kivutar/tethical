@@ -377,7 +377,7 @@ class Help(DirectObject.DirectObject):
         self.frame.setPos(0, 0, .25)
         self.frame.setTransparency(True)
 
-        self.accept("mouse1", lambda: self.commandanddestroy(command) )
+        self.accept("b", lambda: self.commandanddestroy(command) )
 
     def commandanddestroy(self, command):
         self.ignoreAll()
