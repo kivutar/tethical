@@ -173,8 +173,7 @@ class Battle(DirectObject):
             self.party = party
 
     def showMenu(self, charid):
-        self.phase = 'gui'
-        self.camhandler.phase = 'gui'
+        self.setPhase('gui')
         menu = GUI.Menu( self.party['chars'][charid],
             lambda: self.onMoveClicked(charid),
             lambda: self.onAttackClicked(charid),
@@ -480,9 +479,8 @@ class Battle(DirectObject):
             )
     
     def setupWalkableTileChooser(self, charid, walkables):
-        self.phase = 'tile'
+        self.setPhase('tile')
         self.subphase = 'move'
-        self.camhandler.phase = 'tile'
         self.drawWalkables(walkables)
         self.tagWalkables(charid, walkables, True)
         if self.charcard2:
@@ -492,8 +490,7 @@ class Battle(DirectObject):
     def onAttackClicked(self, charid):
         attackables = self.con.Send('char/'+charid+'/attackables')
         if attackables:
-            self.phase = 'tile'
-            self.camhandler.phase = 'tile'
+            self.setPhase('tile')
             self.drawAndTagAttackables(charid, attackables)
 
     # Wait button clicked
@@ -504,16 +501,14 @@ class Battle(DirectObject):
         )
     
     def setupDirectionChooser(self, charid):
-        self.phase = 'direction'
-        self.camhandler.phase = 'direction'
+        self.setPhase('direction')
         self.hideAT()
         Direction.Chooser(charid, self.sprites[charid], self.directionChosen, self.turn)
 
     # Cancel button clicked
     def onCancelClicked(self, charid):
-        self.phase = 'tile'
+        self.setPhase('tile')
         self.subphase = 'free'
-        self.camhandler.phase = 'tile'
         if self.charcard2:
             self.charcard2.hide()
 
@@ -615,6 +610,7 @@ class Battle(DirectObject):
 
     def setPhase(self, phase):
         self.phase = phase
+        self.camhandler.phase = phase
 
 # Graphic
 
