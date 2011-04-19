@@ -129,6 +129,8 @@ class Battle(DirectObject):
     # The main dispatcher
     def turn(self):
         self.updateParty()
+        self.clearAttackables()
+        self.clearWalkables()
 
         for x,xs in enumerate(self.party['map']['tiles']):
             for y,ys in enumerate(xs):
@@ -371,6 +373,7 @@ class Battle(DirectObject):
             
                 # we clicked on the currently active character, let's display the menu
                 elif self.party['chars'][charid]['active'] and self.party['yourturn']:
+                    
                     self.turn()
             else:
                 self.clicked_snd.play()
@@ -398,6 +401,11 @@ class Battle(DirectObject):
 
             elif self.subphase == 'move':
                 self.clearWalkables()
+                self.cancel_snd.play()
+                self.subphase = None
+                self.turn()
+            elif self.subphase == 'attack':
+                self.clearAttackables()
                 self.cancel_snd.play()
                 self.subphase = None
                 self.turn()
@@ -483,6 +491,7 @@ class Battle(DirectObject):
         attackables = self.con.Send('char/'+charid+'/attackables')
         if attackables:
             self.setPhase('tile')
+            self.subphase = 'attack'
             self.drawAndTagAttackables(charid, attackables)
 
     # Wait button clicked
