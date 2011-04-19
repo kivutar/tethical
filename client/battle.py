@@ -465,6 +465,10 @@ class Battle(DirectObject):
                 'move_help',
                 lambda: self.setupWalkableTileChooser(charid, walkables)
             )
+        else:
+            #TODO: show message "no walkable tile"
+            print "no walkable tile"
+            self.turn()
     
     def setupWalkableTileChooser(self, charid, walkables):
         self.setPhase('tile')
