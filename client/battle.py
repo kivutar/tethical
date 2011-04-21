@@ -32,7 +32,7 @@ class Battle(DirectObject):
         # Display the terrain
         terrain = loader.loadModel( 'models/maps/'+self.party['map']['model']+'.egg' )
         terrain.reparentTo( render )
-        terrain.setScale( 1.5 )
+        terrain.setScale( 1.5, 1.5, 6.0/7.0*1.5 )
         
         # Play the background music
         music = base.loader.loadSfx('music/'+self.party['map']['music']+'.ogg')
@@ -595,7 +595,7 @@ class Battle(DirectObject):
         return Point3(
             ( x - self.party['map']['x']/2 ) * 3.0,
             ( y - self.party['map']['y']/2 ) * 3.0,
-            ( z / 4.0 )                      * 3.0,
+            ( z / 4.0 )                      * 6.0/7.0*3.0,
         )
 
     # Used for debug purpose
