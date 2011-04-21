@@ -592,7 +592,11 @@ class Battle(DirectObject):
 
     def logic2terrain(self, tile):
         (x, y, z) = tile
-        return Point3((x-4)*3.0, (y-5)*3.0, (z/4.0)*3.0)
+        return Point3(
+            ( x - self.party['map']['x']/2 ) * 3.0,
+            ( y - self.party['map']['y']/2 ) * 3.0,
+            ( z / 4.0 )                      * 3.0,
+        )
 
     # Used for debug purpose
     def charStats(self, charid):
