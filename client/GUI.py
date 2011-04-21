@@ -10,6 +10,7 @@ from pandac.PandaModules import *
 u = 1.0/128.0
 hover_snd = base.loader.loadSfx("sounds/hover.ogg")
 clicked_snd = base.loader.loadSfx("sounds/clicked.ogg")
+cancel_snd = base.loader.loadSfx("sounds/cancel.ogg")
 scale = u*12.0
 font = loader.loadFont('fonts/fft.egg')
 
@@ -266,97 +267,103 @@ class Menu(DirectObject.DirectObject):
 
     def __init__(self, char, movecommand, attackcommand, waitcommand, cancelcommand):
 
-        # Menu frame
+        self.offset = 22
+        self.height = 16
+        self.index = 0
+        self.cancelcommand = cancelcommand
+
+        self.buttons = [
+            { 'text': 'Move',   'enabled': char['canmove'], 'pos': (-u*36.5,0,u*(self.offset-self.height*0)), 'command': movecommand   },
+            { 'text': 'Attack', 'enabled': char['canact' ], 'pos': (-u*36.5,0,u*(self.offset-self.height*1)), 'command': attackcommand },
+            { 'text': 'Wait',   'enabled': True           , 'pos': (-u*36.5,0,u*(self.offset-self.height*2)), 'command': waitcommand   },
+            { 'text': 'Status', 'enabled': False          , 'pos': (-u*36.5,0,u*(self.offset-self.height*3)), 'command': cancelcommand },
+        ]
+
         menutexture = loader.loadTexture('textures/gui/menu.png')
         menutexture.setMagfilter(Texture.FTNearest)
         menutexture.setMinfilter(Texture.FTNearest)
 
-        self.frame = DirectFrame(frameTexture = menutexture,
-                                frameColor=(1, 1, 1, 1),
-                                frameSize = ( -.25, .25, -.5, .5 ))
-        self.frame.setPos(.75, 0, 0)
+        handtexture = loader.loadTexture('textures/gui/hand.png')
+        handtexture.setMagfilter(Texture.FTNearest)
+        handtexture.setMinfilter(Texture.FTNearest)
+
+        self.frame = DirectFrame(
+            frameTexture = menutexture,
+            frameColor = (1, 1, 1, 1),
+            frameSize = ( -.25, .25, -.5, .5 ),
+            pos = (.75, 0, 0),
+            scale = 0.1,
+        )
         self.frame.setTransparency(True)
 
-        # Move button
-        movemaps = loader.loadModel('models/gui/move_btn.egg')
-        movebtn  = DirectButton(geom = (movemaps.find('**/move_btn_ready'),
-                                        movemaps.find('**/move_btn_pushed'),
-                                        movemaps.find('**/move_btn_hover'),
-                                        movemaps.find('**/move_btn_disabled')),
-                                command = lambda: self.commandanddestroy(movecommand),
-                                rolloverSound=hover_snd,
-                                clickSound=clicked_snd,
-                                relief=None,
-                                pressEffect=0)
-        movebtn.reparentTo(self.frame)
-        movebtn.setScale(.5, -1, .125)
-        movebtn.setPos(-u*12, 0, u*22)
-        movebtn.setTransparency(True)
+        self.hand = DirectFrame(
+            frameTexture = handtexture,
+            frameColor = (1, 1, 1, 1),
+            frameSize = ( -u*8, u*8, -u*8, u*8 ),
+            pos = self.buttons[0]['pos'],
+            parent = self.frame
+        )
 
-        if not char['canmove']:
-            movebtn['state'] = DGG.DISABLED
+        for i,button in enumerate(self.buttons):
+            label = DirectLabel(
+                color = (0,0,0,0),
+                text = button['text'],
+                scale = scale,
+                text_font = font,
+                text_fg = (.1875,.15625,.125,1),
+                text_shadow = (.5,.46484375,.40625,1),
+                text_align = TextNode.ALeft,
+                parent = self.frame,
+                pos = (-u*25, 0, u*(self.offset-3-self.height*i))
+            )
+            if not button['enabled']:
+                label['text_fg'] = (.375,.34375,.28125,1)
+        
+        seq = Sequence()
+        seq.append(LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1))
+        seq.append(Func(self.acceptAll))
+        seq.start()
 
-        # Attack button
-        attackmaps = loader.loadModel('models/gui/attack_btn.egg')
-        attackbtn  = DirectButton(geom = (attackmaps.find('**/attack_btn_ready'),
-                                          attackmaps.find('**/attack_btn_pushed'),
-                                          attackmaps.find('**/attack_btn_hover'),
-                                          attackmaps.find('**/attack_btn_disabled')),
-                                  command = lambda: self.commandanddestroy(attackcommand),
-                                  rolloverSound=hover_snd,
-                                  clickSound=clicked_snd,
-                                  relief=None,
-                                  pressEffect=0)
-        attackbtn.reparentTo(self.frame)
-        attackbtn.setScale(.5, -1, .125)
-        attackbtn.setPos(-u*12, 0, u*6)
-        attackbtn.setTransparency(True)
+    def acceptAll(self):
+        self.accept("space", self.onCrossClicked)
+        self.accept("b",    self.onCircleClicked)
+        self.accept("arrow_down",        lambda: self.updateIndex( 1))
+        self.accept("arrow_down-repeat", lambda: self.updateIndex( 1))
+        self.accept("arrow_up",          lambda: self.updateIndex(-1))
+        self.accept("arrow_up-repeat",   lambda: self.updateIndex(-1))
 
-        if not char['canact']:
-            attackbtn['state'] = DGG.DISABLED
+    def updateIndex(self, direction):
+        hover_snd.play()
+        next = self.index + direction
+        if next == len(self.buttons):
+            next = 0
+        if next == -1:
+            next = len(self.buttons)-1
+        self.hand.setPos(self.buttons[next]['pos'])
+        self.index = next
 
-        # Wait button
-        waitmaps = loader.loadModel('models/gui/wait_btn.egg')
-        waitbtn  = DirectButton(geom = (waitmaps.find('**/wait_btn_ready'),
-                                        waitmaps.find('**/wait_btn_pushed'),
-                                        waitmaps.find('**/wait_btn_hover'),
-                                        waitmaps.find('**/wait_btn_disabled')),
-                                command = lambda: self.commandanddestroy(waitcommand),
-                                rolloverSound=hover_snd,
-                                clickSound=clicked_snd,
-                                relief=None,
-                                pressEffect=0)
-        waitbtn.reparentTo(self.frame)
-        waitbtn.setScale(.5, -1, .125)
-        waitbtn.setPos(-u*12, 0, u*-10)
-        waitbtn.setTransparency(True)
+    def onCircleClicked(self):
+        if self.buttons[self.index]['enabled']:
+            clicked_snd.play()
+            self.commandAndDestroy(self.buttons[self.index]['command'])
 
-        # Cancel button
-        cancelmaps = loader.loadModel('models/gui/cancel_btn.egg')
-        cancelbtn  = DirectButton(geom = (cancelmaps.find('**/cancel_btn_ready'),
-                                          cancelmaps.find('**/cancel_btn_pushed'),
-                                          cancelmaps.find('**/cancel_btn_hover'),
-                                          cancelmaps.find('**/cancel_btn_disabled')),
-                                  command = lambda: self.commandanddestroy(cancelcommand),
-                                  rolloverSound=hover_snd,
-                                  clickSound=clicked_snd,
-                                  relief=None,
-                                  pressEffect=0)
-        cancelbtn.reparentTo(self.frame)
-        cancelbtn.setScale(.5, -1, .125)
-        cancelbtn.setPos(-u*12, 0, u*-26)
-        cancelbtn.setTransparency(True)
+    def onCrossClicked(self):
+        cancel_snd.play()
+        self.commandAndDestroy(self.cancelcommand)
 
-        self.accept("space", lambda: self.commandanddestroy(cancelcommand))
-
-    def commandanddestroy(self, command):
-        self.ignoreAll()
-        self.frame.destroy()
-        command()
+    def commandAndDestroy(self,command):
+        seq = Sequence()
+        seq.append(LerpScaleInterval(self.frame, 0.1, 0.1, startScale=1))
+        seq.append(Func(self.ignoreAll))
+        seq.append(Func(self.frame.destroy))
+        seq.append(Func(command))
+        seq.start()
 
 class Help(DirectObject.DirectObject):
 
     def __init__(self, message, command):
+
+        self.command = command
 
         tex = loader.loadTexture('textures/gui/'+message+'.png')
         tex.setMagfilter(Texture.FTNearest)
@@ -364,19 +371,33 @@ class Help(DirectObject.DirectObject):
 
         self.frame = DirectFrame(
             frameTexture = tex,
-            frameColor=(1, 1, 1, 1),
-            frameSize = ( -1.0, 1.0, -.25, .25 )
+            frameColor = (1, 1, 1, 1),
+            frameSize = ( -1.0, 1.0, -.25, .25 ),
+            pos = (0, 0, .25),
+            scale = 0.1,
         )
-        self.frame.setPos(0, 0, .25)
         self.frame.setTransparency(True)
+        
+        seq = Sequence()
+        seq.append(LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1))
+        seq.append(Func(self.acceptAll))
+        seq.start()
 
-        self.accept("b", lambda: self.commandanddestroy(command) )
+    def acceptAll(self):
+        self.accept("b", self.onCircleClicked )
 
-    def commandanddestroy(self, command):
-        self.ignoreAll()
+    def onCircleClicked(self):
         clicked_snd.play()
-        command()
-        self.frame.destroy()
+        self.commandAndDestroy(self.command)
+
+    def commandAndDestroy(self, command):
+        clicked_snd.play()
+        seq = Sequence()
+        seq.append(LerpScaleInterval(self.frame, 0.1, 0.1, startScale=1))
+        seq.append(Func(self.ignoreAll))
+        seq.append(Func(self.frame.destroy))
+        seq.append(Func(command))
+        seq.start()
 
 class CharCard:
 
