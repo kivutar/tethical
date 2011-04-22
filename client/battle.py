@@ -510,6 +510,8 @@ class Battle(DirectObject):
             self.setPhase('tile')
             self.subphase = 'attack'
             self.drawAndTagAttackables(charid, attackables)
+            if self.charcard2:
+                self.charcard2.hide()
 
     # Wait button clicked
     def onWaitClicked(self, charid):
