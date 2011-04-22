@@ -171,6 +171,8 @@ class Battle(DirectObject):
 
     # Get the path from the server, and makes the character walk on it
     def path(self, charid, dest):
+        orig = self.getCharacterCoords(charid)
+        origdir = self.sprites[charid].realdir
         (x, y, z) = dest
         path = self.con.Send('char/'+charid+'/path/'+str(x)+'/'+str(y)+'/'+str(z))
         if path:
@@ -180,9 +182,20 @@ class Battle(DirectObject):
             seq.append( self.getCharacterMoveSequence(charid, path) )
             seq.append( Func(self.clearWalkables) )
             seq.append( Func(self.updateSpriteAnimation, charid) )
-            seq.append( Func(self.moveCharacterTo, charid, dest) )
+            seq.append( Func(self.moveCheck, charid, orig, origdir, dest) )
             seq.start()
-            # TODO: ask confirmation
+
+    def moveCheck(self, charid, orig, origdir, dest):
+        self.setPhase('gui')
+        GUI.MoveCheck(
+            lambda: self.moveCharacterTo(charid, dest),
+            lambda: self.cancelMove(charid, orig, origdir)
+        )
+
+    def cancelMove(self, charid, orig, origdir):
+        self.sprites[charid].node.setPos(self.logic2terrain(orig))
+        self.sprites[charid].setRealDir(origdir)
+        self.turn()
 
     # Send the moveto packet and update the map tags with new char coords
     def moveCharacterTo(self, charid, dest):
@@ -369,7 +382,11 @@ class Battle(DirectObject):
 
                 # we clicked on a target, let's attack it!
                 if attackable and attackable != '0':
-                    self.attack(attackable, charid)
+                    self.setPhase('gui')
+                    GUI.AttackCheck(
+                        lambda: self.attack(attackable, charid),
+                        self.turn
+                    )
             
                 # we clicked on the currently active character, let's display the menu
                 elif self.party['chars'][charid]['active'] and self.party['yourturn']:

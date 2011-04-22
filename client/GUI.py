@@ -359,6 +359,219 @@ class Menu(DirectObject.DirectObject):
         seq.append(Func(command))
         seq.start()
 
+class MoveCheck(DirectObject.DirectObject):
+
+    def __init__(self, command, cancelcommand):
+
+        self.offset = -10
+        self.height = 16
+        self.index = 0
+        self.cancelcommand = cancelcommand
+
+        self.buttons = [
+            { 'text': 'Yes',   'enabled': True, 'pos': (u*45.5,0,u*(self.offset-self.height*0)), 'command': command       },
+            { 'text': 'No',    'enabled': True, 'pos': (u*45.5,0,u*(self.offset-self.height*1)), 'command': cancelcommand },
+        ]
+
+        tex = loader.loadTexture('textures/gui/move_check.png')
+        tex.setMagfilter(Texture.FTNearest)
+        tex.setMinfilter(Texture.FTNearest)
+
+        handtexture = loader.loadTexture('textures/gui/hand.png')
+        handtexture.setMagfilter(Texture.FTNearest)
+        handtexture.setMinfilter(Texture.FTNearest)
+
+        self.frame = DirectFrame(
+            frameTexture = tex,
+            frameColor = (1, 1, 1, 1),
+            frameSize = ( -1, 1, -.5, .5 ),
+            pos = (0, 0, 0),
+            scale = 0.1,
+        )
+        self.frame.setTransparency(True)
+
+        self.hand = DirectFrame(
+            frameTexture = handtexture,
+            frameColor = (1, 1, 1, 1),
+            frameSize = ( -u*8, u*8, -u*8, u*8 ),
+            pos = self.buttons[0]['pos'],
+            parent = self.frame
+        )
+
+        messageLabel = DirectLabel(
+            color = (0,0,0,0),
+            text = 'Are you sure you want to move here?',
+            scale = scale,
+            text_font = font,
+            text_fg = (.1875,.15625,.125,1),
+            text_shadow = (.5,.46484375,.40625,1),
+            text_align = TextNode.ALeft,
+            parent = self.frame,
+            pos = (-u*75, 0, u*19)
+        )
+
+        for i,button in enumerate(self.buttons):
+            label = DirectLabel(
+                color = (0,0,0,0),
+                text = button['text'],
+                scale = scale,
+                text_font = font,
+                text_fg = (.1875,.15625,.125,1),
+                text_shadow = (.5,.46484375,.40625,1),
+                text_align = TextNode.ALeft,
+                parent = self.frame,
+                pos = (u*57, 0, u*(self.offset-3-self.height*i))
+            )
+            if not button['enabled']:
+                label['text_fg'] = (.375,.34375,.28125,1)
+
+        seq = Sequence()
+        seq.append(LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1))
+        seq.append(Func(self.acceptAll))
+        seq.start()
+
+    def acceptAll(self):
+        self.accept("space", self.onCrossClicked)
+        self.accept("b",    self.onCircleClicked)
+        self.accept("arrow_down",        lambda: self.updateIndex( 1))
+        self.accept("arrow_down-repeat", lambda: self.updateIndex( 1))
+        self.accept("arrow_up",          lambda: self.updateIndex(-1))
+        self.accept("arrow_up-repeat",   lambda: self.updateIndex(-1))
+
+    def updateIndex(self, direction):
+        hover_snd.play()
+        next = self.index + direction
+        if next == len(self.buttons):
+            next = 0
+        if next == -1:
+            next = len(self.buttons)-1
+        self.hand.setPos(self.buttons[next]['pos'])
+        self.index = next
+
+    def onCircleClicked(self):
+        if self.buttons[self.index]['enabled']:
+            clicked_snd.play()
+            self.commandAndDestroy(self.buttons[self.index]['command'])
+
+    def onCrossClicked(self):
+        cancel_snd.play()
+        self.commandAndDestroy(self.cancelcommand)
+
+    def commandAndDestroy(self,command):
+        seq = Sequence()
+        seq.append(LerpScaleInterval(self.frame, 0.1, 0.1, startScale=1))
+        seq.append(Func(self.ignoreAll))
+        seq.append(Func(self.frame.destroy))
+        seq.append(Func(command))
+        seq.start()
+
+class AttackCheck(DirectObject.DirectObject):
+
+    def __init__(self, command, cancelcommand):
+
+        self.offset = -18
+        self.height = 16
+        self.index = 0
+        self.cancelcommand = cancelcommand
+
+        self.buttons = [
+            { 'text': 'Execute', 'enabled': True, 'pos': (-u*8.5,0,u*(self.offset-self.height*0)), 'command': command       },
+            { 'text': 'Quit',    'enabled': True, 'pos': (-u*8.5,0,u*(self.offset-self.height*1)), 'command': cancelcommand },
+        ]
+
+        tex = loader.loadTexture('textures/gui/attack_check.png')
+        tex.setMagfilter(Texture.FTNearest)
+        tex.setMinfilter(Texture.FTNearest)
+
+        handtexture = loader.loadTexture('textures/gui/hand.png')
+        handtexture.setMagfilter(Texture.FTNearest)
+        handtexture.setMinfilter(Texture.FTNearest)
+
+        self.frame = DirectFrame(
+            frameTexture = tex,
+            frameColor = (1, 1, 1, 1),
+            frameSize = ( -.5, .5, -.5, .5 ),
+            pos = (0, 0, 0),
+            scale = 0.1,
+        )
+        self.frame.setTransparency(True)
+
+        self.hand = DirectFrame(
+            frameTexture = handtexture,
+            frameColor = (1, 1, 1, 1),
+            frameSize = ( -u*8, u*8, -u*8, u*8 ),
+            pos = self.buttons[0]['pos'],
+            parent = self.frame
+        )
+
+# TODO: Fix line height
+#        messageLabel = DirectLabel(
+#            color = (0,0,0,0),
+#            text = 'Executing action.\nOK?',
+#            scale = scale,
+#            text_font = font,
+#            text_fg = (.1875,.15625,.125,1),
+#            text_shadow = (.5,.46484375,.40625,1),
+#            text_align = TextNode.ALeft,
+#            parent = self.frame,
+#            pos = (-u*33, 0, u*27)
+#        )
+
+        for i,button in enumerate(self.buttons):
+            label = DirectLabel(
+                color = (0,0,0,0),
+                text = button['text'],
+                scale = scale,
+                text_font = font,
+                text_fg = (.1875,.15625,.125,1),
+                text_shadow = (.5,.46484375,.40625,1),
+                text_align = TextNode.ALeft,
+                parent = self.frame,
+                pos = (u*3, 0, u*(self.offset-3-self.height*i))
+            )
+            if not button['enabled']:
+                label['text_fg'] = (.375,.34375,.28125,1)
+
+        seq = Sequence()
+        seq.append(LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1))
+        seq.append(Func(self.acceptAll))
+        seq.start()
+
+    def acceptAll(self):
+        self.accept("space", self.onCrossClicked)
+        self.accept("b",    self.onCircleClicked)
+        self.accept("arrow_down",        lambda: self.updateIndex( 1))
+        self.accept("arrow_down-repeat", lambda: self.updateIndex( 1))
+        self.accept("arrow_up",          lambda: self.updateIndex(-1))
+        self.accept("arrow_up-repeat",   lambda: self.updateIndex(-1))
+
+    def updateIndex(self, direction):
+        hover_snd.play()
+        next = self.index + direction
+        if next == len(self.buttons):
+            next = 0
+        if next == -1:
+            next = len(self.buttons)-1
+        self.hand.setPos(self.buttons[next]['pos'])
+        self.index = next
+
+    def onCircleClicked(self):
+        if self.buttons[self.index]['enabled']:
+            clicked_snd.play()
+            self.commandAndDestroy(self.buttons[self.index]['command'])
+
+    def onCrossClicked(self):
+        cancel_snd.play()
+        self.commandAndDestroy(self.cancelcommand)
+
+    def commandAndDestroy(self,command):
+        seq = Sequence()
+        seq.append(LerpScaleInterval(self.frame, 0.1, 0.1, startScale=1))
+        seq.append(Func(self.ignoreAll))
+        seq.append(Func(self.frame.destroy))
+        seq.append(Func(command))
+        seq.start()
+
 class Help(DirectObject.DirectObject):
 
     def __init__(self, message, command):
