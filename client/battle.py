@@ -11,7 +11,7 @@ import sys, time
 import Sprite
 import CameraHandler
 import GUI
-from pandac.PandaModules import GeomVertexFormat, GeomVertexData, GeomVertexWriter, Geom, GeomTristrips, GeomLines, GeomNode, VBase4, TransparencyAttrib
+from pandac.PandaModules import *
 import Network
 import Direction
 
@@ -103,6 +103,9 @@ class Battle(DirectObject):
         self.dequeue                = taskMgr.add(self.dequeue               , 'dequeue'               )
 
         # Cursor stuff
+        curtex = loader.loadTexture('textures/cursor.png')
+        curtex.setMagfilter(Texture.FTNearest)
+        curtex.setMinfilter(Texture.FTNearest)
         self.cux = False
         self.cuy = False
         self.cuz = False
@@ -110,7 +113,8 @@ class Battle(DirectObject):
         self.cursor.reparentTo( self.tileRoot )
         self.cursor.setScale(3.0)
         self.cursor.setTransparency(TransparencyAttrib.MAlpha)
-        self.cursor.setColor( 1, 1, 1, .5 )
+        self.cursor.setColor( 1, 1, 1, .75 )
+        self.cursor.setTexture(curtex)
 
         # Battle intro animation
         seq = Sequence()
