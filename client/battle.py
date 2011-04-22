@@ -60,7 +60,7 @@ class Battle(DirectObject):
                         self.tiles[x][y][z] = loader.loadModel( "models/slopes/"+slope )
                         self.tiles[x][y][z].reparentTo( self.tileRoot )
                         self.tiles[x][y][z].setPos(self.logic2terrain( (x, y, z+0.05) ))
-                        self.tiles[x][y][z].setScale(3.0)
+                        self.tiles[x][y][z].setScale(3.0, 3.0, 6.0/7.0*3.0)
                         self.tiles[x][y][z].setTransparency(TransparencyAttrib.MAlpha)
                         self.tiles[x][y][z].setColor( 0, 0, 0, 0 )
                         
