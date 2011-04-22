@@ -342,7 +342,7 @@ class Battle(DirectObject):
 
     def updateCursorPos(self, pos):
         self.camhandler.move(self.logic2terrain(pos))
-        self.cursor.setPos(self.logic2terrain((pos[0], pos[1], pos[2]+0.05)))
+        self.cursor.setPos(self.logic2terrain((pos[0], pos[1], pos[2]+0.1)))
         self.cux = pos[0]
         self.cuy = pos[1]
         self.cuz = pos[2]
