@@ -758,3 +758,107 @@ class CharCard2:
             s = Sequence(p1,i4,i5)
             s.start()
 
+class ConditionsForWinning(DirectObject.DirectObject):
+
+    def __init__(self, callback):
+        
+        self.callback = callback
+        self.r = 20
+        self.frames = [ [ None for y in range(self.r) ] for x in range(self.r) ]
+        
+        for x in range(self.r):
+            for y in range(self.r):
+                frame = DirectFrame(
+                    color = (0,0,0,0),
+                    frameSize = ( -1.0/self.r, 1.0/self.r, -1.0/self.r, 1.0/self.r ),
+                    pos = (
+                        (((float(x)/float(self.r))-.5)*2.0)+1.0/self.r,
+                        0,
+                        ((-(float(y)/float(self.r))+.5)*2.0)-1.0/self.r,
+                    ),
+                    parent = render2d,
+                )
+                frame.setTransparency(True)
+                self.frames[x][y] = frame
+
+                s = Sequence(
+                    Wait(float(x+y)/40.0),
+                    Parallel(
+                        LerpHprInterval(frame, .125, (0,0,0), (0,0,90)),
+                        LerpColorInterval(frame, .125, (.3,.22,.05,.5), (.3,.22,.04,0)),
+                        LerpScaleInterval(frame, .25, 1, .01),
+                    ),
+                )
+                if x == self.r-1 and y == self.r-1:
+                    s.append(Func(self.showText))
+                s.start()
+
+    def showText(self):
+
+        cfwtex = loader.loadTexture('textures/gui/conditions_for_winning.png')
+        cfwtex.setMagfilter(Texture.FTNearest)
+        cfwtex.setMinfilter(Texture.FTNearest)
+        cfw = DirectFrame(
+            color = (1,1,1,0),
+            frameTexture = cfwtex,
+            frameSize = ( -1.0, 1.0, -.125, .125 ),
+            pos = (u*20, 0, u*90),
+        )
+        cfw.setTransparency(True)
+
+        daetex = loader.loadTexture('textures/gui/defeat_all_enemies.png')
+        daetex.setMagfilter(Texture.FTNearest)
+        daetex.setMinfilter(Texture.FTNearest)
+        dae = DirectFrame(
+            color = (1,1,1,0),
+            frameTexture = daetex,
+            frameSize = ( -1.0, 1.0, -.125, .125 ),
+            pos = (u*49, 0, u*60),
+        )
+        dae.setTransparency(True)
+
+        readytex = loader.loadTexture('textures/gui/ready.png')
+        readytex.setMagfilter(Texture.FTNearest)
+        readytex.setMinfilter(Texture.FTNearest)
+        ready = DirectFrame(
+            color = (1,1,1,0),
+            frameTexture = readytex,
+            frameSize = ( -1.0, 1.0, -.125, .125 ),
+        )
+        ready.setTransparency(True)
+
+        s = Sequence(
+            Wait(1),
+            LerpColorInterval(cfw, .5, (1,1,1,1), (1,1,1,0)),
+            Wait(.5),
+            LerpColorInterval(dae, .5, (1,1,1,1), (1,1,1,0)),
+            Wait(2),
+            Parallel(
+                LerpColorInterval(cfw, .5, (1,1,1,0), (1,1,1,1)),
+                LerpColorInterval(dae, .5, (1,1,1,0), (1,1,1,1)),
+            ),
+            LerpColorInterval(ready, 1, (1,1,1,1), (1,1,1,0)),
+            Wait(2),
+            LerpColorInterval(ready, 1, (1,1,1,0), (1,1,1,1)),
+            Func(self.hide),
+        ).start()
+
+    def hide(self):
+        
+        for x in range(self.r):
+            for y in range(self.r):
+                frame = self.frames[x][y]
+                
+                s = Sequence(
+                    Wait(float(x+y)/40.0),
+                    Parallel(
+                        LerpHprInterval(frame, .125, (0,0,90), (0,0,0)),
+                        LerpColorInterval(frame, .125, (.3,.22,.05,0), (.3,.22,.04,.5)),
+                        LerpScaleInterval(frame, .25, .01, 1),
+                    )
+                )
+                if x == self.r-1 and y == self.r-1:
+                    s.append(Wait(1))
+                    s.append(Func(self.callback))
+                s.start()
+

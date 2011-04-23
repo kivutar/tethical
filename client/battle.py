@@ -74,6 +74,7 @@ class Battle(DirectObject):
                             charid = self.party['map']['tiles'][x][y][z]['char']
                             char = self.party['chars'][charid]
                             sprite = Sprite.Sprite('textures/sprites/'+char['sprite']+'.png', int(char['direction']))
+                            sprite.animation = 'stand'
                             sprite.node.setPos(self.logic2terrain((x,y,z)))
                             sprite.node.reparentTo( render )
                             self.sprites[charid] = sprite
@@ -127,8 +128,16 @@ class Battle(DirectObject):
         seq.append(p1)
         seq.append(Func(transitionframe.destroy))
         seq.append(Wait(1))
-        seq.append(Func(self.turn))
+        seq.append(Func(self.updateAllSpritesAnimations, 'walk'))
+        seq.append(Func(lambda: GUI.ConditionsForWinning(self.turn)))
         seq.start()
+
+    def updateAllSpritesAnimations(self, animation):
+        for i,charid in enumerate(self.sprites):
+            Sequence(
+                Wait(float(i)/6.0),
+                Func(self.updateSpriteAnimation, charid, animation),
+            ).start()
 
     # The main dispatcher
     def turn(self):
