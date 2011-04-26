@@ -758,9 +758,9 @@ class CharCard2:
             s = Sequence(p1,i4,i5)
             s.start()
 
-class ConditionsForWinning(DirectObject.DirectObject):
+class BrownOverlay(DirectObject.DirectObject):
 
-    def __init__(self, callback):
+    def __init__(self, textcallback, callback):
         
         self.callback = callback
         self.r = 20
@@ -790,11 +790,33 @@ class ConditionsForWinning(DirectObject.DirectObject):
                     ),
                 )
                 if x == self.r-1 and y == self.r-1:
-                    s.append(Func(self.showText))
+                    s.append(Func(lambda: textcallback(self.hide)))
                 s.start()
 
-    def showText(self):
+    def hide(self):
+        
+        for x in range(self.r):
+            for y in range(self.r):
+                frame = self.frames[x][y]
+                
+                s = Sequence(
+                    Wait(float(x+y)/40.0),
+                    Parallel(
+                        LerpHprInterval(frame, .125, (0,0,90), (0,0,0)),
+                        LerpColorInterval(frame, .125, (.3,.22,.05,0), (.3,.22,.04,.5)),
+                        LerpScaleInterval(frame, .25, .01, 1),
+                    ),
+                    Func(frame.destroy),
+                )
+                if x == self.r-1 and y == self.r-1:
+                    s.append(Wait(1))
+                    s.append(Func(self.callback))
+                s.start()
 
+class ConditionsForWinning(DirectObject.DirectObject):
+
+    def __init__(self, callback):
+        
         cfwtex = loader.loadTexture('textures/gui/conditions_for_winning.png')
         cfwtex.setMagfilter(Texture.FTNearest)
         cfwtex.setMinfilter(Texture.FTNearest)
@@ -837,28 +859,75 @@ class ConditionsForWinning(DirectObject.DirectObject):
                 LerpColorInterval(cfw, .5, (1,1,1,0), (1,1,1,1)),
                 LerpColorInterval(dae, .5, (1,1,1,0), (1,1,1,1)),
             ),
+            Func(cfw.destroy),
+            Func(dae.destroy),
             LerpColorInterval(ready, 1, (1,1,1,1), (1,1,1,0)),
             Wait(2),
             LerpColorInterval(ready, 1, (1,1,1,0), (1,1,1,1)),
-            Func(self.hide),
+            Func(ready.destroy),
+            Func(callback),
         ).start()
 
-    def hide(self):
+class Congratulations(DirectObject.DirectObject):
+
+    def __init__(self, callback):
         
-        for x in range(self.r):
-            for y in range(self.r):
-                frame = self.frames[x][y]
-                
-                s = Sequence(
-                    Wait(float(x+y)/40.0),
-                    Parallel(
-                        LerpHprInterval(frame, .125, (0,0,90), (0,0,0)),
-                        LerpColorInterval(frame, .125, (.3,.22,.05,0), (.3,.22,.04,.5)),
-                        LerpScaleInterval(frame, .25, .01, 1),
-                    )
-                )
-                if x == self.r-1 and y == self.r-1:
-                    s.append(Wait(1))
-                    s.append(Func(self.callback))
-                s.start()
+        ggtex = loader.loadTexture('textures/gui/congratulations.png')
+        ggtex.setMagfilter(Texture.FTNearest)
+        ggtex.setMinfilter(Texture.FTNearest)
+        gg = DirectFrame(
+            color = (1,1,1,0),
+            frameTexture = ggtex,
+            frameSize = ( -1.0, 1.0, -.125, .125 ),
+            pos = (u*0, 0, u*30),
+        )
+        gg.setTransparency(True)
+
+        bctex = loader.loadTexture('textures/gui/battle_complete.png')
+        bctex.setMagfilter(Texture.FTNearest)
+        bctex.setMinfilter(Texture.FTNearest)
+        bc = DirectFrame(
+            color = (1,1,1,0),
+            frameTexture = bctex,
+            frameSize = ( -.5, .5, -.125, .125 ),
+            pos = (u*0, 0, -u*30),
+        )
+        bc.setTransparency(True)
+
+        s = Sequence(
+            Wait(1),
+            LerpColorInterval(gg, .5, (1,1,1,1), (1,1,1,0)),
+            Wait(.5),
+            LerpColorInterval(bc, .5, (1,1,1,1), (1,1,1,0)),
+            Wait(2),
+            Parallel(
+                LerpColorInterval(gg, .5, (1,1,1,0), (1,1,1,1)),
+                LerpColorInterval(bc, .5, (1,1,1,0), (1,1,1,1)),
+            ),
+            Func(gg.destroy),
+            Func(bc.destroy),
+            Func(callback),
+        ).start()
+
+class GameOver(DirectObject.DirectObject):
+
+    def __init__(self, callback):
+        
+        gotex = loader.loadTexture('textures/gui/game_over.png')
+        gotex.setMagfilter(Texture.FTNearest)
+        gotex.setMinfilter(Texture.FTNearest)
+        go = DirectFrame(
+            color = (1,1,1,0),
+            frameTexture = gotex,
+            frameSize = ( -2, 2, -2, 2 ),
+        )
+        go.setTransparency(True)
+
+        s = Sequence(
+            LerpColorInterval(go, 3, (1,1,1,1), (1,1,1,0)),
+            Wait(2),
+            LerpColorInterval(go, 3, (0,0,0,1), (1,1,1,1)),
+            Func(go.destroy),
+            Func(callback),
+        ).start()
 

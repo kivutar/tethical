@@ -35,9 +35,9 @@ class Battle(DirectObject):
         terrain.setScale( 1.5, 1.5, 6.0/7.0*1.5 )
         
         # Play the background music
-        music = base.loader.loadSfx('music/'+self.party['map']['music']+'.ogg')
-        music.setLoop(True)
-        music.play()
+        self.music = base.loader.loadSfx('music/'+self.party['map']['music']+'.ogg')
+        self.music.setLoop(True)
+        self.music.play()
         
         # Load sounds
         self.hover_snd   = base.loader.loadSfx("sounds/hover.ogg")
@@ -129,7 +129,7 @@ class Battle(DirectObject):
         seq.append(Func(transitionframe.destroy))
         seq.append(Wait(1))
         seq.append(Func(self.updateAllSpritesAnimations, 'walk'))
-        seq.append(Func(lambda: GUI.ConditionsForWinning(self.turn)))
+        seq.append(Func(lambda: GUI.BrownOverlay(GUI.ConditionsForWinning, self.turn)))
         seq.start()
 
     def updateAllSpritesAnimations(self, animation):
@@ -142,6 +142,21 @@ class Battle(DirectObject):
     # The main dispatcher
     def turn(self):
         self.updateParty()
+
+        if self.party['log'].has_key('act') and self.party['log']['act'] == 'end':
+            if self.charcard:
+                self.charcard.hide()
+            if self.charcard2:
+                self.charcard2.hide()
+            for i,charid in enumerate(self.sprites):
+                if self.sprites[charid].animation == 'walk':
+                    self.updateSpriteAnimation(charid, 'stand')
+            self.music.stop()
+            self.music = base.loader.loadSfx('music/13.ogg')
+            self.music.play()
+            GUI.BrownOverlay(GUI.Congratulations, self.end)
+            return
+        
         self.clearAttackables()
         self.clearWalkables()
 
@@ -168,6 +183,10 @@ class Battle(DirectObject):
                                         self.showMenu(charid)
                                     else:
                                         self.onWaitClicked(charid)
+
+    def end(self):
+        print 'END'
+        sys.exit()
 
     def updateParty(self):
         party = self.con.Send('battle')
@@ -565,6 +584,19 @@ class Battle(DirectObject):
             self.updateParty()
             self.setPhase('animation')
             log = self.queue.pop(0)
+            if log['act'] == 'end':
+                if self.charcard:
+                    self.charcard.hide()
+                if self.charcard2:
+                    self.charcard2.hide()
+                for i,charid in enumerate(self.sprites):
+                    if self.sprites[charid].animation == 'walk':
+                        self.updateSpriteAnimation(charid, 'stand')
+                self.music.stop()
+                self.music = base.loader.loadSfx('music/33.ogg')
+                self.music.play()
+                GUI.GameOver(self.end)
+                return
             if log['act'] == 'move':
                 charid    = log['charid']
                 walkables = log['walkables']

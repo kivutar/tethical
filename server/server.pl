@@ -155,11 +155,26 @@ sub getnextactive {
     }
 }
 
+sub aliveteams {
+    my $party = $$parties{session('party')};
+    my $chars = $$party{chars};
+    #[ map { $$chars{$_}{hp} > 0 ? $$chars{$_} : () } keys %$chars ];
+
+    my %aliveteams;
+
+    for ( keys %$chars ) {
+        $aliveteams{$$chars{$_}{team}}++ if $$chars{$_}{hp} > 0;
+    }
+
+    scalar keys %aliveteams;
+}
+
 # Battle main callback
 get '/battle' => sub {
     return send_error("Not logged in", 403) unless session('loggedin');
     my $party = $$parties{session('party')};
     return send_error("Party not started for all players", 403) unless $$party{player1started} and $$party{player2started};
+    $$party{log} = { 'act' => 'end' } if aliveteams == 1;
     getnextactive;
     to_json $party;
 };
