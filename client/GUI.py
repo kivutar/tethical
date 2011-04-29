@@ -149,7 +149,7 @@ class PartyCreationWindow(DirectObject.DirectObject):
         self.mapOptionMenu = DirectOptionMenu(
             text = "options",
             scale = scale, 
-            items = [ "Test City", "Battle Arena" ],
+            items = [ "Test City", "Battle Arena", "At Main Gate of Igros Castle" ],
             highlightColor = ( 0.65, 0.65, 0.65, 1 ),
             text_font = font,
             text_fg = (.1875,.15625,.125,1),

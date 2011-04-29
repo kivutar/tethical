@@ -32,7 +32,7 @@ class Battle(DirectObject):
         # Display the terrain
         terrain = loader.loadModel( 'models/maps/'+self.party['map']['model']+'.egg' )
         terrain.reparentTo( render )
-        terrain.setScale( 1.5, 1.5, 6.0/7.0*1.5 )
+        terrain.setScale(10.0 * 7.5 / 7.0 )
         
         # Play the background music
         self.music = base.loader.loadSfx('music/'+self.party['map']['music']+'.ogg')
@@ -110,7 +110,7 @@ class Battle(DirectObject):
         self.cux = False
         self.cuy = False
         self.cuz = False
-        self.cursor = loader.loadModel( "models/slopes/"+slope )
+        self.cursor = loader.loadModel( "models/slopes/flat" )
         self.cursor.reparentTo( self.tileRoot )
         self.cursor.setScale(3.0)
         self.cursor.setTransparency(TransparencyAttrib.MAlpha)
@@ -120,8 +120,12 @@ class Battle(DirectObject):
         # Battle intro animation
         seq = Sequence()
         i1 = LerpColorInterval(transitionframe, 5, (0,0,0,0), startColor=(0,0,0,1))
-        (cx, cy, cz) = self.camhandler.container.getPos()
-        i2 = LerpPosInterval(self.camhandler.container, 5, (cx,cy,cz+5), startPos=(cx,cy,cz+50))
+        (cx, cy, cz) = self.logic2terrain((
+            self.party['map']['x']/2,
+            self.party['map']['y']/2,
+            self.party['map']['z']/2
+        ))
+        i2 = LerpPosInterval(self.camhandler.container, 5, (cx,cy,cz), startPos=(cx,cy,cz+50))
         (ch, cp, cr) = self.camhandler.container.getHpr()
         i3 = LerpHprInterval(self.camhandler.container, 5, (ch+90, cp, cr), (ch-180, cp, cr))
         p1 = Parallel(i1,i2,i3)
@@ -657,9 +661,9 @@ class Battle(DirectObject):
     def logic2terrain(self, tile):
         (x, y, z) = tile
         return Point3(
-            ( x - self.party['map']['x']/2 ) * 3.0,
-            ( y - self.party['map']['y']/2 ) * 3.0,
-            ( z / 4.0 )                      * 6.0/7.0*3.0,
+            (x+.5) * 3.0,
+            (y+.5) * 3.0,
+            z*.6425,
         )
 
     # Used for debug purpose
