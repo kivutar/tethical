@@ -3,7 +3,7 @@
 <Comment> { "Egg laid by Chicken for Blender, version R91" }
 
 <Texture> map001.png {
-  "./../../textures/map/At Main Gate of Igros Castle.png"
+  "./../../textures/map/map001.png"
   <Scalar> saved-result { 1 }
   <Scalar> envtype { MODULATE }
   <Scalar> minfilter { NEAREST }

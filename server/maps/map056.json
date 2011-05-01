@@ -1,0 +1,1069 @@
+{
+    "tiles": [
+        {
+            "y": 0, 
+            "x": 0, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 0, 
+            "x": 1, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 0, 
+            "x": 2, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 0, 
+            "x": 3, 
+            "slope": "slant_w", 
+            "z": 11, 
+            "walkable": true
+        }, 
+        {
+            "y": 0, 
+            "x": 4, 
+            "slope": "flat", 
+            "z": 12, 
+            "walkable": true
+        }, 
+        {
+            "y": 0, 
+            "x": 5, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 0, 
+            "x": 6, 
+            "slope": "flat", 
+            "z": 16, 
+            "walkable": true
+        }, 
+        {
+            "y": 0, 
+            "x": 7, 
+            "slope": "flat", 
+            "z": 18, 
+            "walkable": true
+        }, 
+        {
+            "y": 0, 
+            "x": 8, 
+            "slope": "flat", 
+            "z": 18, 
+            "walkable": true
+        }, 
+        {
+            "y": 0, 
+            "x": 9, 
+            "slope": "flat", 
+            "z": 18, 
+            "walkable": true
+        }, 
+        {
+            "y": 1, 
+            "x": 0, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 1, 
+            "x": 1, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 1, 
+            "x": 2, 
+            "slope": "slant_s", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 1, 
+            "x": 3, 
+            "slope": "flat", 
+            "z": 12, 
+            "walkable": true
+        }, 
+        {
+            "y": 1, 
+            "x": 4, 
+            "slope": "flat", 
+            "z": 12, 
+            "walkable": true
+        }, 
+        {
+            "y": 1, 
+            "x": 5, 
+            "slope": "flat", 
+            "z": 18, 
+            "walkable": true
+        }, 
+        {
+            "y": 1, 
+            "x": 6, 
+            "slope": "convex_sw", 
+            "z": 20, 
+            "walkable": true
+        }, 
+        {
+            "y": 1, 
+            "x": 7, 
+            "slope": "convex_ne", 
+            "z": 20, 
+            "walkable": true
+        }, 
+        {
+            "y": 1, 
+            "x": 8, 
+            "slope": "flat", 
+            "z": 20, 
+            "walkable": true
+        }, 
+        {
+            "y": 1, 
+            "x": 9, 
+            "slope": "flat", 
+            "z": 18, 
+            "walkable": true
+        }, 
+        {
+            "y": 2, 
+            "x": 0, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 2, 
+            "x": 1, 
+            "slope": "concave_se", 
+            "z": 13, 
+            "walkable": true
+        }, 
+        {
+            "y": 2, 
+            "x": 2, 
+            "slope": "slant_w", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 2, 
+            "x": 3, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 2, 
+            "x": 4, 
+            "slope": "slant_n", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 2, 
+            "x": 5, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 2, 
+            "x": 6, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 2, 
+            "x": 7, 
+            "slope": "flat", 
+            "z": 20, 
+            "walkable": true
+        }, 
+        {
+            "y": 2, 
+            "x": 8, 
+            "slope": "convex_nw", 
+            "z": 20, 
+            "walkable": true
+        }, 
+        {
+            "y": 2, 
+            "x": 9, 
+            "slope": "slant_n", 
+            "z": 17, 
+            "walkable": true
+        }, 
+        {
+            "y": 3, 
+            "x": 0, 
+            "slope": "slant_s", 
+            "z": 10, 
+            "walkable": true
+        }, 
+        {
+            "y": 3, 
+            "x": 1, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 3, 
+            "x": 2, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 3, 
+            "x": 3, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 3, 
+            "x": 4, 
+            "slope": "slant_s", 
+            "z": 15, 
+            "walkable": true
+        }, 
+        {
+            "y": 3, 
+            "x": 5, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 3, 
+            "x": 6, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 3, 
+            "x": 7, 
+            "slope": "flat", 
+            "z": 20, 
+            "walkable": true
+        }, 
+        {
+            "y": 3, 
+            "x": 8, 
+            "slope": "slant_e", 
+            "z": 19, 
+            "walkable": true
+        }, 
+        {
+            "y": 3, 
+            "x": 9, 
+            "slope": "flat", 
+            "z": 16, 
+            "walkable": true
+        }, 
+        {
+            "y": 4, 
+            "x": 0, 
+            "slope": "slant_s", 
+            "z": 15, 
+            "walkable": true
+        }, 
+        {
+            "y": 4, 
+            "x": 1, 
+            "slope": "convex_ne", 
+            "z": 15, 
+            "walkable": true
+        }, 
+        {
+            "y": 4, 
+            "x": 2, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 4, 
+            "x": 3, 
+            "slope": "slant_w", 
+            "z": 15, 
+            "walkable": true
+        }, 
+        {
+            "y": 4, 
+            "x": 4, 
+            "slope": "flat", 
+            "z": 16, 
+            "walkable": true
+        }, 
+        {
+            "y": 4, 
+            "x": 5, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 4, 
+            "x": 6, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 4, 
+            "x": 7, 
+            "slope": "flat", 
+            "z": 18, 
+            "walkable": true
+        }, 
+        {
+            "y": 4, 
+            "x": 8, 
+            "slope": "flat", 
+            "z": 16, 
+            "walkable": true
+        }, 
+        {
+            "y": 4, 
+            "x": 9, 
+            "slope": "concave_sw", 
+            "z": 15, 
+            "walkable": true
+        }, 
+        {
+            "y": 5, 
+            "x": 0, 
+            "slope": "slant_s", 
+            "z": 17, 
+            "walkable": true
+        }, 
+        {
+            "y": 5, 
+            "x": 1, 
+            "slope": "slant_s", 
+            "z": 17, 
+            "walkable": true
+        }, 
+        {
+            "y": 5, 
+            "x": 2, 
+            "slope": "slant_s", 
+            "z": 17, 
+            "walkable": true
+        }, 
+        {
+            "y": 5, 
+            "x": 3, 
+            "slope": "flat", 
+            "z": 18, 
+            "walkable": true
+        }, 
+        {
+            "y": 5, 
+            "x": 4, 
+            "slope": "flat", 
+            "z": 18, 
+            "walkable": true
+        }, 
+        {
+            "y": 5, 
+            "x": 5, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 5, 
+            "x": 6, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 5, 
+            "x": 7, 
+            "slope": "slant_n", 
+            "z": 17, 
+            "walkable": true
+        }, 
+        {
+            "y": 5, 
+            "x": 8, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 5, 
+            "x": 9, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 6, 
+            "x": 0, 
+            "slope": "slant_n", 
+            "z": 17, 
+            "walkable": true
+        }, 
+        {
+            "y": 6, 
+            "x": 1, 
+            "slope": "flat", 
+            "z": 18, 
+            "walkable": true
+        }, 
+        {
+            "y": 6, 
+            "x": 2, 
+            "slope": "slant_s", 
+            "z": 19, 
+            "walkable": true
+        }, 
+        {
+            "y": 6, 
+            "x": 3, 
+            "slope": "flat", 
+            "z": 20, 
+            "walkable": true
+        }, 
+        {
+            "y": 6, 
+            "x": 4, 
+            "slope": "flat", 
+            "z": 20, 
+            "walkable": true
+        }, 
+        {
+            "y": 6, 
+            "x": 5, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 6, 
+            "x": 6, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 6, 
+            "x": 7, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 6, 
+            "x": 8, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 6, 
+            "x": 9, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 7, 
+            "x": 0, 
+            "slope": "flat", 
+            "z": 16, 
+            "walkable": true
+        }, 
+        {
+            "y": 7, 
+            "x": 1, 
+            "slope": "slant_w", 
+            "z": 19, 
+            "walkable": true
+        }, 
+        {
+            "y": 7, 
+            "x": 2, 
+            "slope": "flat", 
+            "z": 20, 
+            "walkable": true
+        }, 
+        {
+            "y": 7, 
+            "x": 3, 
+            "slope": "flat", 
+            "z": 20, 
+            "walkable": true
+        }, 
+        {
+            "y": 7, 
+            "x": 4, 
+            "slope": "flat", 
+            "z": 20, 
+            "walkable": true
+        }, 
+        {
+            "y": 7, 
+            "x": 5, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 7, 
+            "x": 6, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 7, 
+            "x": 7, 
+            "slope": "flat", 
+            "z": 18, 
+            "walkable": true
+        }, 
+        {
+            "y": 7, 
+            "x": 8, 
+            "slope": "slant_e", 
+            "z": 16, 
+            "walkable": true
+        }, 
+        {
+            "y": 7, 
+            "x": 9, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 8, 
+            "x": 0, 
+            "slope": "slant_n", 
+            "z": 15, 
+            "walkable": true
+        }, 
+        {
+            "y": 8, 
+            "x": 1, 
+            "slope": "convex_nw", 
+            "z": 19, 
+            "walkable": true
+        }, 
+        {
+            "y": 8, 
+            "x": 2, 
+            "slope": "slant_n", 
+            "z": 19, 
+            "walkable": true
+        }, 
+        {
+            "y": 8, 
+            "x": 3, 
+            "slope": "flat", 
+            "z": 20, 
+            "walkable": true
+        }, 
+        {
+            "y": 8, 
+            "x": 4, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 8, 
+            "x": 5, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 8, 
+            "x": 6, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 8, 
+            "x": 7, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 8, 
+            "x": 8, 
+            "slope": "flat", 
+            "z": 18, 
+            "walkable": true
+        }, 
+        {
+            "y": 8, 
+            "x": 9, 
+            "slope": "flat", 
+            "z": 16, 
+            "walkable": true
+        }, 
+        {
+            "y": 9, 
+            "x": 0, 
+            "slope": "slant_n", 
+            "z": 13, 
+            "walkable": true
+        }, 
+        {
+            "y": 9, 
+            "x": 1, 
+            "slope": "slant_w", 
+            "z": 15, 
+            "walkable": true
+        }, 
+        {
+            "y": 9, 
+            "x": 2, 
+            "slope": "flat", 
+            "z": 16, 
+            "walkable": true
+        }, 
+        {
+            "y": 9, 
+            "x": 3, 
+            "slope": "flat", 
+            "z": 20, 
+            "walkable": true
+        }, 
+        {
+            "y": 9, 
+            "x": 4, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 9, 
+            "x": 5, 
+            "slope": "convex_sw", 
+            "z": 54, 
+            "walkable": false
+        }, 
+        {
+            "y": 9, 
+            "x": 6, 
+            "slope": "flat", 
+            "z": 54, 
+            "walkable": false
+        }, 
+        {
+            "y": 9, 
+            "x": 7, 
+            "slope": "convex_ne", 
+            "z": 54, 
+            "walkable": false
+        }, 
+        {
+            "y": 9, 
+            "x": 8, 
+            "slope": "flat", 
+            "z": 16, 
+            "walkable": true
+        }, 
+        {
+            "y": 9, 
+            "x": 9, 
+            "slope": "slant_n", 
+            "z": 15, 
+            "walkable": true
+        }, 
+        {
+            "y": 10, 
+            "x": 0, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 10, 
+            "x": 1, 
+            "slope": "slant_n", 
+            "z": 11, 
+            "walkable": true
+        }, 
+        {
+            "y": 10, 
+            "x": 2, 
+            "slope": "slant_n", 
+            "z": 11, 
+            "walkable": true
+        }, 
+        {
+            "y": 10, 
+            "x": 3, 
+            "slope": "slant_w", 
+            "z": 16, 
+            "walkable": true
+        }, 
+        {
+            "y": 10, 
+            "x": 4, 
+            "slope": "slant_w", 
+            "z": 33, 
+            "walkable": false
+        }, 
+        {
+            "y": 10, 
+            "x": 5, 
+            "slope": "flat", 
+            "z": 54, 
+            "walkable": false
+        }, 
+        {
+            "y": 10, 
+            "x": 6, 
+            "slope": "flat", 
+            "z": 62, 
+            "walkable": false
+        }, 
+        {
+            "y": 10, 
+            "x": 7, 
+            "slope": "slant_s", 
+            "z": 54, 
+            "walkable": false
+        }, 
+        {
+            "y": 10, 
+            "x": 8, 
+            "slope": "slant_e", 
+            "z": 33, 
+            "walkable": false
+        }, 
+        {
+            "y": 10, 
+            "x": 9, 
+            "slope": "slant_e", 
+            "z": 11, 
+            "walkable": true
+        }, 
+        {
+            "y": 11, 
+            "x": 0, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 11, 
+            "x": 1, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 11, 
+            "x": 2, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 11, 
+            "x": 3, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 11, 
+            "x": 4, 
+            "slope": "flat", 
+            "z": 18, 
+            "walkable": true
+        }, 
+        {
+            "y": 11, 
+            "x": 5, 
+            "slope": "convex_nw", 
+            "z": 54, 
+            "walkable": false
+        }, 
+        {
+            "y": 11, 
+            "x": 6, 
+            "slope": "flat", 
+            "z": 54, 
+            "walkable": false
+        }, 
+        {
+            "y": 11, 
+            "x": 7, 
+            "slope": "convex_se", 
+            "z": 54, 
+            "walkable": false
+        }, 
+        {
+            "y": 11, 
+            "x": 8, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 11, 
+            "x": 9, 
+            "slope": "convex_se", 
+            "z": 11, 
+            "walkable": true
+        }, 
+        {
+            "y": 12, 
+            "x": 0, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 12, 
+            "x": 1, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 12, 
+            "x": 2, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 12, 
+            "x": 3, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 12, 
+            "x": 4, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 12, 
+            "x": 5, 
+            "slope": "slant_n", 
+            "z": 33, 
+            "walkable": false
+        }, 
+        {
+            "y": 12, 
+            "x": 6, 
+            "slope": "flat", 
+            "z": 26, 
+            "walkable": true
+        }, 
+        {
+            "y": 12, 
+            "x": 7, 
+            "slope": "slant_n", 
+            "z": 33, 
+            "walkable": false
+        }, 
+        {
+            "y": 12, 
+            "x": 8, 
+            "slope": "flat", 
+            "z": 22, 
+            "walkable": true
+        }, 
+        {
+            "y": 12, 
+            "x": 9, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 13, 
+            "x": 0, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 13, 
+            "x": 1, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }, 
+        {
+            "y": 13, 
+            "x": 2, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 13, 
+            "x": 3, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 13, 
+            "x": 4, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 13, 
+            "x": 5, 
+            "slope": "flat", 
+            "z": 14, 
+            "walkable": true
+        }, 
+        {
+            "y": 13, 
+            "x": 6, 
+            "slope": "flat", 
+            "z": 16, 
+            "walkable": true
+        }, 
+        {
+            "y": 13, 
+            "x": 7, 
+            "slope": "flat", 
+            "z": 18, 
+            "walkable": true
+        }, 
+        {
+            "y": 13, 
+            "x": 8, 
+            "slope": "flat", 
+            "z": 20, 
+            "walkable": true
+        }, 
+        {
+            "y": 13, 
+            "x": 9, 
+            "slope": "flat", 
+            "z": 0, 
+            "walkable": true
+        }
+    ], 
+    "name": "map056", 
+    "backgroundcolor2": [
+        0.0, 
+        0.0, 
+        0.094117647058823528, 
+        1.0
+    ], 
+    "backgroundcolor1": [
+        0.62745098039215685, 
+        0.90980392156862744, 
+        0.93725490196078431, 
+        1.0
+    ], 
+    "lights": [
+        {
+            "color": [
+                0.50393700787401574, 
+                0.37795275590551181, 
+                0.25196850393700787, 
+                1.0
+            ]
+        }, 
+        {
+            "color": [
+                1.671875, 
+                1.671875, 
+                1.359375, 
+                1.0
+            ], 
+            "direction": [
+                0.0, 
+                67.762183786219765, 
+                -37.465384727656705
+            ]
+        }, 
+        {
+            "color": [
+                0.859375, 
+                1.25, 
+                1.25, 
+                1.0
+            ], 
+            "direction": [
+                0.0, 
+                80.868380242037972, 
+                146.0898674620224
+            ]
+        }, 
+        {
+            "color": [
+                0.0, 
+                0.0, 
+                0.0, 
+                1.0
+            ], 
+            "direction": [
+                0.0, 
+                90.0, 
+                0.0
+            ]
+        }
+    ], 
+    "chartiles": {
+        "1": [
+            {
+                "y": 0, 
+                "x": 0, 
+                "direction": 1, 
+                "z": 0
+            }
+        ], 
+        "2": [
+            {
+                "y": 0, 
+                "x": 1, 
+                "direction": 1, 
+                "z": 0
+            }
+        ]
+    }, 
+    "music": "10", 
+    "y": 32, 
+    "x": 32, 
+    "model": "map056", 
+    "z": 63
+}
