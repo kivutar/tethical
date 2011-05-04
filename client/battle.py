@@ -56,11 +56,12 @@ class Battle(DirectObject):
                 for z,zs in enumerate(ys):
                     if not self.party['map']['tiles'][x][y][z] is None:
                         slope = self.party['map']['tiles'][x][y][z]['slope']
-                        
+                        scale = float(self.party['map']['tiles'][x][y][z]['scale'])
+
                         self.tiles[x][y][z] = loader.loadModel( "models/slopes/"+slope )
                         self.tiles[x][y][z].reparentTo( self.tileRoot )
                         self.tiles[x][y][z].setPos(self.logic2terrain( (x, y, z+0.05) ))
-                        self.tiles[x][y][z].setScale(3.0, 3.0, 6.0/7.0*3.0)
+                        self.tiles[x][y][z].setScale(3.0, 3.0, 6.0/7.0*3.0*scale)
                         self.tiles[x][y][z].setTransparency(TransparencyAttrib.MAlpha)
                         self.tiles[x][y][z].setColor( 0, 0, 0, 0 )
                         

@@ -1,984 +1,2804 @@
 {
     "tiles": [
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 0, 
             "x": 0, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 0, 
             "x": 1, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 0, 
             "x": 2, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "slant_w", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 0, 
             "x": 3, 
-            "slope": "slant_w", 
-            "z": 11, 
-            "walkable": true
+            "selectable": true, 
+            "z": 11
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 0, 
             "x": 4, 
-            "slope": "flat", 
-            "z": 12, 
-            "walkable": true
+            "selectable": true, 
+            "z": 12
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 0, 
             "x": 5, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
+            "selectable": true, 
+            "z": 14
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 0, 
             "x": 6, 
-            "slope": "flat", 
-            "z": 16, 
-            "walkable": true
+            "selectable": true, 
+            "z": 16
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 0, 
             "x": 7, 
-            "slope": "flat", 
-            "z": 18, 
-            "walkable": true
+            "selectable": true, 
+            "z": 18
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 0, 
             "x": 8, 
-            "slope": "flat", 
-            "z": 18, 
-            "walkable": true
+            "selectable": true, 
+            "z": 18
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 0, 
             "x": 9, 
-            "slope": "flat", 
-            "z": 18, 
-            "walkable": true
+            "selectable": true, 
+            "z": 18
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 1, 
             "x": 0, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 1, 
             "x": 1, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "slant_s", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 1, 
             "x": 2, 
-            "slope": "slant_s", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 1, 
             "x": 3, 
-            "slope": "flat", 
-            "z": 12, 
-            "walkable": true
+            "selectable": true, 
+            "z": 12
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 1, 
             "x": 4, 
-            "slope": "flat", 
-            "z": 12, 
-            "walkable": true
+            "selectable": true, 
+            "z": 12
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 1, 
             "x": 5, 
-            "slope": "flat", 
-            "z": 18, 
-            "walkable": true
+            "selectable": true, 
+            "z": 18
         }, 
         {
-            "y": 1, 
-            "x": 6, 
             "slope": "convex_sw", 
-            "z": 20, 
-            "walkable": true
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 1, 
+            "x": 6, 
+            "selectable": true, 
+            "z": 20
         }, 
         {
+            "slope": "convex_se", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 1, 
             "x": 7, 
-            "slope": "convex_ne", 
-            "z": 20, 
-            "walkable": true
+            "selectable": true, 
+            "z": 20
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 1, 
             "x": 8, 
-            "slope": "flat", 
-            "z": 20, 
-            "walkable": true
+            "selectable": true, 
+            "z": 20
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 1, 
             "x": 9, 
-            "slope": "flat", 
-            "z": 18, 
-            "walkable": true
+            "selectable": true, 
+            "z": 18
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 2, 
             "x": 0, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
-            "y": 2, 
-            "x": 1, 
-            "slope": "concave_se", 
-            "z": 13, 
-            "walkable": true
-        }, 
-        {
-            "y": 2, 
-            "x": 2, 
-            "slope": "slant_w", 
-            "z": 14, 
-            "walkable": true
-        }, 
-        {
-            "y": 2, 
-            "x": 3, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
-        }, 
-        {
-            "y": 2, 
-            "x": 4, 
-            "slope": "slant_n", 
-            "z": 14, 
-            "walkable": true
-        }, 
-        {
-            "y": 2, 
-            "x": 5, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
-        }, 
-        {
-            "y": 2, 
-            "x": 6, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
-        }, 
-        {
-            "y": 2, 
-            "x": 7, 
-            "slope": "flat", 
-            "z": 20, 
-            "walkable": true
-        }, 
-        {
-            "y": 2, 
-            "x": 8, 
-            "slope": "convex_nw", 
-            "z": 20, 
-            "walkable": true
-        }, 
-        {
-            "y": 2, 
-            "x": 9, 
-            "slope": "slant_n", 
-            "z": 17, 
-            "walkable": true
-        }, 
-        {
-            "y": 3, 
-            "x": 0, 
-            "slope": "slant_s", 
-            "z": 10, 
-            "walkable": true
-        }, 
-        {
-            "y": 3, 
-            "x": 1, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
-        }, 
-        {
-            "y": 3, 
-            "x": 2, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
-        }, 
-        {
-            "y": 3, 
-            "x": 3, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
-        }, 
-        {
-            "y": 3, 
-            "x": 4, 
-            "slope": "slant_s", 
-            "z": 15, 
-            "walkable": true
-        }, 
-        {
-            "y": 3, 
-            "x": 5, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
-        }, 
-        {
-            "y": 3, 
-            "x": 6, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
-        }, 
-        {
-            "y": 3, 
-            "x": 7, 
-            "slope": "flat", 
-            "z": 20, 
-            "walkable": true
-        }, 
-        {
-            "y": 3, 
-            "x": 8, 
-            "slope": "slant_e", 
-            "z": 19, 
-            "walkable": true
-        }, 
-        {
-            "y": 3, 
-            "x": 9, 
-            "slope": "flat", 
-            "z": 16, 
-            "walkable": true
-        }, 
-        {
-            "y": 4, 
-            "x": 0, 
-            "slope": "slant_s", 
-            "z": 15, 
-            "walkable": true
-        }, 
-        {
-            "y": 4, 
-            "x": 1, 
-            "slope": "convex_ne", 
-            "z": 15, 
-            "walkable": true
-        }, 
-        {
-            "y": 4, 
-            "x": 2, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
-        }, 
-        {
-            "y": 4, 
-            "x": 3, 
-            "slope": "slant_w", 
-            "z": 15, 
-            "walkable": true
-        }, 
-        {
-            "y": 4, 
-            "x": 4, 
-            "slope": "flat", 
-            "z": 16, 
-            "walkable": true
-        }, 
-        {
-            "y": 4, 
-            "x": 5, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
-        }, 
-        {
-            "y": 4, 
-            "x": 6, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
-        }, 
-        {
-            "y": 4, 
-            "x": 7, 
-            "slope": "flat", 
-            "z": 18, 
-            "walkable": true
-        }, 
-        {
-            "y": 4, 
-            "x": 8, 
-            "slope": "flat", 
-            "z": 16, 
-            "walkable": true
-        }, 
-        {
-            "y": 4, 
-            "x": 9, 
             "slope": "concave_sw", 
-            "z": 15, 
-            "walkable": true
-        }, 
-        {
-            "y": 5, 
-            "x": 0, 
-            "slope": "slant_s", 
-            "z": 17, 
-            "walkable": true
-        }, 
-        {
-            "y": 5, 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
             "x": 1, 
-            "slope": "slant_s", 
-            "z": 17, 
-            "walkable": true
+            "selectable": true, 
+            "z": 13
         }, 
         {
-            "y": 5, 
-            "x": 2, 
-            "slope": "slant_s", 
-            "z": 17, 
-            "walkable": true
-        }, 
-        {
-            "y": 5, 
-            "x": 3, 
-            "slope": "flat", 
-            "z": 18, 
-            "walkable": true
-        }, 
-        {
-            "y": 5, 
-            "x": 4, 
-            "slope": "flat", 
-            "z": 18, 
-            "walkable": true
-        }, 
-        {
-            "y": 5, 
-            "x": 5, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
-        }, 
-        {
-            "y": 5, 
-            "x": 6, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
-        }, 
-        {
-            "y": 5, 
-            "x": 7, 
-            "slope": "slant_n", 
-            "z": 17, 
-            "walkable": true
-        }, 
-        {
-            "y": 5, 
-            "x": 8, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
-        }, 
-        {
-            "y": 5, 
-            "x": 9, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
-        }, 
-        {
-            "y": 6, 
-            "x": 0, 
-            "slope": "slant_n", 
-            "z": 17, 
-            "walkable": true
-        }, 
-        {
-            "y": 6, 
-            "x": 1, 
-            "slope": "flat", 
-            "z": 18, 
-            "walkable": true
-        }, 
-        {
-            "y": 6, 
-            "x": 2, 
-            "slope": "slant_s", 
-            "z": 19, 
-            "walkable": true
-        }, 
-        {
-            "y": 6, 
-            "x": 3, 
-            "slope": "flat", 
-            "z": 20, 
-            "walkable": true
-        }, 
-        {
-            "y": 6, 
-            "x": 4, 
-            "slope": "flat", 
-            "z": 20, 
-            "walkable": true
-        }, 
-        {
-            "y": 6, 
-            "x": 5, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
-        }, 
-        {
-            "y": 6, 
-            "x": 6, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
-        }, 
-        {
-            "y": 6, 
-            "x": 7, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
-        }, 
-        {
-            "y": 6, 
-            "x": 8, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
-        }, 
-        {
-            "y": 6, 
-            "x": 9, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
-        }, 
-        {
-            "y": 7, 
-            "x": 0, 
-            "slope": "flat", 
-            "z": 16, 
-            "walkable": true
-        }, 
-        {
-            "y": 7, 
-            "x": 1, 
             "slope": "slant_w", 
-            "z": 19, 
-            "walkable": true
-        }, 
-        {
-            "y": 7, 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
             "x": 2, 
-            "slope": "flat", 
-            "z": 20, 
-            "walkable": true
+            "selectable": true, 
+            "z": 14
         }, 
         {
-            "y": 7, 
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
             "x": 3, 
-            "slope": "flat", 
-            "z": 20, 
-            "walkable": true
+            "selectable": true, 
+            "z": 14
         }, 
         {
-            "y": 7, 
-            "x": 4, 
-            "slope": "flat", 
-            "z": 20, 
-            "walkable": true
-        }, 
-        {
-            "y": 7, 
-            "x": 5, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
-        }, 
-        {
-            "y": 7, 
-            "x": 6, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
-        }, 
-        {
-            "y": 7, 
-            "x": 7, 
-            "slope": "flat", 
-            "z": 18, 
-            "walkable": true
-        }, 
-        {
-            "y": 7, 
-            "x": 8, 
-            "slope": "slant_e", 
-            "z": 16, 
-            "walkable": true
-        }, 
-        {
-            "y": 7, 
-            "x": 9, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
-        }, 
-        {
-            "y": 8, 
-            "x": 0, 
             "slope": "slant_n", 
-            "z": 15, 
-            "walkable": true
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 4, 
+            "selectable": true, 
+            "z": 14
         }, 
         {
-            "y": 8, 
-            "x": 1, 
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 5, 
+            "selectable": true, 
+            "z": 22
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 6, 
+            "selectable": true, 
+            "z": 22
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 7, 
+            "selectable": true, 
+            "z": 20
+        }, 
+        {
             "slope": "convex_nw", 
-            "z": 19, 
-            "walkable": true
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 8, 
+            "selectable": true, 
+            "z": 20
         }, 
         {
+            "slope": "slant_n", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 9, 
+            "selectable": true, 
+            "z": 17
+        }, 
+        {
+            "slope": "slant_s", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 2.0, 
+            "y": 3, 
+            "x": 0, 
+            "selectable": true, 
+            "z": 10
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 1, 
+            "selectable": true, 
+            "z": 14
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 2, 
+            "selectable": true, 
+            "z": 14
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 3, 
+            "selectable": true, 
+            "z": 14
+        }, 
+        {
+            "slope": "slant_s", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 4, 
+            "selectable": true, 
+            "z": 15
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 5, 
+            "selectable": true, 
+            "z": 22
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 6, 
+            "selectable": true, 
+            "z": 22
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 7, 
+            "selectable": true, 
+            "z": 20
+        }, 
+        {
+            "slope": "slant_e", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 8, 
+            "selectable": true, 
+            "z": 19
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 9, 
+            "selectable": true, 
+            "z": 16
+        }, 
+        {
+            "slope": "slant_s", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 0, 
+            "selectable": true, 
+            "z": 15
+        }, 
+        {
+            "slope": "convex_se", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 1, 
+            "selectable": true, 
+            "z": 15
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 2, 
+            "selectable": true, 
+            "z": 14
+        }, 
+        {
+            "slope": "slant_w", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 3, 
+            "selectable": true, 
+            "z": 15
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 4, 
+            "selectable": true, 
+            "z": 16
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 5, 
+            "selectable": true, 
+            "z": 22
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 6, 
+            "selectable": true, 
+            "z": 22
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 7, 
+            "selectable": true, 
+            "z": 18
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 8, 
+            "selectable": true, 
+            "z": 16
+        }, 
+        {
+            "slope": "concave_ne", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 9, 
+            "selectable": true, 
+            "z": 15
+        }, 
+        {
+            "slope": "slant_s", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 0, 
+            "selectable": true, 
+            "z": 17
+        }, 
+        {
+            "slope": "slant_s", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 1, 
+            "selectable": true, 
+            "z": 17
+        }, 
+        {
+            "slope": "slant_s", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 2, 
+            "selectable": true, 
+            "z": 17
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 3, 
+            "selectable": true, 
+            "z": 18
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 4, 
+            "selectable": true, 
+            "z": 18
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 5, 
+            "selectable": true, 
+            "z": 22
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 6, 
+            "selectable": true, 
+            "z": 22
+        }, 
+        {
+            "slope": "slant_n", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 7, 
+            "selectable": true, 
+            "z": 17
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 8, 
+            "selectable": true, 
+            "z": 14
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 9, 
+            "selectable": true, 
+            "z": 14
+        }, 
+        {
+            "slope": "slant_n", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 0, 
+            "selectable": true, 
+            "z": 17
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 1, 
+            "selectable": true, 
+            "z": 18
+        }, 
+        {
+            "slope": "slant_s", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 2, 
+            "selectable": true, 
+            "z": 19
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 3, 
+            "selectable": true, 
+            "z": 20
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 4, 
+            "selectable": true, 
+            "z": 20
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 5, 
+            "selectable": true, 
+            "z": 22
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 6, 
+            "selectable": true, 
+            "z": 22
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 7, 
+            "selectable": true, 
+            "z": 14
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 8, 
+            "selectable": true, 
+            "z": 14
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 9, 
+            "selectable": true, 
+            "z": 14
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 0, 
+            "selectable": true, 
+            "z": 16
+        }, 
+        {
+            "slope": "slant_w", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 1, 
+            "selectable": true, 
+            "z": 19
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 2, 
+            "selectable": true, 
+            "z": 20
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 3, 
+            "selectable": true, 
+            "z": 20
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 4, 
+            "selectable": true, 
+            "z": 20
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 5, 
+            "selectable": true, 
+            "z": 22
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 6, 
+            "selectable": true, 
+            "z": 22
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 7, 
+            "selectable": true, 
+            "z": 18
+        }, 
+        {
+            "slope": "slant_e", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 2.0, 
+            "y": 7, 
+            "x": 8, 
+            "selectable": true, 
+            "z": 16
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 9, 
+            "selectable": true, 
+            "z": 14
+        }, 
+        {
+            "slope": "slant_n", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 8, 
+            "x": 0, 
+            "selectable": true, 
+            "z": 15
+        }, 
+        {
+            "slope": "convex_nw", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 8, 
+            "x": 1, 
+            "selectable": true, 
+            "z": 19
+        }, 
+        {
+            "slope": "slant_n", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 8, 
             "x": 2, 
-            "slope": "slant_n", 
-            "z": 19, 
-            "walkable": true
+            "selectable": true, 
+            "z": 19
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 8, 
             "x": 3, 
-            "slope": "flat", 
-            "z": 20, 
-            "walkable": true
+            "selectable": true, 
+            "z": 20
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 8, 
             "x": 4, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
+            "selectable": true, 
+            "z": 22
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 8, 
             "x": 5, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
+            "selectable": true, 
+            "z": 22
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 8, 
             "x": 6, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
+            "selectable": true, 
+            "z": 22
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 8, 
             "x": 7, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
+            "selectable": true, 
+            "z": 22
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 8, 
             "x": 8, 
-            "slope": "flat", 
-            "z": 18, 
-            "walkable": true
+            "selectable": true, 
+            "z": 18
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 8, 
             "x": 9, 
-            "slope": "flat", 
-            "z": 16, 
-            "walkable": true
+            "selectable": true, 
+            "z": 16
         }, 
         {
+            "slope": "slant_n", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 9, 
             "x": 0, 
-            "slope": "slant_n", 
-            "z": 13, 
-            "walkable": true
+            "selectable": true, 
+            "z": 13
         }, 
         {
+            "slope": "slant_w", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 9, 
             "x": 1, 
-            "slope": "slant_w", 
-            "z": 15, 
-            "walkable": true
+            "selectable": true, 
+            "z": 15
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 9, 
             "x": 2, 
-            "slope": "flat", 
-            "z": 16, 
-            "walkable": true
+            "selectable": true, 
+            "z": 16
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 9, 
             "x": 3, 
-            "slope": "flat", 
-            "z": 20, 
-            "walkable": true
+            "selectable": true, 
+            "z": 20
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 9, 
             "x": 4, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
+            "selectable": true, 
+            "z": 22
         }, 
         {
-            "y": 9, 
-            "x": 5, 
             "slope": "convex_sw", 
-            "z": 54, 
-            "walkable": false
+            "depth": 0, 
+            "walkable": false, 
+            "scale": 1.0, 
+            "y": 9, 
+            "x": 5, 
+            "selectable": true, 
+            "z": 54
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": false, 
+            "scale": 1.0, 
             "y": 9, 
             "x": 6, 
-            "slope": "flat", 
-            "z": 54, 
-            "walkable": false
+            "selectable": true, 
+            "z": 54
         }, 
         {
+            "slope": "convex_se", 
+            "depth": 0, 
+            "walkable": false, 
+            "scale": 1.0, 
             "y": 9, 
             "x": 7, 
-            "slope": "convex_ne", 
-            "z": 54, 
-            "walkable": false
+            "selectable": true, 
+            "z": 54
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 9, 
             "x": 8, 
-            "slope": "flat", 
-            "z": 16, 
-            "walkable": true
+            "selectable": true, 
+            "z": 16
         }, 
         {
+            "slope": "slant_n", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 9, 
             "x": 9, 
-            "slope": "slant_n", 
-            "z": 15, 
-            "walkable": true
+            "selectable": true, 
+            "z": 15
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 10, 
             "x": 0, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "slant_n", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 10, 
             "x": 1, 
-            "slope": "slant_n", 
-            "z": 11, 
-            "walkable": true
+            "selectable": true, 
+            "z": 11
         }, 
         {
+            "slope": "slant_n", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 10, 
             "x": 2, 
-            "slope": "slant_n", 
-            "z": 11, 
-            "walkable": true
+            "selectable": true, 
+            "z": 11
         }, 
         {
+            "slope": "slant_w", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 2.0, 
             "y": 10, 
             "x": 3, 
-            "slope": "slant_w", 
-            "z": 16, 
-            "walkable": true
+            "selectable": true, 
+            "z": 16
         }, 
         {
+            "slope": "slant_w", 
+            "depth": 0, 
+            "walkable": false, 
+            "scale": 3.0, 
             "y": 10, 
             "x": 4, 
-            "slope": "slant_w", 
-            "z": 33, 
-            "walkable": false
+            "selectable": true, 
+            "z": 33
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": false, 
+            "scale": 1.0, 
             "y": 10, 
             "x": 5, 
-            "slope": "flat", 
-            "z": 54, 
-            "walkable": false
+            "selectable": true, 
+            "z": 54
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": false, 
+            "scale": 1.0, 
             "y": 10, 
             "x": 6, 
-            "slope": "flat", 
-            "z": 62, 
-            "walkable": false
+            "selectable": true, 
+            "z": 62
         }, 
         {
-            "y": 10, 
-            "x": 7, 
             "slope": "slant_s", 
-            "z": 54, 
-            "walkable": false
+            "depth": 0, 
+            "walkable": false, 
+            "scale": 1.0, 
+            "y": 10, 
+            "x": 7, 
+            "selectable": true, 
+            "z": 54
         }, 
         {
+            "slope": "slant_e", 
+            "depth": 0, 
+            "walkable": false, 
+            "scale": 3.0, 
             "y": 10, 
             "x": 8, 
-            "slope": "slant_e", 
-            "z": 33, 
-            "walkable": false
+            "selectable": true, 
+            "z": 33
         }, 
         {
+            "slope": "slant_e", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 10, 
             "x": 9, 
-            "slope": "slant_e", 
-            "z": 11, 
-            "walkable": true
+            "selectable": true, 
+            "z": 11
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 11, 
             "x": 0, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 11, 
             "x": 1, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 11, 
             "x": 2, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 11, 
             "x": 3, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 11, 
             "x": 4, 
-            "slope": "flat", 
-            "z": 18, 
-            "walkable": true
+            "selectable": true, 
+            "z": 18
         }, 
         {
-            "y": 11, 
-            "x": 5, 
             "slope": "convex_nw", 
-            "z": 54, 
-            "walkable": false
+            "depth": 0, 
+            "walkable": false, 
+            "scale": 1.0, 
+            "y": 11, 
+            "x": 5, 
+            "selectable": true, 
+            "z": 54
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": false, 
+            "scale": 1.0, 
             "y": 11, 
             "x": 6, 
-            "slope": "flat", 
-            "z": 54, 
-            "walkable": false
+            "selectable": true, 
+            "z": 54
         }, 
         {
+            "slope": "convex_ne", 
+            "depth": 0, 
+            "walkable": false, 
+            "scale": 1.0, 
             "y": 11, 
             "x": 7, 
-            "slope": "convex_se", 
-            "z": 54, 
-            "walkable": false
+            "selectable": true, 
+            "z": 54
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 11, 
             "x": 8, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
+            "selectable": true, 
+            "z": 22
         }, 
         {
+            "slope": "convex_ne", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 11, 
             "x": 9, 
-            "slope": "convex_se", 
-            "z": 11, 
-            "walkable": true
+            "selectable": true, 
+            "z": 11
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 12, 
             "x": 0, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 12, 
             "x": 1, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 12, 
             "x": 2, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 12, 
             "x": 3, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 12, 
             "x": 4, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
+            "selectable": true, 
+            "z": 14
         }, 
         {
+            "slope": "slant_n", 
+            "depth": 0, 
+            "walkable": false, 
+            "scale": 3.0, 
             "y": 12, 
             "x": 5, 
-            "slope": "slant_n", 
-            "z": 33, 
-            "walkable": false
+            "selectable": true, 
+            "z": 33
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 12, 
             "x": 6, 
-            "slope": "flat", 
-            "z": 26, 
-            "walkable": true
+            "selectable": true, 
+            "z": 26
         }, 
         {
+            "slope": "slant_n", 
+            "depth": 0, 
+            "walkable": false, 
+            "scale": 3.0, 
             "y": 12, 
             "x": 7, 
-            "slope": "slant_n", 
-            "z": 33, 
-            "walkable": false
+            "selectable": true, 
+            "z": 33
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 12, 
             "x": 8, 
-            "slope": "flat", 
-            "z": 22, 
-            "walkable": true
+            "selectable": true, 
+            "z": 22
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 12, 
             "x": 9, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 13, 
             "x": 0, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 13, 
             "x": 1, 
-            "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "selectable": true, 
+            "z": 0
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 13, 
             "x": 2, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
+            "selectable": true, 
+            "z": 14
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 13, 
             "x": 3, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
+            "selectable": true, 
+            "z": 14
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 13, 
             "x": 4, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
+            "selectable": true, 
+            "z": 14
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 13, 
             "x": 5, 
-            "slope": "flat", 
-            "z": 14, 
-            "walkable": true
+            "selectable": true, 
+            "z": 14
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 13, 
             "x": 6, 
-            "slope": "flat", 
-            "z": 16, 
-            "walkable": true
+            "selectable": true, 
+            "z": 16
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 13, 
             "x": 7, 
-            "slope": "flat", 
-            "z": 18, 
-            "walkable": true
+            "selectable": true, 
+            "z": 18
         }, 
         {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 13, 
             "x": 8, 
-            "slope": "flat", 
-            "z": 20, 
-            "walkable": true
+            "selectable": true, 
+            "z": 20
         }, 
         {
+            "slope": "flat", 
+            "depth": 4, 
+            "walkable": true, 
+            "scale": 1.0, 
             "y": 13, 
             "x": 9, 
+            "selectable": true, 
+            "z": 0
+        }, 
+        {
             "slope": "flat", 
-            "z": 0, 
-            "walkable": true
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 0, 
+            "x": 0, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 0, 
+            "x": 1, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 0, 
+            "x": 2, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 0, 
+            "x": 3, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 0, 
+            "x": 4, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 0, 
+            "x": 5, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 0, 
+            "x": 6, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 0, 
+            "x": 7, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 0, 
+            "x": 8, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 0, 
+            "x": 9, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 1, 
+            "x": 0, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 1, 
+            "x": 1, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 1, 
+            "x": 2, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 1, 
+            "x": 3, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 1, 
+            "x": 4, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 1, 
+            "x": 5, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 1, 
+            "x": 6, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 1, 
+            "x": 7, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 1, 
+            "x": 8, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 1, 
+            "x": 9, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 0, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 1, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 2, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 3, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 4, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 5, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 6, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 7, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 8, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 2, 
+            "x": 9, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 0, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 1, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 2, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 3, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 4, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 5, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 6, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 7, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 8, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 3, 
+            "x": 9, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 0, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 1, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 2, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 3, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 4, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 5, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 6, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 7, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 8, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 4, 
+            "x": 9, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 0, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 1, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 2, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 3, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 4, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 5, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 6, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 7, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 8, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 5, 
+            "x": 9, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 0, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 1, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 2, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 3, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 4, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 5, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 6, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 7, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 8, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 6, 
+            "x": 9, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 0, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 1, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 2, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 3, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 4, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 5, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 6, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 7, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 8, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 7, 
+            "x": 9, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 8, 
+            "x": 0, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 8, 
+            "x": 1, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 8, 
+            "x": 2, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 8, 
+            "x": 3, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 8, 
+            "x": 4, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 8, 
+            "x": 5, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 8, 
+            "x": 6, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 8, 
+            "x": 7, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 8, 
+            "x": 8, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 8, 
+            "x": 9, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 9, 
+            "x": 0, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 9, 
+            "x": 1, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 9, 
+            "x": 2, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 9, 
+            "x": 3, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 9, 
+            "x": 4, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 9, 
+            "x": 5, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 9, 
+            "x": 6, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 9, 
+            "x": 7, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 9, 
+            "x": 8, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 9, 
+            "x": 9, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 10, 
+            "x": 0, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 10, 
+            "x": 1, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 10, 
+            "x": 2, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 10, 
+            "x": 3, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 10, 
+            "x": 4, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 10, 
+            "x": 5, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 10, 
+            "x": 6, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 10, 
+            "x": 7, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 10, 
+            "x": 8, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 10, 
+            "x": 9, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 11, 
+            "x": 0, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 11, 
+            "x": 1, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 11, 
+            "x": 2, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 11, 
+            "x": 3, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 11, 
+            "x": 4, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 11, 
+            "x": 5, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 11, 
+            "x": 6, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 11, 
+            "x": 7, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 11, 
+            "x": 8, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 11, 
+            "x": 9, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 12, 
+            "x": 0, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 12, 
+            "x": 1, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 12, 
+            "x": 2, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 12, 
+            "x": 3, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 12, 
+            "x": 4, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 12, 
+            "x": 5, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 12, 
+            "x": 6, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 12, 
+            "x": 7, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 12, 
+            "x": 8, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 12, 
+            "x": 9, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 13, 
+            "x": 0, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 13, 
+            "x": 1, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 13, 
+            "x": 2, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 13, 
+            "x": 3, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 13, 
+            "x": 4, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 13, 
+            "x": 5, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 13, 
+            "x": 6, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 13, 
+            "x": 7, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 13, 
+            "x": 8, 
+            "selectable": false, 
+            "z": 6
+        }, 
+        {
+            "slope": "flat", 
+            "depth": 0, 
+            "walkable": true, 
+            "scale": 1.0, 
+            "y": 13, 
+            "x": 9, 
+            "selectable": false, 
+            "z": 6
         }
     ], 
     "name": "map056", 

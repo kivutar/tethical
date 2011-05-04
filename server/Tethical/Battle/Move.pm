@@ -20,7 +20,7 @@ sub _getadjacentwalkables {
                 if ( $t2 && $x2 >= 0 && $y2 >= 0 ) {
                     for (my $z2=0; $z2 < @$t2; $z2++ ) {
                         my $t3 = $$map{tiles}[$x2][$y2][$z2];
-                        if ( $t3 && ! $$t3{char} > 0 ) {
+                        if ( $t3 && ! $$t3{char} > 0 && $$t3{walkable} && $$t3{selectable} ) {
                             push @w2, [$x2, $y2, $z2];
                         }
                     }
