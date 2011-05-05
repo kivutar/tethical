@@ -38,7 +38,8 @@ class Client:
 
     def partiesgui(self):
         self.partylistwindow = GUI.PartyListWindow(self.refreshParties, self.joinparty)
-        self.partycreationwindow = GUI.PartyCreationWindow(self.createparty)
+        maps = self.con.Send('maps')
+        self.partycreationwindow = GUI.PartyCreationWindow(maps, self.createparty)
 
     def refreshParties(self):
         self.refreshpartiestask = taskMgr.doMethodLater(1, self.refreshPartiesTask, 'refreshPartiesTask')

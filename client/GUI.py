@@ -124,7 +124,7 @@ class LoginWindow(DirectObject.DirectObject):
 
 class PartyCreationWindow(DirectObject.DirectObject):
 
-    def __init__(self, command):
+    def __init__(self, maps, command):
 
         tex = loader.loadTexture('textures/gui/newparty_window.png')
         tex.setMagfilter(Texture.FTNearest)
@@ -149,7 +149,7 @@ class PartyCreationWindow(DirectObject.DirectObject):
         self.mapOptionMenu = DirectOptionMenu(
             text = "options",
             scale = scale, 
-            items = [ 'map001', 'map002', 'map027', 'map042', 'map056', 'map103' ],
+            items = maps,
             highlightColor = ( 0.65, 0.65, 0.65, 1 ),
             text_font = font,
             text_fg = (.1875,.15625,.125,1),

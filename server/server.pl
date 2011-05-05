@@ -38,6 +38,14 @@ get '/parties' => sub {
     to_json $parties;
 };
 
+get '/maps' => sub {
+    return send_error("Not logged in", 403) unless session->{loggedin};
+    opendir(MAPS, "maps");
+    my @maps = readdir(MAPS);
+    closedir(MAPS);
+    to_json [ grep { s/\.json$// } @maps ];
+};
+
 post '/ownparty' => sub {
     return send_error("Not logged in", 403) unless session->{loggedin};
 
