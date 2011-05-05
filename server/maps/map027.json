@@ -8,7 +8,8 @@
             "y": 0, 
             "x": 0, 
             "selectable": true, 
-            "z": 1.0
+            "z": 1.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_w", 
@@ -18,7 +19,8 @@
             "y": 0, 
             "x": 1, 
             "selectable": true, 
-            "z": 3.0
+            "z": 3.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -28,7 +30,8 @@
             "y": 0, 
             "x": 2, 
             "selectable": true, 
-            "z": 4.0
+            "z": 4.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -38,7 +41,8 @@
             "y": 0, 
             "x": 3, 
             "selectable": true, 
-            "z": 2.0
+            "z": 2.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -48,7 +52,8 @@
             "y": 0, 
             "x": 4, 
             "selectable": true, 
-            "z": 2.0
+            "z": 2.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -58,7 +63,8 @@
             "y": 0, 
             "x": 5, 
             "selectable": true, 
-            "z": 2.0
+            "z": 2.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -68,7 +74,8 @@
             "y": 0, 
             "x": 6, 
             "selectable": true, 
-            "z": 2.0
+            "z": 2.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -78,7 +85,8 @@
             "y": 0, 
             "x": 7, 
             "selectable": true, 
-            "z": 2.0
+            "z": 2.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -88,7 +96,8 @@
             "y": 0, 
             "x": 8, 
             "selectable": true, 
-            "z": 4.0
+            "z": 4.0, 
+            "type": 21
         }, 
         {
             "slope": "slant_e", 
@@ -98,7 +107,8 @@
             "y": 0, 
             "x": 9, 
             "selectable": true, 
-            "z": 3.0
+            "z": 3.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_w", 
@@ -108,7 +118,8 @@
             "y": 1, 
             "x": 0, 
             "selectable": true, 
-            "z": 1.0
+            "z": 1.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_w", 
@@ -118,7 +129,8 @@
             "y": 1, 
             "x": 1, 
             "selectable": true, 
-            "z": 3.0
+            "z": 3.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -128,7 +140,8 @@
             "y": 1, 
             "x": 2, 
             "selectable": true, 
-            "z": 4.0
+            "z": 4.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -138,7 +151,8 @@
             "y": 1, 
             "x": 3, 
             "selectable": true, 
-            "z": 2.0
+            "z": 2.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -148,7 +162,8 @@
             "y": 1, 
             "x": 4, 
             "selectable": true, 
-            "z": 0.0
+            "z": 0.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_s", 
@@ -158,7 +173,8 @@
             "y": 1, 
             "x": 5, 
             "selectable": true, 
-            "z": 5.0
+            "z": 5.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_s", 
@@ -168,7 +184,8 @@
             "y": 1, 
             "x": 6, 
             "selectable": true, 
-            "z": 5.0
+            "z": 5.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -178,7 +195,8 @@
             "y": 1, 
             "x": 7, 
             "selectable": true, 
-            "z": 2.0
+            "z": 2.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -188,7 +206,8 @@
             "y": 1, 
             "x": 8, 
             "selectable": true, 
-            "z": 2.0
+            "z": 2.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -198,7 +217,8 @@
             "y": 1, 
             "x": 9, 
             "selectable": true, 
-            "z": 2.0
+            "z": 2.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -208,7 +228,8 @@
             "y": 2, 
             "x": 0, 
             "selectable": true, 
-            "z": 4.0
+            "z": 4.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_w", 
@@ -218,7 +239,8 @@
             "y": 2, 
             "x": 1, 
             "selectable": true, 
-            "z": 12.0
+            "z": 12.0, 
+            "type": 22
         }, 
         {
             "slope": "slant_s", 
@@ -228,7 +250,8 @@
             "y": 2, 
             "x": 2, 
             "selectable": true, 
-            "z": 15.0
+            "z": 15.0, 
+            "type": 22
         }, 
         {
             "slope": "slant_s", 
@@ -238,7 +261,8 @@
             "y": 2, 
             "x": 3, 
             "selectable": true, 
-            "z": 15.0
+            "z": 15.0, 
+            "type": 22
         }, 
         {
             "slope": "convex_se", 
@@ -248,7 +272,8 @@
             "y": 2, 
             "x": 4, 
             "selectable": true, 
-            "z": 15.0
+            "z": 15.0, 
+            "type": 22
         }, 
         {
             "slope": "slant_s", 
@@ -258,7 +283,8 @@
             "y": 2, 
             "x": 5, 
             "selectable": true, 
-            "z": 11.0
+            "z": 11.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_s", 
@@ -268,7 +294,8 @@
             "y": 2, 
             "x": 6, 
             "selectable": true, 
-            "z": 11.0
+            "z": 11.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -278,7 +305,8 @@
             "y": 2, 
             "x": 7, 
             "selectable": true, 
-            "z": 4.0
+            "z": 4.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_n", 
@@ -288,7 +316,8 @@
             "y": 2, 
             "x": 8, 
             "selectable": true, 
-            "z": 1.0
+            "z": 1.0, 
+            "type": 5
         }, 
         {
             "slope": "convex_ne", 
@@ -298,7 +327,8 @@
             "y": 2, 
             "x": 9, 
             "selectable": true, 
-            "z": 1.0
+            "z": 1.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -308,7 +338,8 @@
             "y": 3, 
             "x": 0, 
             "selectable": true, 
-            "z": 4.0
+            "z": 4.0, 
+            "type": 5
         }, 
         {
             "slope": "convex_nw", 
@@ -318,7 +349,8 @@
             "y": 3, 
             "x": 1, 
             "selectable": true, 
-            "z": 12.0
+            "z": 12.0, 
+            "type": 22
         }, 
         {
             "slope": "slant_s", 
@@ -328,7 +360,8 @@
             "y": 3, 
             "x": 2, 
             "selectable": true, 
-            "z": 18.0
+            "z": 18.0, 
+            "type": 22
         }, 
         {
             "slope": "slant_s", 
@@ -338,7 +371,8 @@
             "y": 3, 
             "x": 3, 
             "selectable": true, 
-            "z": 18.0
+            "z": 18.0, 
+            "type": 22
         }, 
         {
             "slope": "slant_e", 
@@ -348,7 +382,8 @@
             "y": 3, 
             "x": 4, 
             "selectable": true, 
-            "z": 15.0
+            "z": 15.0, 
+            "type": 22
         }, 
         {
             "slope": "flat", 
@@ -358,7 +393,8 @@
             "y": 3, 
             "x": 5, 
             "selectable": true, 
-            "z": 14.0
+            "z": 14.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -368,7 +404,8 @@
             "y": 3, 
             "x": 6, 
             "selectable": true, 
-            "z": 14.0
+            "z": 14.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -378,7 +415,8 @@
             "y": 3, 
             "x": 7, 
             "selectable": true, 
-            "z": 0.0
+            "z": 0.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -388,7 +426,8 @@
             "y": 3, 
             "x": 8, 
             "selectable": true, 
-            "z": 0.0
+            "z": 0.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -398,7 +437,8 @@
             "y": 3, 
             "x": 9, 
             "selectable": true, 
-            "z": 0.0
+            "z": 0.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -408,7 +448,8 @@
             "y": 4, 
             "x": 0, 
             "selectable": true, 
-            "z": 2.0
+            "z": 2.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -418,7 +459,8 @@
             "y": 4, 
             "x": 1, 
             "selectable": true, 
-            "z": 2.0
+            "z": 2.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_s", 
@@ -428,7 +470,8 @@
             "y": 4, 
             "x": 2, 
             "selectable": true, 
-            "z": 32.0
+            "z": 32.0, 
+            "type": 22
         }, 
         {
             "slope": "slant_s", 
@@ -438,7 +481,8 @@
             "y": 4, 
             "x": 3, 
             "selectable": true, 
-            "z": 32.0
+            "z": 32.0, 
+            "type": 22
         }, 
         {
             "slope": "slant_s", 
@@ -448,7 +492,8 @@
             "y": 4, 
             "x": 4, 
             "selectable": true, 
-            "z": 26.0
+            "z": 26.0, 
+            "type": 22
         }, 
         {
             "slope": "slant_s", 
@@ -458,7 +503,8 @@
             "y": 4, 
             "x": 5, 
             "selectable": true, 
-            "z": 26.0
+            "z": 26.0, 
+            "type": 22
         }, 
         {
             "slope": "flat", 
@@ -468,7 +514,8 @@
             "y": 4, 
             "x": 6, 
             "selectable": true, 
-            "z": 14.0
+            "z": 14.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_e", 
@@ -478,7 +525,8 @@
             "y": 4, 
             "x": 7, 
             "selectable": true, 
-            "z": 12.0
+            "z": 12.0, 
+            "type": 22
         }, 
         {
             "slope": "flat", 
@@ -488,7 +536,8 @@
             "y": 4, 
             "x": 8, 
             "selectable": true, 
-            "z": 0.0
+            "z": 0.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -498,7 +547,8 @@
             "y": 4, 
             "x": 9, 
             "selectable": true, 
-            "z": 0.0
+            "z": 0.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -508,7 +558,8 @@
             "y": 5, 
             "x": 0, 
             "selectable": true, 
-            "z": 4.0
+            "z": 4.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_w", 
@@ -518,7 +569,8 @@
             "y": 5, 
             "x": 1, 
             "selectable": true, 
-            "z": 12.0
+            "z": 12.0, 
+            "type": 22
         }, 
         {
             "slope": "slant_n", 
@@ -528,7 +580,8 @@
             "y": 5, 
             "x": 2, 
             "selectable": true, 
-            "z": 32.0
+            "z": 32.0, 
+            "type": 22
         }, 
         {
             "slope": "slant_n", 
@@ -538,7 +591,8 @@
             "y": 5, 
             "x": 3, 
             "selectable": true, 
-            "z": 32.0
+            "z": 32.0, 
+            "type": 22
         }, 
         {
             "slope": "flat", 
@@ -548,7 +602,8 @@
             "y": 5, 
             "x": 4, 
             "selectable": true, 
-            "z": 28.0
+            "z": 28.0, 
+            "type": 22
         }, 
         {
             "slope": "flat", 
@@ -558,7 +613,8 @@
             "y": 5, 
             "x": 5, 
             "selectable": true, 
-            "z": 28.0
+            "z": 28.0, 
+            "type": 22
         }, 
         {
             "slope": "flat", 
@@ -568,7 +624,8 @@
             "y": 5, 
             "x": 6, 
             "selectable": true, 
-            "z": 14.0
+            "z": 14.0, 
+            "type": 20
         }, 
         {
             "slope": "slant_e", 
@@ -578,7 +635,8 @@
             "y": 5, 
             "x": 7, 
             "selectable": true, 
-            "z": 12.0
+            "z": 12.0, 
+            "type": 22
         }, 
         {
             "slope": "flat", 
@@ -588,7 +646,8 @@
             "y": 5, 
             "x": 8, 
             "selectable": true, 
-            "z": 0.0
+            "z": 0.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -598,7 +657,8 @@
             "y": 5, 
             "x": 9, 
             "selectable": true, 
-            "z": 0.0
+            "z": 0.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -608,7 +668,8 @@
             "y": 6, 
             "x": 0, 
             "selectable": true, 
-            "z": 4.0
+            "z": 4.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_w", 
@@ -618,7 +679,8 @@
             "y": 6, 
             "x": 1, 
             "selectable": true, 
-            "z": 12.0
+            "z": 12.0, 
+            "type": 22
         }, 
         {
             "slope": "convex_nw", 
@@ -628,7 +690,8 @@
             "y": 6, 
             "x": 2, 
             "selectable": true, 
-            "z": 24.0
+            "z": 24.0, 
+            "type": 22
         }, 
         {
             "slope": "slant_n", 
@@ -638,7 +701,8 @@
             "y": 6, 
             "x": 3, 
             "selectable": true, 
-            "z": 24.0
+            "z": 24.0, 
+            "type": 22
         }, 
         {
             "slope": "flat", 
@@ -648,7 +712,8 @@
             "y": 6, 
             "x": 4, 
             "selectable": true, 
-            "z": 32.0
+            "z": 32.0, 
+            "type": 33
         }, 
         {
             "slope": "slant_n", 
@@ -658,7 +723,8 @@
             "y": 6, 
             "x": 5, 
             "selectable": true, 
-            "z": 26.0
+            "z": 26.0, 
+            "type": 22
         }, 
         {
             "slope": "flat", 
@@ -668,7 +734,8 @@
             "y": 6, 
             "x": 6, 
             "selectable": true, 
-            "z": 14.0
+            "z": 14.0, 
+            "type": 20
         }, 
         {
             "slope": "flat", 
@@ -678,7 +745,8 @@
             "y": 6, 
             "x": 7, 
             "selectable": true, 
-            "z": 2.0
+            "z": 2.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -688,7 +756,8 @@
             "y": 6, 
             "x": 8, 
             "selectable": true, 
-            "z": 0.0
+            "z": 0.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -698,7 +767,8 @@
             "y": 6, 
             "x": 9, 
             "selectable": true, 
-            "z": 0.0
+            "z": 0.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -708,7 +778,8 @@
             "y": 7, 
             "x": 0, 
             "selectable": true, 
-            "z": 6.0
+            "z": 6.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -718,7 +789,8 @@
             "y": 7, 
             "x": 1, 
             "selectable": true, 
-            "z": 8.0
+            "z": 8.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -728,7 +800,8 @@
             "y": 7, 
             "x": 2, 
             "selectable": true, 
-            "z": 10.0
+            "z": 10.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -738,7 +811,8 @@
             "y": 7, 
             "x": 3, 
             "selectable": true, 
-            "z": 8.0
+            "z": 8.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -748,7 +822,8 @@
             "y": 7, 
             "x": 4, 
             "selectable": true, 
-            "z": 10.0
+            "z": 10.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_w", 
@@ -758,7 +833,8 @@
             "y": 7, 
             "x": 5, 
             "selectable": true, 
-            "z": 11.0
+            "z": 11.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -768,7 +844,8 @@
             "y": 7, 
             "x": 6, 
             "selectable": true, 
-            "z": 12.0
+            "z": 12.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -778,7 +855,8 @@
             "y": 7, 
             "x": 7, 
             "selectable": true, 
-            "z": 2.0
+            "z": 2.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -788,7 +866,8 @@
             "y": 7, 
             "x": 8, 
             "selectable": true, 
-            "z": 0.0
+            "z": 0.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -798,7 +877,8 @@
             "y": 7, 
             "x": 9, 
             "selectable": true, 
-            "z": 0.0
+            "z": 0.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -808,7 +888,8 @@
             "y": 8, 
             "x": 0, 
             "selectable": true, 
-            "z": 4.0
+            "z": 4.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -818,7 +899,8 @@
             "y": 8, 
             "x": 1, 
             "selectable": true, 
-            "z": 4.0
+            "z": 4.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -828,7 +910,8 @@
             "y": 8, 
             "x": 2, 
             "selectable": true, 
-            "z": 8.0
+            "z": 8.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -838,7 +921,8 @@
             "y": 8, 
             "x": 3, 
             "selectable": true, 
-            "z": 8.0
+            "z": 8.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -848,7 +932,8 @@
             "y": 8, 
             "x": 4, 
             "selectable": true, 
-            "z": 6.0
+            "z": 6.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -858,7 +943,8 @@
             "y": 8, 
             "x": 5, 
             "selectable": true, 
-            "z": 6.0
+            "z": 6.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -868,7 +954,8 @@
             "y": 8, 
             "x": 6, 
             "selectable": true, 
-            "z": 4.0
+            "z": 4.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_e", 
@@ -878,7 +965,8 @@
             "y": 8, 
             "x": 7, 
             "selectable": true, 
-            "z": 3.0
+            "z": 3.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_e", 
@@ -888,7 +976,8 @@
             "y": 8, 
             "x": 8, 
             "selectable": true, 
-            "z": 1.0
+            "z": 1.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -898,7 +987,8 @@
             "y": 8, 
             "x": 9, 
             "selectable": true, 
-            "z": 0.0
+            "z": 0.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -908,7 +998,8 @@
             "y": 9, 
             "x": 0, 
             "selectable": true, 
-            "z": 2.0
+            "z": 2.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -918,7 +1009,8 @@
             "y": 9, 
             "x": 1, 
             "selectable": true, 
-            "z": 6.0
+            "z": 6.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -928,7 +1020,8 @@
             "y": 9, 
             "x": 2, 
             "selectable": true, 
-            "z": 8.0
+            "z": 8.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_n", 
@@ -938,7 +1031,8 @@
             "y": 9, 
             "x": 3, 
             "selectable": true, 
-            "z": 6.0
+            "z": 6.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -948,7 +1042,8 @@
             "y": 9, 
             "x": 4, 
             "selectable": true, 
-            "z": 4.0
+            "z": 4.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -958,7 +1053,8 @@
             "y": 9, 
             "x": 5, 
             "selectable": true, 
-            "z": 4.0
+            "z": 4.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -968,7 +1064,8 @@
             "y": 9, 
             "x": 6, 
             "selectable": true, 
-            "z": 4.0
+            "z": 4.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_e", 
@@ -978,7 +1075,8 @@
             "y": 9, 
             "x": 7, 
             "selectable": true, 
-            "z": 3.0
+            "z": 3.0, 
+            "type": 5
         }, 
         {
             "slope": "slant_e", 
@@ -988,7 +1086,8 @@
             "y": 9, 
             "x": 8, 
             "selectable": true, 
-            "z": 1.0
+            "z": 1.0, 
+            "type": 5
         }, 
         {
             "slope": "flat", 
@@ -998,7 +1097,8 @@
             "y": 9, 
             "x": 9, 
             "selectable": true, 
-            "z": 0.0
+            "z": 0.0, 
+            "type": 5
         }
     ], 
     "name": "map027", 
