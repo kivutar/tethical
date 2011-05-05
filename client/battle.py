@@ -56,11 +56,12 @@ class Battle(DirectObject):
                 for z,zs in enumerate(ys):
                     if not self.party['map']['tiles'][x][y][z] is None:
                         slope = self.party['map']['tiles'][x][y][z]['slope']
-                        scale = float(self.party['map']['tiles'][x][y][z]['scale'])
+                        scale = self.party['map']['tiles'][x][y][z]['scale']
+                        depth = self.party['map']['tiles'][x][y][z]['depth']
 
                         self.tiles[x][y][z] = loader.loadModel( "models/slopes/"+slope )
                         self.tiles[x][y][z].reparentTo( self.tileRoot )
-                        self.tiles[x][y][z].setPos(self.logic2terrain( (x, y, z+0.05) ))
+                        self.tiles[x][y][z].setPos(self.logic2terrain( (x, y, z+depth+0.05) ))
                         self.tiles[x][y][z].setScale(3.0, 3.0, 6.0/7.0*3.0*scale)
                         self.tiles[x][y][z].setTransparency(TransparencyAttrib.MAlpha)
                         self.tiles[x][y][z].setColor( 0, 0, 0, 0 )
@@ -378,13 +379,15 @@ class Battle(DirectObject):
 ### Events
 
     def updateCursorPos(self, pos):
+        (x, y, z) = pos
+        depth = self.party['map']['tiles'][x][y][z]['depth']
         self.camhandler.move(self.logic2terrain(pos))
-        self.cursor.setPos(self.logic2terrain((pos[0], pos[1], pos[2]+0.1)))
-        self.cux = pos[0]
-        self.cuy = pos[1]
-        self.cuz = pos[2]
+        self.cursor.setPos(self.logic2terrain((x, y, z+depth+0.1)))
+        self.cux = x
+        self.cuy = y
+        self.cuz = z
 
-        charid = self.tiles[self.cux][self.cuy][self.cuz].find("**/polygon").node().getTag('char')
+        charid = self.tiles[x][y][z].find("**/polygon").node().getTag('char')
         
         if self.charcard:
             self.charcard.hide()
