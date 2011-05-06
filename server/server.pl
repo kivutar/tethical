@@ -121,6 +121,7 @@ any '/startbattle' => sub {
                        , 'ctmax'     => 12
                        , 'team'      => $player
                        , 'move'      => 4
+                       , 'jump'      => 6
                        , 'direction' => $direction
                        , 'sprite'    => $player eq 1 ? 'misty' : 'ramza'
                        , 'active'    => 0 };

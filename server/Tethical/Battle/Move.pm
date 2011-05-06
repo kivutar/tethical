@@ -5,6 +5,7 @@ use Tethical::Battle::Character;
 # Used in walkable tiles computation and pathfinding
 sub _getadjacentwalkables {
     my $map = shift;
+    my $char = shift;
     my @w2;
 
     for my $t1 ( @_ ) {
@@ -20,7 +21,11 @@ sub _getadjacentwalkables {
                 if ( $t2 && $x2 >= 0 && $y2 >= 0 ) {
                     for (my $z2=0; $z2 < @$t2; $z2++ ) {
                         my $t3 = $$map{tiles}[$x2][$y2][$z2];
-                        if ( $t3 && ! $$t3{char} > 0 && $$t3{walkable} && $$t3{selectable} ) {
+                        if ( $t3 
+                        && ! $$t3{char} > 0 
+                        && $$t3{walkable} 
+                        && $$t3{selectable} 
+                        && abs($z2-$z1) <= $$char{jump} ) {
                             push @w2, [$x2, $y2, $z2];
                         }
                     }
@@ -40,7 +45,7 @@ sub GetWalkables {
     my @walkables = ( $tile );
 
     for ( 1..$$char{move} ) {
-        push @walkables, _getadjacentwalkables( $map, @walkables );
+        push @walkables, _getadjacentwalkables( $map, $char, @walkables );
     }
 
     # Remove character's tile from the list
@@ -85,7 +90,7 @@ sub GetPath {
     my ( $map, $char, $x1, $y1, $z1, $x2, $y2, $z2 ) = @_;
 
     my $tree = { "$x1-$y1-$z1" => {} };
-    _buildtree( $map, $tree, $$char{move}-1, "$x2-$y2-$z2" );
+    _buildtree( $map, $char, $tree, $$char{move}-1, "$x2-$y2-$z2" );
 
     my $paths = [];
     _findpathes( $tree, [], $paths );
@@ -95,11 +100,11 @@ sub GetPath {
 
 # Recursively builds the paths tree
 sub _buildtree {
-    my ( $map, $tree, $moves, $dest ) = @_;
+    my ( $map, $char, $tree, $moves, $dest ) = @_;
     
     for my $k1 ( keys %$tree ) {
         
-        for ( _getadjacentwalkables( $map, [ split '-', $k1 ] ) ) {
+        for ( _getadjacentwalkables( $map, $char, [ split '-', $k1 ] ) ) {
             my $k2 = join '-', @$_;
 
             if ( $k2 eq $dest ) {
@@ -109,7 +114,7 @@ sub _buildtree {
             }
         }
         
-        _buildtree( $map, $$tree{$k1}, $moves-1, $dest ) if $moves > 0;
+        _buildtree( $map, $char, $$tree{$k1}, $moves-1, $dest ) if $moves > 0;
     }
 }
 
