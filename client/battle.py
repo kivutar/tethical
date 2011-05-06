@@ -65,11 +65,6 @@ class Battle(DirectObject):
                         self.tiles[x][y][z].setScale(3.0, 3.0, 6.0/7.0*3.0*scale)
                         self.tiles[x][y][z].setTransparency(TransparencyAttrib.MAlpha)
                         self.tiles[x][y][z].setColor( 0, 0, 0, 0 )
-                        
-                        # Collision stuff
-                        self.tiles[x][y][z].find("**/polygon").node().setTag('x', str(x))
-                        self.tiles[x][y][z].find("**/polygon").node().setTag('y', str(y))
-                        self.tiles[x][y][z].find("**/polygon").node().setTag('z', str(z))
                         self.tiles[x][y][z].find("**/polygon").node().setTag('char', '0')            
 
                         if self.party['map']['tiles'][x][y][z].has_key('char'):
