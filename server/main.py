@@ -1,3 +1,5 @@
+from pandac.PandaModules import loadPrcFileData 
+loadPrcFileData("", "window-type none")
 import direct.directbase.DirectStart
 from panda3d.core import *
 from direct.task.Task import Task
