@@ -5,7 +5,7 @@ from panda3d.core import *
 from direct.task.Task import Task
 from direct.distributed.PyDatagramIterator import *
 from direct.distributed.PyDatagram import *
-import os, json
+import os, sys, json
 import Map, Move, Attack, Character
 
 LOGIN_MESSAGE = 1
@@ -56,8 +56,13 @@ class Server:
         self.cReader   = QueuedConnectionReader(self.cManager, 0)
         self.cWriter   = ConnectionWriter(self.cManager, 0)
 
+        port = 3000
+        if len(sys.argv) > 1:
+            port = sys.argv[1]
+
         self.tcpSocket = self.cManager.openTCPServerRendezvous(3000, 10)
         self.cListener.addConnection(self.tcpSocket)
+        print "Server listening on port", port
 
         taskMgr.add(self.tskListenerPolling, "Poll the connection listener", -39)
         taskMgr.add(self.tskReaderPolling, "Poll the connection reader", -40)
