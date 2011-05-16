@@ -60,14 +60,16 @@ class Client(DirectObject):
         self.cReader   = QueuedConnectionReader(self.cManager, 0)
         self.cWriter   = ConnectionWriter(self.cManager, 0)
 
-        self.myConnection = self.cManager.openTCPClientConnection('127.0.0.1', 3000, 5000)
+        ip = '127.0.0.1' #'95.130.11.221'
+        port =  3001
+        self.myConnection = self.cManager.openTCPClientConnection(ip, port, 5000)
         if self.myConnection:
             self.cReader.addConnection(self.myConnection)
-            print 'Connection established'
+            print 'Connection established on', ip, ':', port
             taskMgr.add(self.tskReaderPolling, "Poll the connection reader")
             self.background = GUI.Background(self.logingui)
         else:
-            print 'Can\'t connect to server'
+            print 'Can\'t connect to server on', ip, ':', port
 
     def processData(self, datagram):
         iterator = PyDatagramIterator(datagram)

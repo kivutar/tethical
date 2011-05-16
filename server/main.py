@@ -56,11 +56,11 @@ class Server:
         self.cReader   = QueuedConnectionReader(self.cManager, 0)
         self.cWriter   = ConnectionWriter(self.cManager, 0)
 
-        port = 3000
+        port = 3001
         if len(sys.argv) > 1:
             port = sys.argv[1]
 
-        self.tcpSocket = self.cManager.openTCPServerRendezvous(3000, 10)
+        self.tcpSocket = self.cManager.openTCPServerRendezvous(port, 10)
         self.cListener.addConnection(self.tcpSocket)
         print "Server listening on port", port
 
