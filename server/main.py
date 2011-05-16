@@ -373,7 +373,7 @@ class Server:
             char1 = party['chars'][charid1]
             char2 = party['chars'][charid2]
             
-            damages = 10
+            damages = 4
             
             char2['hp'] = char2['hp'] - damages
             if char2['hp'] < 0:
