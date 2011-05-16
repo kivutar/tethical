@@ -12,7 +12,7 @@ hover_snd = base.loader.loadSfx("sounds/hover.ogg")
 clicked_snd = base.loader.loadSfx("sounds/clicked.ogg")
 cancel_snd = base.loader.loadSfx("sounds/cancel.ogg")
 scale = u*12.0
-font = loader.loadFont('fonts/fft.egg')
+font = loader.loadFont('fonts/fft')
 
 class Background(DirectObject.DirectObject):
 
@@ -184,7 +184,7 @@ class PartyCreationWindow(DirectObject.DirectObject):
 
 class PartyListWindow(DirectObject.DirectObject):
 
-    def __init__(self, command, command2):
+    def __init__(self, command2):
 
         self.command2 = command2
 
@@ -199,14 +199,13 @@ class PartyListWindow(DirectObject.DirectObject):
         seq = Sequence()
         i = LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1 )
         seq.append(i)
-        seq.append(Func(command))
         seq.start()
 
     def refresh(self, parties):
     
         for child in self.frame.getChildren():
             child.destroy()
-
+        
         for i,key in enumerate(parties):
             nameLabel = DirectLabel(
                 color = (0,0,0,0),

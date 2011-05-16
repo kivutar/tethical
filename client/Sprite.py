@@ -24,7 +24,7 @@ class Sprite:
         self.sprite2d.node.setPos( 0, -1.2, -1.2 )
         
         # shadow
-        self.shadow = loader.loadModel( "models/slopes/flat.egg" )
+        self.shadow = loader.loadModel( "models/slopes/flat" )
         self.shadow.setZ(0.075)
         self.shadow.setScale(3.0)
         self.shadow.setTransparency(TransparencyAttrib.MAlpha)
