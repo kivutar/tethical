@@ -244,6 +244,18 @@ class Client(DirectObject):
             self.music = base.loader.loadSfx('music/33.ogg')
             self.music.play()
             GUI.GameOver(self.end)
+        elif msgID == BATTLE_COMPLETE:
+            if self.charcard:
+                self.charcard.hide()
+            if self.charcard2:
+                self.charcard2.hide()
+            for i,charid in enumerate(self.sprites):
+                if self.sprites[charid].animation == 'walk':
+                    self.updateSpriteAnimation(charid, 'stand')
+            self.music.stop()
+            self.music = base.loader.loadSfx('music/13.ogg')
+            self.music.play()
+            GUI.BrownOverlay(GUI.Congratulations, self.end)
 
     def tskReaderPolling(self, taskdata):
         if self.cReader.dataAvailable():
@@ -414,21 +426,7 @@ class Client(DirectObject):
         self.updateParty()
 
     def party_updated(self):
-
-        if self.party['log'].has_key('act') and self.party['log']['act'] == 'end':
-            if self.charcard:
-                self.charcard.hide()
-            if self.charcard2:
-                self.charcard2.hide()
-            for i,charid in enumerate(self.sprites):
-                if self.sprites[charid].animation == 'walk':
-                    self.updateSpriteAnimation(charid, 'stand')
-            self.music.stop()
-            self.music = base.loader.loadSfx('music/13.ogg')
-            self.music.play()
-            GUI.BrownOverlay(GUI.Congratulations, self.end)
-            return
-        
+       
         self.clearAttackables()
         self.clearWalkables()
 

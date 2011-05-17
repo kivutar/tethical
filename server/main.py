@@ -200,10 +200,15 @@ class Server:
                     else:
                         aliveteams[chars[charid]['team']] = 1
             if len(aliveteams) < 2:
-                for client in [ self.players[party['player1']] , source ]:
-                    myPyDatagram = PyDatagram()
-                    myPyDatagram.addUint8(GAME_OVER)
-                    self.cWriter.send(myPyDatagram, client)
+                for client in [ self.players[party['player1']] , self.players[party['player2']] ]:
+                    if source == client:
+                        myPyDatagram = PyDatagram()
+                        myPyDatagram.addUint8(BATTLE_COMPLETE)
+                        self.cWriter.send(myPyDatagram, client)
+                    else:
+                        myPyDatagram = PyDatagram()
+                        myPyDatagram.addUint8(GAME_OVER)
+                        self.cWriter.send(myPyDatagram, client)
                 return
 
             for charid in chars.keys():
