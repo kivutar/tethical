@@ -59,6 +59,8 @@ class Client(DirectObject):
         self.cListener = QueuedConnectionListener(self.cManager, 0)
         self.cReader   = QueuedConnectionReader(self.cManager, 0)
         self.cWriter   = ConnectionWriter(self.cManager, 0)
+        self.cReader.setTcpHeaderSize(4)
+        self.cWriter.setTcpHeaderSize(4)
 
         ip = '127.0.0.1' #'95.130.11.221'
         port =  3001
@@ -79,7 +81,7 @@ class Client(DirectObject):
         elif msgID == LOGIN_FAIL:
             print iterator.getString()
         elif msgID == PARTY_CREATED:
-            party = json.loads(iterator.getString())
+            party = json.loads(iterator.getString32())
             self.party = party
             self.partylistwindow.frame.destroy()
             self.partycreationwindow.frame.destroy()
@@ -87,16 +89,16 @@ class Client(DirectObject):
             maps = json.loads(iterator.getString())
             self.partycreationwindow = GUI.PartyCreationWindow(maps, self.createparty)
         elif msgID == PARTY_LIST:
-            parties = json.loads(iterator.getString())
+            parties = json.loads(iterator.getString32())
             self.partylistwindow = GUI.PartyListWindow(self.joinparty)
             self.partylistwindow.refresh(parties)
         elif msgID == PARTY_JOINED:
-            party = json.loads(iterator.getString())
+            party = json.loads(iterator.getString32())
             self.party = party
             self.partylistwindow.frame.destroy()
             self.partycreationwindow.frame.destroy()
         elif msgID == START_BATTLE:
-            self.party = json.loads(iterator.getString())
+            self.party = json.loads(iterator.getString32())
             self.transitionframe = DirectFrame( frameSize = ( -2, 2, -2, 2 ) )
             self.transitionframe.setTransparency(True)
             seq = Sequence()
@@ -106,7 +108,7 @@ class Client(DirectObject):
             seq.append(Func(self.battle_init))
             seq.start()
         elif msgID == PARTY_UPDATED:
-            self.party = json.loads(iterator.getString())
+            self.party = json.loads(iterator.getString32())
             self.party_updated()
         elif msgID == WALKABLES_LIST:
             charid = iterator.getString()

@@ -55,6 +55,8 @@ class Server:
         self.cListener = QueuedConnectionListener(self.cManager, 0)
         self.cReader   = QueuedConnectionReader(self.cManager, 0)
         self.cWriter   = ConnectionWriter(self.cManager, 0)
+        self.cReader.setTcpHeaderSize(4)
+        self.cWriter.setTcpHeaderSize(4)
 
         port = 3001
         if len(sys.argv) > 1:
@@ -122,7 +124,7 @@ class Server:
             
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(PARTY_CREATED)
-            myPyDatagram.addString(json.dumps(party))
+            myPyDatagram.addString32(json.dumps(party))
             self.cWriter.send(myPyDatagram, source)
 
         elif msgID == GET_MAPS:
@@ -138,7 +140,7 @@ class Server:
         
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(PARTY_LIST)
-            myPyDatagram.addString(json.dumps(self.parties))
+            myPyDatagram.addString32(json.dumps(self.parties))
             self.cWriter.send(myPyDatagram, source)
         
         elif msgID == JOIN_PARTY:
@@ -151,7 +153,7 @@ class Server:
 
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(PARTY_JOINED)
-            myPyDatagram.addString(json.dumps(party))
+            myPyDatagram.addString32(json.dumps(party))
             self.cWriter.send(myPyDatagram, source)
             
             for player in party['map']['chartiles'].keys():
@@ -182,7 +184,7 @@ class Server:
             for client in [ self.players[party['player1']] , source ]:
                 myPyDatagram = PyDatagram()
                 myPyDatagram.addUint8(START_BATTLE)
-                myPyDatagram.addString(json.dumps(party))
+                myPyDatagram.addString32(json.dumps(party))
                 self.cWriter.send(myPyDatagram, client)
 
         elif msgID == UPDATE_PARTY:
@@ -208,7 +210,7 @@ class Server:
                 if chars[charid]['active']:
                     myPyDatagram = PyDatagram()
                     myPyDatagram.addUint8(PARTY_UPDATED)
-                    myPyDatagram.addString(json.dumps(party))
+                    myPyDatagram.addString32(json.dumps(party))
                     self.cWriter.send(myPyDatagram, source)
                     return
             
@@ -224,7 +226,7 @@ class Server:
                             party['yourturn'] = int(chars[charid]['team']) == int(self.sessions[source]['player'])
                             myPyDatagram = PyDatagram()
                             myPyDatagram.addUint8(PARTY_UPDATED)
-                            myPyDatagram.addString(json.dumps(party))
+                            myPyDatagram.addString32(json.dumps(party))
                             self.cWriter.send(myPyDatagram, source)
                             return
                         else:
