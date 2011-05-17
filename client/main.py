@@ -1,3 +1,5 @@
+from pandac.PandaModules import loadPrcFileData
+loadPrcFileData("", "window-title Tethical")
 import direct.directbase.DirectStart
 from direct.showbase.DirectObject import DirectObject
 from panda3d.core import *
