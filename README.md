@@ -2,6 +2,7 @@ Tethical
 ========
 
 Tethical is a tactical RPG engine with online gaming support. If you don't know what is a tactical RPG, take a look at Final Fantasy Tactics or Disgaea.
+See the homepage at (http://tethical.kivutar.me).
 
 Installation instructions for the developpers (Ubuntu Maverick)
 ---------------------------------------------
@@ -12,7 +13,7 @@ Add the following PPA to your sources.list:
 
 Install the dependancies
 
-    sudo aptitude install panda3d panda3d-runtime libdancer-perl libmodern-perl-perl libjson-perl 
+    sudo aptitude install panda3d 
 
 Get the source code
 
@@ -21,7 +22,7 @@ Get the source code
 Launch the server
 
     cd server
-    ./server.pl
+    python main.py
 
 Launch the client
 
