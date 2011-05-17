@@ -62,7 +62,7 @@ class Client(DirectObject):
         self.cReader.setTcpHeaderSize(4)
         self.cWriter.setTcpHeaderSize(4)
 
-        ip = '127.0.0.1' #'95.130.11.221'
+        ip = '127.0.0.1' #'88.190.20.195' #'95.130.11.221'
         port =  3001
         self.myConnection = self.cManager.openTCPClientConnection(ip, port, 5000)
         if self.myConnection:
@@ -368,9 +368,6 @@ class Client(DirectObject):
         
         # Tasks
         self.characterDirectionTask = taskMgr.add(self.characterDirectionTask , 'characterDirectionTask')
-        #self.otherPlayersTask       = taskMgr.add(self.otherPlayersTask      , 'otherPlayersTask'      )
-        #self.otherPlayersTask       = taskMgr.doMethodLater(1, self.otherPlayersTask, 'otherPlayersTask')
-        self.dequeue                = taskMgr.add(self.dequeue                , 'dequeue'               )
 
         # Cursor stuff
         curtex = loader.loadTexture('textures/cursor.png')
@@ -843,32 +840,6 @@ class Client(DirectObject):
         for charid in self.sprites:
             self.sprites[charid].updateDisplayDir( h );
         return Task.cont
-
-    def dequeue(self, task):
-        if len(self.queue) and self.phase != 'animation':
-            self.updateParty()
-            self.setPhase('animation')
-            log = self.queue.pop(0)
-            if log['act'] == 'end':
-                pass
-                return
-            if log['act'] == 'move':
-                pass
-            if log['act'] == 'attack':
-                pass
-            if log['act'] == 'wait':
-                pass
-
-        return Task.cont
-
-    # This task is responsible of rendering the other player's actions
-    def otherPlayersTask(self, task):
-        if not self.party['yourturn']:
-            log = self.con.Send('otherplayers')
-            if log:
-                self.queue.append(log)
-
-        return Task.again
 
 ### Utilities
 
