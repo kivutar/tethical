@@ -78,3 +78,6 @@ class CameraHandler(DirectObject.DirectObject):
         ratio = float(window.getXSize()) / float(window.getYSize())
         base.cam.node().getLens().setAspectRatio( ratio )
 
+    def destroy(self):
+        self.ignoreAll()
+        self.container.removeNode()

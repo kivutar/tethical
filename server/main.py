@@ -209,6 +209,7 @@ class Server:
                         myPyDatagram = PyDatagram()
                         myPyDatagram.addUint8(GAME_OVER)
                         self.cWriter.send(myPyDatagram, client)
+                del self.parties[self.sessions[source]['party']]
                 return
 
             for charid in chars.keys():

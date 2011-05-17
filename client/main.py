@@ -307,7 +307,6 @@ class Client(DirectObject):
     def battle_init(self):
         self.phase = None
         self.subphase = None
-        self.queue = []
         
         self.camhandler = CameraHandler.CameraHandler()
         
@@ -455,8 +454,11 @@ class Client(DirectObject):
                                         self.onWaitClicked(charid)
 
     def end(self):
-        print 'END'
-        sys.exit()
+        taskMgr.remove('characterDirectionTask')
+        for child in render.getChildren():
+            child.removeNode()
+        self.camhandler.destroy()
+        self.partiesgui()
 
     def updateParty(self):
         myPyDatagram = PyDatagram()
