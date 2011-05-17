@@ -56,24 +56,7 @@ class Client(DirectObject):
         self.music = base.loader.loadSfx('music/24.ogg')
         self.music.setLoop(True)
         self.music.play()
-
-        self.cManager  = QueuedConnectionManager()
-        self.cListener = QueuedConnectionListener(self.cManager, 0)
-        self.cReader   = QueuedConnectionReader(self.cManager, 0)
-        self.cWriter   = ConnectionWriter(self.cManager, 0)
-        self.cReader.setTcpHeaderSize(4)
-        self.cWriter.setTcpHeaderSize(4)
-
-        ip = '127.0.0.1' #'88.190.20.195' #'95.130.11.221'
-        port =  3001
-        self.myConnection = self.cManager.openTCPClientConnection(ip, port, 5000)
-        if self.myConnection:
-            self.cReader.addConnection(self.myConnection)
-            print 'Connection established on', ip, ':', port
-            taskMgr.add(self.tskReaderPolling, "Poll the connection reader")
-            self.background = GUI.Background(self.logingui)
-        else:
-            print 'Can\'t connect to server on', ip, ':', port
+        self.background = GUI.Background(self.logingui)
 
     def processData(self, datagram):
         iterator = PyDatagramIterator(datagram)
@@ -273,11 +256,29 @@ class Client(DirectObject):
         login = self.loginwindow.loginEntry.get()
         password = self.loginwindow.passwordEntry.get()
 
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addUint8(LOGIN_MESSAGE)
-        myPyDatagram.addString(login)
-        myPyDatagram.addString(password)
-        self.cWriter.send(myPyDatagram, self.myConnection)
+        self.cManager  = QueuedConnectionManager()
+        self.cListener = QueuedConnectionListener(self.cManager, 0)
+        self.cReader   = QueuedConnectionReader(self.cManager, 0)
+        self.cWriter   = ConnectionWriter(self.cManager, 0)
+        self.cReader.setTcpHeaderSize(4)
+        self.cWriter.setTcpHeaderSize(4)
+
+        ip = '127.0.0.1' #'88.190.20.195' #'95.130.11.221'
+        port =  3001
+        self.myConnection = self.cManager.openTCPClientConnection(ip, port, 5000)
+        if self.myConnection:
+            self.cReader.addConnection(self.myConnection)
+            print 'Connection established on', ip, ':', port
+            taskMgr.add(self.tskReaderPolling, "Poll the connection reader")
+
+            myPyDatagram = PyDatagram()
+            myPyDatagram.addUint8(LOGIN_MESSAGE)
+            myPyDatagram.addString(login)
+            myPyDatagram.addString(password)
+            self.cWriter.send(myPyDatagram, self.myConnection)
+
+        else:
+            print 'Can\'t connect to server on', ip, ':', port
 
     def partiesgui(self):
 
