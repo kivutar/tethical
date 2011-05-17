@@ -204,6 +204,7 @@ class Server:
                     myPyDatagram = PyDatagram()
                     myPyDatagram.addUint8(GAME_OVER)
                     self.cWriter.send(myPyDatagram, client)
+                return
 
             for charid in chars.keys():
                 party['yourturn'] = int(chars[charid]['team']) == int(self.sessions[source]['player'])
