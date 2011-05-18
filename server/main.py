@@ -6,6 +6,7 @@ from direct.task.Task import Task
 from direct.distributed.PyDatagramIterator import *
 from direct.distributed.PyDatagram import *
 import os, sys, json
+from copy import deepcopy
 import Map, Move, Attack, Character
 
 LOGIN_MESSAGE = 1
@@ -137,10 +138,14 @@ class Server:
             self.cWriter.send(myPyDatagram, source)
         
         elif msgID == GET_PARTIES:
-        
+
+            parties = deepcopy(self.parties)
+            for party in parties.values():
+                del party['map']['tiles']
+
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(PARTY_LIST)
-            myPyDatagram.addString32(json.dumps(self.parties))
+            myPyDatagram.addString32(json.dumps(parties))
             self.cWriter.send(myPyDatagram, source)
         
         elif msgID == JOIN_PARTY:
