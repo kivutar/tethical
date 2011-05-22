@@ -176,8 +176,12 @@ class Server:
                        , 'sign': 1
                        , 'hp': 10
                        , 'hpmax': 10
+                       , 'mp': 10
+                       , 'mpmax': 10
                        , 'ct': 12
                        , 'ctmax': 12
+                       , 'lv': 10
+                       , 'exp': 0
                        , 'team': player
                        , 'move': 4
                        , 'jump': 6

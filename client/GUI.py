@@ -13,6 +13,7 @@ clicked_snd = base.loader.loadSfx("sounds/clicked.ogg")
 cancel_snd = base.loader.loadSfx("sounds/cancel.ogg")
 scale = u*12.0
 font = loader.loadFont('fonts/fft')
+font3 = loader.loadFont('fonts/fft3')
 
 class Background(DirectObject.DirectObject):
 
@@ -649,6 +650,29 @@ class CharCard:
             parent = self.frame
         )
         self.frame2.setTransparency(True)
+        
+        infos = [
+            { 'x': 16 , 'z':  16 , 'text': '%02d' % char['lv'] },
+            { 'x': 48 , 'z':  16 , 'text': '%02d' % char['exp'] },
+            { 'x': 18 , 'z':   2 , 'text': '%03d' % char['hp'] },
+            { 'x': 37 , 'z':  -2 , 'text': '%03d' % char['hpmax'] },
+            { 'x': 18 , 'z':  -9 , 'text': '%03d' % char['mp'] },
+            { 'x': 37 , 'z': -13 , 'text': '%03d' % char['mpmax'] },
+            { 'x': 18 , 'z': -20 , 'text': '%03d' % int(float(char['ct'])/float(char['ctmax'])*100.0) },
+            { 'x': 37 , 'z': -24 , 'text': '100' },
+        ]
+        
+        for info in infos:
+            label = DirectLabel(
+                text = info['text'],
+                color = (1, 1, 1, 0),
+                scale = scale,
+                text_font = font3,
+                text_fg = (1,1,1,1),
+                text_align = TextNode.ALeft,
+                parent = self.frame2
+            )
+            label.setPos(u*info['x'], 0, u*info['z'])
         
         i1 = LerpPosInterval(self.frame, 0.2, (-u*55,0,-u*85), (-2,0,-u*85))
         s = Sequence(i1)
