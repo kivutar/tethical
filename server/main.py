@@ -169,26 +169,7 @@ class Server:
                     direction = int(chartile['direction'])
                     charid = str(x)+str(y)+str(z)
                     party['map']['tiles'][x][y][z]['char'] = charid;
-                    char = {
-                         'id': charid
-                       , 'name': charid
-                       , 'job': 'Unknown'
-                       , 'sign': 1
-                       , 'hp': 10
-                       , 'hpmax': 10
-                       , 'mp': 10
-                       , 'mpmax': 10
-                       , 'ct': 12
-                       , 'ctmax': 12
-                       , 'lv': 10
-                       , 'exp': 0
-                       , 'team': player
-                       , 'move': 4
-                       , 'jump': 6
-                       , 'direction': direction
-                       , 'sprite': 'misty' if int(player) == 1 else 'ramza'
-                       , 'active': 0 }
-                    party['chars'][charid] = char;
+                    party['chars'][charid] = Character.Random(charid, player, direction);
             
             for client in [ self.players[party['player1']] , source ]:
                 myPyDatagram = PyDatagram()
