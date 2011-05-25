@@ -42,6 +42,8 @@ STATS = 30
 STATS_SUCCESS = 31
 BATTLE_COMPLETE = 32
 GAME_OVER = 33
+GET_PASSIVE_WALKABLES = 34
+PASSIVE_WALKABLES_LIST = 35
 
 class Server:
 
@@ -237,6 +239,18 @@ class Server:
             
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(WALKABLES_LIST)
+            myPyDatagram.addString(charid)
+            myPyDatagram.addString(json.dumps(walkables))
+            self.cWriter.send(myPyDatagram, source)
+        
+        elif msgID == GET_PASSIVE_WALKABLES:
+        
+            charid = iterator.getString()
+            party = self.parties[self.sessions[source]['party']]
+            walkables = Move.GetWalkables( party['map'], party['chars'][charid] )
+            
+            myPyDatagram = PyDatagram()
+            myPyDatagram.addUint8(PASSIVE_WALKABLES_LIST)
             myPyDatagram.addString(charid)
             myPyDatagram.addString(json.dumps(walkables))
             self.cWriter.send(myPyDatagram, source)

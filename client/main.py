@@ -50,6 +50,8 @@ STATS = 30
 STATS_SUCCESS = 31
 BATTLE_COMPLETE = 32
 GAME_OVER = 33
+GET_PASSIVE_WALKABLES = 34
+PASSIVE_WALKABLES_LIST = 35
 
 class Client(DirectObject):
 
@@ -106,6 +108,18 @@ class Client(DirectObject):
                     'move_help',
                     lambda: self.setupWalkableTileChooser(charid, walkables)
                 )
+            else:
+                #TODO: show message "no walkable tile"
+                print "no walkable tile"
+                self.turn()
+        elif msgID == PASSIVE_WALKABLES_LIST:
+            charid = iterator.getString()
+            walkables = json.loads(iterator.getString())
+            if walkables:
+                self.clicked_snd.play()
+                self.drawWalkables(walkables)
+                self.tagWalkables(charid, walkables, False)
+                self.subphase = 'passivewalkables'
             else:
                 #TODO: show message "no walkable tile"
                 print "no walkable tile"
@@ -711,12 +725,10 @@ class Client(DirectObject):
 
                 # we clicked on a character
                 if charid != '0':
-                    walkables = self.con.Send('char/'+charid+'/walkables')
-                    if walkables:
-                        self.clicked_snd.play()
-                        self.drawWalkables(walkables)
-                        self.tagWalkables(charid, walkables, False)
-                        self.subphase = 'passivewalkables'
+                    myPyDatagram = PyDatagram()
+                    myPyDatagram.addUint8(GET_PASSIVE_WALKABLES)
+                    myPyDatagram.addString(charid)
+                    self.cWriter.send(myPyDatagram, self.myConnection)
 
             elif self.subphase == 'passivewalkables':
                 self.clearWalkables()
