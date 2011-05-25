@@ -9,6 +9,8 @@ from direct.task.Task import Task
 from direct.distributed.PyDatagramIterator import *
 from direct.distributed.PyDatagram import *
 from direct.interval.IntervalGlobal import *
+import math
+from operator import itemgetter
 import json
 import GUI
 import CameraHandler
@@ -776,15 +778,26 @@ class Client(DirectObject):
             if h >=   90 and h < 180:
                 self.findTileAndUpdateCursorPos((self.cux+1,self.cuy))
 
+    # Returns the closest tile for the given x and y
     def findTileAndUpdateCursorPos(self, pos):
-        cux, cuy = pos
+        fux, fuy = pos
+
+        # list the possibles tiles, on official maps, this list should not excess 2 items
+        possibles = []
         for x,xs in enumerate(self.party['map']['tiles']):
             for y,ys in enumerate(xs):
                 for z,zs in enumerate(ys):
                     if not self.party['map']['tiles'][x][y][z] is None:
-                        if cux == x and cuy == y:
-                            self.hover_snd.play()
-                            self.updateCursorPos((x, y, z))
+                        if fux == x and fuy == y:
+                            d = math.fabs(z-self.cuz) # for each possible, compute the Z delta with the current tile
+                            possibles.append((x, y, z, d))
+
+        if len(possibles):
+            # sort the possibles on Z delta, and get the closer tile
+            selected = sorted(possibles, key=itemgetter(3))[0][0:3]
+
+            self.hover_snd.play()
+            self.updateCursorPos(selected)
 
     # Move button clicked
     def onMoveClicked(self, charid):
