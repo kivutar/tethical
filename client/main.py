@@ -17,6 +17,9 @@ import CameraHandler
 import Direction
 import Sprite
 
+IP = '127.0.0.1' #'88.190.20.195' #'95.130.11.221'
+PORT =  3001
+
 LOGIN_MESSAGE = 1
 LOGIN_SUCCESS = 2
 LOGIN_FAIL = 3
@@ -60,13 +63,13 @@ class Client(DirectObject):
         self.music = base.loader.loadSfx('music/24.ogg')
         self.music.setLoop(True)
         self.music.play()
-        self.background = GUI.Background(self.logingui)
+        self.background = GUI.Background(self.loginScreen)
 
     def processData(self, datagram):
         iterator = PyDatagramIterator(datagram)
         msgID = iterator.getUint8()
         if msgID == LOGIN_SUCCESS:
-            self.loginwindow.commandanddestroy(self.partiesgui)
+            self.loginwindow.commandanddestroy(self.partyListScreen)
         elif msgID == LOGIN_FAIL:
             print iterator.getString()
         elif msgID == PARTY_CREATED:
@@ -76,10 +79,10 @@ class Client(DirectObject):
             self.partycreationwindow.frame.destroy()
         elif msgID == MAP_LIST:
             maps = json.loads(iterator.getString())
-            self.partycreationwindow = GUI.PartyCreationWindow(maps, self.createparty)
+            self.partycreationwindow = GUI.PartyCreationWindow(maps, self.createParty)
         elif msgID == PARTY_LIST:
             parties = json.loads(iterator.getString32())
-            self.partylistwindow = GUI.PartyListWindow(self.joinparty)
+            self.partylistwindow = GUI.PartyListWindow(self.joinParty)
             self.partylistwindow.refresh(parties)
         elif msgID == PARTY_JOINED:
             party = json.loads(iterator.getString32())
@@ -258,6 +261,7 @@ class Client(DirectObject):
             self.music.play()
             GUI.BrownOverlay(GUI.Congratulations, self.end)
 
+    # This task process data sent by the server, if any
     def tskReaderPolling(self, taskdata):
         if self.cReader.dataAvailable():
             datagram=NetDatagram()
@@ -265,10 +269,11 @@ class Client(DirectObject):
                 self.processData(datagram)
         return Task.cont
 
-    def logingui(self):
-        self.loginwindow = GUI.LoginWindow(self.login)
+    def loginScreen(self):
+        self.loginwindow = GUI.LoginWindow(self.authenticate)
 
-    def login(self):
+    # Setup connection and send the LOGIN datagram with credentials
+    def authenticate(self):
         login = self.loginwindow.loginEntry.get()
         password = self.loginwindow.passwordEntry.get()
 
@@ -279,12 +284,10 @@ class Client(DirectObject):
         self.cReader.setTcpHeaderSize(4)
         self.cWriter.setTcpHeaderSize(4)
 
-        ip = '127.0.0.1' #'88.190.20.195' #'95.130.11.221'
-        port =  3001
-        self.myConnection = self.cManager.openTCPClientConnection(ip, port, 5000)
+        self.myConnection = self.cManager.openTCPClientConnection(IP, PORT, 5000)
         if self.myConnection:
             self.cReader.addConnection(self.myConnection)
-            print 'Connection established on', ip, ':', port
+            print 'Client listening on', IP, ':', PORT
             taskMgr.add(self.tskReaderPolling, "Poll the connection reader")
 
             myPyDatagram = PyDatagram()
@@ -294,9 +297,9 @@ class Client(DirectObject):
             self.cWriter.send(myPyDatagram, self.myConnection)
 
         else:
-            print 'Can\'t connect to server on', ip, ':', port
+            print 'Can\'t connect to server on', IP, ':', PORT
 
-    def partiesgui(self):
+    def partyListScreen(self):
 
         myPyDatagram = PyDatagram()
         myPyDatagram.addUint8(GET_PARTIES)
@@ -306,7 +309,8 @@ class Client(DirectObject):
         myPyDatagram.addUint8(GET_MAPS)
         self.cWriter.send(myPyDatagram, self.myConnection)
 
-    def createparty(self):
+    # Send the party details to the server in order to instanciate a party
+    def createParty(self):
         name = self.partycreationwindow.nameEntry.get()
         mapname = self.partycreationwindow.mapOptionMenu.get()
         
@@ -316,13 +320,15 @@ class Client(DirectObject):
         myPyDatagram.addString(mapname)
         self.cWriter.send(myPyDatagram, self.myConnection)
 
-    def joinparty(self, name):
+    # Join a party
+    def joinParty(self, name):
         
         myPyDatagram = PyDatagram()
         myPyDatagram.addUint8(JOIN_PARTY)
         myPyDatagram.addString(name)
         self.cWriter.send(myPyDatagram, self.myConnection)
     
+    # The battle begins
     def battle_init(self):
         self.phase = None
         self.subphase = None
@@ -397,7 +403,7 @@ class Client(DirectObject):
         self.drawBackground()
         
         # Tasks
-        self.characterDirectionTask = taskMgr.add(self.characterDirectionTask , 'characterDirectionTask')
+        taskMgr.add(self.characterDirectionTask , 'characterDirectionTask')
 
         # Cursor stuff
         curtex = loader.loadTexture('textures/cursor.png')
@@ -441,7 +447,9 @@ class Client(DirectObject):
 
     # The main dispatcher
     def turn(self):
-        self.updateParty()
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addUint8(UPDATE_PARTY)
+        self.cWriter.send(myPyDatagram, self.myConnection)
 
     def party_updated(self):
        
@@ -477,12 +485,7 @@ class Client(DirectObject):
         for child in render.getChildren():
             child.removeNode()
         self.camhandler.destroy()
-        self.partiesgui()
-
-    def updateParty(self):
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addUint8(UPDATE_PARTY)
-        self.cWriter.send(myPyDatagram, self.myConnection)
+        self.partyListScreen()
 
     def showMenu(self, charid):
         self.setPhase('gui')
@@ -871,6 +874,7 @@ class Client(DirectObject):
 
 ### Utilities
 
+    # Converts logic coordinates to panda3d coordinates
     def logic2terrain(self, tile):
         (x, y, z) = tile
         return Point3(
