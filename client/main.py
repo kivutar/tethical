@@ -669,21 +669,25 @@ class Client(DirectObject):
 
     def updateCursorPos(self, pos):
 
-        (x, y, z) = pos
         self.camhandler.move(self.logic2terrain(pos))
 
-        depth = self.party['map']['tiles'][x][y][z]['depth']
-        slope = self.party['map']['tiles'][x][y][z]['slope']
-        scale = self.party['map']['tiles'][x][y][z]['scale']
+        (x, y, z) = pos
+        tile = self.party['map']['tiles'][x][y][z]
+
+        self.camhandler.move(self.logic2terrain(pos))
 
         self.cursor.detachNode()
-        self.cursor = loader.loadModel( "models/slopes/"+slope )
+        self.cursor = loader.loadModel( "models/slopes/"+tile['slope'] )
         self.cursor.reparentTo( self.tileRoot )
-        self.cursor.setScale(3.0, 3.0, 6.0/7.0*3.0*scale)
+        self.cursor.setScale(3.0, 3.0, 6.0/7.0*3.0*tile['scale'])
         self.cursor.setTransparency(TransparencyAttrib.MAlpha)
-        self.cursor.setColor( 1, 1, 1, .75 )
         self.cursor.setTexture(self.curtex)
-        self.cursor.setPos(self.logic2terrain((x, y, z+depth+0.1)))
+        self.cursor.setPos(self.logic2terrain((x, y, z+tile['depth']+0.1)))
+
+        if tile['walkable']:
+            self.cursor.setColor( 1, 1, 1, .75 )
+        else:
+            self.cursor.setColor( 1, 0, 0, .75 )
 
         self.cux = x
         self.cuy = y
