@@ -411,9 +411,9 @@ class Client(DirectObject):
         taskMgr.add(self.characterDirectionTask , 'characterDirectionTask')
 
         # Cursor stuff
-        curtex = loader.loadTexture('textures/cursor.png')
-        curtex.setMagfilter(Texture.FTNearest)
-        curtex.setMinfilter(Texture.FTNearest)
+        self.curtex = loader.loadTexture('textures/cursor.png')
+        self.curtex.setMagfilter(Texture.FTNearest)
+        self.curtex.setMinfilter(Texture.FTNearest)
         self.cux = False
         self.cuy = False
         self.cuz = False
@@ -422,7 +422,7 @@ class Client(DirectObject):
         self.cursor.setScale(3.0)
         self.cursor.setTransparency(TransparencyAttrib.MAlpha)
         self.cursor.setColor( 1, 1, 1, .75 )
-        self.cursor.setTexture(curtex)
+        self.cursor.setTexture(self.curtex)
 
         # Battle intro animation
         seq = Sequence()
@@ -668,19 +668,32 @@ class Client(DirectObject):
 ### Events
 
     def updateCursorPos(self, pos):
+
         (x, y, z) = pos
-        depth = self.party['map']['tiles'][x][y][z]['depth']
         self.camhandler.move(self.logic2terrain(pos))
+
+        depth = self.party['map']['tiles'][x][y][z]['depth']
+        slope = self.party['map']['tiles'][x][y][z]['slope']
+        scale = self.party['map']['tiles'][x][y][z]['scale']
+
+        self.cursor.detachNode()
+        self.cursor = loader.loadModel( "models/slopes/"+slope )
+        self.cursor.reparentTo( self.tileRoot )
+        self.cursor.setScale(3.0, 3.0, 6.0/7.0*3.0*scale)
+        self.cursor.setTransparency(TransparencyAttrib.MAlpha)
+        self.cursor.setColor( 1, 1, 1, .75 )
+        self.cursor.setTexture(self.curtex)
         self.cursor.setPos(self.logic2terrain((x, y, z+depth+0.1)))
+
         self.cux = x
         self.cuy = y
         self.cuz = z
 
         charid = self.tiles[x][y][z].find("**/polygon").node().getTag('char')
-        
+
         if self.charcard:
             self.charcard.hide()
-        
+
         if charid and charid != '0':
             char = self.party['chars'][charid]
             self.charcard = GUI.CharCard(char)
