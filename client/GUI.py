@@ -574,9 +574,10 @@ class AttackCheck(DirectObject.DirectObject):
 
 class Help(DirectObject.DirectObject):
 
-    def __init__(self, message, command):
+    def __init__(self, message, command, cancelcommand):
 
         self.command = command
+        self.cancelcommand = cancelcommand
 
         tex = loader.loadTexture('textures/gui/'+message+'.png')
         tex.setMagfilter(Texture.FTNearest)
@@ -597,11 +598,16 @@ class Help(DirectObject.DirectObject):
         seq.start()
 
     def acceptAll(self):
+        self.accept("space", self.onCrossClicked)
         self.accept("b", self.onCircleClicked )
 
     def onCircleClicked(self):
         clicked_snd.play()
         self.commandAndDestroy(self.command)
+
+    def onCrossClicked(self):
+        cancel_snd.play()
+        self.commandAndDestroy(self.cancelcommand)
 
     def commandAndDestroy(self, command):
         clicked_snd.play()

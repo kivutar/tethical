@@ -109,7 +109,8 @@ class Client(DirectObject):
                 self.setPhase('gui')
                 GUI.Help(
                     'move_help',
-                    lambda: self.setupWalkableTileChooser(charid, walkables)
+                    lambda: self.setupWalkableTileChooser(charid, walkables),
+                    self.turn
                 )
             else:
                 #TODO: show message "no walkable tile"
@@ -863,7 +864,8 @@ class Client(DirectObject):
         self.setPhase('gui')
         GUI.Help(
             'direction_help',
-            lambda: self.setupDirectionChooser(charid)
+            lambda: self.setupDirectionChooser(charid),
+            self.turn
         )
     
     def setupDirectionChooser(self, charid):
