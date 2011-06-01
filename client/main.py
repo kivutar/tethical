@@ -100,7 +100,8 @@ class Client(DirectObject):
             seq.append(Func(self.battle_init))
             seq.start()
         elif msgID == PARTY_UPDATED:
-            self.party = json.loads(iterator.getString32())
+            self.party['yourturn'] = iterator.getBool()
+            self.party['chars'] = json.loads(iterator.getString32())
             self.party_updated()
         elif msgID == WALKABLES_LIST:
             charid = iterator.getString()
@@ -600,8 +601,7 @@ class Client(DirectObject):
 
     # Draw and tag the red tile zone
     def setupAttackableZone(self, charid, attackables):
-        for tile in attackables:
-            (x, y, z) = tile
+        for x,y,z in attackables:
             self.tiles[x][y][z].setColor(1.0, 0.0, 0.0, 0.75)
             self.party['map']['tiles'][x][y][z]['attackablezone'] = charid
 

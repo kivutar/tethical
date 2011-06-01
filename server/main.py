@@ -209,7 +209,8 @@ class Server:
                 if chars[charid]['active']:
                     myPyDatagram = PyDatagram()
                     myPyDatagram.addUint8(PARTY_UPDATED)
-                    myPyDatagram.addString32(json.dumps(party))
+                    myPyDatagram.addBool(party['yourturn'])
+                    myPyDatagram.addString32(json.dumps(chars))
                     self.cWriter.send(myPyDatagram, source)
                     return
             
@@ -225,7 +226,8 @@ class Server:
                             party['yourturn'] = int(chars[charid]['team']) == int(self.sessions[source]['player'])
                             myPyDatagram = PyDatagram()
                             myPyDatagram.addUint8(PARTY_UPDATED)
-                            myPyDatagram.addString32(json.dumps(party))
+                            myPyDatagram.addBool(party['yourturn'])
+                            myPyDatagram.addString32(json.dumps(chars))
                             self.cWriter.send(myPyDatagram, source)
                             return
                         else:
