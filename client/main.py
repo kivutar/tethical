@@ -150,8 +150,8 @@ class Client(DirectObject):
             z2 = iterator.getUint8()
 
             (x1, y1, z1) = self.getCharacterCoords(charid)
-            self.tiles[x1][y1][z1].find("**/polygon").node().setTag('char', '0')
-            self.tiles[x2][y2][z2].find("**/polygon").node().setTag('char', str(charid))
+            del self.party['map']['tiles'][x1][y1][z1]['char']
+            self.party['map']['tiles'][x2][y2][z2]['char'] = charid
             self.turn()
         elif msgID == MOVED_PASSIVE:
             charid = iterator.getString()
@@ -161,8 +161,8 @@ class Client(DirectObject):
             self.setPhase('animation')
             (x1, y1, z1) = path[0]
             (x2, y2, z2) = path[-1]
-            self.tiles[x1][y1][z1].find("**/polygon").node().setTag('char', '0')
-            self.tiles[x2][y2][z2].find("**/polygon").node().setTag('char', str(charid))
+            del self.party['map']['tiles'][x1][y1][z1]['char']
+            self.party['map']['tiles'][x2][y2][z2]['char'] = charid
             seq = Sequence()
             seq.append( Func(self.drawWalkables, walkables) )
             seq.append( Wait(0.5) )
@@ -379,7 +379,6 @@ class Client(DirectObject):
                         self.tiles[x][y][z].setScale(3.0, 3.0, 6.0/7.0*3.0*scale)
                         self.tiles[x][y][z].setTransparency(TransparencyAttrib.MAlpha)
                         self.tiles[x][y][z].setColor( 0, 0, 0, 0 )
-                        self.tiles[x][y][z].find("**/polygon").node().setTag('char', '0')            
 
                         if self.party['map']['tiles'][x][y][z].has_key('char'):
                             charid = self.party['map']['tiles'][x][y][z]['char']
@@ -389,7 +388,6 @@ class Client(DirectObject):
                             sprite.node.setPos(self.logic2terrain((x,y,z)))
                             sprite.node.reparentTo( render )
                             self.sprites[charid] = sprite
-                            self.tiles[x][y][z].find("**/polygon").node().setTag('char', str(charid))
         
         #self.coords = OnscreenText(text = '', pos = (0.9, 0.8), scale = 0.2, fg = (0.82,1,055,1), shadow = (0,0,0.08,1) )
         
@@ -602,16 +600,16 @@ class Client(DirectObject):
     def tagWalkables(self, charid, walkables, active=False):
         for tile in walkables:
             (x, y, z) = tile
-            self.tiles[x][y][z].find("**/polygon").node().setTag('walkable', '1')
+            self.party['map']['tiles'][x][y][z]['walkablezone'] = True
             if active:
-                self.tiles[x][y][z].find("**/polygon").node().setTag('active', str(charid))
+                self.party['map']['tiles'][x][y][z]['active'] = charid
 
     # Draw and tag the red tile zone
     def drawAndTagAttackables(self, charid, attackables):
         for tile in attackables:
             (x, y, z) = tile
             self.tiles[x][y][z].setColor(1.0, 0.0, 0.0, 0.75)
-            self.tiles[x][y][z].find("**/polygon").node().setTag('attackable', charid)
+            self.party['map']['tiles'][x][y][z]['attackablezone'] = charid
 
     # Clear walkable tile zone
     def clearWalkables(self):
@@ -619,11 +617,11 @@ class Client(DirectObject):
             for y,ys in enumerate(xs):
                 for z,zs in enumerate(ys):
                     if not self.party['map']['tiles'][x][y][z] is None:
-                        walkable = self.tiles[x][y][z].find("**/polygon").node().getTag('walkable')
-                        if walkable and walkable != '0':
+                        if self.party['map']['tiles'][x][y][z].has_key('walkablezone'):
                             self.tiles[x][y][z].setColor(0, 0, 0, 0)
-                            self.tiles[x][y][z].find("**/polygon").node().setTag('walkable', '0')
-                            self.tiles[x][y][z].find("**/polygon").node().setTag('active',   '0')
+                            del self.party['map']['tiles'][x][y][z]['walkablezone']
+                        if self.party['map']['tiles'][x][y][z].has_key('active'):
+                            del self.party['map']['tiles'][x][y][z]['active']
 
     # Clear attackable tile zone
     def clearAttackables(self):
@@ -631,10 +629,9 @@ class Client(DirectObject):
             for y,ys in enumerate(xs):
                 for z,zs in enumerate(ys):
                     if not self.party['map']['tiles'][x][y][z] is None:
-                        attackable = self.tiles[x][y][z].find("**/polygon").node().getTag('attackable')
-                        if attackable and attackable != '0':
+                        if self.party['map']['tiles'][x][y][z].has_key('attackablezone'):
                             self.tiles[x][y][z].setColor(0, 0, 0, 0)
-                            self.tiles[x][y][z].find("**/polygon").node().setTag('attackable', '0')
+                            del self.party['map']['tiles'][x][y][z]['attackablezone']
 
     # Returns a sequence showing the character moving through a path
     def getCharacterMoveSequence(self, charid, path):
@@ -694,12 +691,11 @@ class Client(DirectObject):
         self.cuy = y
         self.cuz = z
 
-        charid = self.tiles[x][y][z].find("**/polygon").node().getTag('char')
-
         if self.charcard:
             self.charcard.hide()
 
-        if charid and charid != '0':
+        if self.party['map']['tiles'][x][y][z].has_key('char'):
+            charid = self.party['map']['tiles'][x][y][z]['char']
             char = self.party['chars'][charid]
             self.charcard = GUI.CharCard(char)
 
@@ -709,26 +705,23 @@ class Client(DirectObject):
 
             if self.charcard2:
                 self.charcard2.hide()
-
-            charid = self.tiles[self.cux][self.cuy][self.cuz].find("**/polygon").node().getTag('char')
             
             # we clicked an active walkable tile, let's move the character
-            active = self.tiles[self.cux][self.cuy][self.cuz].find("**/polygon").node().getTag('active')
-            if active and active != '0':
+            if self.party['map']['tiles'][self.cux][self.cuy][self.cuz].has_key('active'):
+                active = self.party['map']['tiles'][self.cux][self.cuy][self.cuz]['active']
                 self.clicked_snd.play()
                 dest = (self.cux, self.cuy, self.cuz)
                 self.path(active, dest)
                 return
-            
-            walkable = self.tiles[self.cux][self.cuy][self.cuz].find("**/polygon").node().getTag('walkable')
-            attackable = self.tiles[self.cux][self.cuy][self.cuz].find("**/polygon").node().getTag('attackable')
 
             # we clicked on a character
-            if charid != '0':
+            if self.party['map']['tiles'][self.cux][self.cuy][self.cuz].has_key('char'):
+                charid = self.party['map']['tiles'][self.cux][self.cuy][self.cuz]['char']
                 self.clicked_snd.play()
 
                 # we clicked on a target, let's attack it!
-                if attackable and attackable != '0':
+                if self.party['map']['tiles'][self.cux][self.cuy][self.cuz].has_key('attackablezone'):
+                    attackable = self.party['map']['tiles'][self.cux][self.cuy][self.cuz]['attackablezone']
                     self.setPhase('gui')
                     GUI.AttackCheck(
                         lambda: self.attack(attackable, charid),
@@ -747,10 +740,10 @@ class Client(DirectObject):
         if self.phase == 'tile' and self.cux is not False and self.party['yourturn']:
 
             if self.subphase == 'free':
-                charid = self.tiles[self.cux][self.cuy][self.cuz].find("**/polygon").node().getTag('char')
 
-                # we clicked on a character
-                if charid != '0':
+                # if we clicked on a character
+                if self.party['map']['tiles'][self.cux][self.cuy][self.cuz].has_key('char'):
+                    charid = self.party['map']['tiles'][self.cux][self.cuy][self.cuz]['char']
                     myPyDatagram = PyDatagram()
                     myPyDatagram.addUint8(GET_PASSIVE_WALKABLES)
                     myPyDatagram.addString(charid)

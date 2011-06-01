@@ -301,7 +301,7 @@ class Server:
             path = Move.GetPath( mp, char, x1, y1, z1, x2, y2, z2 )
             walkables = Move.GetWalkables( mp, char )
 
-            mp['tiles'][x1][y1][z1]['char'] = 0
+            del mp['tiles'][x1][y1][z1]['char']
             mp['tiles'][x2][y2][z2]['char'] = charid
 
             char['direction'] = Move.GetNewDirection( x1, y1, x2, y2 )
