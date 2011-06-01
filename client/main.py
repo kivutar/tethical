@@ -121,8 +121,7 @@ class Client(DirectObject):
             walkables = json.loads(iterator.getString())
             if walkables:
                 self.clicked_snd.play()
-                self.drawWalkables(walkables)
-                self.tagWalkables(charid, walkables, False)
+                self.setupPassiveWalkableZone(walkables)
                 self.subphase = 'passivewalkables'
             else:
                 #TODO: show message "no walkable tile"
@@ -138,7 +137,7 @@ class Client(DirectObject):
             seq = Sequence()
             seq.append( Func(self.hideAT) )
             seq.append( Func(self.updateSpriteAnimation, charid, 'walk') )
-            seq.append( Func(self.clearWalkables) )
+            seq.append( Func(self.clearZone) )
             seq.append( self.getCharacterMoveSequence(charid, path) )
             seq.append( Func(self.updateSpriteAnimation, charid) )
             seq.append( Func(self.moveCheck, charid, orig, origdir, dest) )
@@ -164,9 +163,8 @@ class Client(DirectObject):
             del self.party['map']['tiles'][x1][y1][z1]['char']
             self.party['map']['tiles'][x2][y2][z2]['char'] = charid
             seq = Sequence()
-            seq.append( Func(self.drawWalkables, walkables) )
+            seq.append( Func(self.setupPassiveWalkableZone, walkables) )
             seq.append( Wait(0.5) )
-            seq.append( Func(self.tagWalkables, charid, walkables, False) )
             seq.append( Func(self.updateCursorPos, (x2, y2, z2)) )
             seq.append( Wait(0.5) )
             seq.append( Func(self.hideAT) )
@@ -175,7 +173,7 @@ class Client(DirectObject):
             seq.append( self.getCharacterMoveSequence(charid, path) )
             seq.append( Wait(0.5) )
             seq.append( Func(self.updateSpriteAnimation, charid) )
-            seq.append( Func(self.clearWalkables) )
+            seq.append( Func(self.clearZone) )
             seq.append( Func(self.showAT, self.sprites[charid]) )
             seq.append( Func(self.setPhase, 'listen') )
             seq.start()
@@ -200,7 +198,7 @@ class Client(DirectObject):
 
             self.setPhase('tile')
             self.subphase = 'attack'
-            self.drawAndTagAttackables(charid, attackables)
+            self.setupAttackableZone(charid, attackables)
             if self.charcard2:
                 self.charcard2.hide()
         elif msgID == ATTACK_SUCCESS:
@@ -221,7 +219,7 @@ class Client(DirectObject):
             
             self.setPhase('animation')
             seq = Sequence()
-            seq.append( Func(self.drawAndTagAttackables, charid, attackables) )
+            seq.append( Func(self.setupAttackableZone, charid, attackables) )
             seq.append( Wait(0.5) )
             seq.append( Func(self.updateCursorPos, self.getCharacterCoords(targetid)) )
             seq.append( Func(self.camhandler.move, self.logic2terrain(self.getCharacterCoords(targetid))) )
@@ -456,9 +454,8 @@ class Client(DirectObject):
         self.cWriter.send(myPyDatagram, self.myConnection)
 
     def party_updated(self):
-       
-        self.clearAttackables()
-        self.clearWalkables()
+
+        self.clearZone()
 
         for x,xs in enumerate(self.party['map']['tiles']):
             for y,ys in enumerate(xs):
@@ -575,7 +572,7 @@ class Client(DirectObject):
         seq.append( Wait(0.5) )
         seq.append( Func(self.updateSpriteAnimation, targetid) )
         seq.append( Wait(0.5) )
-        seq.append( Func(self.clearAttackables) )
+        seq.append( Func(self.clearZone) )
         return seq
 
     # Update the status (animation) of a sprite after something happened
@@ -591,46 +588,33 @@ class Client(DirectObject):
             self.cWriter.send(myPyDatagram, self.myConnection)
 
     # Draw blue tile zone
-    def drawWalkables(self, walkables):
-        for tile in walkables:
-            (x, y, z) = tile
+    def setupPassiveWalkableZone(self, walkables):
+        for x,y,z in walkables:
             self.tiles[x][y][z].setColor(0.0, 0.0, 1.0, 0.75)
 
     # Tag a zone as walkable or active-walkable
-    def tagWalkables(self, charid, walkables, active=False):
-        for tile in walkables:
-            (x, y, z) = tile
-            self.party['map']['tiles'][x][y][z]['walkablezone'] = True
-            if active:
-                self.party['map']['tiles'][x][y][z]['active'] = charid
+    def setupWalkableZone(self, charid, walkables):
+        for x,y,z in walkables:
+            self.tiles[x][y][z].setColor(0.0, 0.0, 1.0, 0.75)
+            self.party['map']['tiles'][x][y][z]['walkablezone'] = charid
 
     # Draw and tag the red tile zone
-    def drawAndTagAttackables(self, charid, attackables):
+    def setupAttackableZone(self, charid, attackables):
         for tile in attackables:
             (x, y, z) = tile
             self.tiles[x][y][z].setColor(1.0, 0.0, 0.0, 0.75)
             self.party['map']['tiles'][x][y][z]['attackablezone'] = charid
 
-    # Clear walkable tile zone
-    def clearWalkables(self):
+    # Clear any tile zone
+    def clearZone(self):
         for x,xs in enumerate(self.party['map']['tiles']):
             for y,ys in enumerate(xs):
                 for z,zs in enumerate(ys):
                     if not self.party['map']['tiles'][x][y][z] is None:
+                        self.tiles[x][y][z].setColor(0, 0, 0, 0)
                         if self.party['map']['tiles'][x][y][z].has_key('walkablezone'):
-                            self.tiles[x][y][z].setColor(0, 0, 0, 0)
                             del self.party['map']['tiles'][x][y][z]['walkablezone']
-                        if self.party['map']['tiles'][x][y][z].has_key('active'):
-                            del self.party['map']['tiles'][x][y][z]['active']
-
-    # Clear attackable tile zone
-    def clearAttackables(self):
-        for x,xs in enumerate(self.party['map']['tiles']):
-            for y,ys in enumerate(xs):
-                for z,zs in enumerate(ys):
-                    if not self.party['map']['tiles'][x][y][z] is None:
                         if self.party['map']['tiles'][x][y][z].has_key('attackablezone'):
-                            self.tiles[x][y][z].setColor(0, 0, 0, 0)
                             del self.party['map']['tiles'][x][y][z]['attackablezone']
 
     # Returns a sequence showing the character moving through a path
@@ -707,11 +691,11 @@ class Client(DirectObject):
                 self.charcard2.hide()
             
             # we clicked an active walkable tile, let's move the character
-            if self.party['map']['tiles'][self.cux][self.cuy][self.cuz].has_key('active'):
-                active = self.party['map']['tiles'][self.cux][self.cuy][self.cuz]['active']
+            if self.party['map']['tiles'][self.cux][self.cuy][self.cuz].has_key('walkablezone'):
+                charid = self.party['map']['tiles'][self.cux][self.cuy][self.cuz]['walkablezone']
                 self.clicked_snd.play()
                 dest = (self.cux, self.cuy, self.cuz)
-                self.path(active, dest)
+                self.path(charid, dest)
                 return
 
             # we clicked on a character
@@ -750,17 +734,17 @@ class Client(DirectObject):
                     self.cWriter.send(myPyDatagram, self.myConnection)
 
             elif self.subphase == 'passivewalkables':
-                self.clearWalkables()
+                self.clearZone()
                 self.cancel_snd.play()
                 self.subphase = 'free'
 
             elif self.subphase == 'move':
-                self.clearWalkables()
+                self.clearZone()
                 self.cancel_snd.play()
                 self.subphase = None
                 self.turn()
             elif self.subphase == 'attack':
-                self.clearAttackables()
+                self.clearZone()
                 self.cancel_snd.play()
                 self.subphase = None
                 self.turn()
@@ -840,8 +824,7 @@ class Client(DirectObject):
     def setupWalkableTileChooser(self, charid, walkables):
         self.setPhase('tile')
         self.subphase = 'move'
-        self.drawWalkables(walkables)
-        self.tagWalkables(charid, walkables, True)
+        self.setupWalkableZone(charid, walkables)
         if self.charcard2:
             self.charcard2.hide()
 
