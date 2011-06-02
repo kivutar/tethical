@@ -14,7 +14,7 @@ def getadjacentwalkables( party, charid, tiles ):
                 if t2 and x2 >= 0 and y2 >= 0:
                     for z2,t3 in enumerate(t2):
                         if t3 \
-                        and (not t3.has_key('char') or t3['char'] == 0) \
+                        and (not t3.has_key('char') or party['chars'][t3['char']]['team'] ==  party['chars'][charid]['team']) \
                         and t3['walkable'] and t3['selectable'] \
                         and math.fabs(z2-z1) <= party['chars'][charid]['jump']:
                             w2.append( (x2, y2, z2) )
@@ -25,17 +25,29 @@ def getadjacentwalkables( party, charid, tiles ):
 
 def GetWalkables( party, charid ):
     
+    # get the current tile
     tile = Character.Coords( party, charid )
+    # recursively add walkables tiles to the list
     walkables = [ tile ]
     for i in range(1, party['chars'][charid]['move']+1):
         walkables.extend( getadjacentwalkables( party, charid, walkables ) )
 
+    # remove current tile from the list
     filtered_walkables = []
     for walkable in walkables:
         if not walkable == tile:
             filtered_walkables.append( walkable )
+    walkables = filtered_walkables
 
-    return filtered_walkables
+    # remove tiles containing characters from the list
+    filtered_walkables = []
+    for walkable in walkables:
+        x, y, z = walkable
+        if not party['map']['tiles'][x][y][z].has_key('char'):
+            filtered_walkables.append( walkable )
+    walkables = filtered_walkables
+
+    return walkables
 
 def IsWalkable( party, charid, x, y, z ):
 
