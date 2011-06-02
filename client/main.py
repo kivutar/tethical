@@ -388,8 +388,6 @@ class Client(DirectObject):
                             sprite.node.reparentTo( render )
                             self.sprites[charid] = sprite
         
-        #self.coords = OnscreenText(text = '', pos = (0.9, 0.8), scale = 0.2, fg = (0.82,1,055,1), shadow = (0,0,0.08,1) )
-        
         self.atcontainer = render.attachNewNode("atcontainer")
         self.atcontainer.setPos(0,0,3.5)
         self.atcontainer.setBillboardPointEye()
@@ -682,6 +680,11 @@ class Client(DirectObject):
             charid = self.party['map']['tiles'][x][y][z]['char']
             char = self.party['chars'][charid]
             self.charcard = GUI.CharCard(char)
+
+        try:
+            self.coords.update(tile)
+        except:
+            self.coords = GUI.Coords(tile)
 
     # You clicked on a tile, this can mean different things, so this is a dispatcher
     def onCircleClicked(self):
