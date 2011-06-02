@@ -14,7 +14,7 @@ def getadjacentwalkables( party, charid, tiles ):
                 if t2 and x2 >= 0 and y2 >= 0:
                     for z2,t3 in enumerate(t2):
                         if t3 \
-                        and (not t3.has_key('char') or party['chars'][t3['char']]['team'] ==  party['chars'][charid]['team']) \
+                        and (not t3.has_key('char') or party['chars'][t3['char']]['team'] ==  party['chars'][charid]['team'] or party['chars'][t3['char']]['hp'] == 0 ) \
                         and t3['walkable'] and t3['selectable'] \
                         and math.fabs(z2-z1) <= party['chars'][charid]['jump']:
                             w2.append( (x2, y2, z2) )
