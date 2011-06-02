@@ -237,7 +237,7 @@ class Server:
         
             charid = iterator.getString()
             party = self.parties[self.sessions[source]['party']]
-            walkables = Move.GetWalkables( party['map'], party['chars'][charid] )
+            walkables = Move.GetWalkables( party, charid )
             
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(WALKABLES_LIST)
@@ -249,7 +249,7 @@ class Server:
         
             charid = iterator.getString()
             party = self.parties[self.sessions[source]['party']]
-            walkables = Move.GetWalkables( party['map'], party['chars'][charid] )
+            walkables = Move.GetWalkables( party, charid )
             
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(PASSIVE_WALKABLES_LIST)
@@ -265,21 +265,19 @@ class Server:
             z2 = iterator.getUint8()
             
             party = self.parties[self.sessions[source]['party']]
-            mp = party['map']
-            char = party['chars'][charid]
             
-            orig = Character.Coords( mp, char )
+            orig = Character.Coords( party, charid )
             x1 = orig[0]
             y1 = orig[1]
             z1 = orig[2]
             
-            path = Move.GetPath( mp, char, x1, y1, z1, x2, y2, z2 )
+            path = Move.GetPath( party, charid, x1, y1, z1, x2, y2, z2 )
             
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(PATH)
             myPyDatagram.addString(charid)
             myPyDatagram.addString(json.dumps(orig))
-            myPyDatagram.addUint8(char['direction'])
+            myPyDatagram.addUint8(party['chars'][charid]['direction'])
             myPyDatagram.addString(json.dumps((x2,y2,z2)))
             myPyDatagram.addString(json.dumps(path))
             self.cWriter.send(myPyDatagram, source)
@@ -292,22 +290,20 @@ class Server:
             z2 = iterator.getUint8()
             
             party = self.parties[self.sessions[source]['party']]
-            mp = party['map']
-            char = party['chars'][charid]
             
-            orig = Character.Coords( mp, char )
+            orig = Character.Coords( party, charid )
             x1 = orig[0]
             y1 = orig[1]
             z1 = orig[2]
 
-            path = Move.GetPath( mp, char, x1, y1, z1, x2, y2, z2 )
-            walkables = Move.GetWalkables( mp, char )
+            path = Move.GetPath( party, charid, x1, y1, z1, x2, y2, z2 )
+            walkables = Move.GetWalkables( party, charid )
 
-            del mp['tiles'][x1][y1][z1]['char']
-            mp['tiles'][x2][y2][z2]['char'] = charid
+            del party['map']['tiles'][x1][y1][z1]['char']
+            party['map']['tiles'][x2][y2][z2]['char'] = charid
 
-            char['direction'] = Move.GetNewDirection( x1, y1, x2, y2 )
-            char['canmove'] = False
+            party['chars'][charid]['direction'] = Move.GetNewDirection( x1, y1, x2, y2 )
+            party['chars'][charid]['canmove'] = False
             
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(MOVED)
@@ -367,10 +363,8 @@ class Server:
             charid = iterator.getString()
             
             party = self.parties[self.sessions[source]['party']]
-            mp = party['map']
-            char = party['chars'][charid]
             
-            attackables = Attack.GetAttackables( mp, char )
+            attackables = Attack.GetAttackables( party, charid )
             
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(ATTACKABLES_LIST)
@@ -384,17 +378,14 @@ class Server:
             charid2 = iterator.getString()
             
             party = self.parties[self.sessions[source]['party']]
-            mp = party['map']
-            char1 = party['chars'][charid1]
-            char2 = party['chars'][charid2]
             
             damages = 4
             
-            char2['hp'] = char2['hp'] - damages
-            if char2['hp'] < 0:
-                char2['hp'] = 0
+            party['chars'][charid2]['hp'] = party['chars'][charid2]['hp'] - damages
+            if party['chars'][charid2]['hp'] < 0:
+                party['chars'][charid2]['hp'] = 0
             
-            char1['canact'] = False
+            party['chars'][charid1]['canact'] = False
             
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(ATTACK_SUCCESS)
@@ -403,7 +394,7 @@ class Server:
             myPyDatagram.addUint8(damages)
             self.cWriter.send(myPyDatagram, source)
             
-            attackables = Attack.GetAttackables( mp, char1 )
+            attackables = Attack.GetAttackables( party, charid1 )
             
             if self.sessions[source]['player'] == 1:
                 otherlogin = party['player2']

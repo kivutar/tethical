@@ -1,14 +1,14 @@
 import random
 
-def Coords( mp, char ):
+def Coords( party, charid ):
     
-    for x in range( mp['x'] ):
-        for y in range( mp['y'] ):
-            for z in range( mp['z'] ):
+    for x in range( party['map']['x'] ):
+        for y in range( party['map']['y'] ):
+            for z in range( party['map']['z'] ):
                 
-                tile = mp['tiles'][x][y][z]
+                tile = party['map']['tiles'][x][y][z]
                 
-                if tile and tile.has_key('char') and int(tile['char']) == int(char['id']):
+                if tile and tile.has_key('char') and int(tile['char']) == int(charid):
                     return (x, y, z)
 
 def Random( charid, player, direction ):
