@@ -44,6 +44,7 @@ class Background(DirectObject.DirectObject):
         base.setBackgroundColor(.03125, .03125, .03125)
 
         self.frame = DirectFrame( color = (1, 1, 1, 1), frameTexture = tex, frameSize = ( -2.2, 2.2, -2.2, 2.2 ), scale = 10 )
+        self.frame.setTransparency(True)
 
         seq = Sequence()
         i = LerpScaleInterval(self.frame, 0.1, 1, startScale=10 )
@@ -141,71 +142,12 @@ class LoginWindow(DirectObject.DirectObject):
         seq.append( Func(command) )
         seq.start()
 
-class PartyCreationWindow(DirectObject.DirectObject):
-
-    def __init__(self, maps, command):
-
-        tex = loader.loadTexture('textures/gui/newparty_window.png')
-        tex.setMagfilter(Texture.FTNearest)
-        tex.setMinfilter(Texture.FTNearest)
-
-        self.frame = DirectFrame( frameTexture = tex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -.25, .25 ), scale=0.1 )
-        self.frame.setTransparency(True)
-        self.frame.setPos(0, 0, -u*80)
-
-        self.nameEntry = DirectEntry(
-            color = (0,0,0,0),
-            scale = scale,
-            numLines = 1,
-            focus = 1,
-            text_font = font,
-            text_fg = (.1875,.15625,.125,1),
-            text_shadow = (.5,.46484375,.40625,1),
-            parent = self.frame,
-        )
-        self.nameEntry.setPos(-u*93, 0, -u*7)
-
-        self.mapOptionMenu = DirectOptionMenu(
-            text = "options",
-            scale = scale, 
-            items = maps,
-            highlightColor = ( 0.65, 0.65, 0.65, 1 ),
-            text_font = font,
-            text_fg = (.1875,.15625,.125,1),
-            text_shadow = (.5,.46484375,.40625,1),
-            text_align = TextNode.ALeft,
-            rolloverSound = hover_snd,
-            clickSound = clicked_snd,
-            pressEffect = 0,
-            parent = self.frame,
-        )
-        self.mapOptionMenu.setPos(-u*10, 0, -u*7)
-        
-        button = DirectButton(
-            text  = ("Create", "Create", "Create", "disabled"),
-            scale = scale,
-            text_font = font,
-            text_fg = (.1875,.15625,.125,1),
-            text_shadow = (.5,.46484375,.40625,1),
-            text_align = TextNode.ALeft,
-            parent = self.frame,
-            rolloverSound = hover_snd,
-            clickSound = clicked_snd,
-            pressEffect = 0,
-            command = command
-        )
-        button.setPos(u*70, 0, -u*7)
-        
-        seq2 = Sequence()
-        i2 = LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1 )
-        seq2.append(i2)
-        seq2.start()
-
 class PartyListWindow(DirectObject.DirectObject):
 
-    def __init__(self, command2):
+    def __init__(self, command, createpartycommand):
 
-        self.command2 = command2
+        self.command = command
+        self.createpartycommand = createpartycommand
 
         tex = loader.loadTexture('textures/gui/parties_window.png')
         tex.setMagfilter(Texture.FTNearest)
@@ -213,12 +155,46 @@ class PartyListWindow(DirectObject.DirectObject):
     
         self.frame = DirectFrame( frameTexture = tex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -1, 1 ), scale=0.1 )
         self.frame.setTransparency(True)
-        self.frame.setPos(0, 0, u*21)
         
-        seq = Sequence()
-        i = LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1 )
-        seq.append(i)
-        seq.start()
+        cptexture = loader.loadTexture('textures/gui/create_party.png')
+        cptexture.setMagfilter(Texture.FTNearest)
+        cptexture.setMinfilter(Texture.FTNearest)
+
+        self.cpframe = DirectFrame(
+            frameTexture = cptexture,
+            frameColor = (1, 1, 1, 1),
+            frameSize = ( -.25, .25, -.0625, .0625 ),
+            pos = (0, 0, -.8),
+            scale = 1.0,
+        )
+        self.cpframe.setTransparency(True)
+        
+        Sequence(
+            Parallel(
+                LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1 ),
+                LerpPosInterval(self.cpframe, 0.25, (0, 0, -.8), (0, 0, -1.0)),
+            ),
+            Func( self.acceptAll ),
+        ).start()
+
+    def acceptAll(self):
+        self.accept("v",    self.onTriangleClicked)
+
+    def onTriangleClicked(self):
+        clicked_snd.play()
+        self.commandAndDestroy(self.createpartycommand)
+
+    def commandAndDestroy(self,command):
+        Sequence(
+            Parallel(
+                LerpScaleInterval(self.frame, 0.1, 0.1, startScale=1),
+                LerpPosInterval(self.cpframe, 0.25, (0, 0, -1.0), (0, 0, -0.8)),
+            ),
+            Func(self.ignoreAll),
+            Func(self.cpframe.destroy),
+            Func(self.frame.destroy),
+            Func(command),
+        ).start()
 
     def refresh(self, parties):
     
@@ -264,8 +240,8 @@ class PartyListWindow(DirectObject.DirectObject):
             
             joinButton = DirectButton(
                 text  = ("Join", "Join", "Join", "Full"),
-                command = self.command2,
-                extraArgs = [key],
+                command = self.commandAndDestroy,
+                extraArgs = [lambda: self.command(key)],
                 scale = scale,
                 text_font = font,
                 text_fg = (.1875,.15625,.125,1),
@@ -977,4 +953,189 @@ class GameOver(DirectObject.DirectObject):
             Func(go.destroy),
             Func(callback),
         ).start()
+
+class MapChooser(DirectObject.DirectObject):
+
+    def __init__(self, maplist, parent, command, cancelcommand):
+        self.parent = parent
+        self.command = command
+        self.cancelcommand = cancelcommand
+        self.current = 0
+        self.maplist = maplist
+
+        loadingtexture = loader.loadTexture('textures/gui/now_loading.png')
+        loadingtexture.setMagfilter(Texture.FTNearest)
+        loadingtexture.setMinfilter(Texture.FTNearest)
+
+        self.loadingframe = DirectFrame(
+            frameTexture = loadingtexture,
+            frameColor = (1, 1, 1, 1),
+            frameSize = ( -.25, .25, -.0625, .0625 ),
+            pos = (.9, 0, -.8),
+            scale = 1.0,
+        )
+        self.loadingframe.setTransparency(True)
+
+        for mapinfo in self.maplist:
+            terrain = loader.loadModel( 'models/maps/'+mapinfo['model'] )
+            terrain.setTransparency(TransparencyAttrib.MAlpha)
+            terrain.setScale( *[ x/25.0 for x in mapinfo['scale'] ] )
+            terrain.setDepthWrite(True)
+            terrain.setDepthTest(True)
+            bbcenter = terrain.getBounds().getCenter()
+            hprcontainer = NodePath("hprcontainer")
+            recentrer = NodePath("recentrer")
+            hprcontainer.setHpr(0,33,0)
+            terrain.reparentTo(recentrer)
+            terrain.setPos(-bbcenter[0], -bbcenter[1], -bbcenter[2]/2.0)
+            recentrer.reparentTo(hprcontainer)
+            mapinfo['recentrer'] = recentrer
+            mapinfo['terrain'] = hprcontainer
+
+        self.loadingframe.destroy()
+
+        l1texture = loader.loadTexture('textures/gui/L1.png')
+        l1texture.setMagfilter(Texture.FTNearest)
+        l1texture.setMinfilter(Texture.FTNearest)
+
+        self.l1frame = DirectFrame(
+            frameTexture = l1texture,
+            frameColor = (1, 1, 1, 1),
+            frameSize = ( -.125, .125, -.0625, .0625 ),
+            pos = (-.9, 0, .8),
+            scale = 1.0,
+        )
+        self.l1frame.setTransparency(True)
+
+        r1texture = loader.loadTexture('textures/gui/R1.png')
+        r1texture.setMagfilter(Texture.FTNearest)
+        r1texture.setMinfilter(Texture.FTNearest)
+
+        self.r1frame = DirectFrame(
+            frameTexture = r1texture,
+            frameColor = (1, 1, 1, 1),
+            frameSize = ( -.125, .125, -.0625, .0625 ),
+            pos = (.9, 0, .8),
+            scale = 1.0,
+        )
+        self.r1frame.setTransparency(True)
+
+        starttexture = loader.loadTexture('textures/gui/start_end.png')
+        starttexture.setMagfilter(Texture.FTNearest)
+        starttexture.setMinfilter(Texture.FTNearest)
+
+        self.startframe = DirectFrame(
+            frameTexture = starttexture,
+            frameColor = (1, 1, 1, 1),
+            frameSize = ( -.25, .25, -.0625, .0625 ),
+            pos = (0, 0, -.8),
+            scale = 1.0,
+        )
+        self.startframe.setTransparency(True)
+        
+        seq = Sequence(
+            Parallel(
+                LerpPosInterval(self.l1frame, 0.25, (-.9, 0, .8), (-.9, 0, 1.0)),
+                LerpPosInterval(self.r1frame, 0.25, ( .9, 0, .8), ( .9, 0, 1.0)),
+                LerpPosInterval(self.startframe, 0.25, (0, 0, -.8), (0, 0, -1.0)),
+                Func( self.maplist[self.current]['terrain'].reparentTo, self.parent ),
+                LerpColorInterval(self.maplist[self.current]['terrain'], 0.25, (1,1,1,1), (1,1,1,0)),
+            ),
+            Func( taskMgr.add, self.mapRotationTask, 'mapRotationTask' ),
+            Func( self.acceptAll ),
+        ).start()
+
+    def acceptAll(self):
+        self.accept("space", self.onCrossClicked)
+        self.accept("enter", self.onStartClicked)
+        self.accept("a",     self.onL1Clicked)
+        self.accept("z",     self.onR1Clicked)
+        self.accept("a-repeat", self.onL1Clicked)
+        self.accept("z-repeat", self.onR1Clicked)
+
+    def onCrossClicked(self):
+        cancel_snd.play()
+        self.commandAndDestroy(self.cancelcommand)
+
+    def onStartClicked(self):
+        clicked_snd.play()
+        self.commandAndDestroy( lambda: self.command( self.maplist[self.current]['name'] ) )
+
+    def commandAndDestroy(self, command):
+        self.ignoreAll()
+
+        seq = Sequence(
+            Func( taskMgr.remove, 'mapRotationTask' ),
+            Wait( 0.5 ),
+            Parallel(
+                LerpPosInterval(self.l1frame, 0.25, (-.9, 0, 1.0), (-.9, 0, .8)),
+                LerpPosInterval(self.r1frame, 0.25, ( .9, 0, 1.0), ( .9, 0, .8)),
+                LerpPosInterval(self.startframe, 0.25, (0, 0, -1.0), (0, 0, -.8)),
+                LerpColorInterval(self.maplist[self.current]['terrain'], 0.25, (1,1,1,0), (1,1,1,1)),
+            ),
+            Func( self.l1frame.destroy ),
+            Func( self.r1frame.destroy ),
+            Func( self.startframe.destroy ),
+            Func( self.unloadTerrains ),
+            Func( command ),
+        ).start()
+
+    def unloadTerrains(self):
+        for mapinfo in self.maplist:
+            mapinfo['terrain'].removeNode()
+
+    def onR1Clicked(self):
+
+        self.previous = self.current
+        self.current = self.current - 1
+        if self.current < 0:
+            self.current = len(self.maplist) - 1
+
+        seq = Sequence(
+            Func( self.ignoreAll ),
+            Func( self.maplist[self.current]['terrain'].reparentTo, self.parent ),
+            Parallel(
+                #LerpScaleInterval(self.maplist[self.previous]['terrain'], 0.25, 0.1, startScale=1.0 ),
+                LerpColorInterval(self.maplist[self.previous]['terrain'], 0.25, (1,1,1,0), (1,1,1,1)),
+                LerpPosInterval(  self.maplist[self.previous]['terrain'], 0.25, (-25,25,0), (0,0,0)),
+                #LerpHprInterval(  self.maplist[self.previous]['terrain'], 0.25, (90,0,0), (0,0,0)),
+                #LerpScaleInterval(self.maplist[self.current]['terrain'],  0.25, 1.0, startScale=0.1 ),
+                LerpColorInterval(self.maplist[self.current]['terrain'],  0.25, (1,1,1,1), (1,1,1,0)),
+                LerpPosInterval(  self.maplist[self.current]['terrain'],  0.25, (0,0,0), (25,-25,0)),
+                #LerpHprInterval(  self.maplist[self.current]['terrain'], 0.25, (180,0,0), (90,0,0)),
+            ),
+            Func( self.maplist[self.previous]['terrain'].detachNode ),
+            Func( self.acceptAll ),
+            Func( hover_snd.play ),
+        ).start()
+
+    def onL1Clicked(self):
+
+        self.previous = self.current
+        self.current = self.current + 1
+        if self.current > len(self.maplist) - 1:
+            self.current = 0
+
+        seq = Sequence(
+            Func( self.ignoreAll ),
+            Func( self.maplist[self.current]['terrain'].reparentTo, self.parent ),
+            Parallel(
+                #LerpScaleInterval(self.maplist[self.previous]['terrain'], 0.25, 0.1, startScale=1.0 ),
+                LerpColorInterval(self.maplist[self.previous]['terrain'], 0.25, (1,1,1,0), (1,1,1,1)),
+                LerpPosInterval(  self.maplist[self.previous]['terrain'], 0.25, (25,-25,0), (0,0,0)),
+                #LerpHprInterval(  self.maplist[self.previous]['terrain'], 0.25, (90,0,0), (0,0,0)),
+                #LerpScaleInterval(self.maplist[self.current]['terrain'],  0.25, 1.0, startScale=0.1 ),
+                LerpColorInterval(self.maplist[self.current]['terrain'],  0.25, (1,1,1,1), (1,1,1,0)),
+                LerpPosInterval(  self.maplist[self.current]['terrain'],  0.25, (0,0,0), (-25,25,0)),
+                #LerpHprInterval(  self.maplist[self.current]['terrain'], 0.25, (180,0,0), (90,0,0)),
+            ),
+            Func( self.maplist[self.previous]['terrain'].detachNode ),
+            Func( self.acceptAll ),
+            Func( hover_snd.play ),
+        ).start()
+
+    def mapRotationTask(self, task):
+        h = task.time * 30
+        self.maplist[self.current]['recentrer'].setHpr(h,0,0)
+        return Task.cont
 

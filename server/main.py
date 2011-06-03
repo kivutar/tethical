@@ -132,7 +132,13 @@ class Server:
 
         elif msgID == GET_MAPS:
 
-            maps = map( lambda m: m.split('.')[0], os.listdir('maps'))
+            mapnames = map( lambda m: m.split('.')[0], os.listdir('maps'))
+
+            maps = []
+            for mapname in mapnames:
+                mp = Map.load(mapname)
+                del mp['tiles']
+                maps.append(mp)
 
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(MAP_LIST)

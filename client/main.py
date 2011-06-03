@@ -75,20 +75,16 @@ class Client(DirectObject):
         elif msgID == PARTY_CREATED:
             party = json.loads(iterator.getString32())
             self.party = party
-            self.partylistwindow.frame.destroy()
-            self.partycreationwindow.frame.destroy()
         elif msgID == MAP_LIST:
             maps = json.loads(iterator.getString())
-            self.partycreationwindow = GUI.PartyCreationWindow(maps, self.createParty)
+            self.mapchooserwindow = GUI.MapChooser(maps, self.background.frame, self.createParty, self.partyListScreen)
         elif msgID == PARTY_LIST:
             parties = json.loads(iterator.getString32())
-            self.partylistwindow = GUI.PartyListWindow(self.joinParty)
+            self.partylistwindow = GUI.PartyListWindow(self.joinParty, self.mapChooserScreen)
             self.partylistwindow.refresh(parties)
         elif msgID == PARTY_JOINED:
             party = json.loads(iterator.getString32())
             self.party = party
-            self.partylistwindow.frame.destroy()
-            self.partycreationwindow.frame.destroy()
         elif msgID == START_BATTLE:
             self.party = json.loads(iterator.getString32())
             self.transitionframe = DirectFrame( frameSize = ( -2, 2, -2, 2 ) )
@@ -310,18 +306,20 @@ class Client(DirectObject):
         myPyDatagram.addUint8(GET_PARTIES)
         self.cWriter.send(myPyDatagram, self.myConnection)
 
+    def mapChooserScreen(self):
+
         myPyDatagram = PyDatagram()
         myPyDatagram.addUint8(GET_MAPS)
         self.cWriter.send(myPyDatagram, self.myConnection)
 
     # Send the party details to the server in order to instanciate a party
-    def createParty(self):
-        name = self.partycreationwindow.nameEntry.get()
-        mapname = self.partycreationwindow.mapOptionMenu.get()
+    def createParty(self, mapname):
+        import time
+        partyname = str(int(time.time()))
         
         myPyDatagram = PyDatagram()
         myPyDatagram.addUint8(CREATE_PARTY)
-        myPyDatagram.addString(name)
+        myPyDatagram.addString(partyname)
         myPyDatagram.addString(mapname)
         self.cWriter.send(myPyDatagram, self.myConnection)
 
