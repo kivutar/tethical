@@ -14,12 +14,12 @@ cancel_snd = base.loader.loadSfx("sounds/cancel.ogg")
 scale = u*12.0
 font = loader.loadFont('fonts/fft')
 font3 = loader.loadFont('fonts/fft3')
+coordsfont = loader.loadFont('fonts/fftcoords')
 
 class Coords(DirectObject.DirectObject):
 
     def __init__(self, tile):
 
-        coordsfont = loader.loadFont('fonts/fftcoords.egg')
         self.coordstn = TextNode('tn')
         self.coordstn.setFont(coordsfont)
         self.coordstn.setAlign(self.coordstn.ARight)
