@@ -1076,13 +1076,15 @@ class MapChooser(DirectObject.DirectObject):
             Func( self.l1frame.destroy ),
             Func( self.r1frame.destroy ),
             Func( self.startframe.destroy ),
-            Func( self.unloadTerrains ),
             Func( command ),
+            Func( self.unloadTerrains ),
         ).start()
 
     def unloadTerrains(self):
         for mapinfo in self.maplist:
             mapinfo['terrain'].removeNode()
+            loader.unloadModel( 'models/maps/'+mapinfo['model'] )
+        del self.maplist
 
     def onR1Clicked(self):
 
