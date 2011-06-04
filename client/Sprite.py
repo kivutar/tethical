@@ -42,6 +42,11 @@ class Sprite:
         self.sprite2d.createAnim('stand3', (28,28), fps=10)
         self.sprite2d.createAnim('stand4', (42,42), fps=10)
 
+        self.sprite2d.createAnim('smalljump1', ( 1, 1), fps=10)
+        self.sprite2d.createAnim('smalljump2', (15,15), fps=10)
+        self.sprite2d.createAnim('smalljump3', (29,29), fps=10)
+        self.sprite2d.createAnim('smalljump4', (43,43), fps=10)
+
         self.sprite2d.createAnim('walk1', ( 1, 2, 3, 4, 5, 4, 3, 2), fps=10)
         self.sprite2d.createAnim('walk2', (15,16,17,18,19,18,17,16), fps=10)
         self.sprite2d.createAnim('walk3', (29,30,31,32,33,32,31,30), fps=10)

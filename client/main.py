@@ -620,26 +620,79 @@ class Client(DirectObject):
         origin = False
         for destination in path:
             if origin:
-            
+
                 (x1, y1, z1) = origin
                 (x2, y2, z2) = destination
+
+                # first, face the right direction
                 if x2 > x1:
-                    i1 = Func(sprite.setRealDir, 1)
+                    d = 1
                 elif x2 < x1:
-                    i1 = Func(sprite.setRealDir, 3)
+                    d = 3
                 elif y2 > y1:
-                    i1 = Func(sprite.setRealDir, 2)
+                    d = 2
                 elif y2 < y1:
-                    i1 = Func(sprite.setRealDir, 4)
-                seq.append(i1)
-            
-                i2 = LerpPosInterval(
-                    sprite.node, 
-                    0.25,
-                    self.logic2terrain(destination), 
-                    startPos=self.logic2terrain(origin)
-                )
-                seq.append(i2)
+                    d = 4
+                seq.append( Func(sprite.setRealDir, d) )
+
+                # then, add the move animation from one tile to the next
+                if z2 - z1 >= 4:
+                    middle = (
+                        origin[0] + (destination[0] - origin[0]) / 2.0,
+                        origin[1] + (destination[1] - origin[1]) / 2.0,
+                        destination[2] + 0.5
+                    )
+                    seq.append(
+                        Sequence(
+                            Func(self.updateSpriteAnimation, charid, 'smalljump'),
+                            LerpPosInterval(
+                                sprite.node, 
+                                0.125,
+                                self.logic2terrain(middle), 
+                                startPos=self.logic2terrain(origin)
+                            ),
+                            LerpPosInterval(
+                                sprite.node, 
+                                0.125,
+                                self.logic2terrain(destination), 
+                                startPos=self.logic2terrain(middle)
+                            ),
+                            Func(self.updateSpriteAnimation, charid, 'walk'),
+                        )
+                    )
+                elif z1 - z2 >= 4:
+                    middle = (
+                        origin[0] + (destination[0] - origin[0]) / 2.0,
+                        origin[1] + (destination[1] - origin[1]) / 2.0,
+                        origin[2] + 0.5
+                    )
+                    seq.append(
+                        Sequence(
+                            Func(self.updateSpriteAnimation, charid, 'smalljump'),
+                            LerpPosInterval(
+                                sprite.node, 
+                                0.125,
+                                self.logic2terrain(middle), 
+                                startPos=self.logic2terrain(origin)
+                            ),
+                            LerpPosInterval(
+                                sprite.node, 
+                                0.125,
+                                self.logic2terrain(destination), 
+                                startPos=self.logic2terrain(middle)
+                            ),
+                            Func(self.updateSpriteAnimation, charid, 'walk'),
+                        )
+                    )
+                else:
+                    seq.append(
+                        LerpPosInterval(
+                            sprite.node, 
+                            0.25,
+                            self.logic2terrain(destination), 
+                            startPos=self.logic2terrain(origin)
+                        )
+                    )
             origin = destination
         return seq
 
