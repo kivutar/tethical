@@ -2,14 +2,12 @@ import math
 import Character
 
 def getadjacentwalkables( party, charid, tiles ):
-    
-    w2 = []
 
-    for t1 in tiles:
-        (x1, y1, z1) = t1
-        for tx in ( (x1-1, y1), (x1+1, y1), (x1, y1-1), (x1, y1+1) ):
+    walkables = []
+
+    for x1, y1, z1 in tiles:
+        for x2, y2 in ( (x1-1, y1), (x1+1, y1), (x1, y1-1), (x1, y1+1) ):
             try:
-                (x2, y2) = tx
                 t2 = party['map']['tiles'][x2][y2]
                 if t2 and x2 >= 0 and y2 >= 0:
                     for z2,t3 in enumerate(t2):
@@ -17,14 +15,14 @@ def getadjacentwalkables( party, charid, tiles ):
                         and (not t3.has_key('char') or party['chars'][t3['char']]['team'] ==  party['chars'][charid]['team'] or party['chars'][t3['char']]['hp'] == 0 ) \
                         and t3['walkable'] and t3['selectable'] \
                         and math.fabs(z2-z1) <= party['chars'][charid]['jump']:
-                            w2.append( (x2, y2, z2) )
+                            walkables.append( (x2, y2, z2) )
             except:
                 pass
 
-    return w2
+    return walkables
 
 def GetWalkables( party, charid ):
-    
+
     # get the current tile
     tile = Character.Coords( party, charid )
     # recursively add walkables tiles to the list
@@ -51,15 +49,13 @@ def GetWalkables( party, charid ):
 
 def IsWalkable( party, charid, x, y, z ):
 
-    walkables = GetWalkables( party, charid )
-    
-    return (x, y, z) in walkables
+    return (x, y, z) in GetWalkables( party, charid )
 
 def GetNewDirection( x1, y1, x2, y2 ):
 
     dx = x2 - x1
     dy = y2 - y1
-    
+
     if math.fabs(dy) > math.fabs(dx):
         return 1 if dy > 0 else 0
     else:
@@ -67,24 +63,23 @@ def GetNewDirection( x1, y1, x2, y2 ):
 
 def GetPath ( party, charid, x1, y1, z1, x2, y2, z2 ):
 
-    tree = { str(x1)+'-'+str(y1)+'-'+str(z1): {} }
-    buildtree( party, charid, tree, party['chars'][charid]['move']-1, str(x2)+'-'+str(y2)+'-'+str(z2) )
+    tree = { '-'.join(map(str,(x1,y1,z1))) : {} }
+    buildtree( party, charid, tree, party['chars'][charid]['move']-1, '-'.join(map(str,(x2,y2,z2))) )
 
     paths = []
     findpathes( tree, [], paths )
 
     pathtoreturn = []
     for tile in paths[0]:
-        (x, y, z) = tile.split('-')
-        pathtoreturn.append((int(x), int(y), int(z)))
+        pathtoreturn.append( tuple(map(int,tile.split('-'))) )
 
     return pathtoreturn
 
 def buildtree ( party, charid, tree, moves, dest ):
-    
+
     for k1 in tree.keys():
 
-        for adj in getadjacentwalkables( party, charid, [ tuple( map( int, k1.split('-') ) ) ] ):
+        for adj in getadjacentwalkables( party, charid, [ tuple(map(int,k1.split('-'))) ] ):
             k2 = '-'.join( map( str, adj ) )
 
             if k2 == dest:
