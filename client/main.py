@@ -421,13 +421,9 @@ class Client(DirectObject):
         # Battle intro animation
         seq = Sequence()
         i1 = LerpColorInterval(self.transitionframe, 5, (0,0,0,0), startColor=(0,0,0,1))
-        (cx, cy, cz) = self.logic2terrain((
-            self.party['map']['x']/2,
-            self.party['map']['y']/2,
-            self.party['map']['z']/2
-        ))
+        cx, cy, cz = terrain.getBounds().getCenter()
         i2 = LerpPosInterval(self.camhandler.container, 5, (cx,cy,cz), startPos=(cx,cy,cz+50))
-        (ch, cp, cr) = self.camhandler.container.getHpr()
+        ch, cp, cr = self.camhandler.container.getHpr()
         i3 = LerpHprInterval(self.camhandler.container, 5, (ch+90, cp, cr), (ch-180, cp, cr))
         p1 = Parallel(i1,i2,i3)
         seq.append(p1)
