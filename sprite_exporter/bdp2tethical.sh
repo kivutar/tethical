@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "converting $1 to $2"
+
 input=$1
 output=$2
 tile="48x48"
@@ -35,8 +37,8 @@ transpose  7   8 4   9 4
 transpose  8   7 1   8 1
 transpose  9  12 5  13 8
 transpose 10  13 5  14 8
-transpose 11   2 6   0 0
-transpose 12   3 6   0 0
-transpose 13   4 6   0 0
+transpose 11   2 6   3 9
+transpose 12   3 6   4 9
+transpose 13   4 6   5 9
 
 convert -transparent black $output $output

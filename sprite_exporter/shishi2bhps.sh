@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "converting $1 to $2"
+
 convert -size 256x72 xc:black $2
 
 convert -extract 160x040+000+000 -transparent black $1 /tmp/tmp.bmp
