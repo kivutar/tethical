@@ -13,8 +13,9 @@ def Coords( party, charid ):
 
 def Random( charid, player, direction ):
     race = 'human'
-    gender = 'female' if int(player) == 1 else 'male'
-    sprite = 'misty' if int(player) == 1 else 'ramza'
+    gender = ('F','M')[random.randint(0, 1)]
+    job = random.randint(0, 7)
+    sprite = str(job)+'_'+str(gender)
     hpmax = random.randint(5, 15)
     mpmax = random.randint(5, 15)
     ctmax = random.randint(90, 100)
