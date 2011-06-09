@@ -1,0 +1,7 @@
+{
+    "name": "Squire",
+    "move": 4,
+    "jump": 3,
+    "speed": 8,
+    "evade": 5
+}

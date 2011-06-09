@@ -1,0 +1,7 @@
+{
+    "name": "Chemist",
+    "move": 3,
+    "jump": 3,
+    "speed": 8,
+    "evade": 5
+}
