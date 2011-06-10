@@ -1,0 +1,22 @@
+{
+    "name": "Monk",
+    "prerequisite": { "4D": 2 },
+    "desc": "Monks are warriors who train their bodies in the ways of martial arts. Their battle ability 'Punch Art' drives enemies away.",
+    "commandset": "09",
+    "eq": ["Clothes", "Accessory"],
+    "innate": "Martial Arts",
+    "hpm": 135,
+    "hpc": 9,
+    "mpm": 80,
+    "mpc": 13,
+    "spm": 110,
+    "spc": 100,
+    "pam": 129,
+    "pac": 48,
+    "mam": 80,
+    "mac": 50,
+    "move": 3,
+    "jump": 4,
+    "cev": 0.20,
+    "type": "Generic"
+}

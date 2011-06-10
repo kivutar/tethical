@@ -1,0 +1,21 @@
+{
+    "name": "Chemist",
+    "desc": "Chemist who prescribes items to restore HP and treat abnormal status. Item throw ability",
+    "commandset": "06",
+    "eq": ["Knife", "Gun", "Hat", "Clothes", "Accessory"],
+    "innate": "Throw Item",
+    "hpm": 80,
+    "hpc": 12,
+    "mpm": 75,
+    "mpc": 16,
+    "spm": 100,
+    "spc": 100,
+    "pam": 75,
+    "pac": 75,
+    "mam": 80,
+    "mac": 50,
+    "move": 3,
+    "jump": 3,
+    "cev": 0.05,
+    "type": "Generic"
+}

@@ -1,8 +1,0 @@
-{
-    "name": "Priest",
-    "prerequisite": { "1": 2 },
-    "move": 3,
-    "jump": 3,
-    "speed": 9,
-    "evade": 5
-}

@@ -1,8 +1,0 @@
-{
-    "name": "Monk",
-    "prerequisite": { "3": 2 },
-    "move": 4,
-    "jump": 4,
-    "speed": 9,
-    "evade": 20
-}

@@ -1,0 +1,21 @@
+{
+    "name": "Archer",
+    "prerequisite": { "4A": 2 },
+    "desc": "Useful in preemptive attacks, the Archer is best utilized in high locations to extend arrow range.",
+    "commandset": "08",
+    "eq": ["Crossbow", "Bow", "Shield", "Hat", "Clothes", "Accessory"],
+    "hpm": 100,
+    "hpc": 11,
+    "mpm": 65,
+    "mpc": 16,
+    "spm": 100,
+    "spc": 100,
+    "pam": 110,
+    "pac": 45,
+    "mam": 80,
+    "mac": 50,
+    "move": 3,
+    "jump": 3,
+    "cev": 0.10,
+    "type": "Generic"
+}

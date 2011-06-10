@@ -1,8 +1,0 @@
-{
-    "name": "Wizard",
-    "prerequisite": { "1": 2 },
-    "move": 3,
-    "jump": 3,
-    "speed": 8,
-    "evade": 5
-}

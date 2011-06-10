@@ -1,0 +1,21 @@
+{
+    "name": "Thief",
+    "prerequisite": { "4D": 2 },
+    "desc": "Warriors who can steal anything from anyone. Their skill and boldness are legendary.",
+    "commandset": "0E",
+    "eq": ["Knife", "Hat", "Clothes", "Accessory"],
+    "hpm": 90,
+    "hpc": 11,
+    "mpm": 50,
+    "mpc": 16,
+    "spm": 110,
+    "spc": 90,
+    "pam": 100,
+    "pac": 50,
+    "mam": 60,
+    "mac": 50,
+    "move": 4,
+    "jump": 4,
+    "cev": 0.25,
+    "type": "Generic"
+}
