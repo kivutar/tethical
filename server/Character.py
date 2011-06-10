@@ -18,7 +18,6 @@ def Random( charid, player, direction ):
     sprite = str(job)+'_'+str(gender)
     hpmax = random.randint(5, 15)
     mpmax = random.randint(5, 15)
-    ctmax = random.randint(90, 100)
     return {  'id': charid
             , 'name': GetRandomName( race, gender )
             , 'job': 'Unknown'
@@ -27,8 +26,8 @@ def Random( charid, player, direction ):
             , 'hpmax': hpmax
             , 'mp': mpmax
             , 'mpmax': mpmax
-            , 'ct': ctmax
-            , 'ctmax': ctmax
+            , 'ct': random.randint(0, 100)
+            , 'speed': random.randint(8, 20)
             , 'lv': random.randint(5, 15)
             , 'exp': random.randint(0, 99)
             , 'team': player

@@ -658,7 +658,7 @@ class CharCard:
             { 'x': 37 , 'z':  -2 , 'text': '%03d' % char['hpmax'] },
             { 'x': 18 , 'z':  -9 , 'text': '%03d' % char['mp'] },
             { 'x': 37 , 'z': -13 , 'text': '%03d' % char['mpmax'] },
-            { 'x': 18 , 'z': -20 , 'text': '%03d' % int(float(char['ct'])/float(char['ctmax'])*100.0) },
+            { 'x': 18 , 'z': -20 , 'text': '%03d' % char['ct'] },
             { 'x': 37 , 'z': -24 , 'text': '100' },
         ]
         

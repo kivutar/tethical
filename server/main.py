@@ -223,8 +223,8 @@ class Server:
             while True:
                 for charid in chars.keys():
                     char = chars[charid]
-                    char['ct'] = char['ct'] - 1
-                    if char['ct'] == 0:
+                    char['ct'] = char['ct'] + char['speed']
+                    if char['ct'] >= 100:
                         if char['hp'] > 0:
                             char['active'] = True
                             char['canmove'] = True
@@ -237,7 +237,7 @@ class Server:
                             self.cWriter.send(myPyDatagram, source)
                             return
                         else:
-                            char['ct'] = char['ctmax']
+                            char['ct'] = 0
 
         elif msgID == GET_WALKABLES:
         
@@ -339,8 +339,13 @@ class Server:
             
             party = self.parties[self.sessions[source]['party']]
             char = party['chars'][charid]
-            
-            char['ct'] = int( char['ctmax'] / 2 ) if char['canmove'] or char['canact'] else char['ctmax']
+
+            if char['canmove'] and char['canact']:
+                char['ct'] = char['ct'] - 60
+            elif char['canmove'] or char['canact']:
+                char['ct'] = char['ct'] - 80
+            else:
+                char['ct'] = char['ct'] - 100
 
             char['direction'] = direction
 
