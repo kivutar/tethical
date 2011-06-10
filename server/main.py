@@ -387,16 +387,17 @@ class Server:
         
             charid1 = iterator.getString()
             charid2 = iterator.getString()
-            
             party = self.parties[self.sessions[source]['party']]
+            char1 = party['chars'][charid1]
+            char2 = party['chars'][charid2]
             
-            damages = 4
+            damages = char1['pa'] * char1['br'] / 100 * char1['pa']
             
-            party['chars'][charid2]['hp'] = party['chars'][charid2]['hp'] - damages
-            if party['chars'][charid2]['hp'] < 0:
-                party['chars'][charid2]['hp'] = 0
+            char2['hp'] = char2['hp'] - damages
+            if char2['hp'] < 0:
+                char2['hp'] = 0
             
-            party['chars'][charid1]['canact'] = False
+            char2['canact'] = False
             
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(ATTACK_SUCCESS)

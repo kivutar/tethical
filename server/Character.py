@@ -55,12 +55,16 @@ def Random( charid, player, direction ):
            , 'name': GetRandomName(gender)
            , 'job': job['name']
            , 'sign': 1
+           , 'br': random.randint(45, 74)
+           , 'fa': random.randint(45, 74)
            , 'hp': hp
            , 'hpmax': hp
            , 'mp': mp
            , 'mpmax': mp
-           , 'ct': random.randint(0, 100)
            , 'speed': sp
+           , 'pa': pa
+           , 'ma': ma
+           , 'ct': random.randint(0, 100)
            , 'lv': lv
            , 'exp': random.randint(0, 99)
            , 'team': player
