@@ -14,6 +14,7 @@ cancel_snd = base.loader.loadSfx("sounds/cancel.ogg")
 scale = u*12.0
 font = loader.loadFont('fonts/fft')
 font3 = loader.loadFont('fonts/fft3')
+font4 = loader.loadFont('fonts/fft4')
 coordsfont = loader.loadFont('fonts/fftcoords')
 
 class Coords(DirectObject.DirectObject):
@@ -673,7 +674,7 @@ class CharCard:
                 parent = self.frame2
             )
             label.setPos(u*info['x'], 0, u*info['z'])
-        
+
         i1 = LerpPosInterval(self.frame, 0.2, (-u*55,0,-u*85), (-2,0,-u*85))
         s = Sequence(i1)
         s.start()
@@ -762,6 +763,28 @@ class CharCard2:
         )
         self.sign.setTransparency(True)
         self.sign.setPos(-u*42, 0, -u*12)
+
+        brlabel = DirectLabel(
+            text = str(char['br']),
+            color = (1, 1, 1, 0),
+            scale = scale,
+            text_font = font4,
+            text_fg = (1,1,1,1),
+            text_align = TextNode.ARight,
+            parent = self.frame
+        )
+        brlabel.setPos(u*6, 0, -u*22)
+
+        falabel = DirectLabel(
+            text = str(char['fa']),
+            color = (1, 1, 1, 0),
+            scale = scale,
+            text_font = font4,
+            text_fg = (1,1,1,1),
+            text_align = TextNode.ARight,
+            parent = self.frame
+        )
+        falabel.setPos(u*45, 0, -u*22)
 
         i1 = LerpScaleInterval(self.blackframe, 0.1, (1,1,1), (1,1,0))
         i2 = LerpColorInterval(self.blackframe, 0.1, (1,1,1,1), (1,1,1,0))
