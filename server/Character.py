@@ -1,4 +1,11 @@
-import random
+import json, random
+
+jobs = {}
+jobids = ['4A','4B','4C','4D','4E','4F','50','53']
+for jobid in jobids:
+    f = open('jobs/'+jobid+'.json', 'r')
+    jobs[jobid] = json.loads(f.read())
+    f.close()
 
 def Coords( party, charid ):
     
@@ -12,37 +19,65 @@ def Coords( party, charid ):
                     return (x, y, z)
 
 def Random( charid, player, direction ):
-    race = 'human'
+    jobid = jobids[random.randint(0, len(jobids)-1)]
+    job = jobs[jobid]
     gender = ('F','M')[random.randint(0, 1)]
-    job = random.randint(0, 7)
-    sprite = str(job)+'_'+str(gender)
-    hpmax = random.randint(5, 15)
-    mpmax = random.randint(5, 15)
-    return {  'id': charid
-            , 'name': GetRandomName( race, gender )
-            , 'job': 'Unknown'
-            , 'sign': 1
-            , 'hp': hpmax
-            , 'hpmax': hpmax
-            , 'mp': mpmax
-            , 'mpmax': mpmax
-            , 'ct': random.randint(0, 100)
-            , 'speed': random.randint(8, 20)
-            , 'lv': random.randint(5, 15)
-            , 'exp': random.randint(0, 99)
-            , 'team': player
-            , 'move': random.randint(3, 5)
-            , 'jump': random.randint(5, 7)
-            , 'direction': direction
-            , 'sprite': sprite
-            , 'gender': gender
-            , 'active': 0 }
+    sprite = str(jobid)+'_'+str(gender)
 
-def GetRandomName( race, gender ):
-    f = open(race+'_'+gender+'_names.txt', 'r')
+    if gender == 'F':
+        rhp = random.randint(458752, 491519)
+        rmp = random.randint(245760, 262143)
+        rsp = 98304
+        rpa = 65536
+        rma = 81920
+    elif gender == 'M':
+        rhp = random.randint(491520, 524287)
+        rmp = random.randint(229376, 245759)
+        rsp = 98304
+        rpa = 81920
+        rma = 65536
+
+    hp = rhp * job['hpm'] / 1638400
+    mp = rmp * job['mpm'] / 1638400
+    sp = rsp * job['spm'] / 1638400
+    pa = rpa * job['pam'] / 1638400
+    ma = rma * job['mam'] / 1638400
+
+    lv = random.randint(10, 15)
+    for l in range(1, lv+1):
+        hp = hp + ( hp / (job['hpc'] + l) )
+        mp = mp + ( mp / (job['mpc'] + l) )
+        sp = sp + ( sp / (job['spc'] + l) )
+        pa = pa + ( pa / (job['pac'] + l) )
+        ma = ma + ( ma / (job['mac'] + l) )
+
+    return {  'id': charid
+           , 'name': GetRandomName(gender)
+           , 'job': job['name']
+           , 'sign': 1
+           , 'hp': hp
+           , 'hpmax': hp
+           , 'mp': mp
+           , 'mpmax': mp
+           , 'ct': random.randint(0, 100)
+           , 'speed': sp
+           , 'lv': lv
+           , 'exp': random.randint(0, 99)
+           , 'team': player
+           , 'move': job['move']
+           , 'jump': job['jump']*2
+           , 'direction': direction
+           , 'sprite': sprite
+           , 'gender': gender
+           , 'active': 0
+           }
+
+def GetRandomName( gender ):
+    f = open(gender+'_names.txt', 'r')
     names = f.readlines()
     f.close()
     
     i = random.randint(0, len(names)-1)
     
     return names[i]
+
