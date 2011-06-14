@@ -424,15 +424,18 @@ class Server:
     
         elif msgID == STATS:
             
-            charid = iterator.getString()
-            party = self.parties[self.sessions[source]['party']]
-            char = party['chars'][charid]
-            
-            myPyDatagram = PyDatagram()
-            myPyDatagram.addUint8(STATS_SUCCESS)
-            myPyDatagram.addString(charid)
-            myPyDatagram.addString(json.dumps(char))
-            self.cWriter.send(myPyDatagram, source)
+            try:
+                charid = iterator.getString()
+                party = self.parties[self.sessions[source]['party']]
+                char = party['chars'][charid]
+
+                myPyDatagram = PyDatagram()
+                myPyDatagram.addUint8(STATS_SUCCESS)
+                myPyDatagram.addString(charid)
+                myPyDatagram.addString(json.dumps(char))
+                self.cWriter.send(myPyDatagram, source)
+            except:
+                print 'lala'
 
     def tskListenerPolling(self, taskdata):
         if self.cListener.newConnectionAvailable():

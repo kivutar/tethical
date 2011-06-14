@@ -25,14 +25,17 @@ class Coords(DirectObject.DirectObject):
         self.coordstn.setFont(coordsfont)
         self.coordstn.setAlign(self.coordstn.ARight)
         self.coordstn.setTextColor(1,1,1,1)
-        tnp = aspect2d.attachNewNode(self.coordstn)
-        tnp.setScale(scale)
-        tnp.setPos(0.9, 0.0, 0.6)
+        self.tnp = aspect2d.attachNewNode(self.coordstn)
+        self.tnp.setScale(scale)
+        self.tnp.setPos(0.9, 0.0, 0.6)
 
         self.update(tile)
 
     def update(self, tile):
         self.coordstn.setText(str(tile['z']/2).replace('.0','').replace('.5','a')+'h')
+
+    def destroy(self):
+        self.tnp.removeNode()
 
 class Background(DirectObject.DirectObject):
 

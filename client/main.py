@@ -479,7 +479,9 @@ class Client(DirectObject):
         for child in render.getChildren():
             child.removeNode()
         self.camhandler.destroy()
-        self.partyListScreen()
+        self.coords.destroy()
+        NodePath(self.sky).removeNode()
+        self.background = GUI.Background(self.partyListScreen)
 
     def showMenu(self, charid):
         self.setPhase('gui')
@@ -984,9 +986,9 @@ class Client(DirectObject):
         primitive.closePrimitive()
         geom = Geom(vdata)
         geom.addPrimitive(primitive)
-        node = GeomNode('gnode')
-        node.addGeom(geom)
-        base.camera.attachNewNode(node)
+        self.sky = GeomNode('sky')
+        self.sky.addGeom(geom)
+        base.camera.attachNewNode(self.sky)
 
     # Light the scene
     def lightScene(self):
