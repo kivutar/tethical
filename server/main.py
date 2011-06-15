@@ -38,8 +38,6 @@ ATTACKABLES_LIST = 26
 ATTACK = 27
 ATTACK_SUCCESS = 28
 ATTACK_PASSIVE = 29
-STATS = 30
-STATS_SUCCESS = 31
 BATTLE_COMPLETE = 32
 GAME_OVER = 33
 GET_PASSIVE_WALKABLES = 34
@@ -421,21 +419,6 @@ class Server:
             myPyDatagram.addUint8(damages)
             myPyDatagram.addString(json.dumps(attackables))
             self.cWriter.send(myPyDatagram, othersource)
-    
-        elif msgID == STATS:
-            
-            try:
-                charid = iterator.getString()
-                party = self.parties[self.sessions[source]['party']]
-                char = party['chars'][charid]
-
-                myPyDatagram = PyDatagram()
-                myPyDatagram.addUint8(STATS_SUCCESS)
-                myPyDatagram.addString(charid)
-                myPyDatagram.addString(json.dumps(char))
-                self.cWriter.send(myPyDatagram, source)
-            except:
-                print 'lala'
 
     def tskListenerPolling(self, taskdata):
         if self.cListener.newConnectionAvailable():

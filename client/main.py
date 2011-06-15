@@ -49,8 +49,6 @@ ATTACKABLES_LIST = 26
 ATTACK = 27
 ATTACK_SUCCESS = 28
 ATTACK_PASSIVE = 29
-STATS = 30
-STATS_SUCCESS = 31
 BATTLE_COMPLETE = 32
 GAME_OVER = 33
 GET_PASSIVE_WALKABLES = 34
@@ -202,8 +200,13 @@ class Client(DirectObject):
             charid = iterator.getString()
             targetid = iterator.getString()
             damages = iterator.getUint8()
-            
+
             print damages
+            target = self.party['chars'][targetid]
+            target['hp'] = target['hp'] - damages
+            if target['hp'] < 0:
+                target['hp'] = 0
+
             seq = Sequence()
             seq.append( self.getCharacterAttackSequence(charid, targetid) )
             seq.append( Func(self.turn) )
@@ -213,7 +216,13 @@ class Client(DirectObject):
             targetid = iterator.getString()
             damages = iterator.getUint8()
             attackables = json.loads(iterator.getString())
-            
+
+            print damages
+            target = self.party['chars'][targetid]
+            target['hp'] = target['hp'] - damages
+            if target['hp'] < 0:
+                target['hp'] = 0
+
             self.setPhase('animation')
             seq = Sequence()
             seq.append( Func(self.setupAttackableZone, charid, attackables) )
@@ -225,18 +234,6 @@ class Client(DirectObject):
             seq.append( Func(self.camhandler.move, self.logic2terrain(self.getCharacterCoords(charid))) )
             seq.append( Func(self.setPhase, 'listen') )
             seq.start()
-        elif msgID == STATS_SUCCESS:
-            charid = iterator.getString()
-            stats = json.loads(iterator.getString())
-            if stats['hp'] >= (stats['hpmax']/2):
-                self.sprites[charid].animation = 'walk'
-            if stats['hp'] < (stats['hpmax']/2):
-                self.sprites[charid].animation = 'weak'
-            if stats['hp'] == 0:
-                self.sprites[charid].animation = 'dead'
-                self.die_snd.play()
-            h = self.camhandler.container.getH()
-            self.sprites[charid].updateDisplayDir( h, True )
         elif msgID == GAME_OVER:
             if self.charcard:
                 self.charcard.hide()
@@ -577,10 +574,16 @@ class Client(DirectObject):
             h = self.camhandler.container.getH()
             self.sprites[charid].updateDisplayDir( h, True )
         else:
-            myPyDatagram = PyDatagram()
-            myPyDatagram.addUint8(STATS)
-            myPyDatagram.addString(charid)
-            self.cWriter.send(myPyDatagram, self.myConnection)
+            stats = self.party['chars'][charid]
+            if stats['hp'] >= (stats['hpmax']/2):
+                self.sprites[charid].animation = 'walk'
+            if stats['hp'] < (stats['hpmax']/2):
+                self.sprites[charid].animation = 'weak'
+            if stats['hp'] <= 0:
+                self.sprites[charid].animation = 'dead'
+                self.die_snd.play()
+            h = self.camhandler.container.getH()
+            self.sprites[charid].updateDisplayDir( h, True )
 
     # Draw blue tile zone
     def setupPassiveWalkableZone(self, walkables):
