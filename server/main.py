@@ -395,7 +395,7 @@ class Server:
             if char2['hp'] < 0:
                 char2['hp'] = 0
             
-            char2['canact'] = False
+            char1['canact'] = False
             
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(ATTACK_SUCCESS)
