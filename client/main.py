@@ -9,6 +9,7 @@ from direct.task.Task import Task
 from direct.distributed.PyDatagramIterator import *
 from direct.distributed.PyDatagram import *
 from direct.interval.IntervalGlobal import *
+from direct.filter.CommonFilters import CommonFilters
 import math
 from operator import itemgetter
 import json
@@ -414,6 +415,10 @@ class Client(DirectObject):
         self.cursor.setTransparency(TransparencyAttrib.MAlpha)
         self.cursor.setColor( 1, 1, 1, .75 )
         self.cursor.setTexture(self.curtex)
+        
+        filters = CommonFilters(base.win, base.cam)
+        filters.setBloom(blend=(0,0,0,1), desat=-0.5, intensity=3.0, size=4)
+        terrain.setShaderAuto()
 
         # Battle intro animation
         seq = Sequence()
