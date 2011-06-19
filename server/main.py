@@ -38,6 +38,7 @@ ATTACKABLES_LIST = 26
 ATTACK = 27
 ATTACK_SUCCESS = 28
 ATTACK_PASSIVE = 29
+UPDATE_PARTY_LIST = 30
 BATTLE_COMPLETE = 32
 GAME_OVER = 33
 GET_PASSIVE_WALKABLES = 34
@@ -51,6 +52,7 @@ class Server:
         self.players = {}
         self.parties = {}
         self.sessions = {}
+        self.playersinlobby = []
 
         self.cManager  = QueuedConnectionManager()
         self.cListener = QueuedConnectionListener(self.cManager, 0)
@@ -123,12 +125,15 @@ class Server:
             self.sessions[source]['party'] = name
             self.sessions[source]['player'] = 1
             
+            self.updateAllPartyLists()
+            
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(PARTY_CREATED)
             myPyDatagram.addString32(json.dumps(party))
             self.cWriter.send(myPyDatagram, source)
 
         elif msgID == GET_MAPS:
+            self.playersinlobby.remove(source)
 
             mapnames = map( lambda m: m.split('.')[0], os.listdir('maps'))
 
@@ -144,6 +149,7 @@ class Server:
             self.cWriter.send(myPyDatagram, source)
         
         elif msgID == GET_PARTIES:
+            self.playersinlobby.append(source)
 
             parties = deepcopy(self.parties)
             for party in parties.values():
@@ -161,6 +167,7 @@ class Server:
             party['player2'] = self.sessions[source]['login']
             self.sessions[source]['party'] = name
             self.sessions[source]['player'] = 2
+            self.playersinlobby.remove(source)
 
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(PARTY_JOINED)
@@ -182,6 +189,8 @@ class Server:
                 myPyDatagram.addUint8(START_BATTLE)
                 myPyDatagram.addString32(json.dumps(party))
                 self.cWriter.send(myPyDatagram, client)
+
+            self.updateAllPartyLists()
 
         elif msgID == UPDATE_PARTY:
 
@@ -206,6 +215,7 @@ class Server:
                         myPyDatagram.addUint8(GAME_OVER)
                         self.cWriter.send(myPyDatagram, client)
                 del self.parties[self.sessions[source]['party']]
+                self.updateAllPartyLists()
                 return
 
             for charid in chars.keys():
@@ -419,6 +429,17 @@ class Server:
             myPyDatagram.addUint8(damages)
             myPyDatagram.addString(json.dumps(attackables))
             self.cWriter.send(myPyDatagram, othersource)
+
+    def updateAllPartyLists(self):
+        parties = deepcopy(self.parties)
+        for party in parties.values():
+            del party['map']['tiles']
+
+        for player in self.playersinlobby:
+            myPyDatagram = PyDatagram()
+            myPyDatagram.addUint8(UPDATE_PARTY_LIST)
+            myPyDatagram.addString32(json.dumps(parties))
+            self.cWriter.send(myPyDatagram, player)
 
     def tskListenerPolling(self, taskdata):
         if self.cListener.newConnectionAvailable():

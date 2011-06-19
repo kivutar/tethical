@@ -50,6 +50,7 @@ ATTACKABLES_LIST = 26
 ATTACK = 27
 ATTACK_SUCCESS = 28
 ATTACK_PASSIVE = 29
+UPDATE_PARTY_LIST = 30
 BATTLE_COMPLETE = 32
 GAME_OVER = 33
 GET_PASSIVE_WALKABLES = 34
@@ -80,6 +81,9 @@ class Client(DirectObject):
         elif msgID == PARTY_LIST:
             parties = json.loads(iterator.getString32())
             self.partylistwindow = GUI.PartyListWindow(self.joinParty, self.mapChooserScreen)
+            self.partylistwindow.refresh(parties)
+        elif msgID == UPDATE_PARTY_LIST:
+            parties = json.loads(iterator.getString32())
             self.partylistwindow.refresh(parties)
         elif msgID == PARTY_JOINED:
             party = json.loads(iterator.getString32())

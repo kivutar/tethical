@@ -201,10 +201,10 @@ class PartyListWindow(DirectObject.DirectObject):
         ).start()
 
     def refresh(self, parties):
-    
+
         for child in self.frame.getChildren():
-            child.destroy()
-        
+            child.removeNode()
+
         for i,key in enumerate(parties):
             nameLabel = DirectLabel(
                 color = (0,0,0,0),
