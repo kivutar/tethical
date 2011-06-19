@@ -416,9 +416,10 @@ class Client(DirectObject):
         self.cursor.setColor( 1, 1, 1, .75 )
         self.cursor.setTexture(self.curtex)
         
-        filters = CommonFilters(base.win, base.cam)
-        filters.setBloom(blend=(0,0,0,1), desat=-0.5, intensity=3.0, size=4)
-        terrain.setShaderAuto()
+        #filters = CommonFilters(base.win, base.cam)
+        #filters.setBloom(blend=(0,0,0,1), desat=-0.5, intensity=3.0, size="medium")
+        #filters.setAmbientOcclusion()
+        #filters.setCartoonInk()
 
         # Battle intro animation
         seq = Sequence()
