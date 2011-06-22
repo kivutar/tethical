@@ -18,7 +18,7 @@ def Coords( party, charid ):
                 if tile and tile.has_key('char') and int(tile['char']) == int(charid):
                     return (x, y, z)
 
-def Random( charid, player, direction ):
+def Random( charid, teamid, direction ):
     jobid = jobids[random.randint(0, len(jobids)-1)]
     job = jobs[jobid]
     gender = ('F','M')[random.randint(0, 1)]
@@ -67,7 +67,7 @@ def Random( charid, player, direction ):
            , 'ct': random.randint(0, 100)
            , 'lv': lv
            , 'exp': random.randint(0, 99)
-           , 'team': player
+           , 'team': teamid
            , 'move': job['move']
            , 'jump': job['jump']*2
            , 'direction': direction

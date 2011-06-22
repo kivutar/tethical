@@ -248,7 +248,7 @@ class PartyListWindow(DirectObject.DirectObject):
             commands[key] = functools.partial(self.command, key)
             commands[key].__name__ = str(key)
             buttons[key] = DirectButton(
-                text  = ("Join", "Join", "Join", "Full"),
+                text  = (str(len(parties[key]['players']))+'/'+str(len(parties[key]['map']['chartiles'])), "Join", "Join", "Full"),
                 command = self.commandAndDestroy,
                 extraArgs = [ commands[key] ],
                 scale = scale,
@@ -263,7 +263,7 @@ class PartyListWindow(DirectObject.DirectObject):
             )
             buttons[key].setPos(u*80, 0, u*49 - i*u*16)
 
-            if parties[key].has_key('player1') and parties[key].has_key('player2'):
+            if len(parties[key]['players']) >= len(parties[key]['map']['chartiles']):
                 buttons[key]['state'] = DGG.DISABLED
 
 class Menu(DirectObject.DirectObject):
@@ -744,7 +744,7 @@ class CharCard2:
         )
         self.name.setPos(-u*33, 0, -u*4)
 
-        teamcolors = ['','blue','red']
+        teamcolors = ['green','blue','red']
         ledtex = loader.loadTexture('textures/gui/char_card_'+teamcolors[int(char['team'])]+'.png')
         ledtex.setMagfilter(Texture.FTNearest)
         ledtex.setMinfilter(Texture.FTNearest)
