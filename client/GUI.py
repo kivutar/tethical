@@ -6,6 +6,7 @@ from direct.task import Task
 from direct.actor import Actor
 from direct.interval.IntervalGlobal import *
 from pandac.PandaModules import *
+import functools
 
 u = 1.0/128.0
 hover_snd = base.loader.loadSfx("sounds/hover.ogg")
@@ -205,6 +206,8 @@ class PartyListWindow(DirectObject.DirectObject):
         for child in self.frame.getChildren():
             child.removeNode()
 
+        buttons = {}
+        commands = {}
         for i,key in enumerate(parties):
             nameLabel = DirectLabel(
                 color = (0,0,0,0),
@@ -242,10 +245,12 @@ class PartyListWindow(DirectObject.DirectObject):
             )
             mapLabel.setPos(u*20, 0, u*49 - i*u*16)
             
-            joinButton = DirectButton(
+            commands[key] = functools.partial(self.command, key)
+            commands[key].__name__ = str(key)
+            buttons[key] = DirectButton(
                 text  = ("Join", "Join", "Join", "Full"),
                 command = self.commandAndDestroy,
-                extraArgs = [lambda: self.command(key)],
+                extraArgs = [ commands[key] ],
                 scale = scale,
                 text_font = font,
                 text_fg = (.1875,.15625,.125,1),
@@ -256,10 +261,10 @@ class PartyListWindow(DirectObject.DirectObject):
                 pressEffect = 0,
                 parent = self.frame
             )
-            joinButton.setPos(u*80, 0, u*49 - i*u*16)
+            buttons[key].setPos(u*80, 0, u*49 - i*u*16)
 
             if parties[key].has_key('player1') and parties[key].has_key('player2'):
-                joinButton['state'] = DGG.DISABLED
+                buttons[key]['state'] = DGG.DISABLED
 
 class Menu(DirectObject.DirectObject):
 

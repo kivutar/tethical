@@ -51,6 +51,7 @@ ATTACK = 27
 ATTACK_SUCCESS = 28
 ATTACK_PASSIVE = 29
 UPDATE_PARTY_LIST = 30
+PARTY_JOIN_FAIL = 31
 BATTLE_COMPLETE = 32
 GAME_OVER = 33
 GET_PASSIVE_WALKABLES = 34
@@ -82,12 +83,23 @@ class Client(DirectObject):
             parties = json.loads(iterator.getString32())
             self.partylistwindow = GUI.PartyListWindow(self.joinParty, self.mapChooserScreen)
             self.partylistwindow.refresh(parties)
+            print 'Received the party list:'
+            for k in parties.keys():
+                print ' - ',k
         elif msgID == UPDATE_PARTY_LIST:
             parties = json.loads(iterator.getString32())
             self.partylistwindow.refresh(parties)
         elif msgID == PARTY_JOINED:
             party = json.loads(iterator.getString32())
             self.party = party
+        elif msgID == PARTY_JOIN_FAIL:
+            print iterator.getString()
+            parties = json.loads(iterator.getString32())
+            self.partylistwindow = GUI.PartyListWindow(self.joinParty, self.mapChooserScreen)
+            self.partylistwindow.refresh(parties)
+            print 'Received the party list:'
+            for k in parties.keys():
+                print ' - ',k
         elif msgID == START_BATTLE:
             self.party = json.loads(iterator.getString32())
             self.transitionframe = DirectFrame( frameSize = ( -2, 2, -2, 2 ) )

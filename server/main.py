@@ -39,6 +39,7 @@ ATTACK = 27
 ATTACK_SUCCESS = 28
 ATTACK_PASSIVE = 29
 UPDATE_PARTY_LIST = 30
+PARTY_JOIN_FAIL = 31
 BATTLE_COMPLETE = 32
 GAME_OVER = 33
 GET_PASSIVE_WALKABLES = 34
@@ -127,6 +128,7 @@ class Server:
             
             self.updateAllPartyLists()
             
+            print self.sessions[source]['login'], "created the party", name, "using the map", mapname
             myPyDatagram = PyDatagram()
             myPyDatagram.addUint8(PARTY_CREATED)
             myPyDatagram.addString32(json.dumps(party))
@@ -164,33 +166,45 @@ class Server:
         
             name = iterator.getString()
             party = self.parties[name]
-            party['player2'] = self.sessions[source]['login']
-            self.sessions[source]['party'] = name
-            self.sessions[source]['player'] = 2
-            self.playersinlobby.remove(source)
-
-            myPyDatagram = PyDatagram()
-            myPyDatagram.addUint8(PARTY_JOINED)
-            myPyDatagram.addString32(json.dumps(party))
-            self.cWriter.send(myPyDatagram, source)
             
-            for player in party['map']['chartiles'].keys():
-                for chartile in party['map']['chartiles'][player]:
-                    x = int(chartile['x'])
-                    y = int(chartile['y'])
-                    z = int(chartile['z'])
-                    direction = int(chartile['direction'])
-                    charid = str(x)+str(y)+str(z)
-                    party['map']['tiles'][x][y][z]['char'] = charid;
-                    party['chars'][charid] = Character.Random(charid, player, direction);
-            
-            for client in [ self.players[party['player1']] , source ]:
+            if party.has_key('player2'):
+                parties = deepcopy(self.parties)
+                for party in parties.values():
+                    del party['map']['tiles']
                 myPyDatagram = PyDatagram()
-                myPyDatagram.addUint8(START_BATTLE)
-                myPyDatagram.addString32(json.dumps(party))
-                self.cWriter.send(myPyDatagram, client)
+                myPyDatagram.addUint8(PARTY_JOIN_FAIL)
+                myPyDatagram.addString('Party '+name+' is full.')
+                myPyDatagram.addString32(json.dumps(parties))
+                self.cWriter.send(myPyDatagram, source)
+            else:
+                party['player2'] = self.sessions[source]['login']
+                self.sessions[source]['party'] = name
+                self.sessions[source]['player'] = 2
+                self.playersinlobby.remove(source)
 
-            self.updateAllPartyLists()
+                print self.sessions[source]['login'], "joined the party", name
+                myPyDatagram = PyDatagram()
+                myPyDatagram.addUint8(PARTY_JOINED)
+                myPyDatagram.addString32(json.dumps(party))
+                self.cWriter.send(myPyDatagram, source)
+                
+                for player in party['map']['chartiles'].keys():
+                    for chartile in party['map']['chartiles'][player]:
+                        x = int(chartile['x'])
+                        y = int(chartile['y'])
+                        z = int(chartile['z'])
+                        direction = int(chartile['direction'])
+                        charid = str(x)+str(y)+str(z)
+                        party['map']['tiles'][x][y][z]['char'] = charid;
+                        party['chars'][charid] = Character.Random(charid, player, direction);
+                
+                for client in [ self.players[party['player1']] , source ]:
+                    myPyDatagram = PyDatagram()
+                    myPyDatagram.addUint8(START_BATTLE)
+                    myPyDatagram.addString32(json.dumps(party))
+                    self.cWriter.send(myPyDatagram, client)
+
+                self.updateAllPartyLists()
 
         elif msgID == UPDATE_PARTY:
 
