@@ -13,14 +13,14 @@
         { "color": [ 0.2, 0.2, 0.2, 1.0 ] },
         { "color": [ 1.0, 1.0, 1.0, 1.0 ], "direction": [ -45.0, -45.0, -45.0 ] }
     ],
-    "chartiles": {
-        "1": [
-               { "x": 20, "y": 6, "z": 6, "direction": 3 }
-             ],
-        "2": [
-               { "x": 20, "y": 20, "z": 24, "direction": 4 }
-             ]
-    },
+    "chartiles": [
+        [
+            { "x": 20, "y": 6, "z": 6, "direction": 3 }
+        ],
+        [
+            { "x": 20, "y": 20, "z": 24, "direction": 4 }
+        ]
+    ],
     "tiles": [
 
         { "x":  0, "y":  0, "z":  0, "walkable": true, "selectable": true, "depth": 0.0, "scale": 1.0, "slope": "flat" },

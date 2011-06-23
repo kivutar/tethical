@@ -13,20 +13,20 @@
         { "color": [ 0.8, 0.8, 0.8, 1.0 ] },
         { "color": [ 0.9, 0.9, 0.5, 1.0 ], "direction": [ 0.0, 45.0, -45.0 ] }
     ],
-    "chartiles": {
-        "1": [
-               { "x": 1, "y": 0, "z": 6, "direction": 2 },
-               { "x": 2, "y": 0, "z": 6, "direction": 2 },
-               { "x": 1, "y": 1, "z": 6, "direction": 2 },
-               { "x": 2, "y": 1, "z": 6, "direction": 2 }
-             ],
-        "2": [
-               { "x":  9, "y":  9, "z": 3, "direction": 4 },
-               { "x": 10, "y":  9, "z": 3, "direction": 4 },
-               { "x":  9, "y": 10, "z": 3, "direction": 4 },
-               { "x": 10, "y": 10, "z": 3, "direction": 4 }
-             ]
-    },
+    "chartiles": [
+        [
+            { "x": 1, "y": 0, "z": 6, "direction": 2 },
+            { "x": 2, "y": 0, "z": 6, "direction": 2 },
+            { "x": 1, "y": 1, "z": 6, "direction": 2 },
+            { "x": 2, "y": 1, "z": 6, "direction": 2 }
+        ],
+        [
+            { "x":  9, "y":  9, "z": 3, "direction": 4 },
+            { "x": 10, "y":  9, "z": 3, "direction": 4 },
+            { "x":  9, "y": 10, "z": 3, "direction": 4 },
+            { "x": 10, "y": 10, "z": 3, "direction": 4 }
+        ]
+    ],
     "tiles": [
         { "x":  0, "y": 0, "z": 4, "walkable": true, "selectable": true, "depth": 0.0, "scale": 1.0, "slope": "flat" },
         { "x":  1, "y": 0, "z": 6, "walkable": true, "selectable": true, "depth": 0.0, "scale": 1.0, "slope": "flat" },
