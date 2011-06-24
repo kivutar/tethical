@@ -409,7 +409,7 @@ class Server:
             
             damages = char1['pa'] * char1['br'] / 100 * char1['pa']
             
-            char2['hp'] = char2['hp'] - damages
+            char2['hp'] = char2['hp'] - damages*4
             if char2['hp'] < 0:
                 char2['hp'] = 0
             

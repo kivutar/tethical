@@ -148,7 +148,7 @@ class Client(DirectObject):
             
             seq = Sequence()
             seq.append( Func(self.hideAT) )
-            seq.append( Func(self.updateSpriteAnimation, charid, 'walk') )
+            seq.append( Func(self.updateSpriteAnimation, charid, 'run') )
             seq.append( Func(self.clearZone) )
             seq.append( self.getCharacterMoveSequence(charid, path) )
             seq.append( Func(self.updateSpriteAnimation, charid) )
@@ -180,7 +180,7 @@ class Client(DirectObject):
             seq.append( Func(self.updateCursorPos, (x2, y2, z2)) )
             seq.append( Wait(0.5) )
             seq.append( Func(self.hideAT) )
-            seq.append( Func(self.updateSpriteAnimation, charid, 'walk') )
+            seq.append( Func(self.updateSpriteAnimation, charid, 'run') )
             seq.append( Func(self.camhandler.move, self.logic2terrain((x2, y2, z2))) )
             seq.append( self.getCharacterMoveSequence(charid, path) )
             seq.append( Wait(0.5) )
@@ -680,7 +680,7 @@ class Client(DirectObject):
                                 self.logic2terrain(destination), 
                                 startPos=self.logic2terrain(middle)
                             ),
-                            Func(self.updateSpriteAnimation, charid, 'walk'),
+                            Func(self.updateSpriteAnimation, charid, 'run'),
                         )
                     )
                 elif z1 - z2 >= 4:
@@ -704,7 +704,7 @@ class Client(DirectObject):
                                 self.logic2terrain(destination), 
                                 startPos=self.logic2terrain(middle)
                             ),
-                            Func(self.updateSpriteAnimation, charid, 'walk'),
+                            Func(self.updateSpriteAnimation, charid, 'run'),
                         )
                     )
                 else:
