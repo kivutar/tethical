@@ -1017,16 +1017,26 @@ class Client(DirectObject):
 
     # Light the scene
     def lightScene(self):
+
         for i, light in enumerate(self.party['map']['lights']):
             if light.has_key('direction'):
                 directionalLight = DirectionalLight( "directionalLight_"+str(i) )
                 directionalLight.setDirection( Vec3( *light['direction'] ) )
                 directionalLight.setColor( Vec4( *light['color'] ) )
                 render.setLight( render.attachNewNode( directionalLight ) )
+            elif light.has_key('position'):
+                plight = PointLight('plighti_'+str(i))
+                plight.setColor( Vec4( *light['color'] ) )
+                plight.setAttenuation(Point3( *light['attenuation'] ))
+                plnp = render.attachNewNode(plight)
+                plnp.setPos( self.logic2terrain( light['position'] ) )
+                render.setLight( plnp )
             else:
                 ambientLight = AmbientLight( "ambientLight"+str(i) )
                 ambientLight.setColor( Vec4( *light['color'] ) )
                 render.setLight( render.attachNewNode( ambientLight ) )
+
+        render.setShaderAuto()
 
     def showAT(self, sprite):
         self.atcontainer.reparentTo(sprite.node)
