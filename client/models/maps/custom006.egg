@@ -12,12 +12,14 @@
   <Scalar> shininess {12.5}
 }
 <Texture> custom006_shadow.png {
-  "./../../textures/map/custom006_backedshadows.png"
-  <Scalar> saved-result { 1 }
-  <Scalar> envtype { MODULATE }
+  "./../../textures/map/custom006.png"
+  <Scalar> alpha-file { "./../../textures/map/custom006-glow.png" }
+  <Scalar> format { rgba }
+  <Scalar> wrapu { repeat }
+  <Scalar> wrapv { repeat }
   <Scalar> minfilter { NEAREST }
   <Scalar> magfilter { NEAREST }
-  <Scalar> wrap { REPEAT }
+  <Scalar> envtype { modulate_glow }
 }
 <Group> Cube {
   <VertexPool> Cube {
