@@ -429,8 +429,16 @@ class Client(DirectObject):
         self.cursor.reparentTo( self.tileRoot )
         self.cursor.setScale(3.0)
         self.cursor.setTransparency(TransparencyAttrib.MAlpha)
-        self.cursor.setColor( 1, 1, 1, .75 )
+        self.cursor.setColor( 1, 1, 1, 1 )
         self.cursor.setTexture(self.curtex)
+        
+        self.wtex = loader.loadTexture('textures/walkable.png')
+        self.wtex.setMagfilter(Texture.FTNearest)
+        self.wtex.setMinfilter(Texture.FTNearest)
+        
+        self.atex = loader.loadTexture('textures/attackable.png')
+        self.atex.setMagfilter(Texture.FTNearest)
+        self.atex.setMinfilter(Texture.FTNearest)
         
         #filters = CommonFilters(base.win, base.cam)
         #filters.setBloom(blend=(0,0,0,1), desat=-0.5, intensity=3.0, size="medium")
@@ -610,18 +618,21 @@ class Client(DirectObject):
     # Draw blue tile zone
     def setupPassiveWalkableZone(self, walkables):
         for x,y,z in walkables:
-            self.tiles[x][y][z].setColor(0.0, 0.0, 1.0, 0.75)
+            self.tiles[x][y][z].setColor(1, 1, 1, 1)
+            self.tiles[x][y][z].setTexture(self.wtex)
 
     # Tag a zone as walkable or active-walkable
     def setupWalkableZone(self, charid, walkables):
         for x,y,z in walkables:
-            self.tiles[x][y][z].setColor(0.0, 0.0, 1.0, 0.75)
+            self.tiles[x][y][z].setColor(1, 1, 1, 1)
+            self.tiles[x][y][z].setTexture(self.wtex)
             self.party['map']['tiles'][x][y][z]['walkablezone'] = charid
 
     # Draw and tag the red tile zone
     def setupAttackableZone(self, charid, attackables):
         for x,y,z in attackables:
-            self.tiles[x][y][z].setColor(1.0, 0.0, 0.0, 0.75)
+            self.tiles[x][y][z].setColor(1, 1, 1, 1)
+            self.tiles[x][y][z].setTexture(self.atex)
             self.party['map']['tiles'][x][y][z]['attackablezone'] = charid
 
     # Clear any tile zone
