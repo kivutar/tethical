@@ -1047,8 +1047,6 @@ class Client(DirectObject):
                 ambientLight.setColor( Vec4( *light['color'] ) )
                 render.setLight( render.attachNewNode( ambientLight ) )
 
-        render.setShaderAuto()
-
     def showAT(self, sprite):
         self.atcontainer.reparentTo(sprite.node)
 
