@@ -1,7 +1,7 @@
 import json, random
 
 jobs = {}
-jobids = ['4A','4B','4C','4D','4E','4F','50','53']
+jobids = ['4C']
 for jobid in jobids:
     f = open('jobs/'+jobid+'.json', 'r')
     jobs[jobid] = json.loads(f.read())
@@ -21,8 +21,8 @@ def Coords( party, charid ):
 def Random( charid, teamid, direction ):
     jobid = jobids[random.randint(0, len(jobids)-1)]
     job = jobs[jobid]
-    gender = ('F','M')[random.randint(0, 1)]
-    sprite = str(jobid)+'_'+str(gender)
+    gender = 'F'#('F','M')[random.randint(0, 1)]
+    sprite = str(jobid)+'_'+str(gender)+'_'+str(teamid)
 
     if gender == 'F':
         rhp = random.randint(458752, 491519)

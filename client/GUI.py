@@ -744,7 +744,7 @@ class CharCard2:
         )
         self.name.setPos(-u*33, 0, -u*4)
 
-        teamcolors = ['green','blue','red']
+        teamcolors = ['blue','red','green']
         ledtex = loader.loadTexture('textures/gui/char_card_'+teamcolors[int(char['team'])]+'.png')
         ledtex.setMagfilter(Texture.FTNearest)
         ledtex.setMinfilter(Texture.FTNearest)
