@@ -1,3 +1,4 @@
 *.pyc
 *.blend1
-server/logs
+*.blend2
+*~
