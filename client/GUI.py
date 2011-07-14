@@ -63,7 +63,7 @@ class Test(DirectObject.DirectObject):
 
     def __init__(self):
 
-        tex = loader.loadTexture('textures/gui/bgtest2.png')
+        tex = loader.loadTexture('textures/gui/bgtest3.png')
         tex.setMagfilter(Texture.FTNearest)
         tex.setMinfilter(Texture.FTNearest)
 
@@ -514,7 +514,7 @@ class AttackCheck(DirectObject.DirectObject):
             frameTexture = tex,
             frameColor = (1, 1, 1, 1),
             frameSize = ( -v*64.0, v*64.0, -v*64.0, v*64.0 ),
-            pos = (0, 0, 0),
+            pos = (-v*1.0, 0, v*10.0),
             scale = 0.1,
         )
         self.frame.setTransparency(True)
