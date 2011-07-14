@@ -1,5 +1,6 @@
 from pandac.PandaModules import loadPrcFileData
 loadPrcFileData("", "window-title Tethical")
+loadPrcFileData("", "win-size 512 480")
 import direct.directbase.DirectStart
 from direct.showbase.DirectObject import DirectObject
 from panda3d.core import *
@@ -407,7 +408,7 @@ class Client(DirectObject):
         at.setTransparency(True)
         at.reparentTo(self.atcontainer)
         at.setPos(.75,0,0)
-        at.setScale(1.75)
+        at.setScale(2.0*256.0/240.0)
         self.hideAT()
         
         self.charcard = None
@@ -1009,7 +1010,7 @@ class Client(DirectObject):
         primitive = GeomTristrips(Geom.UHStatic)
         film_size = base.cam.node().getLens().getFilmSize()
         x = film_size.getX() / 2.0
-        z = x * 0.75
+        z = x * 256.0/240.0
         vertex.addData3f( x, 90,  z)
         vertex.addData3f(-x, 90,  z)
         vertex.addData3f( x, 90, -z)

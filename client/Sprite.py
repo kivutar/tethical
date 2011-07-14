@@ -11,7 +11,7 @@ class Sprite:
         self.displaydir = 1
         self.animation  = 'walk'
     
-        self.sprite2d = Sprite2d.Sprite2d(sheet, cols=14, rows=4, scale=2.0, anchorX='Center')
+        self.sprite2d = Sprite2d.Sprite2d(sheet, cols=14, rows=4, scale=2.0*256.0/240.0, anchorX='Center')
 
         # the main container
         self.node = NodePath("dummy1")

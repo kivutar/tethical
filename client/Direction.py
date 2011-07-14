@@ -48,7 +48,7 @@ class Chooser(DirectObject.DirectObject):
             card.setBillboardPointEye()
             card.reparentTo(self.directionRoot)
             card.setPos(directiondata['pos'])
-            card.setScale(.8)
+            card.setScale(256.0/240.0)
 
             self.directionbuttons.append(card)
 

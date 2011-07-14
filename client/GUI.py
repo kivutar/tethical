@@ -9,10 +9,11 @@ from pandac.PandaModules import *
 import functools
 
 u = 1.0/128.0
+v = 1.0/120.0
 hover_snd = base.loader.loadSfx("sounds/hover.ogg")
 clicked_snd = base.loader.loadSfx("sounds/clicked.ogg")
 cancel_snd = base.loader.loadSfx("sounds/cancel.ogg")
-scale = u*12.0
+scale = 2*12.0/240.0
 font = loader.loadFont('fonts/fft')
 font3 = loader.loadFont('fonts/fft3')
 font4 = loader.loadFont('fonts/fft4')
@@ -28,7 +29,7 @@ class Coords(DirectObject.DirectObject):
         self.coordstn.setTextColor(1,1,1,1)
         self.tnp = aspect2d.attachNewNode(self.coordstn)
         self.tnp.setScale(scale)
-        self.tnp.setPos(0.9, 0.0, 0.6)
+        self.tnp.setPos(v*112, 0, v*66)
 
         self.update(tile)
 
@@ -48,7 +49,7 @@ class Background(DirectObject.DirectObject):
 
         base.setBackgroundColor(.03125, .03125, .03125)
 
-        self.frame = DirectFrame( color = (1, 1, 1, 1), frameTexture = tex, frameSize = ( -2.2, 2.2, -2.2, 2.2 ), scale = 10 )
+        self.frame = DirectFrame( color = (1, 1, 1, 1), frameTexture = tex, frameSize = ( -v*128, v*128, -v*128, v*128 ), scale = 10 )
         self.frame.setTransparency(True)
 
         seq = Sequence()
@@ -58,6 +59,25 @@ class Background(DirectObject.DirectObject):
         seq.append( Func(command) )
         seq.start()
 
+class Test(DirectObject.DirectObject):
+
+    def __init__(self):
+
+        tex = loader.loadTexture('textures/gui/bgtest2.png')
+        tex.setMagfilter(Texture.FTNearest)
+        tex.setMinfilter(Texture.FTNearest)
+
+        base.setBackgroundColor(0,0,1)
+
+        self.frame = DirectFrame(
+                color = (1, 1, 1, 1),
+                frameTexture = tex,
+                frameSize = ( -v*128.0, v*128.0, -v*128.0, v*128.0 ),
+                scale = 1,
+                sortOrder= -2,
+        )
+        self.frame.setTransparency(True)
+
 class LoginWindow(DirectObject.DirectObject):
 
     def __init__(self, command):
@@ -66,7 +86,7 @@ class LoginWindow(DirectObject.DirectObject):
         tex.setMagfilter(Texture.FTNearest)
         tex.setMinfilter(Texture.FTNearest)
 
-        self.frame = DirectFrame( frameTexture = tex, color = (1, 1, 1, 1), frameSize = ( -.5, .5, -.25, .25 ), scale = 0.1 )
+        self.frame = DirectFrame( frameTexture = tex, color = (1, 1, 1, 1), frameSize = ( -v*64.0, v*64.0, -v*32.0, v*32.0 ), scale = 0.1 )
         self.frame.setTransparency(True)
 
         self.loginLabel = DirectLabel(
@@ -79,7 +99,7 @@ class LoginWindow(DirectObject.DirectObject):
             text_align = TextNode.ALeft,
             parent = self.frame
         )
-        self.loginLabel.setPos(-u*50, 0, u*3)
+        self.loginLabel.setPos(-v*50, 0, v*3)
 
         self.loginEntry = DirectEntry(
             color = (.62, .6, .5, 0),
@@ -91,7 +111,7 @@ class LoginWindow(DirectObject.DirectObject):
             text_shadow = (.5,.46484375,.40625,1),
             parent = self.frame
         )
-        self.loginEntry.setPos(-u*6, 0, u*3)
+        self.loginEntry.setPos(-v*6, 0, v*3)
 
         self.passwordLabel = DirectLabel(
             text = 'Password:',
@@ -103,7 +123,7 @@ class LoginWindow(DirectObject.DirectObject):
             text_align = TextNode.ALeft,
             parent = self.frame
         )
-        self.passwordLabel.setPos(-u*50, 0, -u*13)
+        self.passwordLabel.setPos(-v*50, 0, -v*13)
 
         self.passwordEntry = DirectEntry(
             color = (.62, .6, .5, 0),
@@ -115,7 +135,7 @@ class LoginWindow(DirectObject.DirectObject):
             obscured = True,
             parent = self.frame
         )
-        self.passwordEntry.setPos(-u*6, 0, -u*13)
+        self.passwordEntry.setPos(-v*6, 0, -v*13)
 
         connectButton = DirectButton(
             scale = scale,
@@ -131,7 +151,7 @@ class LoginWindow(DirectObject.DirectObject):
             pad = (.15,.15),
             parent = self.frame
         )
-        connectButton.setPos(u*38, 0, -u*40)
+        connectButton.setPos(v*38, 0, -v*40)
 
         seq = Sequence()
         i = LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1 )
@@ -158,7 +178,7 @@ class PartyListWindow(DirectObject.DirectObject):
         tex.setMagfilter(Texture.FTNearest)
         tex.setMinfilter(Texture.FTNearest)
     
-        self.frame = DirectFrame( frameTexture = tex, color = (1, 1, 1, 1), frameSize = ( -1, 1, -1, 1 ), scale=0.1 )
+        self.frame = DirectFrame( frameTexture = tex, color = (1, 1, 1, 1), frameSize = ( -v*128.0, v*128.0, -v*128.0, v*128.0 ), scale=0.1 )
         self.frame.setTransparency(True)
         
         cptexture = loader.loadTexture('textures/gui/create_party.png')
@@ -168,7 +188,7 @@ class PartyListWindow(DirectObject.DirectObject):
         self.cpframe = DirectFrame(
             frameTexture = cptexture,
             frameColor = (1, 1, 1, 1),
-            frameSize = ( -.25, .25, -.0625, .0625 ),
+            frameSize = ( -v*32.0, v*32.0, -v*8.0, v*8.0 ),
             pos = (0, 0, -.8),
             scale = 1.0,
         )
@@ -219,7 +239,7 @@ class PartyListWindow(DirectObject.DirectObject):
                 text_align = TextNode.ALeft,
                 parent = self.frame
             )
-            nameLabel.setPos(-u*93, 0, u*49 - i*u*16)
+            nameLabel.setPos(-v*93, 0, v*49 - i*v*16)
 
             creatorLabel = DirectLabel(
                 color = (0,0,0,0),
@@ -231,7 +251,7 @@ class PartyListWindow(DirectObject.DirectObject):
                 text_align = TextNode.ALeft,
                 parent = self.frame
             )
-            creatorLabel.setPos(-u*30, 0, u*49 - i*u*16)
+            creatorLabel.setPos(-v*30, 0, v*49 - i*v*16)
 
             mapLabel = DirectLabel(
                 color = (0,0,0,0),
@@ -243,7 +263,7 @@ class PartyListWindow(DirectObject.DirectObject):
                 text_align = TextNode.ALeft,
                 parent = self.frame
             )
-            mapLabel.setPos(u*20, 0, u*49 - i*u*16)
+            mapLabel.setPos(v*20, 0, v*49 - i*v*16)
             
             commands[key] = functools.partial(self.command, key)
             commands[key].__name__ = str(key)
@@ -261,7 +281,7 @@ class PartyListWindow(DirectObject.DirectObject):
                 pressEffect = 0,
                 parent = self.frame
             )
-            buttons[key].setPos(u*80, 0, u*49 - i*u*16)
+            buttons[key].setPos(v*80, 0, v*49 - i*v*16)
 
             if len(parties[key]['players']) >= len(parties[key]['map']['chartiles']):
                 buttons[key]['state'] = DGG.DISABLED
@@ -276,10 +296,10 @@ class Menu(DirectObject.DirectObject):
         self.cancelcommand = cancelcommand
 
         self.buttons = [
-            { 'text': 'Move',   'enabled': char['canmove'], 'pos': (-u*36.5,0,u*(self.offset-self.height*0)), 'command': movecommand   },
-            { 'text': 'Attack', 'enabled': char['canact' ], 'pos': (-u*36.5,0,u*(self.offset-self.height*1)), 'command': attackcommand },
-            { 'text': 'Wait',   'enabled': True           , 'pos': (-u*36.5,0,u*(self.offset-self.height*2)), 'command': waitcommand   },
-            { 'text': 'Status', 'enabled': False          , 'pos': (-u*36.5,0,u*(self.offset-self.height*3)), 'command': cancelcommand },
+            { 'text': 'Move',   'enabled': char['canmove'], 'pos': (-v*36.5,0,v*(self.offset-self.height*0)), 'command': movecommand   },
+            { 'text': 'Attack', 'enabled': char['canact' ], 'pos': (-v*36.5,0,v*(self.offset-self.height*1)), 'command': attackcommand },
+            { 'text': 'Wait',   'enabled': True           , 'pos': (-v*36.5,0,v*(self.offset-self.height*2)), 'command': waitcommand   },
+            { 'text': 'Status', 'enabled': False          , 'pos': (-v*36.5,0,v*(self.offset-self.height*3)), 'command': cancelcommand },
         ]
 
         menutexture = loader.loadTexture('textures/gui/menu.png')
@@ -293,8 +313,8 @@ class Menu(DirectObject.DirectObject):
         self.frame = DirectFrame(
             frameTexture = menutexture,
             frameColor = (1, 1, 1, 1),
-            frameSize = ( -.25, .25, -.5, .5 ),
-            pos = (.75, 0, 0),
+            frameSize = ( -v*32.0, v*32.0, -v*64.0, v*64.0 ),
+            pos = (v*73.0, 0, v*10.0),
             scale = 0.1,
         )
         self.frame.setTransparency(True)
@@ -302,7 +322,7 @@ class Menu(DirectObject.DirectObject):
         self.hand = DirectFrame(
             frameTexture = handtexture,
             frameColor = (1, 1, 1, 1),
-            frameSize = ( -u*8, u*8, -u*8, u*8 ),
+            frameSize = ( -v*8, v*8, -v*8, v*8 ),
             pos = self.buttons[0]['pos'],
             parent = self.frame
         )
@@ -317,7 +337,7 @@ class Menu(DirectObject.DirectObject):
                 text_shadow = (.5,.46484375,.40625,1),
                 text_align = TextNode.ALeft,
                 parent = self.frame,
-                pos = (-u*25, 0, u*(self.offset-3-self.height*i))
+                pos = (-v*25, 0, v*(self.offset-3-self.height*i))
             )
             if not button['enabled']:
                 label['text_fg'] = (.375,.34375,.28125,1)
@@ -372,8 +392,8 @@ class MoveCheck(DirectObject.DirectObject):
         self.cancelcommand = cancelcommand
 
         self.buttons = [
-            { 'text': 'Yes',   'enabled': True, 'pos': (u*45.5,0,u*(self.offset-self.height*0)), 'command': command       },
-            { 'text': 'No',    'enabled': True, 'pos': (u*45.5,0,u*(self.offset-self.height*1)), 'command': cancelcommand },
+            { 'text': 'Yes',   'enabled': True, 'pos': (v*45.5,0,v*(self.offset-self.height*0)), 'command': command       },
+            { 'text': 'No',    'enabled': True, 'pos': (v*45.5,0,v*(self.offset-self.height*1)), 'command': cancelcommand },
         ]
 
         tex = loader.loadTexture('textures/gui/move_check.png')
@@ -387,7 +407,7 @@ class MoveCheck(DirectObject.DirectObject):
         self.frame = DirectFrame(
             frameTexture = tex,
             frameColor = (1, 1, 1, 1),
-            frameSize = ( -1, 1, -.5, .5 ),
+            frameSize = ( -v*128.0, v*128.0, -v*64.0, v*64.0 ),
             pos = (0, 0, 0),
             scale = 0.1,
         )
@@ -396,7 +416,7 @@ class MoveCheck(DirectObject.DirectObject):
         self.hand = DirectFrame(
             frameTexture = handtexture,
             frameColor = (1, 1, 1, 1),
-            frameSize = ( -u*8, u*8, -u*8, u*8 ),
+            frameSize = ( -v*8, v*8, -v*8, v*8 ),
             pos = self.buttons[0]['pos'],
             parent = self.frame
         )
@@ -410,7 +430,7 @@ class MoveCheck(DirectObject.DirectObject):
             text_shadow = (.5,.46484375,.40625,1),
             text_align = TextNode.ALeft,
             parent = self.frame,
-            pos = (-u*75, 0, u*19)
+            pos = (-v*75, 0, v*19)
         )
 
         for i,button in enumerate(self.buttons):
@@ -423,7 +443,7 @@ class MoveCheck(DirectObject.DirectObject):
                 text_shadow = (.5,.46484375,.40625,1),
                 text_align = TextNode.ALeft,
                 parent = self.frame,
-                pos = (u*57, 0, u*(self.offset-3-self.height*i))
+                pos = (v*57, 0, v*(self.offset-3-self.height*i))
             )
             if not button['enabled']:
                 label['text_fg'] = (.375,.34375,.28125,1)
@@ -478,8 +498,8 @@ class AttackCheck(DirectObject.DirectObject):
         self.cancelcommand = cancelcommand
 
         self.buttons = [
-            { 'text': 'Execute', 'enabled': True, 'pos': (-u*8.5,0,u*(self.offset-self.height*0)), 'command': command       },
-            { 'text': 'Quit',    'enabled': True, 'pos': (-u*8.5,0,u*(self.offset-self.height*1)), 'command': cancelcommand },
+            { 'text': 'Execute', 'enabled': True, 'pos': (-v*8.5,0,v*(self.offset-self.height*0)), 'command': command       },
+            { 'text': 'Quit',    'enabled': True, 'pos': (-v*8.5,0,v*(self.offset-self.height*1)), 'command': cancelcommand },
         ]
 
         tex = loader.loadTexture('textures/gui/attack_check.png')
@@ -493,7 +513,7 @@ class AttackCheck(DirectObject.DirectObject):
         self.frame = DirectFrame(
             frameTexture = tex,
             frameColor = (1, 1, 1, 1),
-            frameSize = ( -.5, .5, -.5, .5 ),
+            frameSize = ( -v*64.0, v*64.0, -v*64.0, v*64.0 ),
             pos = (0, 0, 0),
             scale = 0.1,
         )
@@ -502,7 +522,7 @@ class AttackCheck(DirectObject.DirectObject):
         self.hand = DirectFrame(
             frameTexture = handtexture,
             frameColor = (1, 1, 1, 1),
-            frameSize = ( -u*8, u*8, -u*8, u*8 ),
+            frameSize = ( -v*8, v*8, -v*8, v*8 ),
             pos = self.buttons[0]['pos'],
             parent = self.frame
         )
@@ -530,7 +550,7 @@ class AttackCheck(DirectObject.DirectObject):
                 text_shadow = (.5,.46484375,.40625,1),
                 text_align = TextNode.ALeft,
                 parent = self.frame,
-                pos = (u*3, 0, u*(self.offset-3-self.height*i))
+                pos = (v*3, 0, v*(self.offset-3-self.height*i))
             )
             if not button['enabled']:
                 label['text_fg'] = (.375,.34375,.28125,1)
@@ -589,7 +609,7 @@ class Help(DirectObject.DirectObject):
         self.frame = DirectFrame(
             frameTexture = tex,
             frameColor = (1, 1, 1, 1),
-            frameSize = ( -1.0, 1.0, -.25, .25 ),
+            frameSize = ( -v*128.0, v*128.0, -v*32.0, v*32.0 ),
             pos = (0, 0, .25),
             scale = 0.1,
         )
@@ -624,17 +644,17 @@ class Help(DirectObject.DirectObject):
 class CharCard:
 
     def __init__(self, char):
-        tex = loader.loadTexture('textures/gui/char_card1.png')
-        tex.setMagfilter(Texture.FTNearest)
-        tex.setMinfilter(Texture.FTNearest)
+        fbgtex = loader.loadTexture('textures/gui/char_card5.png')
+        fbgtex.setMagfilter(Texture.FTNearest)
+        fbgtex.setMinfilter(Texture.FTNearest)
 
-        self.frame = DirectFrame(
-            frameTexture = tex, 
+        self.fbgframe = DirectFrame(
+            frameTexture = fbgtex, 
             frameColor=(1, 1, 1, 1),
-            frameSize = ( -.5, .5, -.25, .25 )
+            frameSize = ( -v*32.0, v*32.0, -v*32.0, v*32.0 ),
         )
-        self.frame.setTransparency(True)
-        self.frame.setPos(-2, 0, -u*85)
+        self.fbgframe.setTransparency(True)
+        self.fbgframe.setPos(-2, 0, -v*85)
         
         facetex = loader.loadTexture('textures/sprites/'+char['sprite']+'_face.png')
         facetex.setMagfilter(Texture.FTNearest)
@@ -643,10 +663,10 @@ class CharCard:
         self.face = DirectFrame(
             frameTexture = facetex, 
             frameColor=(1, 1, 1, 1),
-            frameSize = ( 0, u*32, 0, u*64 ),
-            parent = self.frame
+            frameSize = ( 0, v*32, 0, v*64 ),
+            parent = self.fbgframe,
         )
-        self.face.setPos(-u*59, 0, -u*31)
+        self.face.setPos(-v*(59-42), 0, -v*31)
         
         tex2 = loader.loadTexture('textures/gui/char_card2.png')
         tex2.setMagfilter(Texture.FTNearest)
@@ -655,11 +675,25 @@ class CharCard:
         self.frame2 = DirectFrame(
             frameTexture = tex2, 
             frameColor=(1, 1, 1, 1),
-            frameSize = ( -.5, .5, -.25, .25 ),
-            parent = self.frame
+            frameSize = ( -v*64.0, v*64.0, -v*32.0, v*32.0 ),
+            parent = self.fbgframe
         )
+        self.frame2.setPos(v*42, 0, 0)
         self.frame2.setTransparency(True)
-        
+
+#        tex3 = loader.loadTexture('textures/gui/char_card6.png')
+#        tex3.setMagfilter(Texture.FTNearest)
+#        tex3.setMinfilter(Texture.FTNearest)
+#        
+#        self.frame3 = DirectFrame(
+#            frameTexture = tex3, 
+#            frameColor=(1, 1, 1, 1),
+#            frameSize = ( -v*64.0, v*64.0, -v*32.0, v*32.0 ),
+#            parent = self.fbgframe
+#        )
+#        self.frame3.setPos(v*46, 0, -v*9)
+#        self.frame3.setTransparency(True)
+
         infos = [
             { 'x': 16 , 'z':  16 , 'text': '%02d' % char['lv'] },
             { 'x': 48 , 'z':  16 , 'text': '%02d' % char['exp'] },
@@ -681,16 +715,16 @@ class CharCard:
                 text_align = TextNode.ALeft,
                 parent = self.frame2
             )
-            label.setPos(u*info['x'], 0, u*info['z'])
+            label.setPos(v*info['x'], 0, v*info['z'])
 
-        i1 = LerpPosInterval(self.frame, 0.2, (-u*55,0,-u*85), (-2,0,-u*85))
+        i1 = LerpPosInterval(self.fbgframe, 0.2, (-u*104,0,-u*82), (-2,0,-u*82))
         s = Sequence(i1)
         s.start()
 
     def hide(self):
-        if self.frame:
-            i1 = LerpPosInterval(self.frame, 0.2, (-2,0,-u*85), (-u*55,0,-u*85))
-            i2 = Func( self.frame.destroy )
+        if self.fbgframe:
+            i1 = LerpPosInterval(self.fbgframe, 0.2, (-2,0,-u*82), (-u*55,0,-u*82))
+            i2 = Func( self.fbgframe.destroy )
             s = Sequence(i1,i2)
             s.start()
 
@@ -701,12 +735,14 @@ class CharCard2:
         blacktex.setMagfilter(Texture.FTNearest)
         blacktex.setMinfilter(Texture.FTNearest)
 
-        self.blackframe = DirectFrame(frameTexture = blacktex, 
-                                 frameColor=(1, 1, 1, 1),
-                                 frameSize = ( -1, 1, -.5, .5 ))
-        self.blackframe.reparentTo(render2d)
+        self.blackframe = DirectFrame(
+                frameTexture = blacktex, 
+                frameColor=(1, 1, 1, 1),
+                frameSize = ( -2, 2, -v*64.0, v*64.0 ),
+                sortOrder = -1,
+        )
         self.blackframe.setTransparency(True)
-        self.blackframe.setPos(0, 0, u*-85)
+        self.blackframe.setPos(0, 0, u*-82)
 
         tex = loader.loadTexture('textures/gui/char_card3.png')
         tex.setMagfilter(Texture.FTNearest)
@@ -715,7 +751,7 @@ class CharCard2:
         self.frame = DirectFrame(
             frameTexture = tex, 
             frameColor=(1, 1, 1, 1),
-            frameSize = ( -.5, .5, -.25, .25 )
+            frameSize = ( -v*64.0, v*64.0, -v*32.0, v*32.0 ),
         )
         self.frame.setTransparency(True)
         self.frame.setPos(2, 0, -u*85)
@@ -730,7 +766,7 @@ class CharCard2:
             text_align = TextNode.ALeft,
             parent = self.frame
         )
-        self.name.setPos(-u*33, 0, u*12)
+        self.name.setPos(-v*33, 0, v*12)
 
         self.name = DirectLabel(
             text = char['job'],
@@ -742,7 +778,7 @@ class CharCard2:
             text_align = TextNode.ALeft,
             parent = self.frame
         )
-        self.name.setPos(-u*33, 0, -u*4)
+        self.name.setPos(-v*33, 0, -v*4)
 
         teamcolors = ['blue','red','green']
         ledtex = loader.loadTexture('textures/gui/char_card_'+teamcolors[int(char['team'])]+'.png')
@@ -756,7 +792,7 @@ class CharCard2:
             parent = self.frame
         )
         self.led.setTransparency(True)
-        self.led.setPos(-u*49, 0, u*18)
+        self.led.setPos(-v*49, 0, v*18)
 
         signs = ['aries','scorpio']
         signtex = loader.loadTexture('textures/gui/'+signs[int(char['sign'])]+'.png')
@@ -770,7 +806,7 @@ class CharCard2:
             parent = self.frame
         )
         self.sign.setTransparency(True)
-        self.sign.setPos(-u*42, 0, -u*12)
+        self.sign.setPos(-v*42, 0, -v*12)
 
         brlabel = DirectLabel(
             text = str(char['br']),
@@ -781,7 +817,7 @@ class CharCard2:
             text_align = TextNode.ARight,
             parent = self.frame
         )
-        brlabel.setPos(u*6, 0, -u*22)
+        brlabel.setPos(v*6, 0, -v*22)
 
         falabel = DirectLabel(
             text = str(char['fa']),
@@ -792,11 +828,11 @@ class CharCard2:
             text_align = TextNode.ARight,
             parent = self.frame
         )
-        falabel.setPos(u*45, 0, -u*22)
+        falabel.setPos(v*45, 0, -v*22)
 
         i1 = LerpScaleInterval(self.blackframe, 0.1, (1,1,1), (1,1,0))
         i2 = LerpColorInterval(self.blackframe, 0.1, (1,1,1,1), (1,1,1,0))
-        i3 = LerpPosInterval(  self.frame,      0.2, (u*63,0,-u*85), (2,0,-u*85))
+        i3 = LerpPosInterval(  self.frame,      0.2, (u*67,0,-u*82), (2,0,-u*82))
         p1 = Parallel(i1,i2,i3)
         s = Sequence(p1)
         s.start()
@@ -805,7 +841,7 @@ class CharCard2:
         if self.frame:
             i1 = LerpScaleInterval(self.blackframe, 0.1, (1,1,0), (1,1,1))
             i2 = LerpColorInterval(self.blackframe, 0.1, (1,1,1,0), (1,1,1,1))
-            i3 = LerpPosInterval(  self.frame,      0.2, (2,0,-u*85), (.5,0,-u*85))
+            i3 = LerpPosInterval(  self.frame,      0.2, (2,0,-u*82), (u*67,0,-u*82))
             p1 = Parallel(i1,i2,i3)
             i4 = Func( self.blackframe.destroy )
             i5 = Func( self.frame.destroy )
@@ -877,8 +913,8 @@ class ConditionsForWinning(DirectObject.DirectObject):
         cfw = DirectFrame(
             color = (1,1,1,0),
             frameTexture = cfwtex,
-            frameSize = ( -1.0, 1.0, -.125, .125 ),
-            pos = (u*20, 0, u*90),
+            frameSize = ( -v*128.0, v*128.0, -v*16.0, v*16.0 ),
+            pos = (v*20, 0, v*90),
         )
         cfw.setTransparency(True)
 
@@ -888,8 +924,8 @@ class ConditionsForWinning(DirectObject.DirectObject):
         dae = DirectFrame(
             color = (1,1,1,0),
             frameTexture = daetex,
-            frameSize = ( -1.0, 1.0, -.125, .125 ),
-            pos = (u*49, 0, u*60),
+            frameSize = ( -v*128.0, v*128.0, -v*16.0, v*16.0 ),
+            pos = (v*49, 0, v*60),
         )
         dae.setTransparency(True)
 
@@ -899,7 +935,7 @@ class ConditionsForWinning(DirectObject.DirectObject):
         ready = DirectFrame(
             color = (1,1,1,0),
             frameTexture = readytex,
-            frameSize = ( -1.0, 1.0, -.125, .125 ),
+            frameSize = ( -v*128.0, v*128.0, -v*16.0, v*16.0 ),
         )
         ready.setTransparency(True)
 
@@ -932,8 +968,8 @@ class Congratulations(DirectObject.DirectObject):
         gg = DirectFrame(
             color = (1,1,1,0),
             frameTexture = ggtex,
-            frameSize = ( -1.0, 1.0, -.125, .125 ),
-            pos = (u*0, 0, u*30),
+            frameSize = ( -v*128.0, v*128.0, -v*16.0, v*16.0 ),
+            pos = (v*0, 0, v*30),
         )
         gg.setTransparency(True)
 
@@ -943,8 +979,8 @@ class Congratulations(DirectObject.DirectObject):
         bc = DirectFrame(
             color = (1,1,1,0),
             frameTexture = bctex,
-            frameSize = ( -.5, .5, -.125, .125 ),
-            pos = (u*0, 0, -u*30),
+            frameSize = ( -v*32.0, v*32.0, -v*16.0, v*16.0 ),
+            pos = (v*0, 0, -v*30),
         )
         bc.setTransparency(True)
 
