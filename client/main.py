@@ -1,6 +1,6 @@
 from pandac.PandaModules import loadPrcFileData
 loadPrcFileData("", "window-title Tethical")
-loadPrcFileData("", "win-size 512 480")
+loadPrcFileData("", "win-size 768 720")
 import direct.directbase.DirectStart
 from direct.showbase.DirectObject import DirectObject
 from panda3d.core import *
@@ -212,8 +212,8 @@ class Client(DirectObject):
             self.setPhase('tile')
             self.subphase = 'attack'
             self.setupAttackableZone(charid, attackables)
-            if self.charcard2:
-                self.charcard2.hide()
+            if self.charcard:
+                self.charcard.hide()
         elif msgID == ATTACK_SUCCESS:
             charid = iterator.getString()
             targetid = iterator.getString()
@@ -253,10 +253,10 @@ class Client(DirectObject):
             seq.append( Func(self.setPhase, 'listen') )
             seq.start()
         elif msgID == GAME_OVER:
+            if self.charbars:
+                self.charbars.hide()
             if self.charcard:
                 self.charcard.hide()
-            if self.charcard2:
-                self.charcard2.hide()
             for i,charid in enumerate(self.sprites):
                 if self.sprites[charid].animation == 'walk':
                     self.updateSpriteAnimation(charid, 'stand')
@@ -265,10 +265,10 @@ class Client(DirectObject):
             self.music.play()
             GUI.GameOver(self.end)
         elif msgID == BATTLE_COMPLETE:
+            if self.charbars:
+                self.charbars.hide()
             if self.charcard:
                 self.charcard.hide()
-            if self.charcard2:
-                self.charcard2.hide()
             for i,charid in enumerate(self.sprites):
                 if self.sprites[charid].animation == 'walk':
                     self.updateSpriteAnimation(charid, 'stand')
@@ -411,8 +411,9 @@ class Client(DirectObject):
         at.setScale(2.0*256.0/240.0)
         self.hideAT()
         
+        self.charbars = None
         self.charcard = None
-        self.charcard2 = None
+        self.actionpreview = None
 
         self.drawBackground()
         
@@ -477,6 +478,13 @@ class Client(DirectObject):
     def party_updated(self):
 
         self.clearZone()
+        if self.charbars:
+            self.charbars.hide()
+        if self.charcard:
+            self.charcard.hide()
+        if self.actionpreview:
+            self.actionpreview.hide()
+        self.subphase = False
 
         for x,xs in enumerate(self.party['map']['tiles']):
             for y,ys in enumerate(xs):
@@ -492,9 +500,7 @@ class Client(DirectObject):
 
                                 self.updateCursorPos((x,y,z))
 
-                                if self.charcard2:
-                                    self.charcard2.hide()
-                                self.charcard2 = GUI.CharCard2(char)
+                                self.charcard = GUI.CharCard(char)
 
                                 if self.party['yourturn']:
                                     if char['canmove'] or char['canact']:
@@ -759,13 +765,16 @@ class Client(DirectObject):
         self.cuy = y
         self.cuz = z
 
-        if self.charcard:
-            self.charcard.hide()
+        if self.charbars:
+            self.charbars.hide()
 
         if self.party['map']['tiles'][x][y][z].has_key('char'):
             charid = self.party['map']['tiles'][x][y][z]['char']
             char = self.party['chars'][charid]
-            self.charcard = GUI.CharCard(char)
+            if self.subphase == 'attack':
+                self.charbars = GUI.CharBarsRight(char)
+            else:
+                self.charbars = GUI.CharBarsLeft(char)
 
         try:
             self.coords.update(tile)
@@ -776,8 +785,8 @@ class Client(DirectObject):
     def onCircleClicked(self):
         if self.phase == 'tile' and self.cux is not False and self.party['yourturn']:
 
-            if self.charcard2:
-                self.charcard2.hide()
+            if self.charcard:
+                self.charcard.hide()
             
             # we clicked an active walkable tile, let's move the character
             if self.party['map']['tiles'][self.cux][self.cuy][self.cuz].has_key('walkablezone'):
@@ -796,10 +805,20 @@ class Client(DirectObject):
                 if self.party['map']['tiles'][self.cux][self.cuy][self.cuz].has_key('attackablezone'):
                     attackable = self.party['map']['tiles'][self.cux][self.cuy][self.cuz]['attackablezone']
                     self.setPhase('gui')
-                    GUI.AttackCheck(
-                        lambda: self.attack(attackable, charid),
+                    if self.charbars:
+                        self.charbars.hide()
+                    self.actionpreview = GUI.ActionPreview(
+                        self.party['chars'][attackable],
+                        self.party['chars'][charid],
+                        16,
+                        99,
+                        lambda: GUI.AttackCheck(
+                            lambda: self.attack(attackable, charid),
+                            self.turn
+                        ),
                         self.turn
                     )
+                    
             
                 # we clicked on the currently active character, let's display the menu
                 elif self.party['chars'][charid]['active'] and self.party['yourturn']:
@@ -914,11 +933,19 @@ class Client(DirectObject):
         self.setPhase('tile')
         self.subphase = 'move'
         self.setupWalkableZone(charid, walkables)
-        if self.charcard2:
-            self.charcard2.hide()
+        if self.charcard:
+            self.charcard.hide()
 
     # Attack button clicked
     def onAttackClicked(self, charid):
+        self.setPhase('gui')
+        GUI.Help(
+            'action_help',
+            lambda: self.setupAttackables(charid),
+            self.turn
+        )
+    
+    def setupAttackables(self, charid):
         myPyDatagram = PyDatagram()
         myPyDatagram.addUint8(GET_ATTACKABLES)
         myPyDatagram.addString(charid)
@@ -942,8 +969,8 @@ class Client(DirectObject):
     def onCancelClicked(self, charid):
         self.setPhase('tile')
         self.subphase = 'free'
-        if self.charcard2:
-            self.charcard2.hide()
+        if self.charcard:
+            self.charcard.hide()
 
     def directionChosen(self, charid, direction):
         myPyDatagram = PyDatagram()
@@ -998,6 +1025,7 @@ class Client(DirectObject):
             self.accept("arrow_left-repeat", lambda: self.onArrowClicked('left'))
             self.accept("arrow_right-repeat", lambda: self.onArrowClicked('right'))
         else:
+            self.subphase = False
             self.ignoreAll()
 
 # Graphic

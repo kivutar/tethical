@@ -61,9 +61,9 @@ class Background(DirectObject.DirectObject):
 
 class Test(DirectObject.DirectObject):
 
-    def __init__(self):
+    def __init__(self, image):
 
-        tex = loader.loadTexture('textures/gui/bgtest3.png')
+        tex = loader.loadTexture('textures/gui/'+image+'.png')
         tex.setMagfilter(Texture.FTNearest)
         tex.setMinfilter(Texture.FTNearest)
 
@@ -641,10 +641,10 @@ class Help(DirectObject.DirectObject):
         seq.append(Func(command))
         seq.start()
 
-class CharCard:
+class CharBarsLeft:
 
     def __init__(self, char):
-        fbgtex = loader.loadTexture('textures/gui/char_card5.png')
+        fbgtex = loader.loadTexture('textures/gui/face_background.png')
         fbgtex.setMagfilter(Texture.FTNearest)
         fbgtex.setMinfilter(Texture.FTNearest)
 
@@ -654,7 +654,7 @@ class CharCard:
             frameSize = ( -v*32.0, v*32.0, -v*32.0, v*32.0 ),
         )
         self.fbgframe.setTransparency(True)
-        self.fbgframe.setPos(-2, 0, -v*85)
+        self.fbgframe.setPos(-2, 0, -v*82)
         
         facetex = loader.loadTexture('textures/sprites/'+char['sprite']+'_face.png')
         facetex.setMagfilter(Texture.FTNearest)
@@ -667,42 +667,29 @@ class CharCard:
             parent = self.fbgframe,
         )
         self.face.setPos(-v*(59-42), 0, -v*31)
-        
-        tex2 = loader.loadTexture('textures/gui/char_card2.png')
-        tex2.setMagfilter(Texture.FTNearest)
-        tex2.setMinfilter(Texture.FTNearest)
 
-        self.frame2 = DirectFrame(
-            frameTexture = tex2, 
+        tex = loader.loadTexture('textures/gui/char_bars.png')
+        tex.setMagfilter(Texture.FTNearest)
+        tex.setMinfilter(Texture.FTNearest)
+        
+        self.frame = DirectFrame(
+            frameTexture = tex, 
             frameColor=(1, 1, 1, 1),
             frameSize = ( -v*64.0, v*64.0, -v*32.0, v*32.0 ),
             parent = self.fbgframe
         )
-        self.frame2.setPos(v*42, 0, 0)
-        self.frame2.setTransparency(True)
-
-#        tex3 = loader.loadTexture('textures/gui/char_card6.png')
-#        tex3.setMagfilter(Texture.FTNearest)
-#        tex3.setMinfilter(Texture.FTNearest)
-#        
-#        self.frame3 = DirectFrame(
-#            frameTexture = tex3, 
-#            frameColor=(1, 1, 1, 1),
-#            frameSize = ( -v*64.0, v*64.0, -v*32.0, v*32.0 ),
-#            parent = self.fbgframe
-#        )
-#        self.frame3.setPos(v*46, 0, -v*9)
-#        self.frame3.setTransparency(True)
+        self.frame.setPos(v*46, 0, -v*9)
+        self.frame.setTransparency(True)
 
         infos = [
-            { 'x': 16 , 'z':  16 , 'text': '%02d' % char['lv'] },
-            { 'x': 48 , 'z':  16 , 'text': '%02d' % char['exp'] },
-            { 'x': 18 , 'z':   2 , 'text': '%03d' % char['hp'] },
-            { 'x': 37 , 'z':  -2 , 'text': '%03d' % char['hpmax'] },
-            { 'x': 18 , 'z':  -9 , 'text': '%03d' % char['mp'] },
-            { 'x': 37 , 'z': -13 , 'text': '%03d' % char['mpmax'] },
-            { 'x': 18 , 'z': -20 , 'text': '%03d' % char['ct'] },
-            { 'x': 37 , 'z': -24 , 'text': '100' },
+            { 'x': 16-3 , 'z':  16+9 , 'text': '%02d' % char['lv'] },
+            { 'x': 48-3 , 'z':  16+9 , 'text': '%02d' % char['exp'] },
+            { 'x': 18-3 , 'z':   2+9 , 'text': '%03d' % char['hp'] },
+            { 'x': 37-3 , 'z':  -2+9 , 'text': '%03d' % char['hpmax'] },
+            { 'x': 18-3 , 'z':  -9+9 , 'text': '%03d' % char['mp'] },
+            { 'x': 37-3 , 'z': -13+9 , 'text': '%03d' % char['mpmax'] },
+            { 'x': 18-3 , 'z': -20+9 , 'text': '%03d' % char['ct'] },
+            { 'x': 37-3 , 'z': -24+9 , 'text': '100' },
         ]
         
         for info in infos:
@@ -713,7 +700,7 @@ class CharCard:
                 text_font = font3,
                 text_fg = (1,1,1,1),
                 text_align = TextNode.ALeft,
-                parent = self.frame2
+                parent = self.frame
             )
             label.setPos(v*info['x'], 0, v*info['z'])
 
@@ -723,12 +710,86 @@ class CharCard:
 
     def hide(self):
         if self.fbgframe:
-            i1 = LerpPosInterval(self.fbgframe, 0.2, (-2,0,-u*82), (-u*55,0,-u*82))
+            i1 = LerpPosInterval(self.fbgframe, 0.2, (-2,0,-u*82), (-u*104,0,-u*82))
             i2 = Func( self.fbgframe.destroy )
             s = Sequence(i1,i2)
             s.start()
 
-class CharCard2:
+class CharBarsRight:
+
+    def __init__(self, char):
+        fbgtex = loader.loadTexture('textures/gui/face_background.png')
+        fbgtex.setMagfilter(Texture.FTNearest)
+        fbgtex.setMinfilter(Texture.FTNearest)
+
+        self.fbgframe = DirectFrame(
+            frameTexture = fbgtex, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -v*32.0, v*32.0, -v*32.0, v*32.0 ),
+        )
+        self.fbgframe.setTransparency(True)
+        self.fbgframe.setPos(2, 0, -v*82)
+        
+        facetex = loader.loadTexture('textures/sprites/'+char['sprite']+'_face.png')
+        facetex.setMagfilter(Texture.FTNearest)
+        facetex.setMinfilter(Texture.FTNearest)
+        
+        self.face = DirectFrame(
+            frameTexture = facetex, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( 0, v*32, 0, v*64 ),
+            parent = self.fbgframe,
+        )
+        self.face.setPos(-v*(59-42), 0, -v*31)
+
+        tex = loader.loadTexture('textures/gui/char_bars.png')
+        tex.setMagfilter(Texture.FTNearest)
+        tex.setMinfilter(Texture.FTNearest)
+        
+        self.frame = DirectFrame(
+            frameTexture = tex, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -v*64.0, v*64.0, -v*32.0, v*32.0 ),
+            parent = self.fbgframe
+        )
+        self.frame.setPos(-v*64, 0, v*7)
+        self.frame.setTransparency(True)
+
+        infos = [
+            { 'x':   16 , 'z':   -29 , 'text': '%02d' % char['lv'] },
+            { 'x':   48 , 'z':   -29 , 'text': '%02d' % char['exp'] },
+            { 'x': 18-4 , 'z':   2+7 , 'text': '%03d' % char['hp'] },
+            { 'x': 37-4 , 'z':  -2+7 , 'text': '%03d' % char['hpmax'] },
+            { 'x': 18-4 , 'z':  -9+7 , 'text': '%03d' % char['mp'] },
+            { 'x': 37-4 , 'z': -13+7 , 'text': '%03d' % char['mpmax'] },
+            { 'x': 18-4 , 'z': -20+7 , 'text': '%03d' % char['ct'] },
+            { 'x': 37-4 , 'z': -24+7 , 'text': '100' },
+        ]
+        
+        for info in infos:
+            label = DirectLabel(
+                text = info['text'],
+                color = (1, 1, 1, 0),
+                scale = scale,
+                text_font = font3,
+                text_fg = (1,1,1,1),
+                text_align = TextNode.ALeft,
+                parent = self.frame
+            )
+            label.setPos(v*info['x'], 0, v*info['z'])
+
+        i1 = LerpPosInterval(self.fbgframe, 0.2, (u*107,0,-u*82), (2,0,-u*82))
+        s = Sequence(i1)
+        s.start()
+
+    def hide(self):
+        if self.fbgframe:
+            i1 = LerpPosInterval(self.fbgframe, 0.2, (2,0,-u*82), (u*107,0,-u*82))
+            i2 = Func( self.fbgframe.destroy )
+            s = Sequence(i1,i2)
+            s.start()
+
+class CharCard:
 
     def __init__(self, char):
         blacktex = loader.loadTexture('textures/gui/black.png')
@@ -744,7 +805,7 @@ class CharCard2:
         self.blackframe.setTransparency(True)
         self.blackframe.setPos(0, 0, u*-82)
 
-        tex = loader.loadTexture('textures/gui/char_card3.png')
+        tex = loader.loadTexture('textures/gui/char_card.png')
         tex.setMagfilter(Texture.FTNearest)
         tex.setMinfilter(Texture.FTNearest)
 
@@ -781,7 +842,7 @@ class CharCard2:
         self.name.setPos(-v*33, 0, -v*4)
 
         teamcolors = ['blue','red','green']
-        ledtex = loader.loadTexture('textures/gui/char_card_'+teamcolors[int(char['team'])]+'.png')
+        ledtex = loader.loadTexture('textures/gui/led_'+teamcolors[int(char['team'])]+'.png')
         ledtex.setMagfilter(Texture.FTNearest)
         ledtex.setMinfilter(Texture.FTNearest)
 
@@ -847,6 +908,194 @@ class CharCard2:
             i5 = Func( self.frame.destroy )
             s = Sequence(p1,i4,i5)
             s.start()
+
+class ActionPreview(DirectObject.DirectObject):
+
+    def __init__(self, char1, char2, damages, chance, command, cancelcommand):
+        self.command = command
+        self.cancelcommand = cancelcommand
+    
+        blacktex = loader.loadTexture('textures/gui/black.png')
+        blacktex.setMagfilter(Texture.FTNearest)
+        blacktex.setMinfilter(Texture.FTNearest)
+
+        self.blackframe = DirectFrame(
+                frameTexture = blacktex, 
+                frameColor=(1, 1, 1, 1),
+                frameSize = ( -2, 2, -v*64.0, v*64.0 ),
+                sortOrder = -1,
+        )
+        self.blackframe.setTransparency(True)
+        self.blackframe.setPos(0, 0, u*-82)
+    
+        fbgtex1 = loader.loadTexture('textures/gui/face_background.png')
+        fbgtex1.setMagfilter(Texture.FTNearest)
+        fbgtex1.setMinfilter(Texture.FTNearest)
+
+        self.fbgframe1 = DirectFrame(
+            frameTexture = fbgtex1, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -v*32.0, v*32.0, -v*32.0, v*32.0 ),
+        )
+        self.fbgframe1.setTransparency(True)
+        self.fbgframe1.setPos(-2, 0, -v*82)
+        
+        facetex1 = loader.loadTexture('textures/sprites/'+char1['sprite']+'_face.png')
+        facetex1.setMagfilter(Texture.FTNearest)
+        facetex1.setMinfilter(Texture.FTNearest)
+        
+        self.face1 = DirectFrame(
+            frameTexture = facetex1, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( 0, v*32, 0, v*64 ),
+            parent = self.fbgframe1,
+        )
+        self.face1.setPos(-v*(59-42), 0, -v*31)
+
+        tex1 = loader.loadTexture('textures/gui/char_bars.png')
+        tex1.setMagfilter(Texture.FTNearest)
+        tex1.setMinfilter(Texture.FTNearest)
+        
+        self.frame1 = DirectFrame(
+            frameTexture = tex1, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -v*64.0, v*64.0, -v*32.0, v*32.0 ),
+            parent = self.fbgframe1
+        )
+        self.frame1.setPos(v*46, 0, -v*9)
+        self.frame1.setTransparency(True)
+
+        atex = loader.loadTexture('textures/gui/action_preview_arrow.png')
+        atex.setMagfilter(Texture.FTNearest)
+        atex.setMinfilter(Texture.FTNearest)
+        
+        self.arrow = DirectFrame(
+            frameTexture = atex, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -v*8.0, v*8.0, -v*16.0, v*16.0 ),
+            parent = self.fbgframe1
+        )
+        self.arrow.setPos(v*101.0, 0, v*1.0)
+        self.arrow.setTransparency(True)
+
+        infos = [
+            { 'x': 16-4+15 , 'z':  16+9 , 'text': '%02d' % chance },
+            { 'x': 18-4+15 , 'z':   2+9 , 'text': '%03d' % char1['hp'] },
+            { 'x': 37-4+15 , 'z':  -2+9 , 'text': '%03d' % char1['hpmax'] },
+            { 'x': 18-4+15 , 'z':  -9+9 , 'text': '%03d' % char1['mp'] },
+            { 'x': 37-4+15 , 'z': -13+9 , 'text': '%03d' % char1['mpmax'] },
+            { 'x': 18-4+15 , 'z': -20+9 , 'text': '%03d' % char1['ct'] },
+            { 'x': 37-4+15 , 'z': -24+9 , 'text': '100' },
+        ]
+        
+        for info in infos:
+            label = DirectLabel(
+                text = info['text'],
+                color = (1, 1, 1, 0),
+                scale = scale,
+                text_font = font3,
+                text_fg = (1,1,1,1),
+                text_align = TextNode.ARight,
+                parent = self.frame1
+            )
+            label.setPos(v*info['x'], 0, v*info['z'])
+
+        fbgtex2 = loader.loadTexture('textures/gui/face_background.png')
+        fbgtex2.setMagfilter(Texture.FTNearest)
+        fbgtex2.setMinfilter(Texture.FTNearest)
+
+        self.fbgframe2 = DirectFrame(
+            frameTexture = fbgtex2, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -v*32.0, v*32.0, -v*32.0, v*32.0 ),
+        )
+        self.fbgframe2.setTransparency(True)
+        self.fbgframe2.setPos(2, 0, -v*82)
+
+        facetex2 = loader.loadTexture('textures/sprites/'+char2['sprite']+'_face.png')
+        facetex2.setMagfilter(Texture.FTNearest)
+        facetex2.setMinfilter(Texture.FTNearest)
+        
+        self.face2 = DirectFrame(
+            frameTexture = facetex2, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( 0, v*32, 0, v*64 ),
+            parent = self.fbgframe2,
+        )
+        self.face2.setPos(-v*(59-42), 0, -v*31)
+
+        tex2 = loader.loadTexture('textures/gui/char_bars.png')
+        tex2.setMagfilter(Texture.FTNearest)
+        tex2.setMinfilter(Texture.FTNearest)
+        
+        self.frame2 = DirectFrame(
+            frameTexture = tex2, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -v*64.0, v*64.0, -v*32.0, v*32.0 ),
+            parent = self.fbgframe2
+        )
+        self.frame2.setPos(-v*64, 0, v*7)
+        self.frame2.setTransparency(True)
+
+        infos = [
+            { 'x': 18-4 , 'z':   2+9 , 'text': '%03d' % char2['hp'] },
+            { 'x': 37-4 , 'z':  -2+9 , 'text': '%03d' % char2['hpmax'] },
+            { 'x': 18-4 , 'z':  -9+9 , 'text': '%03d' % char2['mp'] },
+            { 'x': 37-4 , 'z': -13+9 , 'text': '%03d' % char2['mpmax'] },
+            { 'x': 18-4 , 'z': -20+9 , 'text': '%03d' % char2['ct'] },
+            { 'x': 37-4 , 'z': -24+9 , 'text': '100' },
+        ]
+
+        for info in infos:
+            label = DirectLabel(
+                text = info['text'],
+                color = (1, 1, 1, 0),
+                scale = scale,
+                text_font = font3,
+                text_fg = (1,1,1,1),
+                text_align = TextNode.ALeft,
+                parent = self.frame2
+            )
+            label.setPos(v*info['x'], 0, v*info['z'])
+
+        s = Sequence(
+            Parallel(
+                LerpScaleInterval(self.blackframe, 0.1, (1,1,1), (1,1,0)),
+                LerpColorInterval(self.blackframe, 0.1, (1,1,1,1), (1,1,1,0)),
+                LerpPosInterval(   self.fbgframe1, 0.2, (-u*111,0,-u*82), (-2,0,-u*82)),
+                LerpPosInterval(   self.fbgframe2, 0.2, ( u*109,0,-u*82), ( 2,0,-u*82)),
+            ),
+            Func( self.acceptAll ),
+        ).start()
+
+    def hide(self):
+        if self.fbgframe1:
+            s = Sequence(
+                Parallel(
+                    LerpScaleInterval(self.blackframe, 0.1, (1,1,0), (1,1,1)),
+                    LerpColorInterval(self.blackframe, 0.1, (1,1,1,0), (1,1,1,1)),
+                    LerpPosInterval(   self.fbgframe1, 0.2, (-2,0,-u*82), (u*111,0,-u*82)),
+                    LerpPosInterval(   self.fbgframe2, 0.2, ( 2,0,-u*82), (u*109,0,-u*82)),
+                ),
+                Func( self.blackframe.destroy ),
+                Func( self.fbgframe1.destroy ),
+                Func( self.fbgframe2.destroy ),
+            ).start()
+
+    def acceptAll(self):
+        self.accept("space", self.onCrossClicked)
+        self.accept("b", self.onCircleClicked )
+
+    def onCircleClicked(self):
+        clicked_snd.play()
+        self.command()
+        self.ignoreAll()
+
+    def onCrossClicked(self):
+        cancel_snd.play()
+        self.hide()
+        self.ignoreAll()
+        self.cancelcommand()
 
 class BrownOverlay(DirectObject.DirectObject):
 
@@ -979,7 +1228,7 @@ class Congratulations(DirectObject.DirectObject):
         bc = DirectFrame(
             color = (1,1,1,0),
             frameTexture = bctex,
-            frameSize = ( -v*32.0, v*32.0, -v*16.0, v*16.0 ),
+            frameSize = ( -v*64.0, v*64.0, -v*16.0, v*16.0 ),
             pos = (v*0, 0, -v*30),
         )
         bc.setTransparency(True)
