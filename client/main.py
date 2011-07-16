@@ -390,7 +390,7 @@ class Client(DirectObject):
                         self.tiles[x][y][z] = loader.loadModel( "models/slopes/"+slope )
                         self.tiles[x][y][z].reparentTo( self.tileRoot )
                         self.tiles[x][y][z].setPos(self.logic2terrain( (x, y, z+depth+0.05) ))
-                        self.tiles[x][y][z].setScale(3.0, 3.0, 6.0/7.0*3.0*scale)
+                        self.tiles[x][y][z].setScale(3.7, 3.7, 6.0/7.0*3.7*scale)
                         self.tiles[x][y][z].setTransparency(TransparencyAttrib.MAlpha)
                         self.tiles[x][y][z].setColor( 0, 0, 0, 0 )
 
@@ -431,11 +431,23 @@ class Client(DirectObject):
         self.cuz = False
         self.cursor = loader.loadModel( "models/slopes/flat" )
         self.cursor.reparentTo( self.tileRoot )
-        self.cursor.setScale(3.0)
+        self.cursor.setScale(3.7)
         self.cursor.setTransparency(TransparencyAttrib.MAlpha)
         self.cursor.setColor( 1, 1, 1, 1 )
         self.cursor.setTexture(self.curtex)
-        
+
+        pointertex = loader.loadTexture('textures/pointer.png')
+        pointertex.setMagfilter(Texture.FTNearest)
+        pointertex.setMinfilter(Texture.FTNearest)
+        cm = CardMaker('card')
+        cm.setFrame(-2, 2, -2, 2) 
+        self.pointer = render.attachNewNode(cm.generate())
+        self.pointer.setTexture(pointertex)
+        self.pointer.setTransparency(True)
+        self.pointer.setBillboardPointEye()
+        self.pointer.reparentTo(render)
+        self.pointer.setScale(256.0/240.0)
+
         self.wtex = loader.loadTexture('textures/walkable.png')
         self.wtex.setMagfilter(Texture.FTNearest)
         self.wtex.setMinfilter(Texture.FTNearest)
@@ -753,10 +765,11 @@ class Client(DirectObject):
         self.cursor.detachNode()
         self.cursor = loader.loadModel( "models/slopes/"+tile['slope'] )
         self.cursor.reparentTo( self.tileRoot )
-        self.cursor.setScale(3.0, 3.0, 6.0/7.0*3.0*tile['scale'])
+        self.cursor.setScale(3.7, 3.7, 6.0/7.0*3.7*tile['scale'])
         self.cursor.setTransparency(TransparencyAttrib.MAlpha)
         self.cursor.setTexture(self.curtex)
         self.cursor.setPos(self.logic2terrain((x, y, z+tile['depth']+0.1)))
+        self.pointer.setPos(self.logic2terrain((x, y, z+tile['depth']+12)))
 
         if tile['walkable']:
             self.cursor.setColor( 1, 1, 1, .75 )
@@ -996,9 +1009,9 @@ class Client(DirectObject):
     def logic2terrain(self, tile):
         (x, y, z) = tile
         return Point3(
-            (x+self.party['map']['offset'][0]+0.5) * 3.0,
-            (y+self.party['map']['offset'][1]+0.5) * 3.0,
-            (z+self.party['map']['offset'][2]+0.0) * 3.0/4.0*6.0/7.0,
+            (x+self.party['map']['offset'][0]+0.5) * 3.7,
+            (y+self.party['map']['offset'][1]+0.5) * 3.7,
+            (z+self.party['map']['offset'][2]+0.0) * 3.7/4.0*6.0/7.0,
         )
 
     # Returns the logic coordinates of a character

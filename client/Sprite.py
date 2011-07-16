@@ -11,7 +11,7 @@ class Sprite:
         self.displaydir = 1
         self.animation  = 'walk'
     
-        self.sprite2d = Sprite2d.Sprite2d(sheet, cols=14, rows=4, scale=1.0, anchorX='Center')
+        self.sprite2d = Sprite2d.Sprite2d(sheet, cols=14, rows=4, scale=0.7*256.0/240.0, anchorX='Center')
 
         # the main container
         self.node = NodePath("dummy1")
@@ -21,12 +21,12 @@ class Sprite:
         self.node2.setBillboardPointEye()
         self.node2.reparentTo( self.node )
         self.sprite2d.node.reparentTo( self.node2 )
-        self.sprite2d.node.setPos( 0, -1.2, -1.2 )
+        self.sprite2d.node.setPos( 0, -1.5, -1.5 )
         
         # shadow
         self.shadow = loader.loadModel( "models/slopes/flat" )
         self.shadow.setZ(0.075)
-        self.shadow.setScale(3.0)
+        self.shadow.setScale(3.7)
         self.shadow.setTransparency(TransparencyAttrib.MAlpha)
         self.shadowtexture = loader.loadTexture( "textures/shadow.png" )
         self.shadowtexture.setMagfilter(Texture.FTNearest)
