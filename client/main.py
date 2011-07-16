@@ -269,6 +269,8 @@ class Client(DirectObject):
                 self.charbars.hide()
             if self.charcard:
                 self.charcard.hide()
+            if self.actionpreview:
+                self.actionpreview.hide()
             for i,charid in enumerate(self.sprites):
                 if self.sprites[charid].animation == 'walk':
                     self.updateSpriteAnimation(charid, 'stand')
