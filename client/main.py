@@ -11,6 +11,12 @@ from direct.distributed.PyDatagramIterator import *
 from direct.distributed.PyDatagram import *
 from direct.interval.IntervalGlobal import *
 from direct.filter.CommonFilters import CommonFilters
+from panda3d.physics import BaseParticleEmitter,BaseParticleRenderer
+from panda3d.physics import PointParticleFactory,SpriteParticleRenderer
+from panda3d.physics import LinearNoiseForce,DiscEmitter
+from direct.particles.Particles import Particles
+from direct.particles.ParticleEffect import ParticleEffect
+from direct.particles.ForceGroup import ForceGroup
 import math
 from operator import itemgetter
 import json
@@ -460,6 +466,14 @@ class Client(DirectObject):
         #filters.setBloom(blend=(0,0,0,1), desat=-0.5, intensity=3.0, size="medium")
         #filters.setAmbientOcclusion()
         #filters.setCartoonInk()
+
+        if self.party['map'].has_key('effects'):
+            base.enableParticles()
+            for effect in self.party['map']['effects']:
+                p = ParticleEffect()
+                p.loadConfig('particles/'+effect['file']+'.ptf') 
+                p.start(render)
+                p.setPos(self.logic2terrain( effect['position'] ))
 
         # Battle intro animation
         seq = Sequence()
