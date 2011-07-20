@@ -1,9 +1,14 @@
-import json, random
+from panda3d.core import loadPrcFile
+loadPrcFile("config.prc")
+from pandac.PandaModules import *
+import json, random, os
+
+game = ConfigVariableString('game', 'fft').getValue()
 
 jobs = {}
-jobids = ['4A','4B','4C','4D','4E','4F','50','53']
+jobids = map( lambda m: m.split('.')[0], os.listdir(game+'/jobs'))
 for jobid in jobids:
-    f = open('jobs/'+jobid+'.json', 'r')
+    f = open(game+'/jobs/'+jobid+'.json', 'r')
     jobs[jobid] = json.loads(f.read())
     f.close()
 
@@ -22,7 +27,7 @@ def Random( charid, teamid, direction ):
     jobid = jobids[random.randint(0, len(jobids)-1)]
     job = jobs[jobid]
     gender = ('F','M')[random.randint(0, 1)]
-    sprite = str(jobid)+'_'+str(gender)#+'_'+str(teamid)
+    sprite = str(jobid)+'_'+str(gender)+'_'+str(teamid)
 
     if gender == 'F':
         rhp = random.randint(458752, 491519)
@@ -77,7 +82,7 @@ def Random( charid, teamid, direction ):
            }
 
 def GetRandomName( gender ):
-    f = open(gender+'_names.txt', 'r')
+    f = open(game+'/'+gender+'_names.txt', 'r')
     names = f.readlines()
     f.close()
     

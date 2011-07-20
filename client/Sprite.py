@@ -1,3 +1,10 @@
+from panda3d.core import loadPrcFile
+from pandac.PandaModules import *
+loadPrcFile("../config.prc")
+game = ConfigVariableString('game', 'fft').getValue()
+loadPrcFile(game+"/config.prc")
+scale = float( ConfigVariableString('spritescale', '2').getValue() )
+
 from panda3d.core import NodePath, TransparencyAttrib
 from pandac.PandaModules import Texture, TextureStage
 import Sprite2d
@@ -11,7 +18,7 @@ class Sprite:
         self.displaydir = 1
         self.animation  = 'walk'
     
-        self.sprite2d = Sprite2d.Sprite2d(sheet, cols=14, rows=4, scale=0.7*256.0/240.0, anchorX='Center')
+        self.sprite2d = Sprite2d.Sprite2d(sheet, cols=14, rows=4, scale=scale*0.7*256.0/240.0, anchorX='Center')
 
         # the main container
         self.node = NodePath("dummy1")
@@ -24,11 +31,11 @@ class Sprite:
         self.sprite2d.node.setPos( 0, -1.5, -1.5 )
         
         # shadow
-        self.shadow = loader.loadModel( "models/slopes/flat" )
+        self.shadow = loader.loadModel( game+"/models/slopes/flat" )
         self.shadow.setZ(0.075)
         self.shadow.setScale(3.7)
         self.shadow.setTransparency(TransparencyAttrib.MAlpha)
-        self.shadowtexture = loader.loadTexture( "textures/shadow.png" )
+        self.shadowtexture = loader.loadTexture( game+"/textures/shadow.png" )
         self.shadowtexture.setMagfilter(Texture.FTNearest)
         self.shadowtexture.setMinfilter(Texture.FTNearest)
         self.shadowtexture.setWrapU(Texture.WMRepeat)

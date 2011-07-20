@@ -1,0 +1,21 @@
+{
+    "name": "Knight",
+    "prerequisite": { "4A": 2 },
+    "desc": "Fine warriors, bold and brave with etiquette. Draws 'Battle Skill' with the powerful knight sword.",
+    "commandset": "07",
+    "eq": ["Sword", "Knight Sword", "Shield", "Helmet", "Armor", "Robe", "Accessory"],
+    "hpm": 120,
+    "hpc": 10,
+    "mpm": 80,
+    "mpc": 15,
+    "spm": 100,
+    "spc": 100,
+    "pam": 120,
+    "pac": 40,
+    "mam": 80,
+    "mac": 50,
+    "move": 3,
+    "jump": 3,
+    "cev": 0.10,
+    "type": "Generic"
+}

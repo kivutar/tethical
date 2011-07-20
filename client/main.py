@@ -1,11 +1,13 @@
-from pandac.PandaModules import loadPrcFileData
-loadPrcFileData("", "window-title Tethical")
-loadPrcFileData("", "win-size 768 720")
+from panda3d.core import loadPrcFile
+from pandac.PandaModules import *
+loadPrcFile("../config.prc")
+game = ConfigVariableString('game', 'fft').getValue()
+loadPrcFile(game+"/config.prc")
+
 import direct.directbase.DirectStart
 from direct.showbase.DirectObject import DirectObject
 from panda3d.core import *
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
 from direct.task.Task import Task
 from direct.distributed.PyDatagramIterator import *
 from direct.distributed.PyDatagram import *
@@ -25,6 +27,7 @@ import CameraHandler
 import Direction
 import Sprite
 
+game = ConfigVariableString('game', 'fft').getValue()
 IP = '127.0.0.1' #'88.190.20.195' #'95.130.11.221'
 PORT =  3001
 
@@ -68,7 +71,7 @@ class Client(DirectObject):
 
     def __init__(self):
 
-        self.music = base.loader.loadSfx('music/24.ogg')
+        self.music = base.loader.loadSfx(game+'/music/24.ogg')
         self.music.setLoop(True)
         self.music.play()
         self.background = GUI.Background(self.loginScreen)
@@ -267,7 +270,7 @@ class Client(DirectObject):
                 if self.sprites[charid].animation == 'walk':
                     self.updateSpriteAnimation(charid, 'stand')
             self.music.stop()
-            self.music = base.loader.loadSfx('music/33.ogg')
+            self.music = base.loader.loadSfx(game+'/music/33.ogg')
             self.music.play()
             GUI.GameOver(self.end)
         elif msgID == BATTLE_COMPLETE:
@@ -281,7 +284,7 @@ class Client(DirectObject):
                 if self.sprites[charid].animation == 'walk':
                     self.updateSpriteAnimation(charid, 'stand')
             self.music.stop()
-            self.music = base.loader.loadSfx('music/13.ogg')
+            self.music = base.loader.loadSfx(game+'/music/13.ogg')
             self.music.play()
             GUI.BrownOverlay(GUI.Congratulations, self.end)
 
@@ -364,21 +367,21 @@ class Client(DirectObject):
         self.lightScene()
         
         # Display the terrain
-        terrain = loader.loadModel( 'models/maps/'+self.party['map']['model'] )
+        terrain = loader.loadModel( game+'/models/maps/'+self.party['map']['model'] )
         terrain.reparentTo( render )
         terrain.setScale( *self.party['map']['scale'] )
         
         # Play the background music
-        self.music = base.loader.loadSfx('music/'+self.party['map']['music']+'.ogg')
+        self.music = base.loader.loadSfx(game+'/music/'+self.party['map']['music']+'.ogg')
         self.music.setLoop(True)
         self.music.play()
         
         # Load sounds
-        self.hover_snd   = base.loader.loadSfx("sounds/hover.ogg")
-        self.clicked_snd = base.loader.loadSfx("sounds/clicked.ogg")
-        self.cancel_snd  = base.loader.loadSfx("sounds/cancel.ogg")
-        self.attack_snd  = base.loader.loadSfx("sounds/attack.ogg")
-        self.die_snd    = base.loader.loadSfx("sounds/die.ogg")
+        self.hover_snd   = base.loader.loadSfx(game+"/sounds/hover.ogg")
+        self.clicked_snd = base.loader.loadSfx(game+"/sounds/clicked.ogg")
+        self.cancel_snd  = base.loader.loadSfx(game+"/sounds/cancel.ogg")
+        self.attack_snd  = base.loader.loadSfx(game+"/sounds/attack.ogg")
+        self.die_snd    = base.loader.loadSfx(game+"/sounds/die.ogg")
         
         # Place highlightable tiles on the map
         self.tileRoot = render.attachNewNode( "tileRoot" )
@@ -393,7 +396,7 @@ class Client(DirectObject):
                         scale = self.party['map']['tiles'][x][y][z]['scale']
                         depth = self.party['map']['tiles'][x][y][z]['depth']
 
-                        self.tiles[x][y][z] = loader.loadModel( "models/slopes/"+slope )
+                        self.tiles[x][y][z] = loader.loadModel( game+"/models/slopes/"+slope )
                         self.tiles[x][y][z].reparentTo( self.tileRoot )
                         self.tiles[x][y][z].setPos(self.logic2terrain( (x, y, z+depth+0.05) ))
                         self.tiles[x][y][z].setScale(3.7, 3.7, 6.0/7.0*3.7*scale)
@@ -403,7 +406,7 @@ class Client(DirectObject):
                         if self.party['map']['tiles'][x][y][z].has_key('char'):
                             charid = self.party['map']['tiles'][x][y][z]['char']
                             char = self.party['chars'][charid]
-                            sprite = Sprite.Sprite('textures/sprites/'+char['sprite']+'.png', int(char['direction']))
+                            sprite = Sprite.Sprite(game+'/textures/sprites/'+char['sprite']+'.png', int(char['direction']))
                             sprite.animation = 'stand'
                             sprite.node.setPos(self.logic2terrain((x,y,z)))
                             sprite.node.reparentTo( render )
@@ -412,7 +415,7 @@ class Client(DirectObject):
         self.atcontainer = render.attachNewNode("atcontainer")
         self.atcontainer.setPos(0,0,3.5)
         self.atcontainer.setBillboardPointEye()
-        at = loader.loadModel('models/gui/AT')
+        at = loader.loadModel(game+'/models/gui/AT')
         at.setTransparency(True)
         at.reparentTo(self.atcontainer)
         at.setPos(.75,0,0)
@@ -429,20 +432,20 @@ class Client(DirectObject):
         taskMgr.add(self.characterDirectionTask , 'characterDirectionTask')
 
         # Cursor stuff
-        self.curtex = loader.loadTexture('textures/cursor.png')
+        self.curtex = loader.loadTexture(game+'/textures/cursor.png')
         self.curtex.setMagfilter(Texture.FTNearest)
         self.curtex.setMinfilter(Texture.FTNearest)
         self.cux = False
         self.cuy = False
         self.cuz = False
-        self.cursor = loader.loadModel( "models/slopes/flat" )
+        self.cursor = loader.loadModel( game+"/models/slopes/flat" )
         self.cursor.reparentTo( self.tileRoot )
         self.cursor.setScale(3.7)
         self.cursor.setTransparency(TransparencyAttrib.MAlpha)
         self.cursor.setColor( 1, 1, 1, 1 )
         self.cursor.setTexture(self.curtex)
 
-        pointertex = loader.loadTexture('textures/pointer.png')
+        pointertex = loader.loadTexture(game+'/textures/pointer.png')
         pointertex.setMagfilter(Texture.FTNearest)
         pointertex.setMinfilter(Texture.FTNearest)
         cm = CardMaker('card')
@@ -454,11 +457,11 @@ class Client(DirectObject):
         self.pointer.reparentTo(render)
         self.pointer.setScale(256.0/240.0)
 
-        self.wtex = loader.loadTexture('textures/walkable.png')
+        self.wtex = loader.loadTexture(game+'/textures/walkable.png')
         self.wtex.setMagfilter(Texture.FTNearest)
         self.wtex.setMinfilter(Texture.FTNearest)
         
-        self.atex = loader.loadTexture('textures/attackable.png')
+        self.atex = loader.loadTexture(game+'/textures/attackable.png')
         self.atex.setMagfilter(Texture.FTNearest)
         self.atex.setMinfilter(Texture.FTNearest)
         
@@ -471,7 +474,7 @@ class Client(DirectObject):
             base.enableParticles()
             for effect in self.party['map']['effects']:
                 p = ParticleEffect()
-                p.loadConfig('particles/'+effect['file']+'.ptf') 
+                p.loadConfig(game+'/particles/'+effect['file']+'.ptf') 
                 p.start(render)
                 p.setPos(self.logic2terrain( effect['position'] ))
 
@@ -777,7 +780,7 @@ class Client(DirectObject):
         self.camhandler.move(self.logic2terrain(pos))
 
         self.cursor.detachNode()
-        self.cursor = loader.loadModel( "models/slopes/"+tile['slope'] )
+        self.cursor = loader.loadModel( game+"/models/slopes/"+tile['slope'] )
         self.cursor.reparentTo( self.tileRoot )
         self.cursor.setScale(3.7, 3.7, 6.0/7.0*3.7*tile['scale'])
         self.cursor.setTransparency(TransparencyAttrib.MAlpha)

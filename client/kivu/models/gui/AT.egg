@@ -1,0 +1,49 @@
+<Comment> {
+  "egg-texture-cards -o AT.egg -fps 4 ../../textures/gui/AT1.png ../../textures/gui/AT2.png"
+}
+<Texture> AT2 {
+  "../../textures/gui/AT2.png"
+  <Scalar> minfilter { NEAREST }
+  <Scalar> magfilter { NEAREST }
+}
+<Texture> AT1 {
+  "../../textures/gui/AT1.png"
+  <Scalar> minfilter { NEAREST }
+  <Scalar> magfilter { NEAREST }
+}
+<Group> {
+  <Switch> { 1 }
+  <Scalar> fps { 4 }
+  <VertexPool> vpool {
+    <Vertex> 0 {
+      -0.5 0.5 0
+      <UV> { 0 1 }
+    }
+    <Vertex> 1 {
+      -0.5 -0.5 0
+      <UV> { 0 0 }
+    }
+    <Vertex> 2 {
+      0.5 -0.5 0
+      <UV> { 1 0 }
+    }
+    <Vertex> 3 {
+      0.5 0.5 0
+      <UV> { 1 1 }
+    }
+  }
+  <Group> AT1 {
+    <Polygon> {
+      <RGBA> { 1 1 1 1 }
+      <TRef> { AT1 }
+      <VertexRef> { 0 1 2 3 <Ref> { vpool } }
+    }
+  }
+  <Group> AT2 {
+    <Polygon> {
+      <RGBA> { 1 1 1 1 }
+      <TRef> { AT2 }
+      <VertexRef> { 0 1 2 3 <Ref> { vpool } }
+    }
+  }
+}

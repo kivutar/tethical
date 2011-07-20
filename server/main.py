@@ -1,5 +1,6 @@
-from pandac.PandaModules import loadPrcFileData 
-loadPrcFileData("", "window-type none")
+from panda3d.core import loadPrcFile
+loadPrcFile("config.prc")
+from pandac.PandaModules import *
 import direct.directbase.DirectStart
 from panda3d.core import *
 from direct.task.Task import Task
@@ -8,6 +9,8 @@ from direct.distributed.PyDatagram import *
 import os, sys, json
 from copy import deepcopy
 import Map, Move, Attack, Character
+
+game = ConfigVariableString('game', 'fft').getValue()
 
 LOGIN_MESSAGE = 1
 LOGIN_SUCCESS = 2
@@ -138,7 +141,7 @@ class Server:
         elif msgID == GET_MAPS:
             self.playersinlobby.remove(source)
 
-            mapnames = map( lambda m: m.split('.')[0], os.listdir('maps'))
+            mapnames = map( lambda m: m.split('.')[0], os.listdir(game+'/maps'))
 
             maps = []
             for mapname in mapnames:
