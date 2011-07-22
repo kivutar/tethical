@@ -1,3 +1,4 @@
+import sys
 from panda3d.core import loadPrcFile
 from pandac.PandaModules import *
 loadPrcFile("../config.prc")
@@ -24,12 +25,15 @@ from operator import itemgetter
 import json
 import GUI
 import CameraHandler
-import Direction
+try:
+    Direction = __import__(game+'.Direction', globals(), locals(), ['*'], -1)
+except:
+    import Direction
 import Sprite
 
 game = ConfigVariableString('game', 'fft').getValue()
-IP = '127.0.0.1' #'88.190.20.195' #'95.130.11.221'
-PORT =  3001
+IP = ConfigVariableString('ip', '127.0.0.1').getValue()
+PORT =  int(ConfigVariableString('port', '3001').getValue())
 
 LOGIN_MESSAGE = 1
 LOGIN_SUCCESS = 2
