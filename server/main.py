@@ -10,7 +10,7 @@ import os, sys, json
 from copy import deepcopy
 import Map, Move, Attack, Character
 
-game = ConfigVariableString('game', 'fft').getValue()
+GAME = ConfigVariableString('game', 'fft').getValue()
 
 LOGIN_MESSAGE = 1
 LOGIN_SUCCESS = 2
@@ -141,7 +141,7 @@ class Server:
         elif msgID == GET_MAPS:
             self.playersinlobby.remove(source)
 
-            mapnames = map( lambda m: m.split('.')[0], os.listdir(game+'/maps'))
+            mapnames = map( lambda m: m.split('.')[0], os.listdir(GAME+'/maps'))
 
             maps = []
             for mapname in mapnames:

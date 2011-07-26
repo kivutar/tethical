@@ -3,10 +3,10 @@ loadPrcFile("config.prc")
 from pandac.PandaModules import *
 import json
 
-game = ConfigVariableString('game', 'fft').getValue()
+GAME = ConfigVariableString('game', 'fft').getValue()
 
 def load(name):
-    f = open(game+'/maps/'+name+'.json', 'r')
+    f = open(GAME+'/maps/'+name+'.json', 'r')
     m = json.loads(f.read())
     f.close()
 

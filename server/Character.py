@@ -3,12 +3,12 @@ loadPrcFile("config.prc")
 from pandac.PandaModules import *
 import json, random, os
 
-game = ConfigVariableString('game', 'fft').getValue()
+GAME = ConfigVariableString('game', 'fft').getValue()
 
 jobs = {}
-jobids = map( lambda m: m.split('.')[0], os.listdir(game+'/jobs'))
+jobids = map( lambda m: m.split('.')[0], os.listdir(GAME+'/jobs'))
 for jobid in jobids:
-    f = open(game+'/jobs/'+jobid+'.json', 'r')
+    f = open(GAME+'/jobs/'+jobid+'.json', 'r')
     jobs[jobid] = json.loads(f.read())
     f.close()
 
@@ -82,7 +82,7 @@ def Random( charid, teamid, direction ):
            }
 
 def GetRandomName( gender ):
-    f = open(game+'/'+gender+'_names.txt', 'r')
+    f = open(GAME+'/'+gender+'_names.txt', 'r')
     names = f.readlines()
     f.close()
     

@@ -2,7 +2,7 @@ from panda3d.core import loadPrcFile
 from pandac.PandaModules import *
 loadPrcFile("../config.prc")
 GAME = ConfigVariableString('game', 'fft').getValue()
-loadPrcFile(game+"/config.prc")
+loadPrcFile(GAME+"/config.prc")
 scale = float( ConfigVariableString('spritescale', '2').getValue() )
 
 from panda3d.core import NodePath, TransparencyAttrib
