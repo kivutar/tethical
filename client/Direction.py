@@ -5,7 +5,7 @@ from direct.showbase import DirectObject
 from panda3d.core import CollisionTraverser, CollisionNode, CollisionHandlerQueue, CollisionRay, BitMask32, CardMaker, NodePath, Texture, TextureStage
 from direct.task.Task import Task
 
-game = ConfigVariableString('game', 'fft').getValue()
+GAME = ConfigVariableString('game', 'fft').getValue()
 
 class Chooser(DirectObject.DirectObject):
     
@@ -20,17 +20,17 @@ class Chooser(DirectObject.DirectObject):
         self.hidir = None
 
         # Textures
-        self.readytex = loader.loadTexture(game+'/textures/gui/direction.png')
+        self.readytex = loader.loadTexture(GAME+'/textures/gui/direction.png')
         self.readytex.setMagfilter(Texture.FTNearest)
         self.readytex.setMinfilter(Texture.FTNearest)
-        self.hovertex = loader.loadTexture(game+'/textures/gui/direction_hover.png')
+        self.hovertex = loader.loadTexture(GAME+'/textures/gui/direction_hover.png')
         self.hovertex.setMagfilter(Texture.FTNearest)
         self.hovertex.setMinfilter(Texture.FTNearest)
 
         # Sounds
-        self.hover_snd   = base.loader.loadSfx(game+"/sounds/hover.ogg")
-        self.clicked_snd = base.loader.loadSfx(game+"/sounds/clicked.ogg")
-        self.cancel_snd  = base.loader.loadSfx(game+"/sounds/cancel.ogg")
+        self.hover_snd   = base.loader.loadSfx(GAME+'/sounds/hover.ogg')
+        self.clicked_snd = base.loader.loadSfx(GAME+'/sounds/clicked.ogg')
+        self.cancel_snd  = base.loader.loadSfx(GAME+'/sounds/cancel.ogg')
 
         # Buttons list
         self.directionbuttons = []

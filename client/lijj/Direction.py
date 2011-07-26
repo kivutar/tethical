@@ -3,7 +3,7 @@ from direct.showbase import DirectObject
 from panda3d.core import CollisionTraverser, CollisionNode, CollisionHandlerQueue, CollisionRay, BitMask32, CardMaker, NodePath, Texture, TextureStage
 from direct.task.Task import Task
 
-game = 'lijj'
+GAME = 'lijj'
 
 class Chooser(DirectObject.DirectObject):
     
@@ -21,14 +21,14 @@ class Chooser(DirectObject.DirectObject):
         # Textures
         self.tex = [ 0 for i in range(4) ]
         for i in range(4):
-            self.tex[i] = loader.loadTexture(game+'/textures/gui/direction'+str(i)+'.png')
+            self.tex[i] = loader.loadTexture(GAME+'/textures/gui/direction'+str(i)+'.png')
             self.tex[i].setMagfilter(Texture.FTNearest)
             self.tex[i].setMinfilter(Texture.FTNearest)
 
         # Sounds
-        self.hover_snd   = base.loader.loadSfx(game+"/sounds/hover.ogg")
-        self.clicked_snd = base.loader.loadSfx(game+"/sounds/clicked.ogg")
-        self.cancel_snd  = base.loader.loadSfx(game+"/sounds/cancel.ogg")
+        self.hover_snd   = base.loader.loadSfx(GAME+"/sounds/hover.ogg")
+        self.clicked_snd = base.loader.loadSfx(GAME+"/sounds/clicked.ogg")
+        self.cancel_snd  = base.loader.loadSfx(GAME+"/sounds/cancel.ogg")
 
         # Buttons container
         self.directionRoot = sprite.node.attachNewNode( "directionRoot" )

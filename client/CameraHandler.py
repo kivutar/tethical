@@ -6,7 +6,7 @@ from panda3d.core import OrthographicLens
 from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import LerpPosInterval, LerpScaleInterval, LerpHprInterval, Sequence
 
-game = ConfigVariableString('game', 'fft').getValue()
+GAME = ConfigVariableString('game', 'fft').getValue()
 
 class CameraHandler(DirectObject.DirectObject):
 
@@ -31,8 +31,8 @@ class CameraHandler(DirectObject.DirectObject):
         self.phase  = None
         
         # Load sounds
-        self.toggle_r_snd = base.loader.loadSfx(game+"/sounds/camera_toggle_r.ogg")
-        self.rotate_snd   = base.loader.loadSfx(game+"/sounds/camera_rotate.ogg")
+        self.toggle_r_snd = base.loader.loadSfx(GAME+'/sounds/camera_toggle_r.ogg')
+        self.rotate_snd   = base.loader.loadSfx(GAME+'/sounds/camera_rotate.ogg')
 
         self.accept("e",            self.toggleZoom  )
         self.accept("r",            self.toggleR     )
