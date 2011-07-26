@@ -16,8 +16,9 @@ v = 1.0/120.0
 hover_snd = base.loader.loadSfx(game+"/sounds/hover.ogg")
 clicked_snd = base.loader.loadSfx(game+"/sounds/clicked.ogg")
 cancel_snd = base.loader.loadSfx(game+"/sounds/cancel.ogg")
+regularscale = 2*16.0/240.0
 scale = 2*12.0/240.0
-font = loader.loadFont(game+'/fonts/fft')
+regularfont = loader.loadFont(game+'/fonts/fft')
 font3 = loader.loadFont(game+'/fonts/fft3')
 font4 = loader.loadFont(game+'/fonts/fft4')
 coordsfont = loader.loadFont(game+'/fonts/fftcoords')
@@ -94,60 +95,55 @@ class LoginWindow(DirectObject.DirectObject):
 
         self.loginLabel = DirectLabel(
             text = 'Username:',
-            color = (.62, .6, .5, 0),
-            scale = scale,
-            text_font = font,
-            text_fg = (.0625,.3125,.5,1),
-            text_shadow = (.5,.46484375,.40625,1),
+            color = (0,0,0,0),
+            scale = regularscale,
+            text_font = regularfont,
+            text_fg = (1,1,1,1),
             text_align = TextNode.ALeft,
             parent = self.frame
         )
         self.loginLabel.setPos(-v*50, 0, v*3)
 
         self.loginEntry = DirectEntry(
-            color = (.62, .6, .5, 0),
-            scale = scale,
+            color = (0,0,0,0),
+            scale = regularscale,
             numLines = 1,
             focus = 1,
-            text_font = font,
-            text_fg = (.1875,.15625,.125,1),
-            text_shadow = (.5,.46484375,.40625,1),
+            text_font = regularfont,
+            text_fg = (1,1,1,1),
             parent = self.frame
         )
         self.loginEntry.setPos(-v*6, 0, v*3)
 
         self.passwordLabel = DirectLabel(
             text = 'Password:',
-            color = (.62, .6, .5, 0),
-            scale = scale,
-            text_font = font,
-            text_fg = (.0625,.3125,.5,1),
-            text_shadow = (.5,.46484375,.40625,1),
+            color = (0,0,0,0),
+            scale = regularscale,
+            text_font = regularfont,
+            text_fg = (1,1,1,1),
             text_align = TextNode.ALeft,
             parent = self.frame
         )
         self.passwordLabel.setPos(-v*50, 0, -v*13)
 
         self.passwordEntry = DirectEntry(
-            color = (.62, .6, .5, 0),
-            scale = scale,
+            color = (0,0,0,0),
+            scale = regularscale,
             numLines = 1,
-            text_font = font,
-            text_fg = (.1875,.15625,.125,1),
-            text_shadow = (.5,.46484375,.40625,1),
+            text_font = regularfont,
+            text_fg = (1,1,1,1),
             obscured = True,
             parent = self.frame
         )
         self.passwordEntry.setPos(-v*6, 0, -v*13)
 
         connectButton = DirectButton(
-            scale = scale,
+            scale = regularscale,
             text  = ("Connect", "Connect", "Connect", "disabled"),
             command = command,
             color = (.62, .6, .5, 1),
-            text_font = font,
-            text_fg = (.1875,.15625,.125,1),
-            text_shadow = (.5,.46484375,.40625,1),
+            text_font = regularfont,
+            text_fg = (1,1,1,1),
             rolloverSound = hover_snd,
             clickSound = clicked_snd,
             pressEffect = 0,
@@ -235,10 +231,9 @@ class PartyListWindow(DirectObject.DirectObject):
             nameLabel = DirectLabel(
                 color = (0,0,0,0),
                 text = parties[key]['name'],
-                scale = scale,
-                text_font = font,
-                text_fg = (.1875,.15625,.125,1),
-                text_shadow = (.5,.46484375,.40625,1),
+                scale = regularscale,
+                text_font = regularfont,
+                text_fg = (1,1,1,1),
                 text_align = TextNode.ALeft,
                 parent = self.frame
             )
@@ -247,10 +242,9 @@ class PartyListWindow(DirectObject.DirectObject):
             creatorLabel = DirectLabel(
                 color = (0,0,0,0),
                 text = parties[key]['creator'],
-                scale = scale,
-                text_font = font,
-                text_fg = (.1875,.15625,.125,1),
-                text_shadow = (.5,.46484375,.40625,1),
+                scale = regularscale,
+                text_font = regularfont,
+                text_fg = (1,1,1,1),
                 text_align = TextNode.ALeft,
                 parent = self.frame
             )
@@ -259,10 +253,9 @@ class PartyListWindow(DirectObject.DirectObject):
             mapLabel = DirectLabel(
                 color = (0,0,0,0),
                 text = parties[key]['map']['name'],
-                scale = scale,
-                text_font = font,
-                text_fg = (.1875,.15625,.125,1),
-                text_shadow = (.5,.46484375,.40625,1),
+                scale = regularscale,
+                text_font = regularfont,
+                text_fg = (1,1,1,1),
                 text_align = TextNode.ALeft,
                 parent = self.frame
             )
@@ -274,10 +267,9 @@ class PartyListWindow(DirectObject.DirectObject):
                 text  = (str(len(parties[key]['players']))+'/'+str(len(parties[key]['map']['chartiles'])), "Join", "Join", "Full"),
                 command = self.commandAndDestroy,
                 extraArgs = [ commands[key] ],
-                scale = scale,
-                text_font = font,
-                text_fg = (.1875,.15625,.125,1),
-                text_shadow = (.5,.46484375,.40625,1),
+                scale = regularscale,
+                text_font = regularfont,
+                text_fg = (1,1,1,1),
                 text_align = TextNode.ALeft,
                 rolloverSound = hover_snd,
                 clickSound = clicked_snd,
@@ -334,16 +326,15 @@ class Menu(DirectObject.DirectObject):
             label = DirectLabel(
                 color = (0,0,0,0),
                 text = button['text'],
-                scale = scale,
-                text_font = font,
-                text_fg = (.1875,.15625,.125,1),
-                text_shadow = (.5,.46484375,.40625,1),
+                scale = regularscale,
+                text_font = regularfont,
+                text_fg = (1,1,1,1),
                 text_align = TextNode.ALeft,
                 parent = self.frame,
                 pos = (-v*25, 0, v*(self.offset-3-self.height*i))
             )
             if not button['enabled']:
-                label['text_fg'] = (.375,.34375,.28125,1)
+                label['text_fg'] = (1,1,1,.5)
         
         seq = Sequence()
         seq.append(LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1))
@@ -427,10 +418,9 @@ class MoveCheck(DirectObject.DirectObject):
         messageLabel = DirectLabel(
             color = (0,0,0,0),
             text = 'Are you sure you want to move here?',
-            scale = scale,
-            text_font = font,
-            text_fg = (.1875,.15625,.125,1),
-            text_shadow = (.5,.46484375,.40625,1),
+            scale = regularscale,
+            text_font = regularfont,
+            text_fg = (1,1,1,1),
             text_align = TextNode.ALeft,
             parent = self.frame,
             pos = (-v*75, 0, v*19)
@@ -440,10 +430,9 @@ class MoveCheck(DirectObject.DirectObject):
             label = DirectLabel(
                 color = (0,0,0,0),
                 text = button['text'],
-                scale = scale,
-                text_font = font,
-                text_fg = (.1875,.15625,.125,1),
-                text_shadow = (.5,.46484375,.40625,1),
+                scale = regularscale,
+                text_font = regularfont,
+                text_fg = (1,1,1,1),
                 text_align = TextNode.ALeft,
                 parent = self.frame,
                 pos = (v*57, 0, v*(self.offset-3-self.height*i))
@@ -530,27 +519,24 @@ class AttackCheck(DirectObject.DirectObject):
             parent = self.frame
         )
 
-# TODO: Fix line height
-#        messageLabel = DirectLabel(
-#            color = (0,0,0,0),
-#            text = 'Executing action.\nOK?',
-#            scale = scale,
-#            text_font = font,
-#            text_fg = (.1875,.15625,.125,1),
-#            text_shadow = (.5,.46484375,.40625,1),
-#            text_align = TextNode.ALeft,
-#            parent = self.frame,
-#            pos = (-u*33, 0, u*27)
-#        )
+        messageLabel = DirectLabel(
+            color = (0,0,0,0),
+            text = 'Executing action.\nOK?',
+            scale = regularscale,
+            text_font = regularfont,
+            text_fg = (1,1,1,1),
+            text_align = TextNode.ALeft,
+            parent = self.frame,
+            pos = (-v*33, 0, v*27)
+        )
 
         for i,button in enumerate(self.buttons):
             label = DirectLabel(
                 color = (0,0,0,0),
                 text = button['text'],
-                scale = scale,
-                text_font = font,
-                text_fg = (.1875,.15625,.125,1),
-                text_shadow = (.5,.46484375,.40625,1),
+                scale = regularscale,
+                text_font = regularfont,
+                text_fg = (1,1,1,1),
                 text_align = TextNode.ALeft,
                 parent = self.frame,
                 pos = (v*3, 0, v*(self.offset-3-self.height*i))
@@ -822,11 +808,10 @@ class CharCard:
 
         self.name = DirectLabel(
             text = char['name'],
-            color = (.62, .6, .5, 0),
-            scale = scale,
-            text_font = font,
-            text_fg = (.1875,.15625,.125,1),
-            text_shadow = (.5,.46484375,.40625,1),
+            color = (0,0,0,0),
+            scale = regularscale,
+            text_font = regularfont,
+            text_fg = (1,1,1,1),
             text_align = TextNode.ALeft,
             parent = self.frame
         )
@@ -834,11 +819,10 @@ class CharCard:
 
         self.name = DirectLabel(
             text = char['job'],
-            color = (.62, .6, .5, 0),
-            scale = scale,
-            text_font = font,
-            text_fg = (.1875,.15625,.125,1),
-            text_shadow = (.5,.46484375,.40625,1),
+            color = (0,0,0,0),
+            scale = regularscale,
+            text_font = regularfont,
+            text_fg = (1,1,1,1),
             text_align = TextNode.ALeft,
             parent = self.frame
         )
