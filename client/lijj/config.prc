@@ -1,2 +1,2 @@
 window-title Tethical: lijj
-spritescale 2
+sprite-scale 2

@@ -1,2 +1,2 @@
 window-title Tethical: fft
-spritescale 1
+sprite-scale 1

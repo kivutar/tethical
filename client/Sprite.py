@@ -1,10 +1,4 @@
-from panda3d.core import loadPrcFile
-from pandac.PandaModules import *
-loadPrcFile("../config.prc")
-GAME = ConfigVariableString('game', 'fft').getValue()
-loadPrcFile(GAME+"/config.prc")
-scale = float( ConfigVariableString('spritescale', '2').getValue() )
-
+from Config import *
 from panda3d.core import NodePath, TransparencyAttrib
 from pandac.PandaModules import Texture, TextureStage
 import Sprite2d
@@ -18,7 +12,7 @@ class Sprite:
         self.displaydir = 1
         self.animation  = 'walk'
     
-        self.sprite2d = Sprite2d.Sprite2d(sheet, cols=14, rows=4, scale=scale*0.7*256.0/240.0, anchorX='Center')
+        self.sprite2d = Sprite2d.Sprite2d(sheet, cols=14, rows=4, scale=SPRITE_SCALE*0.7*256.0/240.0, anchorX='Center')
 
         # the main container
         self.node = NodePath("dummy1")
