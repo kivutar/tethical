@@ -8,6 +8,17 @@ from direct.interval.IntervalGlobal import LerpPosInterval, LerpScaleInterval, L
 
 GAME = ConfigVariableString('game', 'fft').getValue()
 
+CROSS_BTN    = ConfigVariableString('cross-btn',    '0').getValue()
+CIRCLE_BTN   = ConfigVariableString('circle-btn',   '3').getValue()
+TRIANGLE_BTN = ConfigVariableString('triangle-btn', '2').getValue()
+SQUARE_BTN   = ConfigVariableString('square-btn',   '1').getValue()
+L1_BTN       = ConfigVariableString('l1-btn',       '4').getValue()
+L2_BTN       = ConfigVariableString('l2-btn',       '7').getValue()
+R1_BTN       = ConfigVariableString('r1-btn',       '6').getValue()
+R2_BTN       = ConfigVariableString('r2-btn',       '9').getValue()
+START_BTN    = ConfigVariableString('start-btn',    '8').getValue()
+SELECT_BTN   = ConfigVariableString('select-btn',   '5').getValue()
+
 class CameraHandler(DirectObject.DirectObject):
 
     def __init__(self):
@@ -34,10 +45,10 @@ class CameraHandler(DirectObject.DirectObject):
         self.toggle_r_snd = base.loader.loadSfx(GAME+'/sounds/camera_toggle_r.ogg')
         self.rotate_snd   = base.loader.loadSfx(GAME+'/sounds/camera_rotate.ogg')
 
-        self.accept("e",            self.toggleZoom  )
-        self.accept("r",            self.toggleR     )
-        self.accept("a",    lambda: self.rotate( 90) )
-        self.accept("z",    lambda: self.rotate(-90) )
+        self.accept(L1_BTN, lambda: self.rotate( 90) )
+        self.accept(R1_BTN, lambda: self.rotate(-90) )
+        self.accept(L2_BTN,         self.toggleZoom  )
+        self.accept(R2_BTN,         self.toggleR     )
         self.accept('window-event', self.windowEvent )
 
     def toggleZoom(self):

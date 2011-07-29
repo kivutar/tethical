@@ -11,6 +11,18 @@ from pandac.PandaModules import *
 import functools
 
 GAME = ConfigVariableString('game', 'fft').getValue()
+
+CROSS_BTN    = ConfigVariableString('cross-btn',    '0').getValue()
+CIRCLE_BTN   = ConfigVariableString('circle-btn',   '3').getValue()
+TRIANGLE_BTN = ConfigVariableString('triangle-btn', '2').getValue()
+SQUARE_BTN   = ConfigVariableString('square-btn',   '1').getValue()
+L1_BTN       = ConfigVariableString('l1-btn',       '4').getValue()
+L2_BTN       = ConfigVariableString('l2-btn',       '7').getValue()
+R1_BTN       = ConfigVariableString('r1-btn',       '6').getValue()
+R2_BTN       = ConfigVariableString('r2-btn',       '9').getValue()
+START_BTN    = ConfigVariableString('start-btn',    '8').getValue()
+SELECT_BTN   = ConfigVariableString('select-btn',   '5').getValue()
+
 u = 1.0/128.0
 v = 1.0/120.0
 hover_snd = base.loader.loadSfx(GAME+"/sounds/hover.ogg")
@@ -202,7 +214,7 @@ class PartyListWindow(DirectObject.DirectObject):
         ).start()
 
     def acceptAll(self):
-        self.accept("v",    self.onTriangleClicked)
+        self.accept(TRIANGLE_BTN, self.onTriangleClicked)
 
     def onTriangleClicked(self):
         clicked_snd.play()
@@ -342,8 +354,8 @@ class Menu(DirectObject.DirectObject):
         seq.start()
 
     def acceptAll(self):
-        self.accept("space", self.onCrossClicked)
-        self.accept("b",    self.onCircleClicked)
+        self.accept(CROSS_BTN,  self.onCrossClicked)
+        self.accept(CIRCLE_BTN, self.onCircleClicked)
         self.accept("arrow_down",        lambda: self.updateIndex( 1))
         self.accept("arrow_down-repeat", lambda: self.updateIndex( 1))
         self.accept("arrow_up",          lambda: self.updateIndex(-1))
@@ -446,8 +458,8 @@ class MoveCheck(DirectObject.DirectObject):
         seq.start()
 
     def acceptAll(self):
-        self.accept("space", self.onCrossClicked)
-        self.accept("b",    self.onCircleClicked)
+        self.accept(CROSS_BTN,  self.onCrossClicked)
+        self.accept(CIRCLE_BTN, self.onCircleClicked)
         self.accept("arrow_down",        lambda: self.updateIndex( 1))
         self.accept("arrow_down-repeat", lambda: self.updateIndex( 1))
         self.accept("arrow_up",          lambda: self.updateIndex(-1))
@@ -550,8 +562,8 @@ class AttackCheck(DirectObject.DirectObject):
         seq.start()
 
     def acceptAll(self):
-        self.accept("space", self.onCrossClicked)
-        self.accept("b",    self.onCircleClicked)
+        self.accept(CROSS_BTN,  self.onCrossClicked)
+        self.accept(CIRCLE_BTN, self.onCircleClicked)
         self.accept("arrow_down",        lambda: self.updateIndex( 1))
         self.accept("arrow_down-repeat", lambda: self.updateIndex( 1))
         self.accept("arrow_up",          lambda: self.updateIndex(-1))
@@ -610,8 +622,8 @@ class Help(DirectObject.DirectObject):
         seq.start()
 
     def acceptAll(self):
-        self.accept("space", self.onCrossClicked)
-        self.accept("b", self.onCircleClicked )
+        self.accept(CROSS_BTN,  self.onCrossClicked)
+        self.accept(CIRCLE_BTN, self.onCircleClicked )
 
     def onCircleClicked(self):
         clicked_snd.play()
@@ -1070,8 +1082,8 @@ class ActionPreview(DirectObject.DirectObject):
             ).start()
 
     def acceptAll(self):
-        self.accept("space", self.onCrossClicked)
-        self.accept("b", self.onCircleClicked )
+        self.accept(CROSS_BTN,  self.onCrossClicked)
+        self.accept(CIRCLE_BTN, self.onCircleClicked)
 
     def onCircleClicked(self):
         clicked_snd.play()
@@ -1349,12 +1361,12 @@ class MapChooser(DirectObject.DirectObject):
         ).start()
 
     def acceptAll(self):
-        self.accept("space", self.onCrossClicked)
-        self.accept("enter", self.onStartClicked)
-        self.accept("a",     self.onL1Clicked)
-        self.accept("z",     self.onR1Clicked)
-        self.accept("a-repeat", self.onL1Clicked)
-        self.accept("z-repeat", self.onR1Clicked)
+        self.accept(CROSS_BTN,        self.onCrossClicked)
+        self.accept(START_BTN,        self.onStartClicked)
+        self.accept(L1_BTN,           self.onL1Clicked)
+        self.accept(R1_BTN,           self.onR1Clicked)
+        self.accept(L1_BTN+"-repeat", self.onL1Clicked)
+        self.accept(L1_BTN+"-repeat", self.onR1Clicked)
 
     def onCrossClicked(self):
         cancel_snd.play()

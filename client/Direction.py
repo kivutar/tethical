@@ -7,6 +7,17 @@ from direct.task.Task import Task
 
 GAME = ConfigVariableString('game', 'fft').getValue()
 
+CROSS_BTN    = ConfigVariableString('cross-btn',    '0').getValue()
+CIRCLE_BTN   = ConfigVariableString('circle-btn',   '3').getValue()
+TRIANGLE_BTN = ConfigVariableString('triangle-btn', '2').getValue()
+SQUARE_BTN   = ConfigVariableString('square-btn',   '1').getValue()
+L1_BTN       = ConfigVariableString('l1-btn',       '4').getValue()
+L2_BTN       = ConfigVariableString('l2-btn',       '7').getValue()
+R1_BTN       = ConfigVariableString('r1-btn',       '6').getValue()
+R2_BTN       = ConfigVariableString('r2-btn',       '9').getValue()
+START_BTN    = ConfigVariableString('start-btn',    '8').getValue()
+SELECT_BTN   = ConfigVariableString('select-btn',   '5').getValue()
+
 class Chooser(DirectObject.DirectObject):
     
     def __init__(self, charid, sprite, camhandler, callback, cancelcallback):
@@ -61,8 +72,8 @@ class Chooser(DirectObject.DirectObject):
                 self.hidir = directiondata['direction']
                 card.setTexture(self.hovertex)
 
-        self.accept("b", self.onCircleClicked)
-        self.accept("space", self.onCrossClicked)
+        self.accept(CIRCLE_BTN, self.onCircleClicked)
+        self.accept(CROSS_BTN,  self.onCrossClicked)
         self.accept("arrow_up", lambda: self.onArrowClicked('up'))
         self.accept("arrow_down", lambda: self.onArrowClicked('down'))
         self.accept("arrow_left", lambda: self.onArrowClicked('left'))
