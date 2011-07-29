@@ -8,7 +8,6 @@ GAME = 'lijj'
 class Chooser(DirectObject.DirectObject):
     
     def __init__(self, charid, sprite, camhandler, callback, cancelcallback):
-        print game
     
         self.charid = charid
         self.sprite = sprite
