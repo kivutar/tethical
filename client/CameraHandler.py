@@ -36,6 +36,8 @@ class CameraHandler(DirectObject.DirectObject):
         self.accept(L2_BTN,         self.toggleZoom  )
         self.accept(R2_BTN,         self.toggleR     )
         self.accept('window-event', self.windowEvent )
+        
+        self.windowEvent(base.win)
 
     def toggleZoom(self):
         if self.phase != 'gui' and round(self.container.getScale()[0]*10) in (10, 14):
