@@ -13,19 +13,29 @@
         { "color": [ 0.8, 0.8, 0.8, 1.0 ] },
         { "color": [ 0.5, 0.5, 0.5, 1.0 ], "direction": [ 0.0, 45.0, -45.0 ] }
     ],
-    "chartiles": [
-        [
-            { "x": 3, "y": 0, "z": 6, "direction": 2 },
-            { "x": 4, "y": 0, "z": 6, "direction": 2 },
-            { "x": 3, "y": 1, "z": 6, "direction": 2 },
-            { "x": 4, "y": 1, "z": 6, "direction": 2 }
-        ],
-        [
-            { "x": 2, "y": 10, "z": 12, "direction": 4 },
-            { "x": 3, "y": 10, "z": 12, "direction": 4 },
-            { "x": 4, "y": 10, "z": 12, "direction": 4 },
-            { "x": 3, "y":  9, "z": 12, "direction": 4 }
-        ]
+    "tilesets": [
+        {
+            "capacity": 4,
+            "direction": 2,
+            "maping": [
+                [ null   , null   , null   , null   , null    ],
+                [ null   , null   , null   , null   , null    ],
+                [ null   , [3,0,6], [4,0,6], null   , null    ],
+                [ null   , [3,1,6], [4,1,6], null   , null    ],
+                [ null   , null   , null   , null   , null    ]
+            ]
+        },
+        {
+            "capacity": 4,
+            "direction": 0,
+            "maping": [
+                [ null   , null   , null   , null   , null    ],
+                [ null   , null   , null   , null   , null    ],
+                [ null   , [2,10,12], [3,10,12], [4,10,12], [5,10,10] ],
+                [ null   , null   , null   , null   , null    ],
+                [ null   , null   , null   , null   , null    ]
+            ]
+        }
     ],
     "tiles": [
         { "x": 0, "y": 0, "z": 0, "walkable": true, "selectable": true, "depth": 2.0, "scale": 1.0, "slope": "flat"    },

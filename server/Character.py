@@ -23,7 +23,7 @@ def Coords( party, charid ):
                 if tile and tile.has_key('char') and int(tile['char']) == int(charid):
                     return (x, y, z)
 
-def Random( charid, teamid, direction ):
+def Random( charid, teamid=0, direction=0 ):
     jobid = jobids[random.randint(0, len(jobids)-1)]
     job = jobs[jobid]
     gender = ('F','M')[random.randint(0, 1)]

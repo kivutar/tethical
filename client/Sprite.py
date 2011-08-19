@@ -16,13 +16,6 @@ class Sprite:
 
         # the main container
         self.node = NodePath("dummy1")
-
-        # the billboard container
-        self.node2 = NodePath("dummy2")
-        self.node2.setBillboardPointEye()
-        self.node2.reparentTo( self.node )
-        self.sprite2d.node.reparentTo( self.node2 )
-        self.sprite2d.node.setPos( 0, -1.5, -1.5 )
         
         # shadow
         self.shadow = loader.loadModel(GAME+'/models/slopes/flat')
@@ -36,6 +29,13 @@ class Sprite:
         self.shadowtexture.setWrapV(Texture.WMClamp)
         self.shadow.setTexture( self.shadowtexture )
         self.shadow.reparentTo( self.node )
+
+        # the billboard container
+        self.node2 = NodePath("dummy2")
+        self.node2.setBillboardPointEye()
+        self.node2.reparentTo( self.node )
+        self.sprite2d.node.reparentTo( self.node2 )
+        self.sprite2d.node.setPos( 0, -1.5, -1.5 )
 
         # animations
         self.sprite2d.createAnim('stand1', ( 0, 0), fps=10)

@@ -14,16 +14,7 @@
         { "color": [ 0.5, 0.5, 0.5, 1.0 ], "direction": [ 0.0, 45.0, -45.0 ] }
     ],
     "chartiles": [
-        [
-            { "x":  0, "y":  0, "z":  4, "direction": 1 },
-            { "x":  0, "y":  1, "z":  4, "direction": 1 },
-            { "x":  0, "y":  2, "z":  4, "direction": 1 },
-            { "x":  0, "y":  3, "z":  4, "direction": 1 },
-            { "x":  0, "y":  8, "z": 12, "direction": 1 },
-            { "x":  0, "y":  9, "z": 12, "direction": 1 },
-            { "x":  0, "y": 10, "z": 12, "direction": 1 },
-            { "x":  0, "y": 11, "z": 12, "direction": 1 }
-        ],
+
         [
             { "x": 23, "y":  3, "z":  4, "direction": 3 },
             { "x": 23, "y":  4, "z":  4, "direction": 3 },
@@ -34,6 +25,30 @@
             { "x": 23, "y":  9, "z":  4, "direction": 3 },
             { "x": 23, "y": 10, "z":  4, "direction": 3 }
         ]
+    ],
+    "tilesets": [
+        {
+            "capacity": 5,
+            "direction": 1,
+            "maping": [
+                [ null   , null   , null   , null   , null    ],
+                [ null   , null   , null   , null   , null    ],
+                [ [0,2,4], [0,3,4], [0,8,12], [0,9,12], [0,10,12] ],
+                [ null   , null   , null   , null   , null    ],
+                [ null   , null   , null   , null   , null    ]
+            ]
+        },
+        {
+            "capacity": 5,
+            "direction": 3,
+            "maping": [
+                [ null   , null   , null   , null   , null    ],
+                [ null   , null   , null   , null   , null    ],
+                [ [23,5,4], [23,6,4], [23,7,4], [23,8,4], [23,9,4] ],
+                [ null   , null   , null   , null   , null    ],
+                [ null   , null   , null   , null   , null    ]
+            ]
+        }
     ],
     "tiles": [
         { "x":  0, "y":  0, "z":  4, "walkable":  true, "selectable": true, "depth": 0.0, "scale": 1.0, "slope": "flat"    },

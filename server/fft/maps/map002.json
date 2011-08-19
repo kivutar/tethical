@@ -1296,6 +1296,30 @@
             }
         ]
     ], 
+    "tilesets": [
+        {
+            "capacity": 1,
+            "direction": 1,
+            "maping": [
+                [ null   , null   , null   , null   , null    ],
+                [ null   , null   , null   , null   , null    ],
+                [ null   , null   , [0,0,3], null   , null    ],
+                [ null   , null   , null   , null   , null    ],
+                [ null   , null   , null   , null   , null    ]
+            ]
+        },
+        {
+            "capacity": 1,
+            "direction": 1,
+            "maping": [
+                [ null   , null   , null   , null   , null    ],
+                [ null   , null   , null   , null   , null    ],
+                [ null   , null   , [1,0,4], null   , null    ],
+                [ null   , null   , null   , null   , null    ],
+                [ null   , null   , null   , null   , null    ]
+            ]
+        }
+    ],
     "music": "10", 
     "offset": [
         0.0, 

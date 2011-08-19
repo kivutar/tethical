@@ -60,6 +60,8 @@ BATTLE_COMPLETE = 32
 GAME_OVER = 33
 GET_PASSIVE_WALKABLES = 34
 PASSIVE_WALKABLES_LIST = 35
+START_FORMATION = 36
+FORMATION_READY = 37
 
 class Client(DirectObject):
 
@@ -281,6 +283,19 @@ class Client(DirectObject):
             self.music = base.loader.loadSfx(GAME+'/music/13.ogg')
             self.music.play()
             GUI.BrownOverlay(GUI.Congratulations, self.end)
+        elif msgID == START_FORMATION:
+            self.music.stop()
+            self.music = base.loader.loadSfx(GAME+'/music/11.ogg')
+            self.music.play()
+            tilesets = json.loads(iterator.getString32())
+            characters = json.loads(iterator.getString32())
+            GUI.Formation(self.background.frame, tilesets, characters, self.formationReady)
+
+    def formationReady(self, formation):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addUint8(FORMATION_READY)
+        myPyDatagram.addString(json.dumps(formation))
+        self.cWriter.send(myPyDatagram, self.myConnection)
 
     # This task process data sent by the server, if any
     def tskReaderPolling(self, taskdata):

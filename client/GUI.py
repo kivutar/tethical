@@ -7,6 +7,7 @@ from direct.task import Task
 from direct.actor import Actor
 from direct.interval.IntervalGlobal import *
 from pandac.PandaModules import *
+import Sprite
 import functools
 
 u = 1.0/128.0
@@ -262,7 +263,7 @@ class PartyListWindow(DirectObject.DirectObject):
             commands[key] = functools.partial(self.command, key)
             commands[key].__name__ = str(key)
             buttons[key] = DirectButton(
-                text  = (str(len(parties[key]['players']))+'/'+str(len(parties[key]['map']['chartiles'])), "Join", "Join", "Full"),
+                text  = (str(len(parties[key]['players']))+'/'+str(len(parties[key]['map']['tilesets'])), "Join", "Join", "Full"),
                 command = self.commandAndDestroy,
                 extraArgs = [ commands[key] ],
                 scale = regularscale,
@@ -276,7 +277,7 @@ class PartyListWindow(DirectObject.DirectObject):
             )
             buttons[key].setPos(v*80, 0, v*49 - i*v*16)
 
-            if len(parties[key]['players']) >= len(parties[key]['map']['chartiles']):
+            if len(parties[key]['players']) >= len(parties[key]['map']['tilesets']):
                 buttons[key]['state'] = DGG.DISABLED
 
 class Menu(DirectObject.DirectObject):
@@ -1441,4 +1442,599 @@ class MapChooser(DirectObject.DirectObject):
         h = task.time * 30
         self.maplist[self.current]['recentrer'].setHpr(h,0,0)
         return Task.cont
+
+class Formation(DirectObject.DirectObject):
+
+    def __init__(self, parent, tileset, chars, command):
+    
+        self.tileset = tileset
+        self.chars = chars
+        self.current = 0
+        self.char = self.chars[self.current]
+        self.direction = self.tileset['direction']
+        self.capacity = self.tileset['capacity']
+        self.remaining = self.capacity
+        self.command = command
+        self.sprites = [ [ None for y in range(5) ] for x in range(5) ]
+
+        tex0 = loader.loadTexture(GAME+'/textures/gui/frm0.png')
+        tex0.setMagfilter(Texture.FTNearest)
+        tex0.setMinfilter(Texture.FTNearest)
+
+        tex1 = loader.loadTexture(GAME+'/textures/gui/frm1.png')
+        tex1.setMagfilter(Texture.FTNearest)
+        tex1.setMinfilter(Texture.FTNearest)
+
+        self.hprcontainer = parent.attachNewNode('hprcontainer')
+        self.hprcontainer.setHpr(0,30,0)
+        self.hprcontainer.setScale(0.235)
+        self.hprcontainer.setPos(0,0,-.415)
+        self.hprcontainer.setDepthWrite(True)
+        self.hprcontainer.setDepthTest(True)
+
+        self.root = NodePath("root")
+        self.root.setHpr(-45,0,0)
+        self.root.reparentTo(self.hprcontainer)
+
+        self.tiles = [ [ {} for y in range(5) ] for x in range(5) ]
+        for y,l in enumerate(self.tileset['maping']):
+            y = 4-y
+            for x,t in enumerate(l):
+                self.tiles[x][y]['coords'] = t
+                self.tiles[x][y]['char'] = None
+                self.tiles[x][y]['model'] = loader.loadModel(GAME+"/models/slopes/flat")
+                self.tiles[x][y]['model'].setTexture(tex0)
+                self.tiles[x][y]['model'].setColor(1,1,1,1)
+                self.tiles[x][y]['model'].setTransparency(TransparencyAttrib.MAlpha)
+                self.tiles[x][y]['model'].reparentTo(self.root)
+                self.tiles[x][y]['model'].setPos((x-2, y-2, 0))
+
+                if t:
+                    self.tiles[x][y]['model'].setTexture(tex1)
+                    self.tiles[x][y]['model'].setPos((x-2, y-2, .33))
+                else:
+                    self.tiles[x][y]['model'].setTexture(tex0)                
+
+        l1texture = loader.loadTexture(GAME+'/textures/gui/L1.png')
+        l1texture.setMagfilter(Texture.FTNearest)
+        l1texture.setMinfilter(Texture.FTNearest)
+
+        self.l1frame = DirectFrame(
+            frameTexture = l1texture,
+            frameColor = (1, 1, 1, 0),
+            frameSize = ( -v*16, v*16, -v*8, v*8 ),
+            pos = (-v*104, 0, v*100),
+            scale = 1.0,
+        )
+        self.l1frame.setTransparency(True)
+
+        r1texture = loader.loadTexture(GAME+'/textures/gui/R1.png')
+        r1texture.setMagfilter(Texture.FTNearest)
+        r1texture.setMinfilter(Texture.FTNearest)
+
+        self.r1frame = DirectFrame(
+            frameTexture = r1texture,
+            frameColor = (1, 1, 1, 0),
+            frameSize = ( -v*16, v*16, -v*8, v*8 ),
+            pos = (v*109, 0, v*100),
+            scale = 1.0,
+        )
+        self.r1frame.setTransparency(True)
+
+        searchtexture = loader.loadTexture(GAME+'/textures/gui/search_btn.png')
+        searchtexture.setMagfilter(Texture.FTNearest)
+        searchtexture.setMinfilter(Texture.FTNearest)
+
+        self.searchframe = DirectFrame(
+            frameTexture = searchtexture,
+            frameColor = (1, 1, 1, 0),
+            frameSize = ( -v*32, v*32, -v*8, v*8 ),
+            pos = (-v*58, 0, -v*100),
+            scale = 1.0,
+        )
+        self.searchframe.setTransparency(True)
+
+        statustexture = loader.loadTexture(GAME+'/textures/gui/status_btn.png')
+        statustexture.setMagfilter(Texture.FTNearest)
+        statustexture.setMinfilter(Texture.FTNearest)
+
+        self.statusframe = DirectFrame(
+            frameTexture = statustexture,
+            frameColor = (1, 1, 1, 0),
+            frameSize = ( -v*32, v*32, -v*8, v*8 ),
+            pos = (-v*0, 0, -v*100),
+            scale = 1.0,
+        )
+        self.statusframe.setTransparency(True)
+
+        starttexture = loader.loadTexture(GAME+'/textures/gui/start_end.png')
+        starttexture.setMagfilter(Texture.FTNearest)
+        starttexture.setMinfilter(Texture.FTNearest)
+
+        self.startframe = DirectFrame(
+            frameTexture = starttexture,
+            frameColor = (1, 1, 1, 0),
+            frameSize = ( -v*32, v*32, -v*8, v*8 ),
+            pos = (v*61, 0, -v*100),
+            scale = 1.0,
+        )
+        self.startframe.setTransparency(True)
+
+        squadtexture0 = loader.loadTexture(GAME+'/textures/gui/squad_lbl0.png')
+        squadtexture0.setMagfilter(Texture.FTNearest)
+        squadtexture0.setMinfilter(Texture.FTNearest)
+
+        self.squadframe = DirectFrame(
+            frameTexture = squadtexture0,
+            frameColor = (1, 1, 1, 0),
+            frameSize = ( -v*32, v*32, -v*8, v*8 ),
+            pos = (-v*96, 0, v*23),
+            scale = 1.0,
+        )
+        self.squadframe.setTransparency(True)
+
+        capacitytexture = loader.loadTexture(GAME+'/textures/gui/capacity_lbl.png')
+        capacitytexture.setMagfilter(Texture.FTNearest)
+        capacitytexture.setMinfilter(Texture.FTNearest)
+
+        self.capacityframe = DirectFrame(
+            frameTexture = capacitytexture,
+            frameColor = (1, 1, 1, 0),
+            frameSize = ( -v*32, v*32, -v*8, v*8 ),
+            pos = (-v*96, 0, v*7),
+            scale = 1.0,
+        )
+        self.capacityframe.setTransparency(True)
+
+        remainingtexture = loader.loadTexture(GAME+'/textures/gui/remaining_lbl.png')
+        remainingtexture.setMagfilter(Texture.FTNearest)
+        remainingtexture.setMinfilter(Texture.FTNearest)
+
+        self.remainingframe = DirectFrame(
+            frameTexture = remainingtexture,
+            frameColor = (1, 1, 1, 0),
+            frameSize = ( -v*32, v*32, -v*8, v*8 ),
+            pos = (-v*94, 0, -v*9),
+            scale = 1.0,
+        )
+        self.remainingframe.setTransparency(True)
+
+        # Cursor stuff
+        self.curtex = loader.loadTexture(GAME+'/textures/cursor.png')
+        self.curtex.setMagfilter(Texture.FTNearest)
+        self.curtex.setMinfilter(Texture.FTNearest)
+        self.cux = 2
+        self.cuy = 2
+        self.cursor = loader.loadModel(GAME+'/models/slopes/flat')
+        self.cursor.reparentTo(self.root)
+        self.cursor.setPos(0, 0, .33+0.025)
+        self.cursor.setTransparency(TransparencyAttrib.MAlpha)
+        self.cursor.setColor(1, 1, 1, 1)
+        self.cursor.setTexture(self.curtex)
+
+        fbgtex = loader.loadTexture(GAME+'/textures/gui/face_background.png')
+        fbgtex.setMagfilter(Texture.FTNearest)
+        fbgtex.setMinfilter(Texture.FTNearest)
+
+        self.fbgframe = DirectFrame(
+            frameTexture = fbgtex, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -v*32.0, v*32.0, -v*32.0, v*32.0 ),
+        )
+        self.fbgframe.setTransparency(True)
+        self.fbgframe.setPos(-v*97, 0, v*61)
+
+        facetex = loader.loadTexture(GAME+'/textures/sprites/'+self.char['sprite']+'_face.png')
+        facetex.setMagfilter(Texture.FTNearest)
+        facetex.setMinfilter(Texture.FTNearest)
+
+        self.face = DirectFrame(
+            frameTexture = facetex, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( 0, v*32, 0, v*64 ),
+            parent = self.fbgframe,
+        )
+        self.face.setPos(-v*(59-42), 0, -v*31)
+
+        barstex = loader.loadTexture(GAME+'/textures/gui/char_bars.png')
+        barstex.setMagfilter(Texture.FTNearest)
+        barstex.setMinfilter(Texture.FTNearest)
+
+        self.barsframe = DirectFrame(
+            frameTexture = barstex, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -v*64.0, v*64.0, -v*32.0, v*32.0 ),
+            parent = self.fbgframe
+        )
+        self.barsframe.setPos(v*46, 0, -v*9)
+        self.barsframe.setTransparency(True)
+
+        infos = [
+            { 'x':   -2 , 'z':    25 , 'text': '%02d' % self.char['lv'] },
+            { 'x':   30 , 'z':    25 , 'text': '%02d' % self.char['exp'] },
+            { 'x': 18-4 , 'z':   2+9 , 'text': '%03d' % self.char['hp'] },
+            { 'x': 37-4 , 'z':  -2+9 , 'text': '%03d' % self.char['hpmax'] },
+            { 'x': 18-4 , 'z':  -9+9 , 'text': '%03d' % self.char['mp'] },
+            { 'x': 37-4 , 'z': -13+9 , 'text': '%03d' % self.char['mpmax'] },
+            { 'x': 18-4 , 'z': -20+9 , 'text': '---' },
+            { 'x': 37-4 , 'z': -24+9 , 'text': '---' },
+        ]
+
+        self.labels = [ None for i in infos ]
+        for i,info in enumerate(infos):
+            self.labels[i] = DirectLabel(
+                text = info['text'],
+                color = (1, 1, 1, 0),
+                scale = scale,
+                text_font = font3,
+                text_fg = (1,1,1,1),
+                text_align = TextNode.ALeft,
+                parent = self.barsframe
+            )
+            self.labels[i].setPos(v*info['x'], 0, v*info['z'])
+
+        cardtex = loader.loadTexture(GAME+'/textures/gui/char_card.png')
+        cardtex.setMagfilter(Texture.FTNearest)
+        cardtex.setMinfilter(Texture.FTNearest)
+
+        self.cardframe = DirectFrame(
+            frameTexture = cardtex, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -v*64.0, v*64.0, -v*32.0, v*32.0 ),
+        )
+        self.cardframe.setTransparency(True)
+        self.cardframe.setPos(v*63, 0, u*65)
+
+        self.name = DirectLabel(
+            text = self.char['name'],
+            color = (0,0,0,0),
+            scale = regularscale,
+            text_font = regularfont,
+            text_fg = (1,1,1,1),
+            text_align = TextNode.ALeft,
+            parent = self.cardframe
+        )
+        self.name.setPos(-v*33, 0, v*12)
+
+        self.job = DirectLabel(
+            text = self.char['job'],
+            color = (0,0,0,0),
+            scale = regularscale,
+            text_font = regularfont,
+            text_fg = (1,1,1,1),
+            text_align = TextNode.ALeft,
+            parent = self.cardframe
+        )
+        self.job.setPos(-v*33, 0, -v*4)
+
+        teamcolors = ['blue','red','green']
+        ledtex = loader.loadTexture(GAME+'/textures/gui/led_'+teamcolors[int(self.char['team'])]+'.png')
+        ledtex.setMagfilter(Texture.FTNearest)
+        ledtex.setMinfilter(Texture.FTNearest)
+
+        self.led = DirectFrame(
+            frameTexture = ledtex, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -.0625, .0625, -.0625, .0625 ),
+            parent = self.cardframe
+        )
+        self.led.setTransparency(True)
+        self.led.setPos(-v*49, 0, v*18)
+
+        signs = ['aries','scorpio']
+        signtex = loader.loadTexture(GAME+'/textures/gui/'+signs[int(self.char['sign'])]+'.png')
+        signtex.setMagfilter(Texture.FTNearest)
+        signtex.setMinfilter(Texture.FTNearest)
+
+        self.sign = DirectFrame(
+            frameTexture = signtex, 
+            frameColor=(1, 1, 1, 1),
+            frameSize = ( -.125, .125, -.125, .125 ),
+            parent = self.cardframe
+        )
+        self.sign.setTransparency(True)
+        self.sign.setPos(-v*42, 0, -v*12)
+
+        self.brlabel = DirectLabel(
+            text = str(self.char['br']),
+            color = (1, 1, 1, 0),
+            scale = scale,
+            text_font = font4,
+            text_fg = (1,1,1,1),
+            text_align = TextNode.ARight,
+            parent = self.cardframe
+        )
+        self.brlabel.setPos(v*6, 0, -v*22)
+
+        self.falabel = DirectLabel(
+            text = str(self.char['fa']),
+            color = (1, 1, 1, 0),
+            scale = scale,
+            text_font = font4,
+            text_fg = (1,1,1,1),
+            text_align = TextNode.ARight,
+            parent = self.cardframe
+        )
+        self.falabel.setPos(v*45, 0, -v*22)
+        
+        for char in self.chars:
+            char['placed'] = False
+
+        seq = Sequence(
+            Parallel(
+                LerpPosInterval(  self.hprcontainer,   .5, (0,0,-.415), (0,0,-2)),
+                LerpPosInterval(  self.cardframe,      .5, (v*63,0,u*65), (v*63,0,2)),
+                LerpPosInterval(  self.fbgframe,       .5, (-v*97,0,v*61), (-v*97,0,2)),
+            ),
+            Parallel(
+                LerpColorInterval(self.l1frame,        .5, (1,1,1,1), (1,1,1,0)),
+                LerpColorInterval(self.r1frame,        .5, (1,1,1,1), (1,1,1,0)),
+                LerpColorInterval(self.squadframe,     .5, (1,1,1,1), (1,1,1,0)),
+                LerpColorInterval(self.capacityframe,  .5, (1,1,1,1), (1,1,1,0)),
+                LerpColorInterval(self.remainingframe, .5, (1,1,1,1), (1,1,1,0)),
+                LerpColorInterval(self.searchframe,    .5, (.75,.75,.75,1), (1,1,1,0)),
+                LerpColorInterval(self.statusframe,    .5, (.75,.75,.75,1), (1,1,1,0)),
+                LerpColorInterval(self.startframe,     .5, (.75,.75,.75,1), (1,1,1,0)),
+            ),
+            Func( self.updateButtons ),
+            Func( self.acceptAll ),
+            Func( self.updateChar ),
+        ).start()
+
+    def acceptAll(self):
+        self.accept("arrow_up", lambda: self.onArrowClicked('up'))
+        self.accept("arrow_down", lambda: self.onArrowClicked('down'))
+        self.accept("arrow_left", lambda: self.onArrowClicked('left'))
+        self.accept("arrow_right", lambda: self.onArrowClicked('right'))
+        self.accept("arrow_up-repeat", lambda: self.onArrowClicked('up'))
+        self.accept("arrow_down-repeat", lambda: self.onArrowClicked('down'))
+        self.accept("arrow_left-repeat", lambda: self.onArrowClicked('left'))
+        self.accept("arrow_right-repeat", lambda: self.onArrowClicked('right'))
+        self.accept(L1_BTN,           lambda: self.updateChar(-1))
+        self.accept(R1_BTN,           lambda: self.updateChar(+1))
+        self.accept(L1_BTN+"-repeat", lambda: self.updateChar(-1))
+        self.accept(R1_BTN+"-repeat", lambda: self.updateChar(+1))
+        self.accept(CIRCLE_BTN, self.onCircleClicked)
+        self.accept(TRIANGLE_BTN, self.onTriangleClicked)
+        self.accept(START_BTN, self.onStartClicked)
+
+    def updateChar(self, delta=0, current=None):
+        if current != None:
+            self.current = current
+        else:
+            self.current = self.current + delta
+            if self.current == len(self.chars):
+                self.current = 0
+            elif self.current == -1:
+                self.current = len(self.chars)-1
+        self.char = self.chars[self.current]
+
+        self.labels[0]['text'] = '%02d' % self.char['lv']
+        self.labels[1]['text'] = '%02d' % self.char['exp']
+        self.labels[2]['text'] = '%03d' % self.char['hpmax']
+        self.labels[3]['text'] = '%03d' % self.char['hpmax']
+        self.labels[4]['text'] = '%03d' % self.char['mpmax']
+        self.labels[5]['text'] = '%03d' % self.char['mpmax']
+
+        self.name['text'] = self.char['name']
+        self.job['text']  = self.char['job']
+        self.brlabel['text']= str(self.char['br'])
+        self.falabel['text']= str(self.char['fa'])
+
+        facetex = loader.loadTexture(GAME+'/textures/sprites/'+self.char['sprite']+'_face.png')
+        facetex.setMagfilter(Texture.FTNearest)
+        facetex.setMinfilter(Texture.FTNearest)
+        self.face['frameTexture'] = facetex
+
+        signs = ['aries','scorpio']
+        signtex = loader.loadTexture(GAME+'/textures/gui/'+signs[int(self.char['sign'])]+'.png')
+        signtex.setMagfilter(Texture.FTNearest)
+        signtex.setMinfilter(Texture.FTNearest)
+        self.sign['frameTexture'] = signtex
+
+        if self.char['placed']:
+            color = [.7,.7,.9,1]
+        else:
+            color = [1,1,1,1]
+
+        self.cardframe['frameColor'] = color
+        self.led['frameColor'] = color
+        self.sign['frameColor'] = color
+        self.name['text_fg'] = color
+        self.job['text_fg'] = color
+        self.brlabel['text_fg'] = color
+        self.falabel['text_fg'] = color
+        self.face['frameColor'] = color
+        self.barsframe['frameColor'] = color
+        self.fbgframe['frameColor'] = color
+        for label in self.labels:
+            label['text_fg'] = color
+
+    def onArrowClicked(self, direction):
+        if direction == 'up':
+            if self.cuy < 4:
+                self.cuy = self.cuy+1
+        elif direction == 'down':
+            if self.cuy > 0:
+                self.cuy = self.cuy-1
+        elif direction == 'left':
+            if self.cux > 0:
+                self.cux = self.cux-1
+        elif direction == 'right':
+            if self.cux < 4:
+                self.cux = self.cux+1
+
+        y = .33 if self.tiles[self.cux][self.cuy]['coords'] else 0
+        self.cursor.setPos(self.cux-2, self.cuy-2, y+0.025)
+        
+        self.updateButtons()
+
+    def onCircleClicked(self):
+
+        if self.tiles[self.cux][self.cuy]['coords']:
+        
+            if not self.char['placed']:
+            
+                if self.tiles[self.cux][self.cuy]['char']:
+                
+                    print 'Switch verticaly'
+                    self.sprites[self.cux][self.cuy].node.removeNode()
+                    self.sprites[self.cux][self.cuy] = Sprite.Sprite(GAME+'/textures/sprites/'+self.char['sprite']+'.png', 1)
+                    self.sprites[self.cux][self.cuy].animation = 'stand'
+                    self.sprites[self.cux][self.cuy].node.setPos(self.cux-2, self.cuy-2, .33+0.025)
+                    self.sprites[self.cux][self.cuy].node.setScale(.3)
+                    self.sprites[self.cux][self.cuy].node.reparentTo(self.root)
+                    self.char['placed'] = True
+                    self.tiles[self.cux][self.cuy]['char']['placed'] = False
+                    self.tiles[self.cux][self.cuy]['char'] = self.char
+
+                else:
+                
+                    print 'Place'
+            
+                    if self.remaining > 0:
+                    
+                        print 'Placed successfully'
+                        self.sprites[self.cux][self.cuy] = Sprite.Sprite(GAME+'/textures/sprites/'+self.char['sprite']+'.png', 1)
+                        self.sprites[self.cux][self.cuy].animation = 'stand'
+                        self.sprites[self.cux][self.cuy].node.setPos(self.cux-2, self.cuy-2, .33+0.025)
+                        self.sprites[self.cux][self.cuy].node.setScale(.3)
+                        self.sprites[self.cux][self.cuy].node.reparentTo(self.root)
+                        self.char['placed'] = True
+                        self.tiles[self.cux][self.cuy]['char'] = self.char
+                        self.remaining = self.remaining - 1
+        
+            else:
+            
+                if self.tiles[self.cux][self.cuy]['char']:
+
+                    if self.tiles[self.cux][self.cuy]['char'] == self.char:
+                
+                        print 'Remove'
+                        self.sprites[self.cux][self.cuy].node.removeNode()
+                        self.char['placed'] = False
+                        self.tiles[self.cux][self.cuy]['char']['placed'] = False
+                        self.tiles[self.cux][self.cuy]['char'] = None
+                        self.remaining = self.remaining + 1
+                    
+                    else:
+
+                        print 'Switch horizontaly'
+                        ox = oy = oc = None
+                        
+                        # remove the char at destination
+                        self.sprites[self.cux][self.cuy].node.removeNode()
+                        self.char['placed'] = False
+                        self.tiles[self.cux][self.cuy]['char']['placed'] = False
+                        oc = self.tiles[self.cux][self.cuy]['char']
+                        self.tiles[self.cux][self.cuy]['char'] = None
+
+                        # remove the char at origin
+                        for x,l in enumerate(self.tiles):
+                            for y,t in enumerate(l):
+                                if t['char'] == self.char:
+                                    ox = x
+                                    oy = y
+                                    self.sprites[x][y].node.removeNode()
+                                    self.char['placed'] = False
+                                    self.tiles[x][y]['char']['placed'] = False
+                                    self.tiles[x][y]['char'] = None
+
+                        # place the char at destination
+                        self.sprites[self.cux][self.cuy] = Sprite.Sprite(GAME+'/textures/sprites/'+self.char['sprite']+'.png', 1)
+                        self.sprites[self.cux][self.cuy].animation = 'stand'
+                        self.sprites[self.cux][self.cuy].node.setPos(self.cux-2, self.cuy-2, .33+0.025)
+                        self.sprites[self.cux][self.cuy].node.setScale(.3)
+                        self.sprites[self.cux][self.cuy].node.reparentTo(self.root)
+                        self.char['placed'] = True
+                        self.tiles[self.cux][self.cuy]['char'] = self.char
+                        
+                        # place the char at origin
+                        self.sprites[ox][oy] = Sprite.Sprite(GAME+'/textures/sprites/'+oc['sprite']+'.png', 1)
+                        self.sprites[ox][oy].animation = 'stand'
+                        self.sprites[ox][oy].node.setPos(ox-2, oy-2, .33+0.025)
+                        self.sprites[ox][oy].node.setScale(.3)
+                        self.sprites[ox][oy].node.reparentTo(self.root)
+                        oc['placed'] = True
+                        self.tiles[ox][oy]['char'] = oc
+
+                else:
+
+                    print 'Move'
+
+                    for x,l in enumerate(self.tiles):
+                        for y,t in enumerate(l):
+                            if t['char'] == self.char:
+                                self.sprites[x][y].node.removeNode()
+                                self.char['placed'] = False
+                                self.tiles[x][y]['char']['placed'] = False
+                                self.tiles[x][y]['char'] = None
+
+                    self.sprites[self.cux][self.cuy] = Sprite.Sprite(GAME+'/textures/sprites/'+self.char['sprite']+'.png', 1)
+                    self.sprites[self.cux][self.cuy].animation = 'stand'
+                    self.sprites[self.cux][self.cuy].node.setPos(self.cux-2, self.cuy-2, .33+0.025)
+                    self.sprites[self.cux][self.cuy].node.setScale(.3)
+                    self.sprites[self.cux][self.cuy].node.reparentTo(self.root)
+                    self.char['placed'] = True
+                    self.tiles[self.cux][self.cuy]['char'] = self.char
+
+            self.updateChar()
+            self.updateButtons()
+
+    def onTriangleClicked(self):
+        for i,char in enumerate(self.chars):
+            if char == self.tiles[self.cux][self.cuy]['char']:
+                self.updateChar(delta=None, current=i)
+
+    def onStartClicked(self):
+        if self.remaining < self.capacity:
+            seq = Sequence(
+                Func( self.ignoreAll ),
+                Parallel(
+                    LerpColorInterval(self.l1frame,        .5, (1,1,1,0), (1,1,1,1)),
+                    LerpColorInterval(self.r1frame,        .5, (1,1,1,0), (1,1,1,1)),
+                    LerpColorInterval(self.squadframe,     .5, (1,1,1,0), (1,1,1,1)),
+                    LerpColorInterval(self.capacityframe,  .5, (1,1,1,0), (1,1,1,1)),
+                    LerpColorInterval(self.remainingframe, .5, (1,1,1,0), (1,1,1,1)),
+                    LerpColorInterval(self.searchframe,    .5, (1,1,1,0), (.75,.75,.75,1)),
+                    LerpColorInterval(self.statusframe,    .5, (1,1,1,0), (.75,.75,.75,1)),
+                    LerpColorInterval(self.startframe,     .5, (1,1,1,0), (.75,.75,.75,1)),
+                ),
+                Parallel(
+                    LerpPosInterval(  self.hprcontainer,   .5, (0,0,-2), (0,0,-.415)),
+                    LerpPosInterval(  self.cardframe,      .5, (v*63,0,2), (v*63,0,u*65)),
+                    LerpPosInterval(  self.fbgframe,       .5, (-v*97,0,2), (-v*97,0,v*61)),
+                ),
+                Func( self.l1frame.removeNode ),
+                Func( self.r1frame.removeNode ),
+                Func( self.fbgframe.removeNode ),
+                Func( self.cardframe.removeNode ),
+                Func( self.squadframe.removeNode ),
+                Func( self.capacityframe.removeNode ),
+                Func( self.remainingframe.removeNode ),
+                Func( self.searchframe.removeNode ),
+                Func( self.statusframe.removeNode ),
+                Func( self.startframe.removeNode ),
+                Func( self.hprcontainer.removeNode ),
+            ).start()
+
+            formation = []
+            for x,l in enumerate(self.tiles):
+                for y,t in enumerate(l):
+                    if t['char']:
+                        formation.append({'charid': t['char']['id'], 'coords': t['coords'], 'direction': self.direction})
+            self.command(formation)
+
+    def updateButtons(self):
+
+        if self.remaining < self.capacity:
+            self.startframe.setColor((1,1,1,1))
+        else:
+            self.startframe.setColor((.75,.75,.75,1))
+        if self.tiles[self.cux][self.cuy]['char']:
+            self.statusframe.setColor((.75,.75,.75,1)) # TODO
+            self.searchframe.setColor((1,1,1,1))
+        else:
+            self.statusframe.setColor((.75,.75,.75,1))
+            self.searchframe.setColor((.75,.75,.75,1))
 

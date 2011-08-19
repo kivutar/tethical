@@ -47,6 +47,8 @@ BATTLE_COMPLETE = 32
 GAME_OVER = 33
 GET_PASSIVE_WALKABLES = 34
 PASSIVE_WALKABLES_LIST = 35
+START_FORMATION = 36
+FORMATION_READY = 37
 
 class Server:
 
@@ -57,6 +59,8 @@ class Server:
         self.parties = {}
         self.sessions = {}
         self.playersinlobby = []
+        self.charid = 0
+        self.chars = []
 
         self.cManager  = QueuedConnectionManager()
         self.cListener = QueuedConnectionListener(self.cManager, 0)
@@ -106,6 +110,12 @@ class Server:
                 self.sessions[source] = {}
                 self.sessions[source]['login'] = login
                 print login, 'logged in.'
+                self.sessions[source]['characters'] = []
+                for i in range(10):
+                    self.charid = self.charid + 1
+                    char = Character.Random(self.charid)
+                    self.sessions[source]['characters'].append(char)
+                    self.chars.append(char)
                 myPyDatagram = PyDatagram()
                 myPyDatagram.addUint8(LOGIN_SUCCESS)
                 self.cWriter.send(myPyDatagram, source)
@@ -123,6 +133,7 @@ class Server:
                 'log': {},
                 'creator': self.sessions[source]['login'],
                 'players': [],
+                'formations': [],
             }
             party['players'].append(self.sessions[source]['login'])
 
@@ -171,7 +182,7 @@ class Server:
             name = iterator.getString()
             party = self.parties[name]
             
-            if len(party['players']) >= len(party['map']['chartiles']):
+            if len(party['players']) >= len(party['map']['tilesets']):
                 parties = deepcopy(self.parties)
                 for party in parties.values():
                     del party['map']['tiles']
@@ -191,22 +202,13 @@ class Server:
                 myPyDatagram.addUint8(PARTY_JOINED)
                 myPyDatagram.addString32(json.dumps(party))
                 self.cWriter.send(myPyDatagram, source)
-                
-                for teamid,team in enumerate(party['map']['chartiles']):
-                    for chartile in team:
-                        x = int(chartile['x'])
-                        y = int(chartile['y'])
-                        z = int(chartile['z'])
-                        direction = int(chartile['direction'])
-                        charid = str(x)+str(y)+str(z)
-                        party['map']['tiles'][x][y][z]['char'] = charid
-                        party['chars'][charid] = Character.Random(charid, teamid, direction)
-                
-                if len(party['players']) == len(party['map']['chartiles']):
-                    for player in party['players']:
+
+                if len(party['players']) == len(party['map']['tilesets']):
+                    for tilesetid,player in enumerate(party['players']):
                         myPyDatagram = PyDatagram()
-                        myPyDatagram.addUint8(START_BATTLE)
-                        myPyDatagram.addString32(json.dumps(party))
+                        myPyDatagram.addUint8(START_FORMATION)
+                        myPyDatagram.addString32(json.dumps(party['map']['tilesets'][tilesetid]))
+                        myPyDatagram.addString32(json.dumps(self.sessions[self.players[player]]['characters']))
                         self.cWriter.send(myPyDatagram, self.players[player])
 
                 self.updateAllPartyLists()
@@ -435,6 +437,31 @@ class Server:
                     myPyDatagram.addString(charid2)
                     myPyDatagram.addUint8(damages)
                     myPyDatagram.addString(json.dumps(attackables))
+                    self.cWriter.send(myPyDatagram, self.players[playerlogin])
+
+        elif msgID == FORMATION_READY:
+
+            formation = json.loads(iterator.getString())
+
+            party = self.parties[self.sessions[source]['party']]
+            party['formations'].append(formation)
+
+            if len(party['formations']) == len(party['map']['tilesets']):
+
+                for team,formation in enumerate(party['formations']):
+                    for line in formation:
+                        x, y, z = line['coords']
+                        charid = line['charid']
+                        party['map']['tiles'][x][y][z]['char'] = str(charid)
+                        char = filter(lambda x: x['id'] == charid, self.chars)[0]
+                        char['team'] = team
+                        char['direction'] = line['direction']
+                        party['chars'][str(charid)] = char
+
+                for playerlogin in party['players']:
+                    myPyDatagram = PyDatagram()
+                    myPyDatagram.addUint8(START_BATTLE)
+                    myPyDatagram.addString32(json.dumps(party))
                     self.cWriter.send(myPyDatagram, self.players[playerlogin])
 
     def updateAllPartyLists(self):
