@@ -40,12 +40,12 @@ class CameraHandler(DirectObject.DirectObject):
         self.windowEvent(base.win)
 
     def toggleZoom(self):
-        if self.phase != 'gui' and round(self.container.getScale()[0]*10) in (10, 14):
+        if self.phase != 'gui' and round(self.container.getScale()[0]*10) in (10, 100):
             self.toggle_r_snd.play()
             if self.zoomed:
-                i = LerpScaleInterval(self.container, 0.25, 1.4, 1.0)
+                i = LerpScaleInterval(self.container, 0.25, 10.0, 1.0)
             else:
-                i = LerpScaleInterval(self.container, 0.25, 1.0, 1.4)
+                i = LerpScaleInterval(self.container, 0.25, 1.0, 10.0)
             s = Sequence(i)
             s.start()
             self.zoomed = not self.zoomed
