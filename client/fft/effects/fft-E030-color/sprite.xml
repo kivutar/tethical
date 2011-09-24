@@ -1,0 +1,347 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<format name="FFT: DEATH (E030)" target-rows="2" target-columns="6" base-width="128" base-height="256" frame-width="185" frame-height="360" no-sampling="false" target-start="1" target-end="12" target-ms="80" status="Demonstration only.">
+  <reference>
+    <protected-colors>
+      <color r="255" g="255" b="255" />
+    </protected-colors>
+  </reference>
+  <frames>
+    <frame id="999" s="0" t="0" w="1" h="1" />
+    <!--Ghost-->
+    <frame id="1" s="9" t="8" w="71" h="112" />
+    <!--Particle A-->
+    <frame id="2" s="9" t="128" w="97" h="96" />
+    <!--Particle B-->
+    <frame id="3" s="81" t="8" w="39" h="40" />
+  </frames>
+  <guides>
+    <guide type="horizontal" value="54" />
+    <guide type="horizontal" value="112" />
+    <guide type="horizontal" value="161" />
+    <guide type="horizontal" value="212" />
+    <guide type="horizontal" value="244" />
+    <guide type="horizontal" value="273" />
+    <guide type="horizontal" value="325" />
+    <guide type="horizontal" value="332" />
+    <guide type="vertical" value="18" />
+    <guide type="vertical" value="35" />
+    <guide type="vertical" value="46" />
+    <guide type="vertical" value="58" />
+    <guide type="vertical" value="81" />
+    <guide type="vertical" value="102" />
+    <guide type="vertical" value="112" />
+    <guide type="vertical" value="131" />
+    <guide type="vertical" value="137" />
+    <guide type="vertical" value="158" />
+    <guide type="vertical" value="177" />
+  </guides>
+  <colors>
+    <color name="white" r="1" g="1" b="1" a="1"/>
+    <color name="red" r="1" g="0" b="0" a="1"/>
+    <color name="magenta" r=".76078" g=".63429" b=".8549" a="1"/>
+    <color name="green" r=".4117" g=".4549" b=".247" a="1"/>
+    <color name="orange" r=".968" g=".5843" b=".2392" a="1"/>
+  </colors>
+  <motion-tweens>
+    <motion-tween id="1" length-in-frames="12">
+      <point x="0" y="0"/>
+      <point x="0" y="0"/>
+      <color-state name="magenta"/>
+      <color-state name="magenta"/>
+      <color-state name="magenta"/>
+      <color-state name="orange"/>      
+      <color-state name="green"/>
+      <color-state name="green"/>
+      <color-state name="orange"/>
+      <color-state name="red"/>
+    </motion-tween>
+  </motion-tweens>
+  <composite-frames>
+    <composite-frame id="2">
+      <frame id="3" offset-x="62" offset-y="297" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="73" offset-y="293" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="71" offset-y="292" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="56" offset-y="296" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="61" offset-y="290" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="38" offset-y="297" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="50" offset-y="304" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="58" offset-y="306" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="50" offset-y="291" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="61" offset-y="295" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="54" offset-y="296" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="64" offset-y="296" blend="color-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="73" offset-y="298" blend="color-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="84" offset-y="302" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="71" offset-y="308" blend="linear-dodge" tween="1" frame-in-tween="4" />
+    </composite-frame>
+    <composite-frame id="3">
+      <frame id="3" offset-x="72" offset-y="275" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="48" offset-y="276" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="62" offset-y="274" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="59" offset-y="275" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="67" offset-y="286" blend="color-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="52" offset-y="287" blend="color-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="73" offset-y="287" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="48" offset-y="288" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="55" offset-y="293" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="57" offset-y="285" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="69" offset-y="289" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="74" offset-y="288" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="47" offset-y="295" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="72" offset-y="296" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="61" offset-y="297" blend="linear-dodge" tween="1" frame-in-tween="4" />
+      <frame id="3" offset-x="55" offset-y="271" blend="darken" />
+    </composite-frame>
+    <composite-frame id="4">
+      <frame id="3" offset-x="57" offset-y="245" blend="color-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="52" offset-y="261" blend="color-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="70" offset-y="249" blend="color-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="68" offset-y="262" blend="color-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="54" offset-y="275" blend="color-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="67" offset-y="279" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="62" offset-y="293" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="56" offset-y="293" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="58" offset-y="276" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="65" offset-y="270" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="59" offset-y="272" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="65" offset-y="263" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="54" offset-y="256" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="56" offset-y="263" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="72" offset-y="245" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="62" offset-y="241" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="58" offset-y="242" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="69" offset-y="244" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="53" offset-y="248" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="72" offset-y="262" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="45" offset-y="255" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="64" offset-y="254" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="64" offset-y="256" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="82" offset-y="253" blend="darken" scale-x="0.4" scale-y="0.3" />
+      <frame id="3" offset-x="72" offset-y="247" blend="darken" scale-x="0.200000000000006" scale-y="-0.199999999999994" />
+      <frame id="3" offset-x="45" offset-y="253" blend="darken" scale-x="0.4" scale-y="0.3" />
+      <frame id="3" offset-x="52" offset-y="261" blend="darken" scale-x="0.5" scale-y="0.4" />
+      <frame id="3" offset-x="56" offset-y="270" blend="darken" scale-x="0.4" scale-y="0.400000000000001" />
+      <frame id="3" offset-x="70" offset-y="253" blend="darken" scale-x="-0.0999999999999995" scale-y="-0.1" />
+    </composite-frame>
+    <composite-frame id="5">
+      <frame id="3" offset-x="64" offset-y="257" blend="color-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="52" offset-y="244" blend="color-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="73" offset-y="238" blend="color-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="60" offset-y="276" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="57" offset-y="249" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="60" offset-y="254" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="59" offset-y="247" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="66" offset-y="236" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="56" offset-y="232" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="69" offset-y="244" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="74" offset-y="237" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="71" offset-y="227" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="60" offset-y="227" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="50" offset-y="239" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="47" offset-y="247" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="64" offset-y="261" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="56" offset-y="283" blend="linear-dodge" tween="1" frame-in-tween="5" scale-x="1.16" scale-y="0.8" />
+      <frame id="3" offset-x="58" offset-y="295" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="49" offset-y="265" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="75" offset-y="244" blend="darken" scale-x="0.16" scale-y="-0.08" />
+      <frame id="3" offset-x="46" offset-y="244" blend="darken" scale-x="0.2" scale-y="0.12" />
+      <frame id="3" offset-x="51" offset-y="253" blend="darken" scale-x="0.32" scale-y="0.32" />
+      <frame id="3" offset-x="56" offset-y="263" blend="darken" scale-x="0.52" scale-y="0.44" />
+      <frame id="3" offset-x="73" offset-y="249" blend="darken" scale-x="0.12" scale-y="0.08" />
+      <frame id="3" offset-x="79" offset-y="249" blend="darken" scale-x="0.12" scale-y="-0.12" />
+      <frame id="3" offset-x="73" offset-y="246" blend="linear-dodge" tween="1" frame-in-tween="5" />
+    </composite-frame>
+    <composite-frame id="6">
+      <frame id="3" offset-x="61" offset-y="229" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="50" offset-y="248" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="58" offset-y="234" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="51" offset-y="248" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="53" offset-y="260" blend="linear-dodge" tween="1" frame-in-tween="5" scale-x="0.6" scale-y="0.68" />
+      <frame id="3" offset-x="56" offset-y="281" blend="linear-dodge" tween="1" frame-in-tween="5" scale-x="0.36" scale-y="0.4" />
+      <frame id="3" offset-x="59" offset-y="295" blend="linear-dodge" tween="1" frame-in-tween="5" scale-x="0.28" scale-y="0.28" />
+      <frame id="3" offset-x="49" offset-y="228" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="49" offset-y="217" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="56" offset-y="213" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="56" offset-y="204" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="66" offset-y="205" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="75" offset-y="206" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="79" offset-y="211" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="67" offset-y="205" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="77" offset-y="218" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="66" offset-y="218" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="73" offset-y="227" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="63" offset-y="231" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="53" offset-y="236" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="58" offset-y="218" blend="linear-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="52" offset-y="219" blend="color-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="79" offset-y="218" blend="color-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="72" offset-y="233" blend="darken" scale-x="0.12" scale-y="-0.16" />
+      <frame id="3" offset-x="63" offset-y="233" blend="color-dodge" tween="1" frame-in-tween="5" />
+      <frame id="3" offset-x="54" offset-y="245" blend="color-dodge" tween="1" frame-in-tween="5" scale-x="0.72" scale-y="0.84" />
+      <frame id="3" offset-x="43" offset-y="240" blend="color-burn" scale-x="0.32" scale-y="-0.24" />
+      <frame id="3" offset-x="43" offset-y="240" blend="color-burn" scale-x="0.32" scale-y="0.32" />
+      <frame id="3" offset-x="50" offset-y="250" blend="color-burn" scale-x="0.28" scale-y="0.24" />
+      <frame id="3" offset-x="51" offset-y="248" blend="color-burn" scale-x="0.28" scale-y="0.24" />
+      <frame id="3" offset-x="55" offset-y="257" blend="color-burn" scale-x="0.24" scale-y="0.24" />
+      <frame id="3" offset-x="55" offset-y="257" blend="color-burn" scale-x="0.24" scale-y="0.24" />
+    </composite-frame>
+    <composite-frame id="7">
+      <frame id="3" offset-x="68" offset-y="148" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="58" offset-y="220" blend="linear-dodge" tween="1" frame-in-tween="6" scale-x="0.24" scale-y="0.36" />
+      <frame id="3" offset-x="47" offset-y="236" blend="linear-dodge" tween="1" frame-in-tween="6" scale-x="-0.0800000000000001" scale-y="0.16" />
+      <frame id="3" offset-x="58" offset-y="161" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="76" offset-y="159" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="68" offset-y="204" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="62" offset-y="178" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="57" offset-y="164" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="64" offset-y="161" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="57" offset-y="154" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="70" offset-y="156" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="72" offset-y="173" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="62" offset-y="166" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="68" offset-y="188" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="65" offset-y="175" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="67" offset-y="192" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="57" offset-y="159" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="67" offset-y="155" blend="linear-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="68" offset-y="194" blend="linear-dodge" tween="1" frame-in-tween="6" scale-x="0.4" scale-y="0.72" />
+      <frame id="3" offset-x="60" offset-y="178" blend="color-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="70" offset-y="159" blend="color-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="70" offset-y="198" blend="color-dodge" tween="1" frame-in-tween="6" scale-x="0.6" scale-y="0.84" />
+      <frame id="3" offset-x="59" offset-y="156" blend="color-dodge" tween="1" frame-in-tween="6" />
+      <frame id="3" offset-x="65" offset-y="210" blend="linear-dodge" tween="1" frame-in-tween="6" scale-x="0.44" scale-y="0.56" />
+    </composite-frame>
+    <composite-frame id="8">
+      <frame id="1" offset-x="96" offset-y="273" blend="linear-dodge" tween="1" frame-in-tween="7" scale-x="-1.64" scale-y="1.88" />
+      <frame id="1" offset-x="88" offset-y="158" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="1" offset-x="25" offset-y="273" blend="linear-dodge" tween="1" frame-in-tween="7" scale-x="2.08" scale-y="1.96" />
+      <frame id="1" offset-x="62" offset-y="211" blend="linear-dodge" tween="1" frame-in-tween="7" scale-x="1.76" scale-y="1.16" />
+      <frame id="1" offset-x="52" offset-y="100" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="1" offset-x="45" offset-y="133" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="1" offset-x="77" offset-y="187" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="1" offset-x="52" offset-y="346" blend="linear-dodge" tween="1" frame-in-tween="7" scale-x="2.84" scale-y="2.76" />
+      <frame id="2" offset-x="46" offset-y="270" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="2" offset-x="29" offset-y="261" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="2" offset-x="20" offset-y="281" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="2" offset-x="10" offset-y="302" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="2" offset-x="2" offset-y="268" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="2" offset-x="60" offset-y="299" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="2" offset-x="53" offset-y="258" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="1" offset-x="58" offset-y="257" blend="linear-dodge" tween="1" frame-in-tween="7" scale-x="0.92" scale-y="1.36" />
+      <frame id="2" offset-x="30" offset-y="248" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="2" offset-x="62" offset-y="276" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="2" offset-x="79" offset-y="304" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="2" offset-x="81" offset-y="274" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="2" offset-x="81" offset-y="305" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="2" offset-x="52" offset-y="228" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="2" offset-x="47" offset-y="216" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="3" offset-x="101" offset-y="212" blend="linear-dodge" tween="1" frame-in-tween="7" />
+      <frame id="2" offset-x="-16" offset-y="219" blend="color-dodge" tween="1" frame-in-tween="7" />
+      <frame id="3" offset-x="65" offset-y="124" blend="color-dodge" tween="1" frame-in-tween="7" />
+      <frame id="3" offset-x="56" offset-y="135" blend="color-dodge" tween="1" frame-in-tween="7" />
+      <frame id="3" offset-x="66" offset-y="137" blend="color-dodge" tween="1" frame-in-tween="7" />
+      <frame id="3" offset-x="77" offset-y="130" blend="color-dodge" tween="1" frame-in-tween="7" />
+      <frame id="3" offset-x="80" offset-y="129" blend="color-dodge" tween="1" frame-in-tween="7" />
+      <frame id="3" offset-x="73" offset-y="147" blend="color-dodge" tween="1" frame-in-tween="7" />
+      <frame id="3" offset-x="74" offset-y="157" blend="color-dodge" tween="1" frame-in-tween="7" />
+    </composite-frame>
+    <composite-frame id="9">
+      <frame id="1" offset-x="91" offset-y="263" blend="linear-dodge" scale-x="1.92" scale-y="2.44"  tween="1" frame-in-tween="8" />
+      <frame id="1" offset-x="80" offset-y="144" blend="linear-dodge" scale-x="1.52" scale-y="1.08"  tween="1" frame-in-tween="8" />
+      <frame id="1" offset-x="41" offset-y="107" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="1" offset-x="53" offset-y="79" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="1" offset-x="73" offset-y="40" blend="linear-dodge" scale-x="0.88" scale-y="0.64"  tween="1" frame-in-tween="8" />
+      <frame id="1" offset-x="61" offset-y="34" blend="linear-dodge" scale-x="0.96" scale-y="0.84"  tween="1" frame-in-tween="8" />
+      <frame id="1" offset-x="19" offset-y="258" blend="linear-dodge" scale-x="1.32" scale-y="3"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="38" offset-y="295" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="39" offset-y="273" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="18" offset-y="268" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="11" offset-y="243" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="15" offset-y="224" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="1" offset-x="38" offset-y="288" blend="linear-dodge" scale-x="2.04" scale-y="2.56"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="17" offset-y="271" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="41" offset-y="184" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="41" offset-y="152" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="36" offset-y="116" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="34" offset-y="98" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="65" offset-y="161" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="59" offset-y="149" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="39" offset-y="131" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="59" offset-y="184" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="1" offset-x="76" offset-y="188" blend="linear-dodge" scale-x="1.52" scale-y="1.32"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="87" offset-y="192" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="83" offset-y="211" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="50" offset-y="218" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="57" offset-y="250" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="68" offset-y="269" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="69" offset-y="290" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="56" offset-y="303" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="84" offset-y="223" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="122" offset-y="232" blend="linear-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="80" offset-y="233" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="72" offset-y="195" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="75" offset-y="216" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="31" offset-y="232" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="17" offset-y="207" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="6" offset-y="208" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="15" offset-y="244" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="35" offset-y="268" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="32" offset-y="289" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="27" offset-y="313" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="19" offset-y="331" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="0" offset-y="319" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="2" offset-x="75" offset-y="191" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="72" offset-y="144" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="73" offset-y="124" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="59" offset-y="131" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="44" offset-y="228" blend="color-dodge"  tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="48" offset-y="261" blend="color-dodge" tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="60" offset-y="201" blend="color-dodge" tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="62" offset-y="152" blend="color-dodge" tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="59" offset-y="178" blend="color-dodge" tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="10" offset-y="182" blend="color-dodge" tween="1" frame-in-tween="8" />
+      <frame id="3" offset-x="145" offset-y="205" blend="color-dodge" tween="1" frame-in-tween="8" />
+    </composite-frame>
+    <composite-frame id="10">
+      <frame id="1" offset-x="101" offset-y="202" blend="linear-dodge" scale-x="1.28" scale-y="2.64"  tween="1" frame-in-tween="9" />
+      <frame id="1" offset-x="54" offset-y="192" blend="linear-dodge" scale-x="1.68" scale-y="2.76"  tween="1" frame-in-tween="9" />
+      <frame id="1" offset-x="37" offset-y="244" blend="linear-dodge" scale-x="1.64" scale-y="3.32"  tween="1" frame-in-tween="9" />
+      <frame id="1" offset-x="72" offset-y="225" blend="linear-dodge" scale-x="1.8" scale-y="2.52"  tween="1" frame-in-tween="9" />
+      <frame id="1" offset-x="34" offset-y="99" blend="linear-dodge" scale-x="1.24" scale-y="1.36"  tween="1" frame-in-tween="9" />
+      <frame id="1" offset-x="48" offset-y="65" blend="linear-dodge" scale-x="1.4" scale-y="1.2"  tween="1" frame-in-tween="9" />
+      <frame id="1" offset-x="61" offset-y="35" blend="linear-dodge"  tween="1" frame-in-tween="9" />
+      <frame id="1" offset-x="55" offset-y="18" blend="linear-dodge" scale-x="1.16"  tween="1" frame-in-tween="9" />
+      <frame id="1" offset-x="46" offset-y="-40" blend="linear-dodge"  tween="1" frame-in-tween="9" />
+      <frame id="2" offset-x="29" offset-y="165" blend="color-dodge"  tween="1" frame-in-tween="9" />
+      <frame id="2" offset-x="33" offset-y="110" blend="color-dodge"  tween="1" frame-in-tween="9" />
+      <frame id="2" offset-x="39" offset-y="49" blend="color-dodge"  tween="1" frame-in-tween="9" />
+      <frame id="3" offset-x="42" offset-y="213" blend="color-dodge"  tween="1" frame-in-tween="9" />
+      <frame id="3" offset-x="105" offset-y="299" blend="color-dodge"  tween="1" frame-in-tween="9" />
+      <frame id="2" offset-x="72" offset-y="175" blend="color-dodge"  tween="1" frame-in-tween="9" />
+      <frame id="3" offset-x="104" offset-y="233" blend="color-dodge"  tween="1" frame-in-tween="9" />
+      <frame id="3" offset-x="102" offset-y="248" blend="color-dodge"  tween="1" frame-in-tween="9" />
+      <frame id="3" offset-x="103" offset-y="263" blend="color-dodge"  tween="1" frame-in-tween="9" />
+      <frame id="3" offset-x="104" offset-y="282" blend="color-dodge"  tween="1" frame-in-tween="9" />
+      <frame id="2" offset-x="46" offset-y="217" blend="color-dodge"  tween="1" frame-in-tween="9" />
+      <frame id="3" offset-x="53" offset-y="275" blend="color-dodge"  tween="1" frame-in-tween="9" />
+      <frame id="3" offset-x="63" offset-y="26" blend="color-dodge" scale-x="0.68" scale-y="1.36"  tween="1" frame-in-tween="9" />
+      <frame id="1" offset-x="63" offset-y="126" blend="color-dodge" scale-x="1.56" scale-y="1.64"  tween="1" frame-in-tween="9" />
+    </composite-frame>
+    <composite-frame id="11">
+      <frame id="1" offset-x="75" offset-y="58" blend="color-dodge" scale-x="2.08" scale-y="3.32" tween="1" frame-in-tween="10" />
+      <frame id="1" offset-x="45" offset-y="47" blend="color-dodge" scale-x="1.8" scale-y="2.08000000000001"  tween="1" frame-in-tween="10" />
+      <frame id="1" offset-x="58" offset-y="23" blend="color-dodge" scale-x="1.76" scale-y="2.2"  tween="1" frame-in-tween="10" />
+      <frame id="1" offset-x="80" offset-y="81" blend="color-dodge" scale-x="1.2" scale-y="2.68"  tween="1" frame-in-tween="10" />
+      <frame id="2" offset-x="57" offset-y="-45" blend="color-dodge"  tween="1" frame-in-tween="10" />
+      <frame id="3" offset-x="77" offset-y="-12" blend="color-dodge"  tween="1" frame-in-tween="10" />
+      <frame id="3" offset-x="61" offset-y="82" blend="color-dodge"  tween="1" frame-in-tween="10" />
+      <frame id="3" offset-x="59" offset-y="114" blend="color-dodge"  tween="1" frame-in-tween="10" />
+      <frame id="2" offset-x="41" offset-y="69" blend="color-dodge"  tween="1" frame-in-tween="10" />
+      <frame id="3" offset-x="80" offset-y="84" blend="color-dodge"  tween="1" frame-in-tween="10" />
+    </composite-frame>
+    <composite-frame id="12">
+      <frame id="1" offset-x="58" offset-y="-110" blend="linear-dodge" scale-x="1.6" scale-y="2.92" tween="1" frame-in-tween="11" />
+      <frame id="1" offset-x="37" offset-y="-99" blend="linear-dodge" scale-x="1.44" scale-y="1.6" tween="1" frame-in-tween="11" />
+    </composite-frame>
+  </composite-frames>
+</format>

@@ -1,0 +1,399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<format name="FFT: DARK BLADE (E172)" target-rows="3" target-columns="10" base-width="128" base-height="256" frame-width="140" frame-height="200" no-sampling="true" target-start="1" target-end="23" target-ms="80" status="Demonstration only.">
+  <reference>
+    <protected-colors>
+      <color r="255" g="255" b="255" />
+    </protected-colors>
+  </reference>
+  <frames>
+    <frame id="999" s="0" t="0" w="1" h="1" />
+    <frame id="1" s="8" t="8" w="39" h="119" />
+    <frame id="2" s="48" t="8" w="41" h="104" />
+    <frame id="3" s="90" t="8" w="38" h="81" />
+    <frame id="4" s="69" t="113" w="25" h="38" />
+    <frame id="5" s="96" t="90" w="32" h="62" />
+    <frame id="6" s="8" t="129" w="47" h="47" />
+    <frame id="7" s="48" t="113" w="15" h="15" />
+    <frame id="8" s="56" t="129" w="7" h="6" />
+    <frame id="9" s="69" t="153" w="59" h="92" />
+  </frames>
+  <guides>
+    <guide type="horizontal" value="2" />
+    <guide type="horizontal" value="16" />
+    <guide type="horizontal" value="38" />
+    <guide type="horizontal" value="64" />
+    <guide type="horizontal" value="106" />
+    <guide type="horizontal" value="122" />
+    <guide type="horizontal" value="142" />
+    <guide type="horizontal" value="158" />
+    <guide type="horizontal" value="168" />
+    <guide type="horizontal" value="186" />
+    <guide type="vertical" value="8" />
+    <guide type="vertical" value="22" />
+    <guide type="vertical" value="30" />
+    <guide type="vertical" value="40" />
+    <guide type="vertical" value="46" />
+    <guide type="vertical" value="66" />
+    <guide type="vertical" value="82" />
+    <guide type="vertical" value="96" />
+    <guide type="vertical" value="102" />
+    <guide type="vertical" value="110" />
+    <guide type="vertical" value="120" />
+    <guide type="vertical" value="132" />
+  </guides>
+  <colors>
+    <color name="white" r="1" g="1" b="1" a="1" />
+    <color name="white-fade" r="1" g="1" b="1" a=".6" />
+    <color name="red" r="1" g="0" b="0" a="1" />
+    <color name="magenta" r=".76078" g=".63429" b=".8549" a="1" />
+    <color name="magenta-fade" r=".76078" g=".63429" b=".8549" a=".5" />
+    <color name="blue" r=".2275" g=".2196" b=".5882" a="1" />
+    <color name="blue-fade-x2" r=".2275" g=".2196" b=".5882" a=".4" />
+    <color name="pink" r=".6431" g=".1765" b=".4235" a="1" />
+    <color name="pink-fade" r=".6431" g=".1765" b=".4235" a=".5" />
+    <color name="green" r=".4117" g=".4549" b=".247" a="1" />
+    <color name="orange" r=".968" g=".5843" b=".2392" a="1" />
+    <color name="orange-fade" r=".968" g=".5843" b=".2392" a=".5" />
+  </colors>
+  <motion-tweens>
+    <motion-tween id="1" length-in-frames="4">
+      <color-state name="magenta" />
+      <color-state name="magenta" />
+    </motion-tween>
+  </motion-tweens>
+  <composite-frames>
+    <composite-frame id="1">
+      <frame id="7" offset-x="42" offset-y="139" blend="color-dodge" color-name="blue-fade-x2" scale-x="3.84" scale-y="2.96" />
+    </composite-frame>
+    <composite-frame id="2">
+      <frame id="6" offset-x="41" offset-y="127" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="25" offset-y="122" blend="color-dodge" color-name="blue" scale-x="0.64" scale-y="0.6" />
+      <frame id="6" offset-x="52" offset-y="119" blend="color-dodge" color-name="pink-fade" scale-x="0.88" scale-y="1.04" />
+      <frame id="6" offset-x="37" offset-y="126" blend="color-dodge" color-name="pink-fade" scale-x="0.68" scale-y="0.36" />
+      <frame id="6" offset-x="35" offset-y="125" blend="color-dodge" color-name="white" />
+      <frame id="6" offset-x="25" offset-y="122" blend="color-dodge" color-name="blue-fade" scale-x="0.64" scale-y="0.6" />
+      <frame id="6" offset-x="52" offset-y="119" blend="color-dodge" color-name="pink-fade" scale-x="0.88" scale-y="1.04" />
+      <frame id="6" offset-x="37" offset-y="126" blend="color-dodge" color-name="pink-fade" scale-x="0.68" scale-y="0.36" />
+      <frame id="6" offset-x="41" offset-y="127" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="25" offset-y="122" blend="color-dodge" color-name="blue" scale-x="0.64" scale-y="0.6" />
+      <frame id="6" offset-x="52" offset-y="119" blend="color-dodge" color-name="white" scale-x="0.88" scale-y="1.04" />
+      <frame id="6" offset-x="37" offset-y="126" blend="color-dodge" color-name="white" scale-x="0.68" scale-y="0.36" />
+    </composite-frame>
+    <composite-frame id="3">
+      <frame id="6" offset-x="43" offset-y="127" blend="color-dodge" color-name="pink-fade" scale-x="0.8" scale-y="0.8" />
+      <frame id="6" offset-x="25" offset-y="122" blend="color-dodge" color-name="blue" scale-x="0.32" scale-y="0.28" />
+      <frame id="6" offset-x="52" offset-y="119" blend="color-dodge" color-name="pink-fade" scale-x="0.88" scale-y="1.04" />
+      <frame id="6" offset-x="33" offset-y="125" blend="color-dodge" color-name="pink-fade" scale-x="0.48" scale-y="0.16" />
+      <frame id="6" offset-x="61" offset-y="105" blend="color-dodge" color-name="white" scale-x="0.84" scale-y="0.72" />
+      <frame id="6" offset-x="61" offset-y="105" blend="color-dodge" color-name="pink" scale-x="0.84" scale-y="0.72" />
+      <frame id="6" offset-x="25" offset-y="122" blend="color-dodge" color-name="white" scale-x="0.32" scale-y="0.28" />
+      <frame id="6" offset-x="61" offset-y="106" blend="color-dodge" color-name="pink-fade" scale-x="0.72" scale-y="0.76" />
+      <frame id="6" offset-x="42" offset-y="125" blend="color-dodge" color-name="pink-fade" scale-x="0.76" scale-y="0.8" />
+      <frame id="6" offset-x="43" offset-y="128" blend="color-dodge" color-name="pink-fade" scale-x="0.8" scale-y="0.8" />
+      <frame id="6" offset-x="25" offset-y="122" blend="color-dodge" color-name="blue" scale-x="0.32" scale-y="0.28" />
+      <frame id="6" offset-x="49" offset-y="116" blend="color-dodge" color-name="white" scale-x="0.88" scale-y="1.04" />
+      <frame id="6" offset-x="40" offset-y="127" blend="color-dodge" color-name="white" scale-x="0.56" scale-y="0.6" />
+    </composite-frame>
+    <composite-frame id="4">
+      <frame id="3" offset-x="54" offset-y="71"  blend="lighten" scale-x="1.44" scale-y="1.24" />
+      <frame id="6" offset-x="34" offset-y="129" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="61" offset-y="125" blend="color-dodge" color-name="pink" />
+      <frame id="6" offset-x="57" offset-y="111" blend="color-dodge" color-name="white" />
+      <frame id="6" offset-x="49" offset-y="125" blend="color-dodge" color-name="white" />
+    </composite-frame>
+    <composite-frame id="5">
+      <frame id="3" offset-x="54" offset-y="71" blend="lighten" color-name="white" scale-x="1.44" scale-y="1.24" />
+      <frame id="2" offset-x="51" offset-y="43" blend="lighten" color-name="white" scale-x="1.56" scale-y="1.28" />
+      <frame id="6" offset-x="34" offset-y="129" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="61" offset-y="125" blend="color-dodge" color-name="pink" />
+      <frame id="6" offset-x="61" offset-y="125" blend="color-dodge" color-name="pink" />
+      <frame id="6" offset-x="61" offset-y="125" blend="color-dodge" color-name="white-fade" />
+      <frame id="6" offset-x="28" offset-y="124" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="49" offset-y="125" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="28" offset-y="124" blend="color-dodge" color-name="white-fade" />
+      <frame id="6" offset-x="42" offset-y="125" blend="color-dodge" color-name="white" />
+      <frame id="6" offset-x="47" offset-y="101" blend="color-dodge" color-name="white" />
+    </composite-frame>
+    <composite-frame id="6">
+      <frame id="3" offset-x="54" offset-y="71" blend="lighten" scale-x="1.44" scale-y="1.24"/>
+      <frame id="1" offset-x="47" offset-y="16" blend="linear-dodge" scale-x="1.68" scale-y="1.36" rotation-z="-3" />
+      <frame id="1" offset-x="49" offset-y="22" blend="linear-dodge" scale-x="1.28" scale-y="1.28" rotation-z="-3" />
+      <frame id="2" offset-x="51" offset-y="43" blend="lighten" scale-x="1.56" scale-y="1.28" />
+      <frame id="5" offset-x="64" offset-y="53" blend="lighten" scale-x="0.96" scale-y="1.04" rotation-z="-18" />
+      <frame id="6" offset-x="34" offset-y="129" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="61" offset-y="125" blend="color-dodge" color-name="pink" />
+      <frame id="6" offset-x="61" offset-y="125" blend="color-dodge" color-name="pink" />
+      <frame id="6" offset-x="61" offset-y="125" blend="color-dodge" color-name="white-fade" />
+      <frame id="6" offset-x="28" offset-y="124" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="49" offset-y="125" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="66" offset-y="118" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="28" offset-y="124" blend="color-dodge" color-name="white-fade" />
+      <frame id="6" offset-x="42" offset-y="125" blend="color-dodge" color-name="white" />
+      <frame id="6" offset-x="47" offset-y="109" blend="color-dodge" color-name="white" scale-x="1.32" scale-y="1.04" />
+      <frame id="6" offset-x="59" offset-y="109" blend="color-dodge" color-name="white" />
+    </composite-frame>
+    <composite-frame id="7">
+      <frame id="3" offset-x="54" offset-y="71" blend="lighten" scale-x="1.44" scale-y="1.24" />
+      <frame id="2" offset-x="51" offset-y="43" blend="lighten" scale-x="1.56" scale-y="1.28" />
+      <frame id="1" offset-x="47" offset-y="16" blend="color-dodge" scale-x="1.68" scale-y="1.36" rotation-z="-3" />
+      <frame id="1" offset-x="49" offset-y="22" blend="color-dodge" scale-x="1.28" scale-y="1.28" rotation-z="-3" />
+      <frame id="6" offset-x="47" offset-y="123" blend="color-dodge" color-name="pink-fade" scale-x="3.4" scale-y="2.96" />
+      <frame id="6" offset-x="47" offset-y="123" blend="color-dodge" color-name="orange-fade" scale-x="3.4" scale-y="2.96" />
+      <frame id="6" offset-x="47" offset-y="123" blend="color-dodge" color-name="white-fade" scale-x="3.4" scale-y="2.96" />
+      <frame id="6" offset-x="47" offset-y="123" blend="color-dodge" color-name="white-fade" scale-x="3.4" scale-y="2.96" />
+    </composite-frame>
+    <composite-frame id="8">
+      <frame id="3" offset-x="54" offset-y="71" blend="lighten" scale-x="1.44" scale-y="1.24" />
+      <frame id="2" offset-x="51" offset-y="43" blend="lighten" scale-x="1.56" scale-y="1.28" />
+      <frame id="1" offset-x="47" offset-y="16" blend="color-dodge" scale-x="1.68" scale-y="1.36" rotation-z="-3" />
+      <frame id="1" offset-x="49" offset-y="22" blend="color-dodge" scale-x="1.28" scale-y="1.28" rotation-z="-3" />
+      <frame id="6" offset-x="47" offset-y="123" blend="color-dodge" color-name="orange" scale-x="3.4" scale-y="2.96" />
+      <frame id="6" offset-x="47" offset-y="123" blend="color-dodge" color-name="white" scale-x="3.4" scale-y="2.96" />
+      <frame id="6" offset-x="47" offset-y="123" blend="color-dodge" color-name="white" scale-x="3.4" scale-y="2.96" />
+    </composite-frame>
+    <composite-frame id="9">
+      <frame id="1" offset-x="49" offset-y="17" blend="color-dodge" scale-x="1.16" scale-y="1.12" rotation-z="-3" />
+      <frame id="6" offset-x="47" offset-y="123" blend="color-dodge" color-name="white-fade" scale-x="3.4" scale-y="2.96" />
+      <frame id="6" offset-x="32" offset-y="119" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="51" offset-y="122" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="65" offset-y="120" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="53" offset-y="96" blend="color-dodge" color-name="white" scale-x="1.44" scale-y="1.08" />
+      <frame id="6" offset-x="51" offset-y="114" blend="color-dodge" color-name="white" />
+      <frame id="6" offset-x="38" offset-y="108" blend="color-dodge" color-name="pink" scale-x="0.48" scale-y="0.56" />
+      <frame id="6" offset-x="30" offset-y="118" blend="color-dodge" color-name="pink" scale-x="0.44" scale-y="0.52" />
+      <frame id="6" offset-x="71" offset-y="110" blend="color-dodge" color-name="pink" />
+    </composite-frame>
+    <composite-frame id="10">
+      <frame id="1" offset-x="49" offset-y="17" blend="color-dodge" scale-x="1.16" scale-y="1.12" rotation-z="-3" />
+      <frame id="2" offset-x="51" offset-y="35" blend="color-dodge" scale-x="1.08" scale-y="1.08" />
+      <frame id="6" offset-x="47" offset-y="123" blend="color-dodge" color-name="pink" scale-x="3.4" scale-y="2.96" />
+      <frame id="6" offset-x="47" offset-y="123" blend="color-dodge" color-name="white-fade" scale-x="3.4" scale-y="2.96" />
+      <frame id="6" offset-x="32" offset-y="119" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="51" offset-y="122" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="65" offset-y="120" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="53" offset-y="96" blend="color-dodge" color-name="white" scale-x="1.44" scale-y="1.08" />
+      <frame id="6" offset-x="51" offset-y="114" blend="color-dodge" color-name="white" />
+      <frame id="6" offset-x="38" offset-y="108" blend="color-dodge" color-name="pink" scale-x="0.48" scale-y="0.56" />
+      <frame id="6" offset-x="30" offset-y="118" blend="color-dodge" color-name="pink" scale-x="0.44" scale-y="0.52" />
+      <frame id="6" offset-x="71" offset-y="110" blend="color-dodge" color-name="pink" />
+    </composite-frame>
+    <composite-frame id="11">
+      <frame id="1" offset-x="49" offset-y="17" blend="color-dodge" scale-x="1.16" scale-y="1.12" rotation-z="-3" />
+      <frame id="2" offset-x="51" offset-y="35" blend="color-dodge" scale-x="1.08" scale-y="1.08" />
+      <frame id="2" offset-x="51" offset-y="35" blend="color-dodge" scale-x="1.08" scale-y="1.08" />
+      <frame id="6" offset-x="47" offset-y="123" blend="color-dodge" color-name="pink" scale-x="3.4" scale-y="2.96" />
+      <frame id="6" offset-x="47" offset-y="123" blend="color-dodge" color-name="white-fade" scale-x="3.4" scale-y="2.96" />
+      <frame id="6" offset-x="32" offset-y="119" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="51" offset-y="122" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="65" offset-y="120" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="53" offset-y="96" blend="color-dodge" color-name="white" scale-x="1.44" scale-y="1.08" />
+      <frame id="6" offset-x="51" offset-y="114" blend="color-dodge" color-name="white" />
+      <frame id="6" offset-x="38" offset-y="108" blend="color-dodge" color-name="pink" scale-x="0.48" scale-y="0.56" />
+      <frame id="6" offset-x="30" offset-y="118" blend="color-dodge" color-name="pink" scale-x="0.44" scale-y="0.52" />
+      <frame id="6" offset-x="71" offset-y="110" blend="color-dodge" color-name="pink" />
+    </composite-frame>
+    <composite-frame id="12">
+      <frame id="1" offset-x="49" offset-y="17" blend="lighten" scale-x="1.16" scale-y="1.12" rotation-z="-3" color-name="white-fade" />
+      <frame id="2" offset-x="51" offset-y="35" blend="color-dodge" scale-x="1.08" scale-y="1.08" />
+      <frame id="2" offset-x="51" offset-y="35" blend="color-dodge" scale-x="1.08" scale-y="1.08" />
+      <frame id="2" offset-x="51" offset-y="35" blend="color-dodge" scale-x="1.08" scale-y="1.08" />
+      <frame id="6" offset-x="32" offset-y="119" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="51" offset-y="122" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="65" offset-y="120" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="53" offset-y="96" blend="color-dodge" color-name="white" scale-x="1.44" scale-y="1.08" />
+      <frame id="6" offset-x="51" offset-y="114" blend="color-dodge" color-name="white" />
+      <frame id="6" offset-x="38" offset-y="108" blend="color-dodge" color-name="pink" scale-x="0.48" scale-y="0.56" />
+      <frame id="6" offset-x="30" offset-y="118" blend="color-dodge" color-name="pink" scale-x="0.44" scale-y="0.52" />
+      <frame id="6" offset-x="71" offset-y="110" blend="color-dodge" color-name="pink" />
+      <frame id="6" offset-x="32" offset-y="119" blend="color-dodge" color-name="blue-fade" />
+      <frame id="6" offset-x="51" offset-y="122" blend="color-dodge" color-name="blue-fade" />
+      <frame id="6" offset-x="65" offset-y="120" blend="color-dodge" color-name="blue-fade" />
+    </composite-frame>
+    <composite-frame id="13">
+      <frame id="2" offset-x="51" offset-y="35" blend="color-dodge" scale-x="1.08" scale-y="1.08" color-name="white-fade" />
+      <frame id="3" offset-x="55" offset-y="61" blend="color-dodge" scale-x="1.08" />
+      <frame id="3" offset-x="55" offset-y="61" blend="color-dodge" scale-x="1.08" />
+      <frame id="6" offset-x="32" offset-y="119" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="51" offset-y="122" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="65" offset-y="120" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="53" offset-y="96" blend="color-dodge" color-name="blue" scale-x="1.44" scale-y="1.08" />
+      <frame id="6" offset-x="51" offset-y="114" blend="color-dodge" color-name="pink" />
+      <frame id="6" offset-x="38" offset-y="108" blend="color-dodge" color-name="blue-fade" scale-x="0.48" scale-y="0.56" />
+      <frame id="6" offset-x="30" offset-y="118" blend="color-dodge" color-name="pink-fade" scale-x="0.44" scale-y="0.52" />
+      <frame id="6" offset-x="71" offset-y="110" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="32" offset-y="119" blend="color-dodge" color-name="blue-fade" />
+      <frame id="6" offset-x="51" offset-y="122" blend="color-dodge" color-name="blue-fade" />
+      <frame id="6" offset-x="65" offset-y="120" blend="color-dodge" color-name="blue-fade" />
+    </composite-frame>
+    <composite-frame id="14">
+      <frame id="3" offset-x="55" offset-y="61" blend="color-dodge" color-name="white-fade" scale-x="1.08" />
+      <frame id="5" offset-x="62" offset-y="79" blend="color-dodge" color-name="white" />
+      <frame id="5" offset-x="62" offset-y="77" blend="color-dodge" color-name="white" />
+      <frame id="6" offset-x="32" offset-y="119" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="53" offset-y="112" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="53" offset-y="96" blend="color-dodge" color-name="blue" scale-x="1.44" scale-y="1.08" />
+      <frame id="6" offset-x="51" offset-y="114" blend="color-dodge" color-name="pink" />
+      <frame id="6" offset-x="37" offset-y="112" blend="color-dodge" color-name="white" scale-x="0.48" scale-y="0.56" />
+      <frame id="6" offset-x="24" offset-y="116" blend="color-dodge" color-name="pink-fade" scale-x="0.44" scale-y="0.52" />
+      <frame id="6" offset-x="58" offset-y="109" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="29" offset-y="114" blend="color-dodge" color-name="white" />
+      <frame id="6" offset-x="21" offset-y="116" blend="color-dodge" color-name="white" scale-x="0.8" scale-y="0.48" />
+      <frame id="6" offset-x="52" offset-y="114" blend="color-dodge" color-name="white" />
+    </composite-frame>
+    <composite-frame id="15">
+      <frame id="5" offset-x="62" offset-y="79" blend="color-dodge" color-name="white-fade" />
+      <frame id="6" offset-x="32" offset-y="119" blend="color-dodge" color-name="blue-fade" />
+      <frame id="6" offset-x="53" offset-y="112" blend="color-dodge" color-name="blue-fade" />
+      <frame id="6" offset-x="53" offset-y="96" blend="color-dodge" color-name="blue-fade" scale-x="1.44" scale-y="1.08" />
+      <frame id="6" offset-x="51" offset-y="114" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="37" offset-y="112" blend="color-dodge" color-name="white-fade" scale-x="0.48" scale-y="0.56" />
+      <frame id="6" offset-x="24" offset-y="116" blend="color-dodge" color-name="pink-fade" scale-x="0.44" scale-y="0.52" />
+      <frame id="6" offset-x="58" offset-y="109" blend="color-dodge" color-name="pink-fade" />
+      <frame id="6" offset-x="29" offset-y="114" blend="color-dodge" color-name="white-fade" />
+      <frame id="6" offset-x="21" offset-y="116" blend="color-dodge" color-name="white-fade" scale-x="0.8" scale-y="0.48" />
+      <frame id="6" offset-x="52" offset-y="114" blend="color-dodge" color-name="white-fade" />
+    </composite-frame>
+    <composite-frame id="16">
+      <frame id="6" offset-x="51" offset-y="123" blend="color-dodge" color-name="magenta" scale-x="0.68" scale-y="0.6" />
+      <frame id="6" offset-x="31" offset-y="112" blend="color-dodge" color-name="blue" scale-x="1.16" scale-y="1.16" />
+      <frame id="6" offset-x="30" offset-y="114" blend="color-dodge" color-name="blue" scale-x="0.72" scale-y="-0.64" />
+      <frame id="7" offset-x="53" offset-y="145" blend="color-dodge" color-name="magenta" scale-x="1.08" />
+      <frame id="6" offset-x="61" offset-y="124" blend="color-dodge" color-name="magenta" scale-x="0.4" scale-y="0.32" />
+      <frame id="6" offset-x="58" offset-y="123" blend="color-dodge" color-name="blue" scale-x="0.44" scale-y="0.32" />
+      <frame id="6" offset-x="50" offset-y="123" blend="color-dodge" color-name="pink" scale-x="0.44" scale-y="0.32" rotation-z="33" />
+      <frame id="6" offset-x="39" offset-y="122" blend="color-dodge" color-name="pink" scale-x="0.8" scale-y="0.72" />
+      <frame id="6" offset-x="54" offset-y="121" blend="color-dodge" color-name="blue" scale-x="0.48" scale-y="0.44" />
+      <frame id="7" offset-x="57" offset-y="115" blend="color-dodge" color-name="blue" />
+      <frame id="7" offset-x="47" offset-y="131" blend="linear-dodge" color-name="blue" />
+      <frame id="7" offset-x="45" offset-y="133" blend="linear-dodge" color-name="pink" />
+      <frame id="6" offset-x="36" offset-y="123" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="30" offset-y="125" blend="color-dodge" color-name="pink" />
+      <frame id="6" offset-x="42" offset-y="124" blend="color-dodge" color-name="white" scale-x="1.72" scale-y="0.92" />
+      <frame id="6" offset-x="31" offset-y="114" blend="color-dodge" color-name="white" scale-x="0.32" scale-y="0.24" />
+      <frame id="7" offset-x="40" offset-y="115" blend="linear-dodge" color-name="blue" />
+    </composite-frame>
+    <composite-frame id="17">
+      <frame id="6" offset-x="22" offset-y="111" blend="color-dodge" color-name="blue" scale-x="1.92" scale-y="1.8" />
+      <frame id="6" offset-x="30" offset-y="114" blend="color-dodge" color-name="blue" scale-x="0.72" scale-y="-0.64" />
+      <frame id="7" offset-x="53" offset-y="145" blend="color-dodge" color-name="magenta" scale-x="1.08" />
+      <frame id="6" offset-x="58" offset-y="127" blend="color-dodge" color-name="magenta" scale-x="0.4" scale-y="0.32" />
+      <frame id="6" offset-x="51" offset-y="127" blend="color-dodge" color-name="blue" scale-x="0.44" scale-y="0.32" />
+      <frame id="6" offset-x="49" offset-y="125" blend="color-dodge" color-name="pink" scale-x="0.44" scale-y="0.32" rotation-z="33" />
+      <frame id="6" offset-x="39" offset-y="122" blend="color-dodge" color-name="pink" scale-x="0.8" scale-y="0.72" />
+      <frame id="6" offset-x="39" offset-y="122" blend="color-dodge" color-name="blue" scale-x="0.48" scale-y="0.44" />
+      <frame id="7" offset-x="57" offset-y="115" blend="color-dodge" color-name="blue" />
+      <frame id="7" offset-x="47" offset-y="131" blend="linear-dodge" color-name="blue" />
+      <frame id="7" offset-x="45" offset-y="133" blend="linear-dodge" color-name="pink" />
+      <frame id="6" offset-x="36" offset-y="123" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="23" offset-y="123" blend="color-dodge" color-name="pink" />
+      <frame id="6" offset-x="42" offset-y="124" blend="color-dodge" color-name="white" scale-x="1.72" scale-y="0.92" />
+      <frame id="7" offset-x="40" offset-y="115" blend="linear-dodge" color-name="blue" />
+    </composite-frame>
+    <composite-frame id="18">
+      <frame id="8" offset-x="45" offset-y="149" blend="color-dodge" color-name="magenta" scale-x="1.08" />
+      <frame id="6" offset-x="46" offset-y="119" blend="color-dodge" color-name="magenta" scale-x="0.68" scale-y="0.6" />
+      <frame id="6" offset-x="31" offset-y="112" blend="color-dodge" color-name="blue" scale-x="1.16" scale-y="1.16" />
+      <frame id="6" offset-x="30" offset-y="114" blend="color-dodge" color-name="blue" scale-x="0.72" scale-y="-0.64" />
+      <frame id="7" offset-x="53" offset-y="145" blend="color-dodge" color-name="magenta" scale-x="1.08" />
+      <frame id="6" offset-x="61" offset-y="120" blend="color-dodge" color-name="magenta" scale-x="0.4" scale-y="0.32" />
+      <frame id="6" offset-x="64" offset-y="120" blend="color-dodge" color-name="blue" scale-x="0.44" scale-y="0.32" />
+      <frame id="6" offset-x="53" offset-y="122" blend="color-dodge" color-name="pink" scale-x="0.44" scale-y="0.32" rotation-z="33" />
+      <frame id="6" offset-x="65" offset-y="120" blend="color-dodge" color-name="pink" scale-x="0.8" scale-y="0.72" />
+      <frame id="6" offset-x="56" offset-y="119" blend="color-dodge" color-name="blue" scale-x="0.48" scale-y="0.44" />
+      <frame id="7" offset-x="57" offset-y="115" blend="color-dodge" color-name="blue" />
+      <frame id="7" offset-x="47" offset-y="131" blend="linear-dodge" color-name="blue" />
+      <frame id="7" offset-x="45" offset-y="133" blend="linear-dodge" color-name="pink" />
+      <frame id="6" offset-x="66" offset-y="121" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="30" offset-y="125" blend="color-dodge" color-name="pink" />
+      <frame id="6" offset-x="58" offset-y="123" blend="color-dodge" color-name="white" scale-x="1.72" scale-y="0.92" />
+      <frame id="6" offset-x="31" offset-y="114" blend="color-dodge" color-name="white" scale-x="0.32" scale-y="0.24" />
+    </composite-frame>
+    <composite-frame id="19">
+      <frame id="8" offset-x="45" offset-y="149" blend="color-dodge" color-name="magenta" scale-x="1.08" />
+      <frame id="6" offset-x="60" offset-y="124" blend="color-dodge" color-name="magenta" scale-x="0.68" scale-y="0.6" />
+      <frame id="6" offset-x="31" offset-y="112" blend="color-dodge" color-name="blue" scale-x="1.16" scale-y="1.16" />
+      <frame id="6" offset-x="30" offset-y="114" blend="color-dodge" color-name="blue" scale-x="0.72" scale-y="-0.64" />
+      <frame id="7" offset-x="53" offset-y="145" blend="color-dodge" color-name="magenta" scale-x="1.08" />
+      <frame id="6" offset-x="64" offset-y="120" blend="color-dodge" color-name="magenta" scale-x="0.4" scale-y="0.32" />
+      <frame id="6" offset-x="67" offset-y="120" blend="color-dodge" color-name="blue" scale-x="0.44" scale-y="0.32" />
+      <frame id="6" offset-x="54" offset-y="121" blend="color-dodge" color-name="blue" scale-x="0.44" scale-y="0.32" rotation-z="33" />
+      <frame id="6" offset-x="75" offset-y="119" blend="color-dodge" color-name="magenta" scale-x="0.32" scale-y="0.28" />
+      <frame id="6" offset-x="74" offset-y="119" blend="color-dodge" color-name="blue" scale-x="0.36" scale-y="0.28" />
+      <frame id="6" offset-x="69" offset-y="118" blend="color-dodge" color-name="white" scale-x="0.8" scale-y="0.72" />
+      <frame id="7" offset-x="54" offset-y="108" blend="color-dodge" color-name="magenta-fade" scale-x="1.08" />
+      <frame id="6" offset-x="62" offset-y="121" blend="color-dodge" color-name="blue" scale-x="0.48" scale-y="0.44" />
+      <frame id="7" offset-x="57" offset-y="115" blend="color-dodge" color-name="blue" />
+      <frame id="7" offset-x="47" offset-y="131" blend="linear-dodge" color-name="blue" />
+      <frame id="7" offset-x="45" offset-y="133" blend="linear-dodge" color-name="blue" />
+      <frame id="6" offset-x="45" offset-y="120" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="73" offset-y="124" blend="color-dodge" color-name="blue" />
+      <frame id="6" offset-x="30" offset-y="114" blend="color-dodge" color-name="pink" scale-x="0.44" scale-y="0.4" />
+      <frame id="6" offset-x="30" offset-y="114" blend="color-dodge" color-name="pink-fade" scale-x="0.44" scale-y="0.4" />
+    </composite-frame>
+    <composite-frame id="20">
+      <frame id="8" offset-x="43" offset-y="129" blend="color-dodge" color-name="magenta" scale-x="1.08" />
+      <frame id="8" offset-x="49" offset-y="148" blend="color-dodge" color-name="magenta" scale-x="1.08" />
+      <frame id="8" offset-x="46" offset-y="121" blend="color-dodge" color-name="magenta" scale-x="1.08" />
+      <frame id="6" offset-x="69" offset-y="118" blend="color-dodge" color-name="magenta" scale-x="0.68" scale-y="0.6" />
+      <frame id="6" offset-x="31" offset-y="112" blend="color-dodge" color-name="blue" scale-x="1.16" scale-y="1.16" />
+      <frame id="6" offset-x="31" offset-y="115" blend="color-dodge" color-name="blue" scale-x="0.72" scale-y="-0.64" />
+      <frame id="7" offset-x="54" offset-y="140" blend="color-dodge" color-name="magenta" scale-x="1.08" />
+      <frame id="8" offset-x="49" offset-y="130" blend="lighten" color-name="magenta" scale-x="1.08" />
+      <frame id="6" offset-x="66" offset-y="124" blend="color-dodge" color-name="magenta" scale-x="0.4" scale-y="0.32" />
+      <frame id="6" offset-x="65" offset-y="124" blend="color-dodge" color-name="blue" scale-x="0.44" scale-y="0.32" />
+      <frame id="6" offset-x="60" offset-y="117" blend="color-dodge" color-name="white" scale-x="0.44" scale-y="0.32" rotation-z="33" />
+      <frame id="6" offset-x="75" offset-y="119" blend="color-dodge" color-name="magenta" scale-x="0.32" scale-y="0.28" />
+      <frame id="6" offset-x="74" offset-y="119" blend="color-dodge" color-name="blue" scale-x="0.36" scale-y="0.28" />
+      <frame id="6" offset-x="70" offset-y="123" blend="color-dodge" color-name="white" scale-x="0.8" scale-y="0.72" />
+      <frame id="7" offset-x="54" offset-y="108" blend="color-dodge" color-name="magenta-fade" scale-x="1.08" />
+      <frame id="6" offset-x="69" offset-y="119" blend="color-dodge" color-name="blue" scale-x="0.48" scale-y="0.44" />
+      <frame id="7" offset-x="57" offset-y="115" blend="color-dodge" color-name="blue" />
+      <frame id="7" offset-x="47" offset-y="131" blend="linear-dodge" color-name="white" />
+      <frame id="7" offset-x="45" offset-y="133" blend="linear-dodge" color-name="white" />
+    </composite-frame>
+    <composite-frame id="21">
+      <frame id="8" offset-x="43" offset-y="129" blend="color-dodge" color-name="magenta" scale-x="1.08" scale-y="1" />
+      <frame id="8" offset-x="46" offset-y="139" blend="color-dodge" color-name="magenta" scale-x="1.08" scale-y="1" />
+      <frame id="8" offset-x="51" offset-y="124" blend="color-dodge" color-name="magenta" scale-x="1.08" scale-y="1" />
+      <frame id="6" offset-x="32" offset-y="110" blend="color-dodge" color-name="magenta" scale-x="0.68" scale-y="0.6" />
+      <frame id="6" offset-x="32" offset-y="111" blend="color-dodge" color-name="blue" scale-x="0.32" scale-y="0.2" />
+      <frame id="6" offset-x="32" offset-y="111" blend="color-dodge" color-name="blue" scale-x="0.72" scale-y="-0.64" />
+      <frame id="7" offset-x="51" offset-y="136" blend="color-dodge" color-name="magenta" scale-x="1.08" scale-y="1" />
+      <frame id="8" offset-x="46" offset-y="104" blend="lighten" color-name="magenta" scale-x="1.08" scale-y="1" />
+      <frame id="6" offset-x="66" offset-y="124" blend="color-dodge" color-name="magenta" scale-x="0.4" scale-y="0.32" />
+      <frame id="6" offset-x="65" offset-y="124" blend="color-dodge" color-name="blue" scale-x="0.44" scale-y="0.32" />
+      <frame id="6" offset-x="65" offset-y="124" blend="color-dodge" color-name="white" scale-x="0.44" scale-y="0.32" />
+      <frame id="6" offset-x="75" offset-y="119" blend="color-dodge" color-name="magenta" scale-x="0.32" scale-y="0.28" />
+      <frame id="6" offset-x="74" offset-y="119" blend="color-dodge" color-name="blue" scale-x="0.36" scale-y="0.28" />
+      <frame id="6" offset-x="32" offset-y="111" blend="color-dodge" color-name="blue" scale-x="0.8" scale-y="0.72" />
+      <frame id="6" offset-x="32" offset-y="111" blend="color-dodge" color-name="white" scale-x="0.8" scale-y="0.72" />
+      <frame id="7" offset-x="55" offset-y="102" blend="color-dodge" color-name="magenta-fade" scale-x="1.08" scale-y="1" />
+      <frame id="6" offset-x="38" offset-y="106" blend="color-dodge" color-name="pink-fade" scale-x="0.48" scale-y="0.44" />
+    </composite-frame>
+    <composite-frame id="22">
+      <frame id="8" offset-x="43" offset-y="129" blend="color-dodge" color-name="magenta" />
+      <frame id="8" offset-x="46" offset-y="139" blend="color-dodge" color-name="magenta" />
+      <frame id="8" offset-x="51" offset-y="124" blend="color-dodge" color-name="magenta" />
+      <frame id="6" offset-x="32" offset-y="110" blend="color-dodge" color-name="magenta" scale-x="0.6" scale-y="0.6" />
+      <frame id="6" offset-x="32" offset-y="111" blend="color-dodge" color-name="blue" scale-x="0.24" scale-y="0.2" />
+      <frame id="6" offset-x="32" offset-y="111" blend="color-dodge" color-name="blue" scale-x="0.64" scale-y="-0.64" />
+      <frame id="7" offset-x="51" offset-y="136" blend="color-dodge" color-name="magenta" />
+      <frame id="8" offset-x="46" offset-y="104" blend="lighten" color-name="magenta" />
+      <frame id="6" offset-x="65" offset-y="122" blend="color-dodge" color-name="magenta" scale-x="0.32" scale-y="0.28" />
+      <frame id="6" offset-x="64" offset-y="122" blend="color-dodge" color-name="blue" scale-x="0.36" scale-y="0.28" />
+      <frame id="6" offset-x="32" offset-y="111" blend="color-dodge" color-name="blue" scale-x="0.72" scale-y="0.72" />
+      <frame id="7" offset-x="55" offset-y="102" blend="color-dodge" color-name="magenta-fade" />
+    </composite-frame>
+    <composite-frame id="23">
+      <frame id="8" offset-x="43" offset-y="129" blend="color-dodge" color-name="magenta" />
+      <frame id="8" offset-x="46" offset-y="139" blend="color-dodge" color-name="magenta" />
+      <frame id="8" offset-x="51" offset-y="124" blend="color-dodge" color-name="magenta" />
+      <frame id="6" offset-x="32" offset-y="110" blend="color-dodge" color-name="magenta" scale-x="0.28" scale-y="0.24" />
+      <frame id="6" offset-x="32" offset-y="111" blend="color-dodge" color-name="blue" scale-x="0.24" scale-y="0.2" />
+      <frame id="6" offset-x="33" offset-y="111" blend="color-dodge" color-name="blue" scale-x="0.24" scale-y="0.2" />
+      <frame id="7" offset-x="89" offset-y="132" blend="color-dodge" color-name="magenta" />
+      <frame id="7" offset-x="51" offset-y="136" blend="color-dodge" color-name="magenta" />
+      <frame id="8" offset-x="46" offset-y="104" blend="color-dodge" color-name="magenta" />
+    </composite-frame>
+  </composite-frames>
+</format>
