@@ -73,7 +73,7 @@ class Test(DirectObject.DirectObject):
         base.setBackgroundColor(0,0,1)
 
         self.frame = DirectFrame(
-                color = (1, 1, 1, 1),
+                color = (1, 1, 1, .5),
                 frameTexture = tex,
                 frameSize = ( -v*128.0, v*128.0, -v*128.0, v*128.0 ),
                 scale = 1,
@@ -2038,3 +2038,130 @@ class Formation(DirectObject.DirectObject):
             self.statusframe.setColor((.75,.75,.75,1))
             self.searchframe.setColor((.75,.75,.75,1))
 
+class SkillList(DirectObject.DirectObject):
+
+    def __init__(self, columns, rows, maxrows, cancelcallback):
+
+        self.offset = 0
+        self.rowheight = 16
+        self.index = 0
+        self.columns = columns
+        self.rows = rows
+        self.maxrows = maxrows
+        self.cancelcallback = cancelcallback
+        self.container = None
+        self.maxoffset = len(self.rows) - self.maxrows
+
+        menutexture = loader.loadTexture(GAME+'/textures/gui/menu2.png')
+        menutexture.setMagfilter(Texture.FTNearest)
+        menutexture.setMinfilter(Texture.FTNearest)
+
+        handtexture = loader.loadTexture(GAME+'/textures/gui/hand.png')
+        handtexture.setMagfilter(Texture.FTNearest)
+        handtexture.setMinfilter(Texture.FTNearest)
+
+        rulertexture = loader.loadTexture(GAME+'/textures/gui/ruler.png')
+        rulertexture.setMagfilter(Texture.FTNearest)
+        rulertexture.setMinfilter(Texture.FTNearest)
+
+        self.frame = DirectFrame(
+            frameTexture = menutexture,
+            frameColor = (1, 1, 1, 1),
+            frameSize = ( -v*128.0, v*128.0, -v*128.0, v*128.0 ),
+            pos = (v*0.0, 0, v*0.0),
+            scale = 0.1,
+        )
+        self.frame.setTransparency(True)
+
+        self.hand = DirectFrame(
+            frameTexture = handtexture,
+            frameColor = (1, 1, 1, 1),
+            frameSize = ( -v*8, v*8, -v*8, v*8 ),
+            pos = (v*(self.columns[0]['x']-10), 0, v*23),
+            parent = self.frame
+        )
+
+        self.ruler = DirectFrame(
+            frameTexture = rulertexture,
+            frameColor = (1, 1, 1, 1),
+            frameSize = ( -v*4, v*4, -v*4, v*4 ),
+            pos = (v*(self.columns[-1]['x']+24), 0, v*23),
+            parent = self.frame
+        )
+
+        seq = Sequence()
+        seq.append(Func(self.printContent, self.offset))
+        seq.append(LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1))
+        seq.append(Func(self.acceptAll))
+        seq.start()
+
+    def printContent(self, offset=0):
+
+        if self.container:
+            self.container.removeNode()
+        self.container = DirectFrame(parent=self.frame)
+
+        for cid,column in enumerate(self.columns):
+            #for rid,row in enumerate(self.rows):
+            for y,i in enumerate(range(offset, self.maxrows+offset)):
+                rid = i
+                row = self.rows[rid]
+                label = DirectLabel(
+                    parent = self.container,
+                    color = (0,0,0,0),
+                    text_fg = (1,1,1,1),
+                    text = row['cells'][cid],
+                    scale = regularscale,
+                    text_font = column['font'],
+                    text_align = column['align'],
+                    pos = (v*column['x'], 0, v*(23-3-self.rowheight*y))
+                )
+                if not row['enabled']:
+                    label['text_fg'] = (1,1,1,.5)
+        
+        rulerratio = float(self.offset) / float(self.maxoffset)
+        maxrulery = 60-self.rowheight*self.maxrows
+        rulery = maxrulery*rulerratio
+        self.ruler.setPos((v*(self.columns[-1]['x']+24), 0, v*rulery))
+
+
+    def acceptAll(self):
+        self.accept(CROSS_BTN,  self.onCrossClicked)
+        self.accept(CIRCLE_BTN, self.onCircleClicked)
+        self.accept("arrow_down",        lambda: self.updateIndex( 1))
+        self.accept("arrow_down-repeat", lambda: self.updateIndex( 1))
+        self.accept("arrow_up",          lambda: self.updateIndex(-1))
+        self.accept("arrow_up-repeat",   lambda: self.updateIndex(-1))
+
+    def updateIndex(self, direction):
+        hover_snd.play()
+        next = self.index + direction
+        if next == self.maxrows:
+            next = self.maxrows-1
+            if self.offset < self.maxoffset:
+                self.offset = self.offset + 1
+                self.printContent(self.offset)
+        if next == -1:
+            next = 0
+            if self.offset > 0:
+                self.offset = self.offset - 1
+                self.printContent(self.offset)
+        self.hand.setPos(v*(self.columns[0]['x']-10), 0, v*(23-self.rowheight*next))
+        self.index = next
+
+    def onCircleClicked(self):
+        if self.rows[self.index]['enabled']:
+            clicked_snd.play()
+            self.commandAndDestroy(lambda: self.rows[self.index]['callback'](self.index))
+
+    def onCrossClicked(self):
+        cancel_snd.play()
+        self.commandAndDestroy(self.cancelcallback)
+
+    def commandAndDestroy(self, callback):
+        seq = Sequence()
+        seq.append(LerpScaleInterval(self.frame, 0.1, 0.1, startScale=1))
+        seq.append(Func(self.ignoreAll))
+        seq.append(Func(self.frame.destroy))
+        seq.append(Func(callback))
+        seq.start()
