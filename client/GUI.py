@@ -9,6 +9,7 @@ from direct.interval.IntervalGlobal import *
 from pandac.PandaModules import *
 import Sprite
 import functools
+from MenuNodeDrawerTmp import MenuNodeDrawer
 
 u = 1.0/128.0
 v = 1.0/120.0
@@ -2038,13 +2039,21 @@ class Formation(DirectObject.DirectObject):
             self.statusframe.setColor((.75,.75,.75,1))
             self.searchframe.setColor((.75,.75,.75,1))
 
-class SkillList(DirectObject.DirectObject):
+class ScrollableList(DirectObject.DirectObject):
 
-    def __init__(self, columns, rows, maxrows, cancelcallback):
+    def __init__(self, x, y, w, h, flushToTop, columns, rows, maxrows, cancelcallback):
+
+        # positioning
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.flushToTop = flushToTop
 
         self.offset = 0
         self.rowheight = 16
         self.index = 0
+        self.internalIndex = 0
         self.columns = columns
         self.rows = rows
         self.maxrows = maxrows
@@ -2064,12 +2073,54 @@ class SkillList(DirectObject.DirectObject):
         rulertexture.setMagfilter(Texture.FTNearest)
         rulertexture.setMinfilter(Texture.FTNearest)
 
+        # # Lower-Left
+        # pt1 = Point3(-v*128.0, 0, -v*128.0)
+        # # Upper-Right
+        # pt2 = Point3(v*128.0, 0, v*128.0)
+
+        # # sky-blue
+        # if False:
+        #     m = MenuNodeDrawer(
+        #         targetWidth=float(pt2.x-pt1.x-.2), 
+        #         targetHeight=float(pt2.z-pt1.z-.2), 
+        #         columns=self.columns,
+        #         menuItemHeight=33,
+        #         menuHeadingPixels=23,
+        #         menuEndCapPixels=23,
+        #         path="sky-blue"
+        #     )
+        # else:
+        #     m = MenuNodeDrawer(
+        #         targetWidth=float(pt2.x-pt1.x-.2), 
+        #         targetHeight=float(pt2.z-pt1.z-.2), 
+        #         columns=self.columns,
+        #         menuItemHeight=34,
+        #         menuHeadingPixels=7,
+        #         menuEndCapPixels=4,
+        #         path="default"
+        #     )
+        
+        # self.frame = DirectFrame(
+        #     frameColor = (1, 1, 1, 1),
+        #     frameSize = ( pt1.x, pt2.x, pt1.z, pt2.z ),
+        #     pos = (v*0.0, 0, v*0.0),
+        #     scale = 0.1,
+        #     relief = None,
+        #     geom = m.getNodePath(),
+        #     geom_scale = (m.targetScaleX, m.targetScaleY, m.targetScaleZ)
+        # )
+        # self.frame.setTransparency(True)
+
+        m = MenuNodeDrawer(
+            w=self.w, 
+            h=self.h,
+        )
+
         self.frame = DirectFrame(
-            frameTexture = menutexture,
-            frameColor = (1, 1, 1, 1),
-            frameSize = ( -v*128.0, v*128.0, -v*128.0, v*128.0 ),
-            pos = (v*0.0, 0, v*0.0),
-            scale = 0.1,
+            frameColor = (1, 1, 1, .25),
+            frameSize = ( -v*self.w/2.0, v*self.w/2.0, -v*self.h/2.0, v*self.h/2.0 ),
+            pos = (v*self.x, 0, -v*self.y),
+            geom = m.getNodePath(),
         )
         self.frame.setTransparency(True)
 
@@ -2077,7 +2128,7 @@ class SkillList(DirectObject.DirectObject):
             frameTexture = handtexture,
             frameColor = (1, 1, 1, 1),
             frameSize = ( -v*8, v*8, -v*8, v*8 ),
-            pos = (v*(self.columns[0]['x']-10), 0, v*23),
+            pos = (-v*(self.w/2.0+5), 0, v*(self.h/2.0-self.flushToTop+3)),
             parent = self.frame
         )
 
@@ -2085,7 +2136,7 @@ class SkillList(DirectObject.DirectObject):
             frameTexture = rulertexture,
             frameColor = (1, 1, 1, 1),
             frameSize = ( -v*4, v*4, -v*4, v*4 ),
-            pos = (v*(self.columns[-1]['x']+24), 0, v*23),
+            pos = (v*(self.w/2.0-1), 0, v*(self.h/2.0-self.flushToTop)),
             parent = self.frame
         )
 
@@ -2098,11 +2149,10 @@ class SkillList(DirectObject.DirectObject):
     def printContent(self, offset=0):
 
         if self.container:
-            self.container.removeNode()
+            self.container.removeNode()           
         self.container = DirectFrame(parent=self.frame)
 
         for cid,column in enumerate(self.columns):
-            #for rid,row in enumerate(self.rows):
             for y,i in enumerate(range(offset, self.maxrows+offset)):
                 rid = i
                 row = self.rows[rid]
@@ -2114,16 +2164,10 @@ class SkillList(DirectObject.DirectObject):
                     scale = regularscale,
                     text_font = column['font'],
                     text_align = column['align'],
-                    pos = (v*column['x'], 0, v*(23-3-self.rowheight*y))
+                    pos = (v*column['x'], 0, v*(self.h/2.0-self.flushToTop-self.rowheight*y))
                 )
                 if not row['enabled']:
                     label['text_fg'] = (1,1,1,.5)
-        
-        rulerratio = float(self.offset) / float(self.maxoffset)
-        maxrulery = 60-self.rowheight*self.maxrows
-        rulery = maxrulery*rulerratio
-        self.ruler.setPos((v*(self.columns[-1]['x']+24), 0, v*rulery))
-
 
     def acceptAll(self):
         self.accept(CROSS_BTN,  self.onCrossClicked)
@@ -2136,6 +2180,13 @@ class SkillList(DirectObject.DirectObject):
     def updateIndex(self, direction):
         hover_snd.play()
         next = self.index + direction
+        # Array navigation.
+        internalNext = (self.internalIndex + direction)
+        if internalNext < len(self.rows) and internalNext > -1:
+            self.internalIndex = internalNext
+            # Move relative to ruler's existing position; 0 = no change.
+            self.ruler.setPos(self.ruler, 0, 0, v*-1*direction*(self.rowheight*self.maxrows/len(self.rows)))
+        # Printed list navigation.
         if next == self.maxrows:
             next = self.maxrows-1
             if self.offset < self.maxoffset:
@@ -2146,13 +2197,14 @@ class SkillList(DirectObject.DirectObject):
             if self.offset > 0:
                 self.offset = self.offset - 1
                 self.printContent(self.offset)
-        self.hand.setPos(v*(self.columns[0]['x']-10), 0, v*(23-self.rowheight*next))
+        self.hand.setPos(-v*(self.w/2.0+5), 0, v*(self.h/2.0-self.flushToTop-self.rowheight*next+3))        
         self.index = next
 
     def onCircleClicked(self):
-        if self.rows[self.index]['enabled']:
+        # self.index is in range(0, viewable row count); it is not true where len(rows) > maxrows
+        if self.rows[self.internalIndex]['enabled']:
             clicked_snd.play()
-            self.commandAndDestroy(lambda: self.rows[self.index]['callback'](self.index))
+            self.commandAndDestroy(lambda: self.rows[self.internalIndex]['callback'](self.internalIndex))
 
     def onCrossClicked(self):
         cancel_snd.play()

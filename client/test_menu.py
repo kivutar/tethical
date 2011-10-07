@@ -5,35 +5,74 @@ from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 import GUI
 
-#GUI.Test('test_menu')
-
 def exemplecallback(text):
     print "You clicked the row #"+str(text)
 
 def cancelcallback():
     print "Bye"
 
+# GUI.Test('test_menu')
+
+# columns = [
+#     { 'name': "abilityName", 'label': "Ability", 'x': -93, 'font': GUI.regularfont, 'align': TextNode.ALeft   },
+#     { 'name': "mpCost",      'label': "MP",      'x':   4, 'font': GUI.regularfont, 'align': TextNode.ALeft   },
+#     { 'name': "speed",       'label': "Speed",   'x':  35, 'font': GUI.regularfont, 'align': TextNode.ALeft   },
+#     { 'name': "jpCost",      'label': "JP",      'x':  78, 'font': GUI.regularfont, 'align': TextNode.ACenter },
+# ]
+
+# rows = [
+#     { 'cells': ['Aim',      '00', '50', 'Learned', ], 'enabled': True , 'callback': exemplecallback, },
+#     { 'cells': ['Blackout', '00', '25', 'Learned', ], 'enabled': True , 'callback': exemplecallback, },
+#     { 'cells': ['Wait',     '00', '25', 'Learned', ], 'enabled': True , 'callback': exemplecallback, },
+#     { 'cells': ['Status',   '00', '25', 'Learned', ], 'enabled': False, 'callback': exemplecallback, },
+#     { 'cells': ['Blackout', '00', '00', 'Learned', ], 'enabled': True , 'callback': exemplecallback, },
+#     { 'cells': ['Test1',    '00', '34', 'Learned', ], 'enabled': True , 'callback': exemplecallback, },
+#     { 'cells': ['Test2',    '00', '17', 'Learned', ], 'enabled': False, 'callback': exemplecallback, },
+#     { 'cells': ['Test3',    '00', '15', 'Learned', ], 'enabled': False, 'callback': exemplecallback, },
+#     { 'cells': ['Test4',    '00', '25', 'Learned', ], 'enabled': False, 'callback': exemplecallback, },
+#     { 'cells': ['Test5',    '00', '00', 'Learned', ], 'enabled': True , 'callback': exemplecallback, },
+#     { 'cells': ['Test6',    '00', '30', 'Learned', ], 'enabled': True , 'callback': exemplecallback, },
+# ]
+
+# skillset = GUI.ScrollableList(3.0, 31.0, 206.0, 148.0, 23, columns, rows, 8, cancelcallback)
+
+# GUI.Test('test_menu2')
+
+# columns = [
+#     { 'name': "menu", 'label': "Menu", 'x': -25, 'font': GUI.regularfont, 'align': TextNode.ALeft   },
+# ]
+
+# rows = [
+#     { 'cells': ['Status',      ], 'enabled': True , 'callback': exemplecallback, },
+#     { 'cells': ['Auto-Battle', ], 'enabled': True , 'callback': exemplecallback, },
+# ]
+
+# skillset = GUI.ScrollableList(73, -32, 62.0, 43.0, 16, columns, rows, 2, cancelcallback)
+
+GUI.Test('test_menu3')
+
 columns = [
-    { 'x': -90, 'font': GUI.regularfont, 'align': TextNode.ALeft   },
-    { 'x':  19, 'font': GUI.regularfont, 'align': TextNode.ARight  },
-    { 'x':  49, 'font': GUI.regularfont, 'align': TextNode.ARight  },
-    { 'x':  81, 'font': GUI.regularfont, 'align': TextNode.ACenter },
+    { 'name': "menu", 'label': "Menu", 'x': -44, 'font': GUI.regularfont, 'align': TextNode.ALeft   },
 ]
 
 rows = [
-    { 'cells': ['Aim',      '00', '50', 'Learned', ], 'enabled': True , 'callback': exemplecallback, },
-    { 'cells': ['Blackout', '00', '25', 'Learned', ], 'enabled': True , 'callback': exemplecallback, },
-    { 'cells': ['Wait',     '00', '25', 'Learned', ], 'enabled': True , 'callback': exemplecallback, },
-    { 'cells': ['Status',   '00', '25', 'Learned', ], 'enabled': False, 'callback': exemplecallback, },
-    { 'cells': ['Blackout', '00', '00', 'Learned', ], 'enabled': True , 'callback': exemplecallback, },
-    { 'cells': ['Test1',    '00', '34', 'Learned', ], 'enabled': True , 'callback': exemplecallback, },
-    { 'cells': ['Test2',    '00', '17', 'Learned', ], 'enabled': False, 'callback': exemplecallback, },
-    { 'cells': ['Test3',    '00', '15', 'Learned', ], 'enabled': False, 'callback': exemplecallback, },
-    { 'cells': ['Test4',    '00', '25', 'Learned', ], 'enabled': False, 'callback': exemplecallback, },
-    { 'cells': ['Test5',    '00', '00', 'Learned', ], 'enabled': True , 'callback': exemplecallback, },
-    { 'cells': ['Test6',    '00', '30', 'Learned', ], 'enabled': True , 'callback': exemplecallback, },
+    { 'cells': ['Sleep Blade',   ], 'enabled': True , 'callback': exemplecallback, },
+    { 'cells': ['Coral Sword',   ], 'enabled': True , 'callback': exemplecallback, },
+    { 'cells': ['Mythril Sword', ], 'enabled': True , 'callback': exemplecallback, },
+    { 'cells': ['Iron Sword',    ], 'enabled': True , 'callback': exemplecallback, },
+    { 'cells': ['Auto-Battle',   ], 'enabled': True , 'callback': exemplecallback, },
+    { 'cells': ['Sleep Blade',   ], 'enabled': True , 'callback': exemplecallback, },
+    { 'cells': ['Coral Sword',   ], 'enabled': True , 'callback': exemplecallback, },
+    { 'cells': ['Mythril Sword', ], 'enabled': True , 'callback': exemplecallback, },
+    { 'cells': ['Iron Sword',    ], 'enabled': True , 'callback': exemplecallback, },
+    { 'cells': ['Auto-Battle',   ], 'enabled': True , 'callback': exemplecallback, },
+    { 'cells': ['Sleep Blade',   ], 'enabled': True , 'callback': exemplecallback, },
+    { 'cells': ['Coral Sword',   ], 'enabled': True , 'callback': exemplecallback, },
+    { 'cells': ['Mythril Sword', ], 'enabled': True , 'callback': exemplecallback, },
+    { 'cells': ['Iron Sword',    ], 'enabled': True , 'callback': exemplecallback, },
+    { 'cells': ['Auto-Battle',   ], 'enabled': True , 'callback': exemplecallback, },
 ]
 
-GUI.SkillList(columns, rows, 8, cancelcallback)
+skillset = GUI.ScrollableList(-31, 35, 170.0, 148.0, 23, columns, rows, 8, cancelcallback)
 
 run()
