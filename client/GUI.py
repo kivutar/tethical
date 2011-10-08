@@ -9,7 +9,7 @@ from direct.interval.IntervalGlobal import *
 from pandac.PandaModules import *
 import Sprite
 import functools
-from MenuNodeDrawerTmp import MenuNodeDrawer
+from WindowNodeDrawer import WindowNodeDrawer
 
 u = 1.0/128.0
 v = 1.0/120.0
@@ -2041,7 +2041,9 @@ class Formation(DirectObject.DirectObject):
 
 class ScrollableList(DirectObject.DirectObject):
 
-    def __init__(self, x, y, w, h, flushToTop, columns, rows, maxrows, cancelcallback):
+    def __init__(self, style, x, y, w, h, flushToTop, columns, rows, maxrows, cancelcallback):
+
+        self.style = style
 
         # positioning
         self.x = x
@@ -2073,54 +2075,11 @@ class ScrollableList(DirectObject.DirectObject):
         rulertexture.setMagfilter(Texture.FTNearest)
         rulertexture.setMinfilter(Texture.FTNearest)
 
-        # # Lower-Left
-        # pt1 = Point3(-v*128.0, 0, -v*128.0)
-        # # Upper-Right
-        # pt2 = Point3(v*128.0, 0, v*128.0)
-
-        # # sky-blue
-        # if False:
-        #     m = MenuNodeDrawer(
-        #         targetWidth=float(pt2.x-pt1.x-.2), 
-        #         targetHeight=float(pt2.z-pt1.z-.2), 
-        #         columns=self.columns,
-        #         menuItemHeight=33,
-        #         menuHeadingPixels=23,
-        #         menuEndCapPixels=23,
-        #         path="sky-blue"
-        #     )
-        # else:
-        #     m = MenuNodeDrawer(
-        #         targetWidth=float(pt2.x-pt1.x-.2), 
-        #         targetHeight=float(pt2.z-pt1.z-.2), 
-        #         columns=self.columns,
-        #         menuItemHeight=34,
-        #         menuHeadingPixels=7,
-        #         menuEndCapPixels=4,
-        #         path="default"
-        #     )
-        
-        # self.frame = DirectFrame(
-        #     frameColor = (1, 1, 1, 1),
-        #     frameSize = ( pt1.x, pt2.x, pt1.z, pt2.z ),
-        #     pos = (v*0.0, 0, v*0.0),
-        #     scale = 0.1,
-        #     relief = None,
-        #     geom = m.getNodePath(),
-        #     geom_scale = (m.targetScaleX, m.targetScaleY, m.targetScaleZ)
-        # )
-        # self.frame.setTransparency(True)
-
-        m = MenuNodeDrawer(
-            w=self.w, 
-            h=self.h,
-        )
-
         self.frame = DirectFrame(
             frameColor = (1, 1, 1, .25),
             frameSize = ( -v*self.w/2.0, v*self.w/2.0, -v*self.h/2.0, v*self.h/2.0 ),
             pos = (v*self.x, 0, -v*self.y),
-            geom = m.getNodePath(),
+            geom = WindowNodeDrawer(self.w, self.h, self.style),
         )
         self.frame.setTransparency(True)
 
@@ -2128,7 +2087,7 @@ class ScrollableList(DirectObject.DirectObject):
             frameTexture = handtexture,
             frameColor = (1, 1, 1, 1),
             frameSize = ( -v*8, v*8, -v*8, v*8 ),
-            pos = (-v*(self.w/2.0+5), 0, v*(self.h/2.0-self.flushToTop+3)),
+            pos = (-v*(self.w/2+3.5), 0, v*(self.h/2-self.flushToTop+3)),
             parent = self.frame
         )
 
@@ -2139,6 +2098,8 @@ class ScrollableList(DirectObject.DirectObject):
             pos = (v*(self.w/2.0-1), 0, v*(self.h/2.0-self.flushToTop)),
             parent = self.frame
         )
+        if len(rows) <= self.maxrows:
+            self.ruler['frameColor'] = (1,1,1,0)
 
         seq = Sequence()
         seq.append(Func(self.printContent, self.offset))
@@ -2185,7 +2146,7 @@ class ScrollableList(DirectObject.DirectObject):
         if internalNext < len(self.rows) and internalNext > -1:
             self.internalIndex = internalNext
             # Move relative to ruler's existing position; 0 = no change.
-            self.ruler.setPos(self.ruler, 0, 0, v*-1*direction*(self.rowheight*self.maxrows/len(self.rows)))
+            self.ruler.setPos(self.ruler, 0, 0, -v*direction*(self.rowheight*self.maxrows/len(self.rows)))
         # Printed list navigation.
         if next == self.maxrows:
             next = self.maxrows-1
@@ -2197,7 +2158,7 @@ class ScrollableList(DirectObject.DirectObject):
             if self.offset > 0:
                 self.offset = self.offset - 1
                 self.printContent(self.offset)
-        self.hand.setPos(-v*(self.w/2.0+5), 0, v*(self.h/2.0-self.flushToTop-self.rowheight*next+3))        
+        self.hand.setPos(-v*(self.w/2+3.5), 0, v*(self.h/2-self.flushToTop-self.rowheight*next+3))        
         self.index = next
 
     def onCircleClicked(self):
