@@ -1,5 +1,6 @@
 from Config import *
-from pandac.PandaModules import *
+from pandac.PandaModules import PandaNode,NodePath,Camera,TextNode,GeomTristrips,Geom,GeomVertexFormat,GeomVertexData,GeomVertexWriter,GeomNode,TransformState,OrthographicLens,TextureStage,TexGenAttrib,PNMImage,Texture,ColorBlendAttrib,CardMaker,TransparencyAttrib
+from direct.interval.IntervalGlobal import *
 import xml.etree.cElementTree as etree
 import math
 
@@ -149,7 +150,8 @@ class Color:
         self.G = G
         self.B = B
         self.A = A
-
+    def printAsString(self):
+        print str(self.R)+", "+str(self.G)+", "+str(self.B)+", "+str(self.A)
 class Frame:
     bound = Bound(0, 0, 0, 0)
     s = 0
@@ -190,6 +192,7 @@ class Effect:
     effectWidth = 1
     effectHeight = 1
     effectTargetMS = 143
+    noSampling = False
     tex = None
     loadedFormat = None
     # Animation variables
@@ -205,9 +208,19 @@ class Effect:
     compositeFrames = None
     # Nodes
     consumedNodesList = None
-    def __init__(self, parent, effectFileName, loop=False):
-        self.parent = parent
+    # Accessible object (nodePath)
+    effectCameraNodePath = None
+    effectCardNodePath = None
+    # Constant value; Unit comparison for card size; basis is from cure, which is [140x110]
+    cardDimensionBasis = [-5.0, 5.0, 0.0, 10.0, 140.0, 110.0]
+    pixelScaleX = cardDimensionBasis[4]/(cardDimensionBasis[1]-cardDimensionBasis[0])
+    pixelScaleZ = cardDimensionBasis[5]/(cardDimensionBasis[3]-cardDimensionBasis[2])
+    effectIsCentered = True
+    effectAdjustment = [0, 0, 0]
+    def __init__(self, effectFileName, parent=None, loop=False, effectIsCentered=True, effectAdjustment=[0, 0, 0]):
+        self.effectAdjustment = effectAdjustment
         self.loopEffect = loop
+        self.effectIsCentered = effectIsCentered
         self.loadedFormat = None
         if effectFileName != None:
             effectFileNameSplit = effectFileName.split('.')
@@ -233,7 +246,6 @@ class Effect:
             self.colors = root.find('.//colors')
             self.tweens = root.find('.//motion-tweens')
             self.compositeFrames = root.find('.//composite-frames')
-            #target-start="1" target-end="14"
             self.baseWidth = 0 if root.attrib.get("base-width") == None else float(root.attrib.get("base-width"))
             self.baseHeight = 0 if root.attrib.get("base-height") == None else float(root.attrib.get("base-height"))
             self.effectWidth = 1 if root.attrib.get("frame-width") == None else float(root.attrib.get("frame-width"))
@@ -241,6 +253,59 @@ class Effect:
             self.effectTargetMS = 143 if root.attrib.get("target-ms") == None else float(root.attrib.get("target-ms"))
             self.startIndex = 1 if root.attrib.get("target-start") == None else int(root.attrib.get("target-start"))
             self.endIndex = 1 if root.attrib.get("target-end") == None else int(root.attrib.get("target-end"))
+            self.noSampling = False if root.attrib.get("no-sampling") == None else bool(root.attrib.get("no-sampling"))
+            if self.noSampling==True:
+                self.tex.setMagfilter(Texture.FTNearest)
+                self.tex.setMinfilter(Texture.FTNearest)
+            cm = CardMaker('card-'+effectFileName)
+            cardDeltaX = self.effectWidth / self.pixelScaleX
+            cardDeltaZ = self.effectHeight / self.pixelScaleZ
+            if self.effectIsCentered == True:
+                cm.setFrame(0, 0, 0, 0)
+                deltaX = (cardDeltaX/2.0) - (-cardDeltaX/2.0)
+                deltaY = 0
+                deltaZ = (cardDeltaZ/2.0) - (-cardDeltaZ/2.0)
+                #occluder = OccluderNode('effect-parent-occluder', Point3((-cardDeltaX/2.0), 0, (-cardDeltaZ/2.0)), Point3((-cardDeltaX/2.0), 0, (cardDeltaZ/2.0)), Point3((cardDeltaX/2.0), 0, (cardDeltaZ/2.0)), Point3((cardDeltaX/2.0), 0, (-cardDeltaZ/2.0)))
+            else:
+                cm.setFrame(0, 0, 0, 0)
+                deltaX = (cardDeltaX/2.0) - (-cardDeltaX/2.0)
+                deltaY = 0
+                deltaZ = cardDeltaZ - 0
+                #occluder = OccluderNode('effect-parent-occluder', Point3((-cardDeltaX/2.0), 0, 0), Point3((-cardDeltaX/2.0), 0, cardDeltaZ), Point3((cardDeltaX/2.0), 0, cardDeltaZ), Point3((cardDeltaX/2.0), 0, 0))
+            self.effectCardNodePath = render.attachNewNode(cm.generate())            
+            self.effectCardNodePath.setBillboardPointEye()
+            self.effectCardNodePath.reparentTo(parent)
+            #occluder_nodepath = self.effectCardNodePath.attachNewNode(occluder)
+            #self.effectCardNodePath.setOccluder(occluder_nodepath)
+            emptyNode = NodePath('effect-parent-translator')
+            emptyNode.reparentTo(self.effectCardNodePath)
+            if effectIsCentered == True:
+                emptyNode.setPos(-deltaX/2.0+self.effectAdjustment[0], 0+self.effectAdjustment[1], deltaZ/2.0+self.effectAdjustment[2])
+            else:
+                emptyNode.setPos(-deltaX/2.0+self.effectAdjustment[0], 0+self.effectAdjustment[1], deltaZ+self.effectAdjustment[2])
+            #emptyNode.place()
+            emptyNode.setSx(float(deltaX)/self.effectWidth)
+            emptyNode.setSz(float(deltaZ)/self.effectHeight)
+            self.effectCameraNodePath = emptyNode                        
+            if parent != None:
+                self.effectCardNodePath.reparentTo(parent)
+            else:
+                self.effectCardNodePath.reparentTo(render)
+            #self.effectCardNodePath.place()
+            self.effectCardNodePath.setBin("fixed", 40)
+            self.effectCardNodePath.setDepthTest(False)
+            self.effectCardNodePath.setDepthWrite(False)
+        pass
+    def getSequence(self):
+        sequence = Sequence()
+        for x in range(self.startIndex, self.endIndex, 1):
+            sequence.append(Func(self.pandaRender))
+            sequence.append(Func(self.advanceFrame))
+            sequence.append(Wait(self.effectTargetMS * 0.001))
+        sequence.append(Func(self.clearNodesForDrawing))
+        sequence.append(Func(self.advanceFrame))
+        sequence.append(Wait(self.effectTargetMS * 0.001))
+        return sequence
         pass
     def hasEffectFinished(self):
         if self.internalFrameIndex > self.endIndex and self.loopEffect == False:
@@ -258,6 +323,8 @@ class Effect:
             self.clearNodesForDrawing()
         pass
     def clearNodesForDrawing(self):
+        if False:
+            self.effectCameraNodePath.analyze()
         if self.consumedNodesList != None and self.consumedNodesList != []:
             for consumedNode in self.consumedNodesList:
                 consumedNode.removeNode()
@@ -367,15 +434,13 @@ class Effect:
         self.clearNodesForDrawing()
         # Make an identifier to tack onto primitive names in Panda3d's scene graph.
         frameIndexForName = 1
+                
         # Loop through loaded frames that make up composite frame.
-        self.bbcontainer = NodePath("bbcontainer")
-        #self.bbcontainer.setBillboardPointEye()
-        self.bbcontainer.reparentTo( self.parent )
-        for loadedFrame in frameList:
+        for loadedFrame in frameList:              
             # For debugging purposes, print the object.
             if False:
                 loadedFrame.printAsString()
-
+            
             # Set up place to store primitive 3d object; note: requires vertex data made by GeomVertexData
             squareMadeByTriangleStrips = GeomTristrips(Geom.UHDynamic)
               
@@ -384,7 +449,7 @@ class Effect:
             #   the colors at each point of the square (c4: r, g, b, a), and
             #   for the UV texture coordinates at each point of the square     (t2: S, T).
             vertexData = GeomVertexData('square-'+str(frameIndexForName), GeomVertexFormat.getV3c4t2(), Geom.UHDynamic)
-            vertex = GeomVertexWriter(vertexData, 'vertex')     
+            vertex = GeomVertexWriter(vertexData, 'vertex')
             color = GeomVertexWriter(vertexData, 'color')
             texcoord = GeomVertexWriter(vertexData, 'texcoord') 
               
@@ -417,9 +482,8 @@ class Effect:
             # Pass primtive to drawing node
             drawPrimitiveNode=GeomNode('square-'+str(frameIndexForName))    
             drawPrimitiveNode.addGeom(square)
-            # Pass node to scene
-
-            nodePath = self.bbcontainer.attachNewNode(drawPrimitiveNode)
+            # Pass node to scene (effect camera)
+            nodePath = self.effectCameraNodePath.attachNewNode(drawPrimitiveNode)
             # Linear dodge:
             if loadedFrame.blendMode == "darken":
                 nodePath.setAttrib(ColorBlendAttrib.make(ColorBlendAttrib.MAdd, ColorBlendAttrib.OOneMinusFbufferColor, ColorBlendAttrib.OOneMinusIncomingColor))
@@ -452,7 +516,8 @@ class Effect:
             nodePath.setPos((loadedFrame.bound.X + loadedFrame.bound.Width / 2.0, 1, -loadedFrame.bound.Y - loadedFrame.bound.Height / 2.0))
             nodePath.setR(loadedFrame.rotationZ)
             nodePath.setScale(loadedFrame.scaleX, 1, loadedFrame.scaleY)
-            self.consumedNodesList.append(self.bbcontainer)
+            nodePath.setTwoSided(True)
+            self.consumedNodesList.append(nodePath)
             frameIndexForName = frameIndexForName + 1
         # Loop continues on through each frame called in the composite frame.
         pass

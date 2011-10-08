@@ -48,47 +48,24 @@ def updateSpriteAnimation(sprite, animation):
     h = camhandler.container.getH()
     sprite.updateDisplayDir( h, True )
 
-class Effect:
-
-	def __init__(self, filename, parent):
-
-		tex = loader.loadTexture(filename)
-		tex.setMagfilter(Texture.FTNearest)
-		tex.setMinfilter(Texture.FTNearest)
-
-		cm = CardMaker('card')
-		cm.setFrame(-2, 2, -4, 4)
-		self.card = render.attachNewNode(cm.generate())
-		self.card.setTexture(tex)
-		self.card.setTransparency(True)
-		self.card.setBillboardPointEye()
-		self.card.reparentTo(parent)
-		self.card.setColor(1,1,1,0)
-		self.card.setScale(256.0/240.0)
-	
-	def getSequence(self):
-		return Sequence(
-			Parallel(
-				LerpScaleInterval(self.card, 1.0, 1        , 0.1      ),
-				LerpColorInterval(self.card, 1.0, (1,1,1,1), (1,1,1,0)),
-				LerpPosInterval(  self.card, 1.0, (0,0,0)  , (0,0,10) ),
-			),
-			Parallel(
-				LerpScaleInterval(self.card, 0.5, 10       , 1        ),
-				LerpColorInterval(self.card, 0.5, (1,1,1,0), (1,1,1,1)),
-			)
-		)
-
 taskMgr.add(rotationTask, 'rotationTask')
 taskMgr.add(characterDirectionTask, 'characterDirectionTask')
 
 Sequence(
-	Func(updateSpriteAnimation, sprite1, 'attack'),
-	Func(updateSpriteAnimation, sprite2, 'hit'),
-	Effect('test.png', sprite2.node).getSequence(),
-	Func(updateSpriteAnimation, sprite2, 'attack'),
-	Func(updateSpriteAnimation, sprite1, 'hit'),
-	Effect('test.png', sprite1.node).getSequence(),
+    Func(updateSpriteAnimation, sprite1, 'attack'),
+    Func(updateSpriteAnimation, sprite2, 'hit'),
+    #Effect.Effect('cure.fft-E001.bmp', sprite2.node, True).getSequence(),
+    Effect.Effect('ice.fft-E024.bmp', sprite2.node, True, False, [0,0,-2]).getSequence(),
+    #Effect.Effect('bizen-boat.fft-E135.bmp', sprite2.node, True).getSequence(),
+    #Effect.Effect('death.fft-E030-color.bmp', sprite2.node, True).getSequence(),
+    #Effect.Effect('dark-blade.fft-E172.bmp', sprite2.node, True, True, [0,0,3]).getSequence(),
+    #Effect.Effect('dark-blade.fft-E172-color.bmp', sprite2.node, True, True, [0,0,3]).getSequence(),
+    Func(updateSpriteAnimation, sprite2, 'attack'),
+    Func(updateSpriteAnimation, sprite1, 'hit'),
+    Effect.Effect('cure.fft-E001.bmp', sprite1.node, True).getSequence()
+    #Effect.Effect('night-sword.fft-E173.bmp', sprite1.node, True, False, [0,0,-2]).getSequence()
+    #Effect.Effect('cure-it-with-fire.fft-E001.png', sprite1.node, True).getSequence()
+    #Effect.Effect('ice.fft-E024.bmp', sprite1.node, True, False, [0,0,-2]).getSequence()
 ).loop()
 
 run()
