@@ -559,11 +559,27 @@ class Client(DirectObject):
 
     def showMenu(self, charid):
         self.setPhase('gui')
-        menu = GUI.Menu( self.party['chars'][charid],
-            lambda: self.onMoveClicked(charid),
-            lambda: self.onAttackClicked(charid),
-            lambda: self.onWaitClicked(charid),
-            lambda: self.onCancelClicked(charid) )
+
+        canmove = self.party['chars'][charid]['canmove']
+        canact  = self.party['chars'][charid]['canact']
+
+        columns = [ { 'x': -25, 'font': GUI.regularfont, 'align': TextNode.ALeft   }, ]
+
+        rows = [
+            { 'cells': ['Move'        ], 'enabled': canmove, 'callback': lambda: self.onMoveClicked  (charid) },
+            { 'cells': ['Act'         ], 'enabled': canact , 'callback': lambda: self.onAttackClicked(charid) },
+            { 'cells': ['Wait'        ], 'enabled': True   , 'callback': lambda: self.onWaitClicked  (charid) },
+            { 'cells': ['Status'      ], 'enabled': False  , 'callback': lambda: self.onWaitClicked  (charid) },
+            { 'cells': ['Auto-Battle' ], 'enabled': False  , 'callback': lambda: self.onWaitClicked  (charid) },
+        ]
+
+        GUI.ScrollableList(
+            'shadowed', 73, -8, 62.0, 91.0, 16, 
+            columns, rows, 5, 
+            lambda: self.onCancelClicked(charid), 
+            'Menu'
+        )
+
 
     # Get the path from the server, and makes the character walk on it
     def path(self, charid, dest):

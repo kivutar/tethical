@@ -282,101 +282,6 @@ class PartyListWindow(DirectObject.DirectObject):
             if len(parties[key]['players']) >= len(parties[key]['map']['tilesets']):
                 buttons[key]['state'] = DGG.DISABLED
 
-class Menu(DirectObject.DirectObject):
-
-    def __init__(self, char, movecommand, attackcommand, waitcommand, cancelcommand):
-
-        self.offset = 22
-        self.height = 16
-        self.index = 0
-        self.cancelcommand = cancelcommand
-
-        self.buttons = [
-            { 'text': 'Move',   'enabled': char['canmove'], 'pos': (-v*36.5,0,v*(self.offset-self.height*0)), 'command': movecommand   },
-            { 'text': 'Attack', 'enabled': char['canact' ], 'pos': (-v*36.5,0,v*(self.offset-self.height*1)), 'command': attackcommand },
-            { 'text': 'Wait',   'enabled': True           , 'pos': (-v*36.5,0,v*(self.offset-self.height*2)), 'command': waitcommand   },
-            { 'text': 'Status', 'enabled': False          , 'pos': (-v*36.5,0,v*(self.offset-self.height*3)), 'command': cancelcommand },
-        ]
-
-        menutexture = loader.loadTexture(GAME+'/textures/gui/menu.png')
-        menutexture.setMagfilter(Texture.FTNearest)
-        menutexture.setMinfilter(Texture.FTNearest)
-
-        handtexture = loader.loadTexture(GAME+'/textures/gui/hand.png')
-        handtexture.setMagfilter(Texture.FTNearest)
-        handtexture.setMinfilter(Texture.FTNearest)
-
-        self.frame = DirectFrame(
-            frameTexture = menutexture,
-            frameColor = (1, 1, 1, 1),
-            frameSize = ( -v*32.0, v*32.0, -v*64.0, v*64.0 ),
-            pos = (v*73.0, 0, v*10.0),
-            scale = 0.1,
-        )
-        self.frame.setTransparency(True)
-
-        self.hand = DirectFrame(
-            frameTexture = handtexture,
-            frameColor = (1, 1, 1, 1),
-            frameSize = ( -v*8, v*8, -v*8, v*8 ),
-            pos = self.buttons[0]['pos'],
-            parent = self.frame
-        )
-
-        for i,button in enumerate(self.buttons):
-            label = DirectLabel(
-                color = (0,0,0,0),
-                text = button['text'],
-                scale = regularscale,
-                text_font = regularfont,
-                text_fg = (1,1,1,1),
-                text_align = TextNode.ALeft,
-                parent = self.frame,
-                pos = (-v*25, 0, v*(self.offset-3-self.height*i))
-            )
-            if not button['enabled']:
-                label['text_fg'] = (1,1,1,.5)
-        
-        seq = Sequence()
-        seq.append(LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1))
-        seq.append(Func(self.acceptAll))
-        seq.start()
-
-    def acceptAll(self):
-        self.accept(CROSS_BTN,  self.onCrossClicked)
-        self.accept(CIRCLE_BTN, self.onCircleClicked)
-        self.accept("arrow_down",        lambda: self.updateIndex( 1))
-        self.accept("arrow_down-repeat", lambda: self.updateIndex( 1))
-        self.accept("arrow_up",          lambda: self.updateIndex(-1))
-        self.accept("arrow_up-repeat",   lambda: self.updateIndex(-1))
-
-    def updateIndex(self, direction):
-        hover_snd.play()
-        next = self.index + direction
-        if next == len(self.buttons):
-            next = 0
-        if next == -1:
-            next = len(self.buttons)-1
-        self.hand.setPos(self.buttons[next]['pos'])
-        self.index = next
-
-    def onCircleClicked(self):
-        if self.buttons[self.index]['enabled']:
-            clicked_snd.play()
-            self.commandAndDestroy(self.buttons[self.index]['command'])
-
-    def onCrossClicked(self):
-        cancel_snd.play()
-        self.commandAndDestroy(self.cancelcommand)
-
-    def commandAndDestroy(self,command):
-        seq = Sequence()
-        seq.append(LerpScaleInterval(self.frame, 0.1, 0.1, startScale=1))
-        seq.append(Func(self.ignoreAll))
-        seq.append(Func(self.frame.destroy))
-        seq.append(Func(command))
-        seq.start()
-
 class MoveCheck(DirectObject.DirectObject):
 
     def __init__(self, command, cancelcommand):
@@ -2042,7 +1947,7 @@ class Formation(DirectObject.DirectObject):
 
 class ScrollableList(DirectObject.DirectObject):
 
-    def __init__(self, style, x, y, w, h, flushToTop, columns, rows, maxrows, cancelcallback):
+    def __init__(self, style, x, y, w, h, flushToTop, columns, rows, maxrows, cancelcallback, title=None):
 
         self.style = style
 
@@ -2080,7 +1985,7 @@ class ScrollableList(DirectObject.DirectObject):
             frameColor = (1, 1, 1, 0),
             frameSize = ( -v*self.w/2.0, v*self.w/2.0, -v*self.h/2.0, v*self.h/2.0 ),
             pos = (v*self.x, 0, -v*self.y),
-            geom = WindowNodeDrawer(self.w, self.h, self.style),
+            geom = WindowNodeDrawer(self.w, self.h, self.style, title),
         )
         self.frame.setTransparency(True)
 
@@ -2166,7 +2071,7 @@ class ScrollableList(DirectObject.DirectObject):
         # self.index is in range(0, viewable row count); it is not true where len(rows) > maxrows
         if self.rows[self.internalIndex]['enabled']:
             clicked_snd.play()
-            self.commandAndDestroy(lambda: self.rows[self.internalIndex]['callback'](self.internalIndex))
+            self.commandAndDestroy(self.rows[self.internalIndex]['callback'])
 
     def onCrossClicked(self):
         cancel_snd.play()
