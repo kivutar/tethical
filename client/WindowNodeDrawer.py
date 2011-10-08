@@ -1,13 +1,14 @@
 import direct.directbase.DirectStart
-from direct.gui.OnscreenText import OnscreenText 
+from direct.gui.OnscreenText import OnscreenText
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from Config import *
 
 v = 1.0/120.0
+#theme = 'blue-glass'
 theme = 'default'
 
-def WindowNodeDrawer(w, h, style):
+def WindowNodeDrawer(w, h, style, title=None):
 
     # 0 1 2
     # 3 4 5
@@ -42,8 +43,24 @@ def WindowNodeDrawer(w, h, style):
         if i == 4:
             cm.setUvRange((0,0), (w/tex.getOrigFileXSize(), h/tex.getOrigFileYSize()))
 
-        card = render.attachNewNode(cm.generate())
+        card = container.attachNewNode(cm.generate())
         card.setTexture(tex)
-        card.reparentTo(container)
+
+    if title:
+
+        path = GAME+'/textures/gui/'+theme+'/'+title+'_lbl.png'
+
+        tex = loader.loadTexture(path)
+        tex.setMagfilter(Texture.FTNearest)
+        tex.setMinfilter(Texture.FTNearest)
+
+        tw = tex.getOrigFileXSize()
+        th = tex.getOrigFileYSize()
+
+        cm = CardMaker('card')
+        cm.setFrame( (-v*(w/2), -v*(w/2-tw), v*(h/2-th/2), v*(h/2+th/2)) )
+
+        card = container.attachNewNode(cm.generate())
+        card.setTexture(tex)
 
     return container

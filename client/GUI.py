@@ -74,11 +74,11 @@ class Test(DirectObject.DirectObject):
         base.setBackgroundColor(0,0,1)
 
         self.frame = DirectFrame(
-                color = (1, 1, 1, .5),
-                frameTexture = tex,
-                frameSize = ( -v*128.0, v*128.0, -v*128.0, v*128.0 ),
-                scale = 1,
-                sortOrder= -2,
+            color = (1, 1, 1, 1),
+            frameTexture = tex,
+            frameSize = ( -v*128.0, v*128.0, -v*128.0, v*128.0 ),
+            scale = 1,
+            sortOrder= -2,
         )
         self.frame.setTransparency(True)
 
@@ -86,11 +86,12 @@ class LoginWindow(DirectObject.DirectObject):
 
     def __init__(self, command):
         
-        tex = loader.loadTexture(GAME+'/textures/gui/login_window.png')
-        tex.setMagfilter(Texture.FTNearest)
-        tex.setMinfilter(Texture.FTNearest)
-
-        self.frame = DirectFrame( frameTexture = tex, color = (1, 1, 1, 1), frameSize = ( -v*64.0, v*64.0, -v*32.0, v*32.0 ), scale = 0.1 )
+        self.frame = DirectFrame(
+            frameColor = (1, 1, 1, .25),
+            frameSize = ( -v*56, v*56, -v*22, v*22 ),
+            pos = (v*10, 0, -v*0),
+            geom = WindowNodeDrawer(112, 44, 'shadowed', 'Login'),
+        )
         self.frame.setTransparency(True)
 
         self.loginLabel = DirectLabel(
@@ -100,9 +101,9 @@ class LoginWindow(DirectObject.DirectObject):
             text_font = regularfont,
             text_fg = (1,1,1,1),
             text_align = TextNode.ALeft,
-            parent = self.frame
+            parent = self.frame,
         )
-        self.loginLabel.setPos(-v*50, 0, v*3)
+        self.loginLabel.setPos(-v*50, 0, v*4)
 
         self.loginEntry = DirectEntry(
             color = (0,0,0,0),
@@ -113,7 +114,7 @@ class LoginWindow(DirectObject.DirectObject):
             text_fg = (1,1,1,1),
             parent = self.frame
         )
-        self.loginEntry.setPos(-v*6, 0, v*3)
+        self.loginEntry.setPos(-v*6, 0, v*4)
 
         self.passwordLabel = DirectLabel(
             text = 'Password:',
@@ -122,9 +123,9 @@ class LoginWindow(DirectObject.DirectObject):
             text_font = regularfont,
             text_fg = (1,1,1,1),
             text_align = TextNode.ALeft,
-            parent = self.frame
+            parent = self.frame,
         )
-        self.passwordLabel.setPos(-v*50, 0, -v*13)
+        self.passwordLabel.setPos(-v*50, 0, -v*12)
 
         self.passwordEntry = DirectEntry(
             color = (0,0,0,0),
@@ -133,9 +134,9 @@ class LoginWindow(DirectObject.DirectObject):
             text_font = regularfont,
             text_fg = (1,1,1,1),
             obscured = True,
-            parent = self.frame
+            parent = self.frame,
         )
-        self.passwordEntry.setPos(-v*6, 0, -v*13)
+        self.passwordEntry.setPos(-v*6, 0, -v*12)
 
         connectButton = DirectButton(
             scale = regularscale,
@@ -150,7 +151,7 @@ class LoginWindow(DirectObject.DirectObject):
             pad = (.15,.15),
             parent = self.frame
         )
-        connectButton.setPos(v*38, 0, -v*40)
+        connectButton.setPos(v*37, 0, -v*40)
 
         seq = Sequence()
         i = LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1 )
@@ -2076,7 +2077,7 @@ class ScrollableList(DirectObject.DirectObject):
         rulertexture.setMinfilter(Texture.FTNearest)
 
         self.frame = DirectFrame(
-            frameColor = (1, 1, 1, .25),
+            frameColor = (1, 1, 1, 0),
             frameSize = ( -v*self.w/2.0, v*self.w/2.0, -v*self.h/2.0, v*self.h/2.0 ),
             pos = (v*self.x, 0, -v*self.y),
             geom = WindowNodeDrawer(self.w, self.h, self.style),
