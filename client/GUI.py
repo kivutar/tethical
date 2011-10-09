@@ -63,11 +63,11 @@ class Background(DirectObject.DirectObject):
         seq.append( Func(command) )
         seq.start()
 
-class Test(DirectObject.DirectObject):
+class Blueprint(DirectObject.DirectObject):
 
     def __init__(self, image):
 
-        tex = loader.loadTexture(GAME+'/textures/gui/'+image+'.png')
+        tex = loader.loadTexture(GAME+'/textures/blueprints/'+image+'.png')
         tex.setMagfilter(Texture.FTNearest)
         tex.setMinfilter(Texture.FTNearest)
 
