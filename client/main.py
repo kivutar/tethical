@@ -126,9 +126,11 @@ class Client(DirectObject):
             if walkables:
                 self.setPhase('gui')
                 GUI.Help(
-                    'move_help',
+                    0, 25, 142, 60,
+                    'shadowed', 'Check',
+                    'Specify the point to move with\nthe cursor. Press the %c button\nto select.' % CIRCLE_BTN.upper(),
                     lambda: self.setupWalkableTileChooser(charid, walkables),
-                    self.turn
+                    self.turn,
                 )
             else:
                 #TODO: show message "no walkable tile"
@@ -997,9 +999,11 @@ class Client(DirectObject):
     def onAttackClicked(self, charid):
         self.setPhase('gui')
         GUI.Help(
-            'action_help',
+            0, 25, 155, 44,
+            'shadowed', 'Check',
+            'Specify the target with the cursor.\nPress the %c button to select.' % CIRCLE_BTN.upper(),
             lambda: self.setupAttackables(charid),
-            self.turn
+            self.turn,
         )
     
     def setupAttackables(self, charid):
@@ -1012,9 +1016,11 @@ class Client(DirectObject):
     def onWaitClicked(self, charid):
         self.setPhase('gui')
         GUI.Help(
-            'direction_help',
+            0, 25, 135, 60,
+            'shadowed', 'Check',
+            'Specify the direction with\nthe Directional buttons.\nPress the %c button to select.' % CIRCLE_BTN.upper(),
             lambda: self.setupDirectionChooser(charid),
-            self.turn
+            self.turn,
         )
     
     def setupDirectionChooser(self, charid):

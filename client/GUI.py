@@ -490,25 +490,33 @@ class AttackCheck(DirectObject.DirectObject):
         seq.append(Func(command))
         seq.start()
 
+# Display an help message, the player can confirm or cancel
 class Help(DirectObject.DirectObject):
 
-    def __init__(self, message, command, cancelcommand):
+    def __init__(self, x, y, w, h, style, title, message, command, cancelcommand):
 
         self.command = command
         self.cancelcommand = cancelcommand
 
-        tex = loader.loadTexture(GAME+'/textures/gui/'+message+'.png')
-        tex.setMagfilter(Texture.FTNearest)
-        tex.setMinfilter(Texture.FTNearest)
-
         self.frame = DirectFrame(
-            frameTexture = tex,
-            frameColor = (1, 1, 1, 1),
-            frameSize = ( -v*128.0, v*128.0, -v*32.0, v*32.0 ),
-            pos = (0, 0, .25),
-            scale = 0.1,
+            frameColor = (1, 1, 1, 0),
+            frameSize = ( -v*w/2.0, v*w/2.0, -v*h/2.0, v*h/2.0 ),
+            pos = (v*x, 0, v*y),
+            geom = WindowNodeDrawer(w, h, style, title),
+            scale=0.1,
         )
         self.frame.setTransparency(True)
+
+        messageLabel = DirectLabel(
+            color = (0,0,0,0),
+            text = message,
+            scale = regularscale,
+            text_font = regularfont,
+            text_fg = (1,1,1,1),
+            text_align = TextNode.ALeft,
+            parent = self.frame,
+            pos = (-v*(w/2-6), 0, v*(h/2-17))
+        )
         
         seq = Sequence()
         seq.append(LerpScaleInterval(self.frame, 0.1, 1, startScale=0.1))
