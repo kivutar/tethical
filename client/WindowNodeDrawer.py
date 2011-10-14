@@ -6,9 +6,6 @@ from Config import *
 v = 1.0/120.0
 scale = 2*12.0/240.0
 whitefont = loader.loadFont(GAME+'/fonts/fftwhite')
-#theme = 'blue-glass'
-theme = 'default'
-
 
 def WindowNodeDrawer(w, h, style, title=None):
 
@@ -32,7 +29,7 @@ def WindowNodeDrawer(w, h, style, title=None):
 
     for i in (4,0,1,2,3,5,6,7,8):
 
-        path = GAME+'/textures/gui/'+theme+'/'+style+'/'+str(i)+'.png'
+        path = GAME+'/textures/gui/'+THEME+'/'+style+'/'+str(i)+'.png'
 
         tex = loader.loadTexture(path)
         tex.setMagfilter(Texture.FTNearest)

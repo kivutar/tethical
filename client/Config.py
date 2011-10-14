@@ -20,3 +20,5 @@ START_BTN    = ConfigVariableString('start-btn',    '8').getValue()
 SELECT_BTN   = ConfigVariableString('select-btn',   '5').getValue()
 
 SPRITE_SCALE = float( ConfigVariableString('sprite-scale', '2').getValue() )
+
+THEME = ConfigVariableString('theme', 'default').getValue()
