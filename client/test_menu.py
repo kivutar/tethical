@@ -40,18 +40,18 @@ def cancelcallback():
 
 # GUI.ScrollableList('list', 3.0, 31.0, 206.0, 148.0, 23, columns, rows, 8, cancelcallback)
 
-GUI.Blueprint('menu1')
+# GUI.Blueprint('menu1')
 
-columns = [
-    { 'name': "menu", 'label': "Menu", 'x': -25, 'font': GUI.regularfont, 'align': TextNode.ALeft   },
-]
+# columns = [
+#     { 'name': "menu", 'label': "Menu", 'x': -25, 'font': GUI.regularfont, 'align': TextNode.ALeft   },
+# ]
 
-rows = [
-    { 'cells': ['Status',      ], 'enabled': True , 'callback': exemplecallback, },
-    { 'cells': ['Auto-Battle', ], 'enabled': True , 'callback': exemplecallback, },
-]
+# rows = [
+#     { 'cells': ['Status',      ], 'enabled': True , 'callback': exemplecallback, },
+#     { 'cells': ['Auto-Battle', ], 'enabled': True , 'callback': exemplecallback, },
+# ]
 
-GUI.ScrollableList('shadowed', 73, -32, 62.0, 43.0, 16, columns, rows, 2, cancelcallback)
+# GUI.ScrollableList('shadowed', 73, -32, 62.0, 43.0, 16, columns, rows, 2, cancelcallback, 'Menu')
 
 # GUI.Blueprint('menu2')
 
