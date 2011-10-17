@@ -10,6 +10,7 @@ from pandac.PandaModules import *
 import Sprite
 import functools
 from WindowNodeDrawer import WindowNodeDrawer
+from BarNodeDrawer import Bar
 
 u = 1.0/128.0
 v = 1.0/120.0
@@ -22,6 +23,8 @@ regularfont = loader.loadFont(GAME+'/fonts/fft')
 font3 = loader.loadFont(GAME+'/fonts/fft3')
 font4 = loader.loadFont(GAME+'/fonts/fft4')
 coordsfont = loader.loadFont(GAME+'/fonts/fftcoords')
+whitefont = loader.loadFont(GAME+'/fonts/fftwhite')
+smwhitefont = loader.loadFont(GAME+'/fonts/fftwhite-small-caps')
 
 class Coords(DirectObject.DirectObject):
 
@@ -569,30 +572,63 @@ class CharBarsLeft:
             frameSize = ( 0, v*32, 0, v*64 ),
             parent = self.fbgframe,
         )
-        self.face.setPos(-v*(59-42), 0, -v*31)
-
-        tex = loader.loadTexture(GAME+'/textures/gui/char_bars.png')
-        tex.setMagfilter(Texture.FTNearest)
-        tex.setMinfilter(Texture.FTNearest)
+        self.face.setPos(-v*17, 0, -v*31)
         
         self.frame = DirectFrame(
-            frameTexture = tex, 
-            frameColor=(1, 1, 1, 1),
+            frameColor=(1, 1, 1, 0),
             frameSize = ( -v*64.0, v*64.0, -v*32.0, v*32.0 ),
             parent = self.fbgframe
         )
         self.frame.setPos(v*46, 0, -v*9)
         self.frame.setTransparency(True)
 
+        bar = Bar(bar='bar-1')
+        bar.updateTo(int(float(char['hp'])/float(char['hpmax'])*100))
+        self.hpbar = DirectFrame(
+            frameColor=(1, 1, 1, 1),
+            frameSize=(0, 0, 0, 0), 
+            parent = self.fbgframe,
+            geom = bar.container,
+            pos = (v*24, 0, -v*2),
+        )
+        self.hpbar.setTransparency(True)
+
+        bar = Bar(bar='bar-2')
+        bar.updateTo(int(float(char['mp'])/float(char['mpmax'])*100))
+        self.mpbar = DirectFrame(
+            frameColor=(1, 1, 1, 1),
+            frameSize=(0, 0, 0, 0), 
+            parent = self.fbgframe,
+            geom = bar.container,
+            pos = (v*24, 0, -v*13),
+        )
+        self.mpbar.setTransparency(True)
+
+        bar = Bar(bar='bar-3')
+        bar.updateTo(int(char['ct']))
+        self.ctbar = DirectFrame(
+            frameColor=(1, 1, 1, 1),
+            frameSize=(0, 0, 0, 0), 
+            parent = self.fbgframe,
+            geom = bar.container,
+            pos = (.20, 0, -.20)
+        )
+        self.ctbar.setTransparency(True)
+
         infos = [
-            { 'x': 16-3 , 'z':  16+9 , 'text': '%02d' % char['lv'] },
-            { 'x': 48-3 , 'z':  16+9 , 'text': '%02d' % char['exp'] },
-            { 'x': 18-3 , 'z':   2+9 , 'text': '%03d' % char['hp'] },
-            { 'x': 37-3 , 'z':  -2+9 , 'text': '%03d' % char['hpmax'] },
-            { 'x': 18-3 , 'z':  -9+9 , 'text': '%03d' % char['mp'] },
-            { 'x': 37-3 , 'z': -13+9 , 'text': '%03d' % char['mpmax'] },
-            { 'x': 18-3 , 'z': -20+9 , 'text': '%03d' % char['ct'] },
-            { 'x': 37-3 , 'z': -24+9 , 'text': '100' },
+            { 'x':  12, 'z':  23, 'text':  '%02d' % char['lv']   , 'font':   whitefont },
+            { 'x':  43, 'z':  23, 'text':  '%02d' % char['exp']  , 'font':   whitefont },
+            { 'x':  15, 'z':   9, 'text':  '%03d' % char['hp']   , 'font':   whitefont },
+            { 'x':  28, 'z':   5, 'text': '/%03d' % char['hpmax'], 'font':   whitefont },
+            { 'x':  15, 'z':  -2, 'text':  '%03d' % char['mp']   , 'font':   whitefont },
+            { 'x':  28, 'z':  -6, 'text': '/%03d' % char['mpmax'], 'font':   whitefont },
+            { 'x':  15, 'z': -13, 'text':  '%03d' % char['ct']   , 'font':   whitefont },
+            { 'x':  28, 'z': -17, 'text':  '/100'                , 'font':   whitefont },
+            { 'x': -33, 'z':   8, 'text':    'Hp'                , 'font': smwhitefont },
+            { 'x': -33, 'z':  -3, 'text':    'Mp'                , 'font': smwhitefont },
+            { 'x': -33, 'z': -13, 'text':    'Ct'                , 'font': smwhitefont },
+            { 'x':   0, 'z':  23, 'text':   'Lv.'                , 'font': smwhitefont },
+            { 'x':  27, 'z':  23, 'text':  'Exp.'                , 'font': smwhitefont },
         ]
         
         for info in infos:
@@ -600,10 +636,10 @@ class CharBarsLeft:
                 text = info['text'],
                 color = (1, 1, 1, 0),
                 scale = scale,
-                text_font = font3,
-                text_fg = (1,1,1,1),
+                text_font = info['font'],
+                text_fg = (1, 1, 1, 1),
                 text_align = TextNode.ALeft,
-                parent = self.frame
+                parent = self.frame,
             )
             label.setPos(v*info['x'], 0, v*info['z'])
 
@@ -644,29 +680,62 @@ class CharBarsRight:
             parent = self.fbgframe,
         )
         self.face.setPos(-v*(59-42), 0, -v*31)
-
-        tex = loader.loadTexture(GAME+'/textures/gui/char_bars.png')
-        tex.setMagfilter(Texture.FTNearest)
-        tex.setMinfilter(Texture.FTNearest)
         
         self.frame = DirectFrame(
-            frameTexture = tex, 
-            frameColor=(1, 1, 1, 1),
+            frameColor=(1, 1, 1, 0),
             frameSize = ( -v*64.0, v*64.0, -v*32.0, v*32.0 ),
             parent = self.fbgframe
         )
         self.frame.setPos(-v*64, 0, v*7)
         self.frame.setTransparency(True)
 
+        bar = Bar(bar='bar-1')
+        bar.updateTo(int(float(char['hp'])/float(char['hpmax'])*100))
+        self.hpbar = DirectFrame(
+            frameColor=(1, 1, 1, 1),
+            frameSize=(0,0,0,0),
+            parent = self.fbgframe,
+            geom = bar.container,
+            pos = (-.72, 0, .12),
+        )
+        self.hpbar.setTransparency(True)
+        
+        bar = Bar(bar='bar-2')
+        bar.updateTo(int(float(char['mp'])/float(char['mpmax'])*100))
+        self.mpbar = DirectFrame(
+            frameColor=(1, 1, 1, 1),
+            frameSize=(0,0,0,0),
+            parent = self.fbgframe,
+            geom = bar.container,
+            pos = (-.72, 0, .03),
+        )
+        self.mpbar.setTransparency(True)
+        
+        bar = Bar(bar='bar-3')
+        bar.updateTo(int(char['ct']))
+        self.ctbar = DirectFrame(
+            frameColor=(1, 1, 1, 1),
+            frameSize=(0,0,0,0),
+            parent = self.fbgframe,
+            geom = bar.container,
+            pos = (-.72, 0, -.07),
+        )
+        self.ctbar.setTransparency(True)
+
         infos = [
-            { 'x':   16 , 'z':   -29 , 'text': '%02d' % char['lv'] },
-            { 'x':   48 , 'z':   -29 , 'text': '%02d' % char['exp'] },
-            { 'x': 18-4 , 'z':   2+7 , 'text': '%03d' % char['hp'] },
-            { 'x': 37-4 , 'z':  -2+7 , 'text': '%03d' % char['hpmax'] },
-            { 'x': 18-4 , 'z':  -9+7 , 'text': '%03d' % char['mp'] },
-            { 'x': 37-4 , 'z': -13+7 , 'text': '%03d' % char['mpmax'] },
-            { 'x': 18-4 , 'z': -20+7 , 'text': '%03d' % char['ct'] },
-            { 'x': 37-4 , 'z': -24+7 , 'text': '100' },
+            { 'x':   16, 'z': -29, 'text':  '%02d' % char['lv']   , 'font':   whitefont },
+            { 'x':   48, 'z': -29, 'text':  '%02d' % char['exp']  , 'font':   whitefont },
+            { 'x':   14, 'z':   9, 'text':  '%03d' % char['hp']   , 'font':   whitefont },
+            { 'x':   28, 'z':   5, 'text': '/%03d' % char['hpmax'], 'font':   whitefont },
+            { 'x':   14, 'z':  -2, 'text':  '%03d' % char['mp']   , 'font':   whitefont },
+            { 'x':   28, 'z':  -6, 'text': '/%03d' % char['mpmax'], 'font':   whitefont },
+            { 'x':   14, 'z': -13, 'text':  '%03d' % char['ct']   , 'font':   whitefont },
+            { 'x':   28, 'z': -17, 'text':  '/100'                , 'font':   whitefont },            
+            { 'x':  -33, 'z':   8, 'text':    'Hp'                , 'font': smwhitefont },
+            { 'x':  -33, 'z':   3, 'text':    'Mp'                , 'font': smwhitefont },
+            { 'x':  -33, 'z': -13, 'text':    'Ct'                , 'font': smwhitefont },
+            { 'x':    2, 'z': -29, 'text':   'Lv.'                , 'font': smwhitefont },
+            { 'x':   29, 'z': -29, 'text':  'Exp.'                , 'font': smwhitefont },
         ]
         
         for info in infos:
@@ -674,12 +743,13 @@ class CharBarsRight:
                 text = info['text'],
                 color = (1, 1, 1, 0),
                 scale = scale,
-                text_font = font3,
+                text_font = info['font'],
                 text_fg = (1,1,1,1),
                 text_align = TextNode.ALeft,
-                parent = self.frame
+                parent = self.frame,
+                sortOrder = 100
             )
-            label.setPos(v*info['x'], 0, v*info['z'])
+            label.setPos(v*info['x'], -1, v*info['z'])
 
         i1 = LerpPosInterval(self.fbgframe, 0.2, (u*107,0,-u*82), (2,0,-u*82))
         s = Sequence(i1)
