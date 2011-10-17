@@ -1,0 +1,3899 @@
+<Comment> {
+  "egg-mkfont -o fftwhite-small-caps.egg FFTWhite-small-caps-12.bdf"
+}
+<Texture> fftwhite-small-caps125 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.203125 0
+      0.75 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps124 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0546875 0 0
+      0 0.203125 0
+      -0.0078125 0.640625 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps123 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.203125 0
+      0.695313 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps122 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.15625 0
+      0.4375 0.09375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps121 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.171875 0
+      0.15625 0.203125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps120 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.171875 0
+      0.101563 0.203125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps119 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.15625 0
+      0.390625 0.21875 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps118 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.171875 0
+      0.757813 0.359375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps117 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.15625 0
+      0.375 0.09375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps116 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.171875 0
+      0.6875 0.359375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps115 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.171875 0
+      0.046875 0.203125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps114 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.171875 0
+      0.648438 0.21875 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps113 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.1875 0
+      0.320313 0.34375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps112 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.1875 0
+      0.257813 0.34375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps111 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.15625 0
+      0.3125 0.09375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps110 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.15625 0
+      0.320313 0.21875 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps109 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.15625 0
+      0.25 0.21875 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps108 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0546875 0 0
+      0 0.171875 0
+      0.210938 0.203125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps107 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.171875 0
+      -0.0078125 0.203125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps106 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0625 0 0
+      0 0.1875 0
+      0.4375 0.34375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps105 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0546875 0 0
+      0 0.171875 0
+      0.953125 0.359375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps104 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.171875 0
+      0.929688 0.21875 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps103 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.171875 0
+      0.875 0.21875 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps102 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.171875 0
+      0.820313 0.21875 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps101 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.15625 0
+      0.25 0.09375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps100 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.171875 0
+      0.765625 0.21875 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps099 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.15625 0
+      0.460938 0.21875 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps098 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.171875 0
+      0.710938 0.21875 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps097 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.171875 0
+      0.585938 0.21875 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps096 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0520833 0 0
+      0 0.104167 0
+      0.0833333 0.135417 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps095 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.109375 0
+      -0.0078125 0.125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps094 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.101562 0 0
+      0 0.140625 0
+      0.492188 0.109375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps093 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0625 0 0
+      0 0.203125 0
+      0.945313 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps092 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.203125 0
+      0.578125 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps091 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0625 0 0
+      0 0.203125 0
+      0.898438 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps090 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.0625 0.34375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps089 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      -0.0078125 0.34375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps088 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.875 0.5 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps087 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.101562 0 0
+      0 0.1875 0
+      0.375 0.65625 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps086 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.804688 0.5 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps085 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.734375 0.5 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps084 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.664063 0.5 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps083 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.59375 0.5 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps082 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.523438 0.5 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps081 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.09375 0 0
+      0 0.1875 0
+      0.773438 0.65625 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps080 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.453125 0.5 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps079 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.09375 0 0
+      0 0.1875 0
+      0.695313 0.65625 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps078 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.101562 0 0
+      0 0.1875 0
+      0.289063 0.65625 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps077 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.101562 0 0
+      0 0.1875 0
+      0.203125 0.65625 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps076 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.382813 0.5 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps075 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.3125 0.5 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps074 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.242188 0.5 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps073 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.171875 0.5 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps072 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.101562 0 0
+      0 0.1875 0
+      0.117188 0.65625 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps071 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.09375 0 0
+      0 0.1875 0
+      0.617188 0.65625 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps070 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.101563 0.5 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps069 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.03125 0.5 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps068 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.921875 0.65625 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps067 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.09375 0 0
+      0 0.1875 0
+      0.539063 0.65625 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps066 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0859375 0 0
+      0 0.1875 0
+      0.851563 0.65625 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps065 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.101562 0 0
+      0 0.1875 0
+      0.03125 0.65625 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps064 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.101562 0 0
+      0 0.203125 0
+      -0.0078125 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps063 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.1875 0
+      0.382813 0.34375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps062 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.203125 0
+      0.515625 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps061 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.140625 0
+      0.578125 0.109375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps060 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.203125 0
+      0.453125 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps059 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0625 0 0
+      0 0.1875 0
+      0.945313 0.5 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps058 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0546875 0 0
+      0 0.171875 0
+      -0.0078125 0.5 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps057 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.203125 0
+      0.390625 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps056 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.1875 0
+      0.195313 0.34375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps055 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.203125 0
+      0.328125 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps054 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.1875 0
+      0.132813 0.34375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps053 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.203125 0
+      0.265625 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps052 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.203125 0
+      0.203125 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps051 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.203125 0
+      0.140625 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps050 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.171875 0
+      0.523438 0.21875 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps049 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.171875 0
+      0.890625 0.359375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps048 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.171875 0
+      0.828125 0.359375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps047 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.203125 0
+      0.078125 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps046 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0546875 0 0
+      0 0.109375 0
+      0.953125 0.140625 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps045 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.078125 0 0
+      0 0.109375 0
+      0.890625 0.140625 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps044 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0625 0 0
+      0 0.125 0
+      0.804688 0.125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps043 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.140625 0
+      0.695313 0.109375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps042 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.140625 0
+      0.640625 0.109375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps041 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0625 0 0
+      0 0.203125 0
+      0.851563 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps040 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0625 0 0
+      0 0.203125 0
+      0.804688 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps039 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0546875 0 0
+      0 0.125 0
+      0.851563 0.125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps038 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.09375 0 0
+      0 0.171875 0
+      0.609375 0.359375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps037 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.09375 0 0
+      0 0.1875 0
+      0.460938 0.65625 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps036 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.203125 0
+      0.640625 0.8125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps035 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.101562 0 0
+      0 0.171875 0
+      0.523438 0.359375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps034 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0703125 0 0
+      0 0.125 0
+      0.75 0.125 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps033 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0546875 0 0
+      0 0.1875 0
+      0.484375 0.34375 1
+    }
+  }
+}
+<Texture> fftwhite-small-caps032 {
+  fftwhite-small-caps_1.png
+  <Scalar> minfilter { nearest }
+  <Scalar> magfilter { nearest }
+  <Scalar> anisotropic-degree { 0 }
+  <Transform> {
+    <Matrix3> {
+      0.0520833 0 0
+      0 0.104167 0
+      0.0520833 0.135417 1
+    }
+  }
+}
+<Group> {
+  <Switch> { 1 }
+  <Scalar> fps { 2 }
+  <VertexPool> vpool {
+    <Vertex> 0 {
+      0 1 0
+    }
+    <Vertex> 1 {
+      0.0833333 -0.0833333 0
+      <UV> { 0.2 0.2 }
+    }
+    <Vertex> 2 {
+      0.333333 -0.0833333 0
+      <UV> { 0.8 0.2 }
+    }
+    <Vertex> 3 {
+      0.333333 0.166667 0
+      <UV> { 0.8 0.8 }
+    }
+    <Vertex> 4 {
+      0.0833333 0.166667 0
+      <UV> { 0.2 0.8 }
+    }
+    <Vertex> 5 {
+      0.166667 0 0
+    }
+    <Vertex> 6 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.142857 0.0833333 }
+    }
+    <Vertex> 7 {
+      0.25 4.16334e-017 0
+      <UV> { 0.857143 0.0833333 }
+    }
+    <Vertex> 8 {
+      0.25 0.833333 0
+      <UV> { 0.857143 0.916667 }
+    }
+    <Vertex> 9 {
+      -0.166667 0.833333 0
+      <UV> { 0.142857 0.916667 }
+    }
+    <Vertex> 10 {
+      0.166667 0 0
+    }
+    <Vertex> 11 {
+      -0.166667 0.416667 0
+      <UV> { 0.111111 0.125 }
+    }
+    <Vertex> 12 {
+      0.416667 0.416667 0
+      <UV> { 0.888889 0.125 }
+    }
+    <Vertex> 13 {
+      0.416667 0.916667 0
+      <UV> { 0.888889 0.875 }
+    }
+    <Vertex> 14 {
+      -0.166667 0.916667 0
+      <UV> { 0.111111 0.875 }
+    }
+    <Vertex> 15 {
+      0.333333 0 0
+    }
+    <Vertex> 16 {
+      -0.166667 -6.93889e-017 0
+      <UV> { 0.0769231 0.0909091 }
+    }
+    <Vertex> 17 {
+      0.75 -6.93889e-017 0
+      <UV> { 0.923077 0.0909091 }
+    }
+    <Vertex> 18 {
+      0.75 0.75 0
+      <UV> { 0.923077 0.909091 }
+    }
+    <Vertex> 19 {
+      -0.166667 0.75 0
+      <UV> { 0.0769231 0.909091 }
+    }
+    <Vertex> 20 {
+      0.5 0 0
+    }
+    <Vertex> 21 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.111111 0.0769231 }
+    }
+    <Vertex> 22 {
+      0.416667 -0.0833333 0
+      <UV> { 0.888889 0.0769231 }
+    }
+    <Vertex> 23 {
+      0.416667 0.833333 0
+      <UV> { 0.888889 0.923077 }
+    }
+    <Vertex> 24 {
+      -0.166667 0.833333 0
+      <UV> { 0.111111 0.923077 }
+    }
+    <Vertex> 25 {
+      0.333333 0 0
+    }
+    <Vertex> 26 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.0833333 0.0833333 }
+    }
+    <Vertex> 27 {
+      0.666667 -0.0833333 0
+      <UV> { 0.916667 0.0833333 }
+    }
+    <Vertex> 28 {
+      0.666667 0.75 0
+      <UV> { 0.916667 0.916667 }
+    }
+    <Vertex> 29 {
+      -0.166667 0.75 0
+      <UV> { 0.0833333 0.916667 }
+    }
+    <Vertex> 30 {
+      0.583333 0 0
+    }
+    <Vertex> 31 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.0833333 0.0909091 }
+    }
+    <Vertex> 32 {
+      0.666667 -0.0833333 0
+      <UV> { 0.916667 0.0909091 }
+    }
+    <Vertex> 33 {
+      0.666667 0.666667 0
+      <UV> { 0.916667 0.909091 }
+    }
+    <Vertex> 34 {
+      -0.166667 0.666667 0
+      <UV> { 0.0833333 0.909091 }
+    }
+    <Vertex> 35 {
+      0.416667 0 0
+    }
+    <Vertex> 36 {
+      -0.166667 0.416667 0
+      <UV> { 0.142857 0.125 }
+    }
+    <Vertex> 37 {
+      0.25 0.416667 0
+      <UV> { 0.857143 0.125 }
+    }
+    <Vertex> 38 {
+      0.25 0.916667 0
+      <UV> { 0.857143 0.875 }
+    }
+    <Vertex> 39 {
+      -0.166667 0.916667 0
+      <UV> { 0.142857 0.875 }
+    }
+    <Vertex> 40 {
+      0.166667 0 0
+    }
+    <Vertex> 41 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.125 0.0769231 }
+    }
+    <Vertex> 42 {
+      0.333333 -0.0833333 0
+      <UV> { 0.875 0.0769231 }
+    }
+    <Vertex> 43 {
+      0.333333 0.833333 0
+      <UV> { 0.875 0.923077 }
+    }
+    <Vertex> 44 {
+      -0.166667 0.833333 0
+      <UV> { 0.125 0.923077 }
+    }
+    <Vertex> 45 {
+      0.25 0 0
+    }
+    <Vertex> 46 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.125 0.0769231 }
+    }
+    <Vertex> 47 {
+      0.333333 -0.0833333 0
+      <UV> { 0.875 0.0769231 }
+    }
+    <Vertex> 48 {
+      0.333333 0.833333 0
+      <UV> { 0.875 0.923077 }
+    }
+    <Vertex> 49 {
+      -0.166667 0.833333 0
+      <UV> { 0.125 0.923077 }
+    }
+    <Vertex> 50 {
+      0.25 0 0
+    }
+    <Vertex> 51 {
+      -0.166667 0.25 0
+      <UV> { 0.111111 0.111111 }
+    }
+    <Vertex> 52 {
+      0.416667 0.25 0
+      <UV> { 0.888889 0.111111 }
+    }
+    <Vertex> 53 {
+      0.416667 0.833333 0
+      <UV> { 0.888889 0.888889 }
+    }
+    <Vertex> 54 {
+      -0.166667 0.833333 0
+      <UV> { 0.111111 0.888889 }
+    }
+    <Vertex> 55 {
+      0.333333 0 0
+    }
+    <Vertex> 56 {
+      -0.166667 0.0833333 0
+      <UV> { 0.111111 0.111111 }
+    }
+    <Vertex> 57 {
+      0.416667 0.0833333 0
+      <UV> { 0.888889 0.111111 }
+    }
+    <Vertex> 58 {
+      0.416667 0.666667 0
+      <UV> { 0.888889 0.888889 }
+    }
+    <Vertex> 59 {
+      -0.166667 0.666667 0
+      <UV> { 0.111111 0.888889 }
+    }
+    <Vertex> 60 {
+      0.333333 0 0
+    }
+    <Vertex> 61 {
+      -0.166667 -0.166667 0
+      <UV> { 0.125 0.125 }
+    }
+    <Vertex> 62 {
+      0.333333 -0.166667 0
+      <UV> { 0.875 0.125 }
+    }
+    <Vertex> 63 {
+      0.333333 0.333333 0
+      <UV> { 0.875 0.875 }
+    }
+    <Vertex> 64 {
+      -0.166667 0.333333 0
+      <UV> { 0.125 0.875 }
+    }
+    <Vertex> 65 {
+      0.25 0 0
+    }
+    <Vertex> 66 {
+      -0.166667 0.166667 0
+      <UV> { 0.1 0.142857 }
+    }
+    <Vertex> 67 {
+      0.5 0.166667 0
+      <UV> { 0.9 0.142857 }
+    }
+    <Vertex> 68 {
+      0.5 0.583333 0
+      <UV> { 0.9 0.857143 }
+    }
+    <Vertex> 69 {
+      -0.166667 0.583333 0
+      <UV> { 0.1 0.857143 }
+    }
+    <Vertex> 70 {
+      0.416667 0 0
+    }
+    <Vertex> 71 {
+      -0.166667 -1.38778e-017 0
+      <UV> { 0.142857 0.142857 }
+    }
+    <Vertex> 72 {
+      0.25 -1.38778e-017 0
+      <UV> { 0.857143 0.142857 }
+    }
+    <Vertex> 73 {
+      0.25 0.416667 0
+      <UV> { 0.857143 0.857143 }
+    }
+    <Vertex> 74 {
+      -0.166667 0.416667 0
+      <UV> { 0.142857 0.857143 }
+    }
+    <Vertex> 75 {
+      0.166667 0 0
+    }
+    <Vertex> 76 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.1 0.0769231 }
+    }
+    <Vertex> 77 {
+      0.5 -0.0833333 0
+      <UV> { 0.9 0.0769231 }
+    }
+    <Vertex> 78 {
+      0.5 0.833333 0
+      <UV> { 0.9 0.923077 }
+    }
+    <Vertex> 79 {
+      -0.166667 0.833333 0
+      <UV> { 0.1 0.923077 }
+    }
+    <Vertex> 80 {
+      0.416667 0 0
+    }
+    <Vertex> 81 {
+      -0.166667 -6.93889e-017 0
+      <UV> { 0.1 0.0909091 }
+    }
+    <Vertex> 82 {
+      0.5 -6.93889e-017 0
+      <UV> { 0.9 0.0909091 }
+    }
+    <Vertex> 83 {
+      0.5 0.75 0
+      <UV> { 0.9 0.909091 }
+    }
+    <Vertex> 84 {
+      -0.166667 0.75 0
+      <UV> { 0.1 0.909091 }
+    }
+    <Vertex> 85 {
+      0.416667 0 0
+    }
+    <Vertex> 86 {
+      -0.166667 -6.93889e-017 0
+      <UV> { 0.1 0.0909091 }
+    }
+    <Vertex> 87 {
+      0.5 -6.93889e-017 0
+      <UV> { 0.9 0.0909091 }
+    }
+    <Vertex> 88 {
+      0.5 0.75 0
+      <UV> { 0.9 0.909091 }
+    }
+    <Vertex> 89 {
+      -0.166667 0.75 0
+      <UV> { 0.1 0.909091 }
+    }
+    <Vertex> 90 {
+      0.416667 0 0
+    }
+    <Vertex> 91 {
+      -0.166667 -6.93889e-017 0
+      <UV> { 0.1 0.0909091 }
+    }
+    <Vertex> 92 {
+      0.5 -6.93889e-017 0
+      <UV> { 0.9 0.0909091 }
+    }
+    <Vertex> 93 {
+      0.5 0.75 0
+      <UV> { 0.9 0.909091 }
+    }
+    <Vertex> 94 {
+      -0.166667 0.75 0
+      <UV> { 0.1 0.909091 }
+    }
+    <Vertex> 95 {
+      0.416667 0 0
+    }
+    <Vertex> 96 {
+      -0.166667 -0.166667 0
+      <UV> { 0.1 0.0769231 }
+    }
+    <Vertex> 97 {
+      0.5 -0.166667 0
+      <UV> { 0.9 0.0769231 }
+    }
+    <Vertex> 98 {
+      0.5 0.75 0
+      <UV> { 0.9 0.923077 }
+    }
+    <Vertex> 99 {
+      -0.166667 0.75 0
+      <UV> { 0.1 0.923077 }
+    }
+    <Vertex> 100 {
+      0.416667 0 0
+    }
+    <Vertex> 101 {
+      -0.166667 -0.166667 0
+      <UV> { 0.1 0.0769231 }
+    }
+    <Vertex> 102 {
+      0.5 -0.166667 0
+      <UV> { 0.9 0.0769231 }
+    }
+    <Vertex> 103 {
+      0.5 0.75 0
+      <UV> { 0.9 0.923077 }
+    }
+    <Vertex> 104 {
+      -0.166667 0.75 0
+      <UV> { 0.1 0.923077 }
+    }
+    <Vertex> 105 {
+      0.416667 0 0
+    }
+    <Vertex> 106 {
+      -0.166667 -0.166667 0
+      <UV> { 0.1 0.0769231 }
+    }
+    <Vertex> 107 {
+      0.5 -0.166667 0
+      <UV> { 0.9 0.0769231 }
+    }
+    <Vertex> 108 {
+      0.5 0.75 0
+      <UV> { 0.9 0.923077 }
+    }
+    <Vertex> 109 {
+      -0.166667 0.75 0
+      <UV> { 0.1 0.923077 }
+    }
+    <Vertex> 110 {
+      0.416667 0 0
+    }
+    <Vertex> 111 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.1 0.0833333 }
+    }
+    <Vertex> 112 {
+      0.5 -0.0833333 0
+      <UV> { 0.9 0.0833333 }
+    }
+    <Vertex> 113 {
+      0.5 0.75 0
+      <UV> { 0.9 0.916667 }
+    }
+    <Vertex> 114 {
+      -0.166667 0.75 0
+      <UV> { 0.1 0.916667 }
+    }
+    <Vertex> 115 {
+      0.416667 0 0
+    }
+    <Vertex> 116 {
+      -0.166667 -0.166667 0
+      <UV> { 0.1 0.0769231 }
+    }
+    <Vertex> 117 {
+      0.5 -0.166667 0
+      <UV> { 0.9 0.0769231 }
+    }
+    <Vertex> 118 {
+      0.5 0.75 0
+      <UV> { 0.9 0.923077 }
+    }
+    <Vertex> 119 {
+      -0.166667 0.75 0
+      <UV> { 0.1 0.923077 }
+    }
+    <Vertex> 120 {
+      0.416667 0 0
+    }
+    <Vertex> 121 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.1 0.0833333 }
+    }
+    <Vertex> 122 {
+      0.5 -0.0833333 0
+      <UV> { 0.9 0.0833333 }
+    }
+    <Vertex> 123 {
+      0.5 0.75 0
+      <UV> { 0.9 0.916667 }
+    }
+    <Vertex> 124 {
+      -0.166667 0.75 0
+      <UV> { 0.1 0.916667 }
+    }
+    <Vertex> 125 {
+      0.416667 0 0
+    }
+    <Vertex> 126 {
+      -0.166667 -0.166667 0
+      <UV> { 0.1 0.0769231 }
+    }
+    <Vertex> 127 {
+      0.5 -0.166667 0
+      <UV> { 0.9 0.0769231 }
+    }
+    <Vertex> 128 {
+      0.5 0.75 0
+      <UV> { 0.9 0.923077 }
+    }
+    <Vertex> 129 {
+      -0.166667 0.75 0
+      <UV> { 0.1 0.923077 }
+    }
+    <Vertex> 130 {
+      0.416667 0 0
+    }
+    <Vertex> 131 {
+      -0.166667 -6.93889e-017 0
+      <UV> { 0.142857 0.0909091 }
+    }
+    <Vertex> 132 {
+      0.25 -6.93889e-017 0
+      <UV> { 0.857143 0.0909091 }
+    }
+    <Vertex> 133 {
+      0.25 0.75 0
+      <UV> { 0.857143 0.909091 }
+    }
+    <Vertex> 134 {
+      -0.166667 0.75 0
+      <UV> { 0.142857 0.909091 }
+    }
+    <Vertex> 135 {
+      0.166667 0 0
+    }
+    <Vertex> 136 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.125 0.0833333 }
+    }
+    <Vertex> 137 {
+      0.333333 -0.0833333 0
+      <UV> { 0.875 0.0833333 }
+    }
+    <Vertex> 138 {
+      0.333333 0.75 0
+      <UV> { 0.875 0.916667 }
+    }
+    <Vertex> 139 {
+      -0.166667 0.75 0
+      <UV> { 0.125 0.916667 }
+    }
+    <Vertex> 140 {
+      0.25 0 0
+    }
+    <Vertex> 141 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.1 0.0769231 }
+    }
+    <Vertex> 142 {
+      0.5 -0.0833333 0
+      <UV> { 0.9 0.0769231 }
+    }
+    <Vertex> 143 {
+      0.5 0.833333 0
+      <UV> { 0.9 0.923077 }
+    }
+    <Vertex> 144 {
+      -0.166667 0.833333 0
+      <UV> { 0.1 0.923077 }
+    }
+    <Vertex> 145 {
+      0.416667 0 0
+    }
+    <Vertex> 146 {
+      -0.166667 0.0833333 0
+      <UV> { 0.1 0.111111 }
+    }
+    <Vertex> 147 {
+      0.5 0.0833333 0
+      <UV> { 0.9 0.111111 }
+    }
+    <Vertex> 148 {
+      0.5 0.666667 0
+      <UV> { 0.9 0.888889 }
+    }
+    <Vertex> 149 {
+      -0.166667 0.666667 0
+      <UV> { 0.1 0.888889 }
+    }
+    <Vertex> 150 {
+      0.416667 0 0
+    }
+    <Vertex> 151 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.1 0.0769231 }
+    }
+    <Vertex> 152 {
+      0.5 -0.0833333 0
+      <UV> { 0.9 0.0769231 }
+    }
+    <Vertex> 153 {
+      0.5 0.833333 0
+      <UV> { 0.9 0.923077 }
+    }
+    <Vertex> 154 {
+      -0.166667 0.833333 0
+      <UV> { 0.1 0.923077 }
+    }
+    <Vertex> 155 {
+      0.416667 0 0
+    }
+    <Vertex> 156 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.111111 0.0833333 }
+    }
+    <Vertex> 157 {
+      0.416667 4.16334e-017 0
+      <UV> { 0.888889 0.0833333 }
+    }
+    <Vertex> 158 {
+      0.416667 0.833333 0
+      <UV> { 0.888889 0.916667 }
+    }
+    <Vertex> 159 {
+      -0.166667 0.833333 0
+      <UV> { 0.111111 0.916667 }
+    }
+    <Vertex> 160 {
+      0.333333 0 0
+    }
+    <Vertex> 161 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.0769231 0.0769231 }
+    }
+    <Vertex> 162 {
+      0.75 -0.0833333 0
+      <UV> { 0.923077 0.0769231 }
+    }
+    <Vertex> 163 {
+      0.75 0.833333 0
+      <UV> { 0.923077 0.923077 }
+    }
+    <Vertex> 164 {
+      -0.166667 0.833333 0
+      <UV> { 0.0769231 0.923077 }
+    }
+    <Vertex> 165 {
+      0.666667 0 0
+    }
+    <Vertex> 166 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0769231 0.0833333 }
+    }
+    <Vertex> 167 {
+      0.75 4.16334e-017 0
+      <UV> { 0.923077 0.0833333 }
+    }
+    <Vertex> 168 {
+      0.75 0.833333 0
+      <UV> { 0.923077 0.916667 }
+    }
+    <Vertex> 169 {
+      -0.166667 0.833333 0
+      <UV> { 0.0769231 0.916667 }
+    }
+    <Vertex> 170 {
+      0.666667 0 0
+    }
+    <Vertex> 171 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 172 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 173 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 174 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 175 {
+      0.5 0 0
+    }
+    <Vertex> 176 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.0833333 0.0833333 }
+    }
+    <Vertex> 177 {
+      0.666667 -0.0833333 0
+      <UV> { 0.916667 0.0833333 }
+    }
+    <Vertex> 178 {
+      0.666667 0.75 0
+      <UV> { 0.916667 0.916667 }
+    }
+    <Vertex> 179 {
+      -0.166667 0.75 0
+      <UV> { 0.0833333 0.916667 }
+    }
+    <Vertex> 180 {
+      0.583333 0 0
+    }
+    <Vertex> 181 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 182 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 183 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 184 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 185 {
+      0.5 0 0
+    }
+    <Vertex> 186 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 187 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 188 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 189 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 190 {
+      0.5 0 0
+    }
+    <Vertex> 191 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 192 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 193 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 194 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 195 {
+      0.5 0 0
+    }
+    <Vertex> 196 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0833333 0.0833333 }
+    }
+    <Vertex> 197 {
+      0.666667 4.16334e-017 0
+      <UV> { 0.916667 0.0833333 }
+    }
+    <Vertex> 198 {
+      0.666667 0.833333 0
+      <UV> { 0.916667 0.916667 }
+    }
+    <Vertex> 199 {
+      -0.166667 0.833333 0
+      <UV> { 0.0833333 0.916667 }
+    }
+    <Vertex> 200 {
+      0.583333 0 0
+    }
+    <Vertex> 201 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0769231 0.0833333 }
+    }
+    <Vertex> 202 {
+      0.75 4.16334e-017 0
+      <UV> { 0.923077 0.0833333 }
+    }
+    <Vertex> 203 {
+      0.75 0.833333 0
+      <UV> { 0.923077 0.916667 }
+    }
+    <Vertex> 204 {
+      -0.166667 0.833333 0
+      <UV> { 0.0769231 0.916667 }
+    }
+    <Vertex> 205 {
+      0.666667 0 0
+    }
+    <Vertex> 206 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 207 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 208 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 209 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 210 {
+      0.5 0 0
+    }
+    <Vertex> 211 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 212 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 213 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 214 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 215 {
+      0.5 0 0
+    }
+    <Vertex> 216 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 217 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 218 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 219 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 220 {
+      0.5 0 0
+    }
+    <Vertex> 221 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 222 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 223 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 224 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 225 {
+      0.5 0 0
+    }
+    <Vertex> 226 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0769231 0.0833333 }
+    }
+    <Vertex> 227 {
+      0.75 4.16334e-017 0
+      <UV> { 0.923077 0.0833333 }
+    }
+    <Vertex> 228 {
+      0.75 0.833333 0
+      <UV> { 0.923077 0.916667 }
+    }
+    <Vertex> 229 {
+      -0.166667 0.833333 0
+      <UV> { 0.0769231 0.916667 }
+    }
+    <Vertex> 230 {
+      0.666667 0 0
+    }
+    <Vertex> 231 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0769231 0.0833333 }
+    }
+    <Vertex> 232 {
+      0.75 4.16334e-017 0
+      <UV> { 0.923077 0.0833333 }
+    }
+    <Vertex> 233 {
+      0.75 0.833333 0
+      <UV> { 0.923077 0.916667 }
+    }
+    <Vertex> 234 {
+      -0.166667 0.833333 0
+      <UV> { 0.0769231 0.916667 }
+    }
+    <Vertex> 235 {
+      0.666667 0 0
+    }
+    <Vertex> 236 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0833333 0.0833333 }
+    }
+    <Vertex> 237 {
+      0.666667 4.16334e-017 0
+      <UV> { 0.916667 0.0833333 }
+    }
+    <Vertex> 238 {
+      0.666667 0.833333 0
+      <UV> { 0.916667 0.916667 }
+    }
+    <Vertex> 239 {
+      -0.166667 0.833333 0
+      <UV> { 0.0833333 0.916667 }
+    }
+    <Vertex> 240 {
+      0.583333 0 0
+    }
+    <Vertex> 241 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 242 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 243 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 244 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 245 {
+      0.5 0 0
+    }
+    <Vertex> 246 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0833333 0.0833333 }
+    }
+    <Vertex> 247 {
+      0.666667 4.16334e-017 0
+      <UV> { 0.916667 0.0833333 }
+    }
+    <Vertex> 248 {
+      0.666667 0.833333 0
+      <UV> { 0.916667 0.916667 }
+    }
+    <Vertex> 249 {
+      -0.166667 0.833333 0
+      <UV> { 0.0833333 0.916667 }
+    }
+    <Vertex> 250 {
+      0.583333 0 0
+    }
+    <Vertex> 251 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 252 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 253 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 254 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 255 {
+      0.5 0 0
+    }
+    <Vertex> 256 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 257 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 258 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 259 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 260 {
+      0.5 0 0
+    }
+    <Vertex> 261 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 262 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 263 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 264 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 265 {
+      0.5 0 0
+    }
+    <Vertex> 266 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 267 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 268 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 269 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 270 {
+      0.5 0 0
+    }
+    <Vertex> 271 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 272 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 273 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 274 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 275 {
+      0.5 0 0
+    }
+    <Vertex> 276 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0769231 0.0833333 }
+    }
+    <Vertex> 277 {
+      0.75 4.16334e-017 0
+      <UV> { 0.923077 0.0833333 }
+    }
+    <Vertex> 278 {
+      0.75 0.833333 0
+      <UV> { 0.923077 0.916667 }
+    }
+    <Vertex> 279 {
+      -0.166667 0.833333 0
+      <UV> { 0.0769231 0.916667 }
+    }
+    <Vertex> 280 {
+      0.666667 0 0
+    }
+    <Vertex> 281 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 282 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 283 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 284 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 285 {
+      0.5 0 0
+    }
+    <Vertex> 286 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 287 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 288 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 289 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 290 {
+      0.5 0 0
+    }
+    <Vertex> 291 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.0833333 }
+    }
+    <Vertex> 292 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.0833333 }
+    }
+    <Vertex> 293 {
+      0.583333 0.833333 0
+      <UV> { 0.909091 0.916667 }
+    }
+    <Vertex> 294 {
+      -0.166667 0.833333 0
+      <UV> { 0.0909091 0.916667 }
+    }
+    <Vertex> 295 {
+      0.5 0 0
+    }
+    <Vertex> 296 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.125 0.0769231 }
+    }
+    <Vertex> 297 {
+      0.333333 -0.0833333 0
+      <UV> { 0.875 0.0769231 }
+    }
+    <Vertex> 298 {
+      0.333333 0.833333 0
+      <UV> { 0.875 0.923077 }
+    }
+    <Vertex> 299 {
+      -0.166667 0.833333 0
+      <UV> { 0.125 0.923077 }
+    }
+    <Vertex> 300 {
+      0.25 0 0
+    }
+    <Vertex> 301 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.1 0.0769231 }
+    }
+    <Vertex> 302 {
+      0.5 -0.0833333 0
+      <UV> { 0.9 0.0769231 }
+    }
+    <Vertex> 303 {
+      0.5 0.833333 0
+      <UV> { 0.9 0.923077 }
+    }
+    <Vertex> 304 {
+      -0.166667 0.833333 0
+      <UV> { 0.1 0.923077 }
+    }
+    <Vertex> 305 {
+      0.416667 0 0
+    }
+    <Vertex> 306 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.125 0.0769231 }
+    }
+    <Vertex> 307 {
+      0.333333 -0.0833333 0
+      <UV> { 0.875 0.0769231 }
+    }
+    <Vertex> 308 {
+      0.333333 0.833333 0
+      <UV> { 0.875 0.923077 }
+    }
+    <Vertex> 309 {
+      -0.166667 0.833333 0
+      <UV> { 0.125 0.923077 }
+    }
+    <Vertex> 310 {
+      0.25 0 0
+    }
+    <Vertex> 311 {
+      -0.166667 0.25 0
+      <UV> { 0.0769231 0.111111 }
+    }
+    <Vertex> 312 {
+      0.75 0.25 0
+      <UV> { 0.923077 0.111111 }
+    }
+    <Vertex> 313 {
+      0.75 0.833333 0
+      <UV> { 0.923077 0.888889 }
+    }
+    <Vertex> 314 {
+      -0.166667 0.833333 0
+      <UV> { 0.0769231 0.888889 }
+    }
+    <Vertex> 315 {
+      0.5 0 0
+    }
+    <Vertex> 316 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.1 0.142857 }
+    }
+    <Vertex> 317 {
+      0.5 -0.0833333 0
+      <UV> { 0.9 0.142857 }
+    }
+    <Vertex> 318 {
+      0.5 0.333333 0
+      <UV> { 0.9 0.857143 }
+    }
+    <Vertex> 319 {
+      -0.166667 0.333333 0
+      <UV> { 0.1 0.857143 }
+    }
+    <Vertex> 320 {
+      0.416667 0 0
+    }
+    <Vertex> 321 {
+      0.0833333 -0.0833333 0
+      <UV> { 0.2 0.2 }
+    }
+    <Vertex> 322 {
+      0.333333 -0.0833333 0
+      <UV> { 0.8 0.2 }
+    }
+    <Vertex> 323 {
+      0.333333 0.166667 0
+      <UV> { 0.8 0.8 }
+    }
+    <Vertex> 324 {
+      0.0833333 0.166667 0
+      <UV> { 0.2 0.8 }
+    }
+    <Vertex> 325 {
+      0.166667 0 0
+    }
+    <Vertex> 326 {
+      -0.166667 -6.93889e-017 0
+      <UV> { 0.1 0.0909091 }
+    }
+    <Vertex> 327 {
+      0.5 -6.93889e-017 0
+      <UV> { 0.9 0.0909091 }
+    }
+    <Vertex> 328 {
+      0.5 0.75 0
+      <UV> { 0.9 0.909091 }
+    }
+    <Vertex> 329 {
+      -0.166667 0.75 0
+      <UV> { 0.1 0.909091 }
+    }
+    <Vertex> 330 {
+      0.416667 0 0
+    }
+    <Vertex> 331 {
+      -0.166667 -6.93889e-017 0
+      <UV> { 0.111111 0.0909091 }
+    }
+    <Vertex> 332 {
+      0.416667 -6.93889e-017 0
+      <UV> { 0.888889 0.0909091 }
+    }
+    <Vertex> 333 {
+      0.416667 0.75 0
+      <UV> { 0.888889 0.909091 }
+    }
+    <Vertex> 334 {
+      -0.166667 0.75 0
+      <UV> { 0.111111 0.909091 }
+    }
+    <Vertex> 335 {
+      0.333333 0 0
+    }
+    <Vertex> 336 {
+      -0.25 4.16334e-017 0
+      <UV> { 0.1 0.1 }
+    }
+    <Vertex> 337 {
+      0.416667 4.16334e-017 0
+      <UV> { 0.9 0.1 }
+    }
+    <Vertex> 338 {
+      0.416667 0.666667 0
+      <UV> { 0.9 0.9 }
+    }
+    <Vertex> 339 {
+      -0.25 0.666667 0
+      <UV> { 0.1 0.9 }
+    }
+    <Vertex> 340 {
+      0.333333 0 0
+    }
+    <Vertex> 341 {
+      -0.166667 -6.93889e-017 0
+      <UV> { 0.111111 0.0909091 }
+    }
+    <Vertex> 342 {
+      0.416667 -6.93889e-017 0
+      <UV> { 0.888889 0.0909091 }
+    }
+    <Vertex> 343 {
+      0.416667 0.75 0
+      <UV> { 0.888889 0.909091 }
+    }
+    <Vertex> 344 {
+      -0.166667 0.75 0
+      <UV> { 0.111111 0.909091 }
+    }
+    <Vertex> 345 {
+      0.333333 0 0
+    }
+    <Vertex> 346 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.1 0.1 }
+    }
+    <Vertex> 347 {
+      0.5 4.16334e-017 0
+      <UV> { 0.9 0.1 }
+    }
+    <Vertex> 348 {
+      0.5 0.666667 0
+      <UV> { 0.9 0.9 }
+    }
+    <Vertex> 349 {
+      -0.166667 0.666667 0
+      <UV> { 0.1 0.9 }
+    }
+    <Vertex> 350 {
+      0.416667 0 0
+    }
+    <Vertex> 351 {
+      -0.166667 -6.93889e-017 0
+      <UV> { 0.111111 0.0909091 }
+    }
+    <Vertex> 352 {
+      0.416667 -6.93889e-017 0
+      <UV> { 0.888889 0.0909091 }
+    }
+    <Vertex> 353 {
+      0.416667 0.75 0
+      <UV> { 0.888889 0.909091 }
+    }
+    <Vertex> 354 {
+      -0.166667 0.75 0
+      <UV> { 0.111111 0.909091 }
+    }
+    <Vertex> 355 {
+      0.333333 0 0
+    }
+    <Vertex> 356 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.111111 0.0909091 }
+    }
+    <Vertex> 357 {
+      0.416667 -0.0833333 0
+      <UV> { 0.888889 0.0909091 }
+    }
+    <Vertex> 358 {
+      0.416667 0.666667 0
+      <UV> { 0.888889 0.909091 }
+    }
+    <Vertex> 359 {
+      -0.166667 0.666667 0
+      <UV> { 0.111111 0.909091 }
+    }
+    <Vertex> 360 {
+      0.333333 0 0
+    }
+    <Vertex> 361 {
+      -0.166667 -6.93889e-017 0
+      <UV> { 0.111111 0.0909091 }
+    }
+    <Vertex> 362 {
+      0.416667 -6.93889e-017 0
+      <UV> { 0.888889 0.0909091 }
+    }
+    <Vertex> 363 {
+      0.416667 0.75 0
+      <UV> { 0.888889 0.909091 }
+    }
+    <Vertex> 364 {
+      -0.166667 0.75 0
+      <UV> { 0.111111 0.909091 }
+    }
+    <Vertex> 365 {
+      0.333333 0 0
+    }
+    <Vertex> 366 {
+      -0.166667 -6.93889e-017 0
+      <UV> { 0.142857 0.0909091 }
+    }
+    <Vertex> 367 {
+      0.25 -6.93889e-017 0
+      <UV> { 0.857143 0.0909091 }
+    }
+    <Vertex> 368 {
+      0.25 0.75 0
+      <UV> { 0.857143 0.909091 }
+    }
+    <Vertex> 369 {
+      -0.166667 0.75 0
+      <UV> { 0.142857 0.909091 }
+    }
+    <Vertex> 370 {
+      0.166667 0 0
+    }
+    <Vertex> 371 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.125 0.0833333 }
+    }
+    <Vertex> 372 {
+      0.333333 -0.0833333 0
+      <UV> { 0.875 0.0833333 }
+    }
+    <Vertex> 373 {
+      0.333333 0.75 0
+      <UV> { 0.875 0.916667 }
+    }
+    <Vertex> 374 {
+      -0.166667 0.75 0
+      <UV> { 0.125 0.916667 }
+    }
+    <Vertex> 375 {
+      0.25 0 0
+    }
+    <Vertex> 376 {
+      -0.166667 -6.93889e-017 0
+      <UV> { 0.111111 0.0909091 }
+    }
+    <Vertex> 377 {
+      0.416667 -6.93889e-017 0
+      <UV> { 0.888889 0.0909091 }
+    }
+    <Vertex> 378 {
+      0.416667 0.75 0
+      <UV> { 0.888889 0.909091 }
+    }
+    <Vertex> 379 {
+      -0.166667 0.75 0
+      <UV> { 0.111111 0.909091 }
+    }
+    <Vertex> 380 {
+      0.333333 0 0
+    }
+    <Vertex> 381 {
+      -0.166667 -6.93889e-017 0
+      <UV> { 0.142857 0.0909091 }
+    }
+    <Vertex> 382 {
+      0.25 -6.93889e-017 0
+      <UV> { 0.857143 0.0909091 }
+    }
+    <Vertex> 383 {
+      0.25 0.75 0
+      <UV> { 0.857143 0.909091 }
+    }
+    <Vertex> 384 {
+      -0.166667 0.75 0
+      <UV> { 0.142857 0.909091 }
+    }
+    <Vertex> 385 {
+      0.166667 0 0
+    }
+    <Vertex> 386 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.1 }
+    }
+    <Vertex> 387 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.1 }
+    }
+    <Vertex> 388 {
+      0.583333 0.666667 0
+      <UV> { 0.909091 0.9 }
+    }
+    <Vertex> 389 {
+      -0.166667 0.666667 0
+      <UV> { 0.0909091 0.9 }
+    }
+    <Vertex> 390 {
+      0.5 0 0
+    }
+    <Vertex> 391 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.1 }
+    }
+    <Vertex> 392 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.1 }
+    }
+    <Vertex> 393 {
+      0.583333 0.666667 0
+      <UV> { 0.909091 0.9 }
+    }
+    <Vertex> 394 {
+      -0.166667 0.666667 0
+      <UV> { 0.0909091 0.9 }
+    }
+    <Vertex> 395 {
+      0.5 0 0
+    }
+    <Vertex> 396 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.1 0.1 }
+    }
+    <Vertex> 397 {
+      0.5 4.16334e-017 0
+      <UV> { 0.9 0.1 }
+    }
+    <Vertex> 398 {
+      0.5 0.666667 0
+      <UV> { 0.9 0.9 }
+    }
+    <Vertex> 399 {
+      -0.166667 0.666667 0
+      <UV> { 0.1 0.9 }
+    }
+    <Vertex> 400 {
+      0.416667 0 0
+    }
+    <Vertex> 401 {
+      -0.25 -0.0833333 0
+      <UV> { 0.1 0.0833333 }
+    }
+    <Vertex> 402 {
+      0.416667 -0.0833333 0
+      <UV> { 0.9 0.0833333 }
+    }
+    <Vertex> 403 {
+      0.416667 0.75 0
+      <UV> { 0.9 0.916667 }
+    }
+    <Vertex> 404 {
+      -0.25 0.75 0
+      <UV> { 0.1 0.916667 }
+    }
+    <Vertex> 405 {
+      0.333333 0 0
+    }
+    <Vertex> 406 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.1 0.0833333 }
+    }
+    <Vertex> 407 {
+      0.5 -0.0833333 0
+      <UV> { 0.9 0.0833333 }
+    }
+    <Vertex> 408 {
+      0.5 0.75 0
+      <UV> { 0.9 0.916667 }
+    }
+    <Vertex> 409 {
+      -0.166667 0.75 0
+      <UV> { 0.1 0.916667 }
+    }
+    <Vertex> 410 {
+      0.416667 0 0
+    }
+    <Vertex> 411 {
+      -0.25 -0.0833333 0
+      <UV> { 0.1 0.0909091 }
+    }
+    <Vertex> 412 {
+      0.416667 -0.0833333 0
+      <UV> { 0.9 0.0909091 }
+    }
+    <Vertex> 413 {
+      0.416667 0.666667 0
+      <UV> { 0.9 0.909091 }
+    }
+    <Vertex> 414 {
+      -0.25 0.666667 0
+      <UV> { 0.1 0.909091 }
+    }
+    <Vertex> 415 {
+      0.166667 0 0
+    }
+    <Vertex> 416 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.111111 0.0909091 }
+    }
+    <Vertex> 417 {
+      0.416667 -0.0833333 0
+      <UV> { 0.888889 0.0909091 }
+    }
+    <Vertex> 418 {
+      0.416667 0.666667 0
+      <UV> { 0.888889 0.909091 }
+    }
+    <Vertex> 419 {
+      -0.166667 0.666667 0
+      <UV> { 0.111111 0.909091 }
+    }
+    <Vertex> 420 {
+      0.333333 0 0
+    }
+    <Vertex> 421 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.0909091 0.0909091 }
+    }
+    <Vertex> 422 {
+      0.583333 -0.0833333 0
+      <UV> { 0.909091 0.0909091 }
+    }
+    <Vertex> 423 {
+      0.583333 0.666667 0
+      <UV> { 0.909091 0.909091 }
+    }
+    <Vertex> 424 {
+      -0.166667 0.666667 0
+      <UV> { 0.0909091 0.909091 }
+    }
+    <Vertex> 425 {
+      0.5 0 0
+    }
+    <Vertex> 426 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.1 0.1 }
+    }
+    <Vertex> 427 {
+      0.5 4.16334e-017 0
+      <UV> { 0.9 0.1 }
+    }
+    <Vertex> 428 {
+      0.5 0.666667 0
+      <UV> { 0.9 0.9 }
+    }
+    <Vertex> 429 {
+      -0.166667 0.666667 0
+      <UV> { 0.1 0.9 }
+    }
+    <Vertex> 430 {
+      0.416667 0 0
+    }
+    <Vertex> 431 {
+      -0.25 -6.93889e-017 0
+      <UV> { 0.0909091 0.0909091 }
+    }
+    <Vertex> 432 {
+      0.5 -6.93889e-017 0
+      <UV> { 0.909091 0.0909091 }
+    }
+    <Vertex> 433 {
+      0.5 0.75 0
+      <UV> { 0.909091 0.909091 }
+    }
+    <Vertex> 434 {
+      -0.25 0.75 0
+      <UV> { 0.0909091 0.909091 }
+    }
+    <Vertex> 435 {
+      0.333333 0 0
+    }
+    <Vertex> 436 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.0909091 0.1 }
+    }
+    <Vertex> 437 {
+      0.583333 4.16334e-017 0
+      <UV> { 0.909091 0.1 }
+    }
+    <Vertex> 438 {
+      0.583333 0.666667 0
+      <UV> { 0.909091 0.9 }
+    }
+    <Vertex> 439 {
+      -0.166667 0.666667 0
+      <UV> { 0.0909091 0.9 }
+    }
+    <Vertex> 440 {
+      0.5 0 0
+    }
+    <Vertex> 441 {
+      -0.166667 -6.93889e-017 0
+      <UV> { 0.111111 0.0909091 }
+    }
+    <Vertex> 442 {
+      0.416667 -6.93889e-017 0
+      <UV> { 0.888889 0.0909091 }
+    }
+    <Vertex> 443 {
+      0.416667 0.75 0
+      <UV> { 0.888889 0.909091 }
+    }
+    <Vertex> 444 {
+      -0.166667 0.75 0
+      <UV> { 0.111111 0.909091 }
+    }
+    <Vertex> 445 {
+      0.333333 0 0
+    }
+    <Vertex> 446 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.111111 0.0909091 }
+    }
+    <Vertex> 447 {
+      0.416667 -0.0833333 0
+      <UV> { 0.888889 0.0909091 }
+    }
+    <Vertex> 448 {
+      0.416667 0.666667 0
+      <UV> { 0.888889 0.909091 }
+    }
+    <Vertex> 449 {
+      -0.166667 0.666667 0
+      <UV> { 0.111111 0.909091 }
+    }
+    <Vertex> 450 {
+      0.333333 0 0
+    }
+    <Vertex> 451 {
+      -0.166667 4.16334e-017 0
+      <UV> { 0.111111 0.1 }
+    }
+    <Vertex> 452 {
+      0.416667 4.16334e-017 0
+      <UV> { 0.888889 0.1 }
+    }
+    <Vertex> 453 {
+      0.416667 0.666667 0
+      <UV> { 0.888889 0.9 }
+    }
+    <Vertex> 454 {
+      -0.166667 0.666667 0
+      <UV> { 0.111111 0.9 }
+    }
+    <Vertex> 455 {
+      0.333333 0 0
+    }
+    <Vertex> 456 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.111111 0.0769231 }
+    }
+    <Vertex> 457 {
+      0.416667 -0.0833333 0
+      <UV> { 0.888889 0.0769231 }
+    }
+    <Vertex> 458 {
+      0.416667 0.833333 0
+      <UV> { 0.888889 0.923077 }
+    }
+    <Vertex> 459 {
+      -0.166667 0.833333 0
+      <UV> { 0.111111 0.923077 }
+    }
+    <Vertex> 460 {
+      0.333333 0 0
+    }
+    <Vertex> 461 {
+      -0.166667 -0.166667 0
+      <UV> { 0.142857 0.0769231 }
+    }
+    <Vertex> 462 {
+      0.25 -0.166667 0
+      <UV> { 0.857143 0.0769231 }
+    }
+    <Vertex> 463 {
+      0.25 0.75 0
+      <UV> { 0.857143 0.923077 }
+    }
+    <Vertex> 464 {
+      -0.166667 0.75 0
+      <UV> { 0.142857 0.923077 }
+    }
+    <Vertex> 465 {
+      0.166667 0 0
+    }
+    <Vertex> 466 {
+      -0.166667 -0.0833333 0
+      <UV> { 0.111111 0.0769231 }
+    }
+    <Vertex> 467 {
+      0.416667 -0.0833333 0
+      <UV> { 0.888889 0.0769231 }
+    }
+    <Vertex> 468 {
+      0.416667 0.833333 0
+      <UV> { 0.888889 0.923077 }
+    }
+    <Vertex> 469 {
+      -0.166667 0.833333 0
+      <UV> { 0.111111 0.923077 }
+    }
+    <Vertex> 470 {
+      0.333333 0 0
+    }
+    <Vertex> 471 {
+      0.0833333 -0.0833333 0
+      <UV> { 0.2 0.2 }
+    }
+    <Vertex> 472 {
+      0.333333 -0.0833333 0
+      <UV> { 0.8 0.2 }
+    }
+    <Vertex> 473 {
+      0.333333 0.166667 0
+      <UV> { 0.8 0.8 }
+    }
+    <Vertex> 474 {
+      0.0833333 0.166667 0
+      <UV> { 0.2 0.8 }
+    }
+    <Vertex> 475 {
+      0.166667 0 0
+    }
+  }
+  <Group> ds {
+    <PointLight> {
+      <VertexRef> { 0 <Ref> { vpool } }
+    }
+  }
+  <Group> 32 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps032 }
+      <VertexRef> { 1 2 3 4 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 5 <Ref> { vpool } }
+    }
+  }
+  <Group> 33 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps033 }
+      <VertexRef> { 6 7 8 9 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 10 <Ref> { vpool } }
+    }
+  }
+  <Group> 34 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps034 }
+      <VertexRef> { 11 12 13 14 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 15 <Ref> { vpool } }
+    }
+  }
+  <Group> 35 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps035 }
+      <VertexRef> { 16 17 18 19 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 20 <Ref> { vpool } }
+    }
+  }
+  <Group> 36 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps036 }
+      <VertexRef> { 21 22 23 24 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 25 <Ref> { vpool } }
+    }
+  }
+  <Group> 37 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps037 }
+      <VertexRef> { 26 27 28 29 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 30 <Ref> { vpool } }
+    }
+  }
+  <Group> 38 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps038 }
+      <VertexRef> { 31 32 33 34 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 35 <Ref> { vpool } }
+    }
+  }
+  <Group> 39 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps039 }
+      <VertexRef> { 36 37 38 39 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 40 <Ref> { vpool } }
+    }
+  }
+  <Group> 40 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps040 }
+      <VertexRef> { 41 42 43 44 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 45 <Ref> { vpool } }
+    }
+  }
+  <Group> 41 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps041 }
+      <VertexRef> { 46 47 48 49 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 50 <Ref> { vpool } }
+    }
+  }
+  <Group> 42 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps042 }
+      <VertexRef> { 51 52 53 54 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 55 <Ref> { vpool } }
+    }
+  }
+  <Group> 43 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps043 }
+      <VertexRef> { 56 57 58 59 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 60 <Ref> { vpool } }
+    }
+  }
+  <Group> 44 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps044 }
+      <VertexRef> { 61 62 63 64 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 65 <Ref> { vpool } }
+    }
+  }
+  <Group> 45 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps045 }
+      <VertexRef> { 66 67 68 69 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 70 <Ref> { vpool } }
+    }
+  }
+  <Group> 46 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps046 }
+      <VertexRef> { 71 72 73 74 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 75 <Ref> { vpool } }
+    }
+  }
+  <Group> 47 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps047 }
+      <VertexRef> { 76 77 78 79 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 80 <Ref> { vpool } }
+    }
+  }
+  <Group> 48 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps048 }
+      <VertexRef> { 81 82 83 84 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 85 <Ref> { vpool } }
+    }
+  }
+  <Group> 49 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps049 }
+      <VertexRef> { 86 87 88 89 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 90 <Ref> { vpool } }
+    }
+  }
+  <Group> 50 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps050 }
+      <VertexRef> { 91 92 93 94 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 95 <Ref> { vpool } }
+    }
+  }
+  <Group> 51 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps051 }
+      <VertexRef> { 96 97 98 99 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 100 <Ref> { vpool } }
+    }
+  }
+  <Group> 52 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps052 }
+      <VertexRef> { 101 102 103 104 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 105 <Ref> { vpool } }
+    }
+  }
+  <Group> 53 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps053 }
+      <VertexRef> { 106 107 108 109 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 110 <Ref> { vpool } }
+    }
+  }
+  <Group> 54 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps054 }
+      <VertexRef> { 111 112 113 114 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 115 <Ref> { vpool } }
+    }
+  }
+  <Group> 55 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps055 }
+      <VertexRef> { 116 117 118 119 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 120 <Ref> { vpool } }
+    }
+  }
+  <Group> 56 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps056 }
+      <VertexRef> { 121 122 123 124 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 125 <Ref> { vpool } }
+    }
+  }
+  <Group> 57 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps057 }
+      <VertexRef> { 126 127 128 129 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 130 <Ref> { vpool } }
+    }
+  }
+  <Group> 58 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps058 }
+      <VertexRef> { 131 132 133 134 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 135 <Ref> { vpool } }
+    }
+  }
+  <Group> 59 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps059 }
+      <VertexRef> { 136 137 138 139 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 140 <Ref> { vpool } }
+    }
+  }
+  <Group> 60 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps060 }
+      <VertexRef> { 141 142 143 144 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 145 <Ref> { vpool } }
+    }
+  }
+  <Group> 61 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps061 }
+      <VertexRef> { 146 147 148 149 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 150 <Ref> { vpool } }
+    }
+  }
+  <Group> 62 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps062 }
+      <VertexRef> { 151 152 153 154 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 155 <Ref> { vpool } }
+    }
+  }
+  <Group> 63 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps063 }
+      <VertexRef> { 156 157 158 159 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 160 <Ref> { vpool } }
+    }
+  }
+  <Group> 64 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps064 }
+      <VertexRef> { 161 162 163 164 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 165 <Ref> { vpool } }
+    }
+  }
+  <Group> 65 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps065 }
+      <VertexRef> { 166 167 168 169 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 170 <Ref> { vpool } }
+    }
+  }
+  <Group> 66 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps066 }
+      <VertexRef> { 171 172 173 174 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 175 <Ref> { vpool } }
+    }
+  }
+  <Group> 67 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps067 }
+      <VertexRef> { 176 177 178 179 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 180 <Ref> { vpool } }
+    }
+  }
+  <Group> 68 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps068 }
+      <VertexRef> { 181 182 183 184 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 185 <Ref> { vpool } }
+    }
+  }
+  <Group> 69 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps069 }
+      <VertexRef> { 186 187 188 189 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 190 <Ref> { vpool } }
+    }
+  }
+  <Group> 70 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps070 }
+      <VertexRef> { 191 192 193 194 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 195 <Ref> { vpool } }
+    }
+  }
+  <Group> 71 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps071 }
+      <VertexRef> { 196 197 198 199 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 200 <Ref> { vpool } }
+    }
+  }
+  <Group> 72 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps072 }
+      <VertexRef> { 201 202 203 204 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 205 <Ref> { vpool } }
+    }
+  }
+  <Group> 73 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps073 }
+      <VertexRef> { 206 207 208 209 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 210 <Ref> { vpool } }
+    }
+  }
+  <Group> 74 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps074 }
+      <VertexRef> { 211 212 213 214 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 215 <Ref> { vpool } }
+    }
+  }
+  <Group> 75 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps075 }
+      <VertexRef> { 216 217 218 219 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 220 <Ref> { vpool } }
+    }
+  }
+  <Group> 76 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps076 }
+      <VertexRef> { 221 222 223 224 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 225 <Ref> { vpool } }
+    }
+  }
+  <Group> 77 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps077 }
+      <VertexRef> { 226 227 228 229 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 230 <Ref> { vpool } }
+    }
+  }
+  <Group> 78 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps078 }
+      <VertexRef> { 231 232 233 234 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 235 <Ref> { vpool } }
+    }
+  }
+  <Group> 79 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps079 }
+      <VertexRef> { 236 237 238 239 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 240 <Ref> { vpool } }
+    }
+  }
+  <Group> 80 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps080 }
+      <VertexRef> { 241 242 243 244 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 245 <Ref> { vpool } }
+    }
+  }
+  <Group> 81 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps081 }
+      <VertexRef> { 246 247 248 249 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 250 <Ref> { vpool } }
+    }
+  }
+  <Group> 82 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps082 }
+      <VertexRef> { 251 252 253 254 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 255 <Ref> { vpool } }
+    }
+  }
+  <Group> 83 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps083 }
+      <VertexRef> { 256 257 258 259 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 260 <Ref> { vpool } }
+    }
+  }
+  <Group> 84 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps084 }
+      <VertexRef> { 261 262 263 264 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 265 <Ref> { vpool } }
+    }
+  }
+  <Group> 85 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps085 }
+      <VertexRef> { 266 267 268 269 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 270 <Ref> { vpool } }
+    }
+  }
+  <Group> 86 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps086 }
+      <VertexRef> { 271 272 273 274 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 275 <Ref> { vpool } }
+    }
+  }
+  <Group> 87 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps087 }
+      <VertexRef> { 276 277 278 279 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 280 <Ref> { vpool } }
+    }
+  }
+  <Group> 88 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps088 }
+      <VertexRef> { 281 282 283 284 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 285 <Ref> { vpool } }
+    }
+  }
+  <Group> 89 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps089 }
+      <VertexRef> { 286 287 288 289 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 290 <Ref> { vpool } }
+    }
+  }
+  <Group> 90 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps090 }
+      <VertexRef> { 291 292 293 294 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 295 <Ref> { vpool } }
+    }
+  }
+  <Group> 91 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps091 }
+      <VertexRef> { 296 297 298 299 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 300 <Ref> { vpool } }
+    }
+  }
+  <Group> 92 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps092 }
+      <VertexRef> { 301 302 303 304 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 305 <Ref> { vpool } }
+    }
+  }
+  <Group> 93 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps093 }
+      <VertexRef> { 306 307 308 309 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 310 <Ref> { vpool } }
+    }
+  }
+  <Group> 94 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps094 }
+      <VertexRef> { 311 312 313 314 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 315 <Ref> { vpool } }
+    }
+  }
+  <Group> 95 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps095 }
+      <VertexRef> { 316 317 318 319 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 320 <Ref> { vpool } }
+    }
+  }
+  <Group> 96 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps096 }
+      <VertexRef> { 321 322 323 324 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 325 <Ref> { vpool } }
+    }
+  }
+  <Group> 97 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps097 }
+      <VertexRef> { 326 327 328 329 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 330 <Ref> { vpool } }
+    }
+  }
+  <Group> 98 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps098 }
+      <VertexRef> { 331 332 333 334 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 335 <Ref> { vpool } }
+    }
+  }
+  <Group> 99 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps099 }
+      <VertexRef> { 336 337 338 339 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 340 <Ref> { vpool } }
+    }
+  }
+  <Group> 100 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps100 }
+      <VertexRef> { 341 342 343 344 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 345 <Ref> { vpool } }
+    }
+  }
+  <Group> 101 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps101 }
+      <VertexRef> { 346 347 348 349 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 350 <Ref> { vpool } }
+    }
+  }
+  <Group> 102 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps102 }
+      <VertexRef> { 351 352 353 354 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 355 <Ref> { vpool } }
+    }
+  }
+  <Group> 103 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps103 }
+      <VertexRef> { 356 357 358 359 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 360 <Ref> { vpool } }
+    }
+  }
+  <Group> 104 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps104 }
+      <VertexRef> { 361 362 363 364 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 365 <Ref> { vpool } }
+    }
+  }
+  <Group> 105 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps105 }
+      <VertexRef> { 366 367 368 369 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 370 <Ref> { vpool } }
+    }
+  }
+  <Group> 106 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps106 }
+      <VertexRef> { 371 372 373 374 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 375 <Ref> { vpool } }
+    }
+  }
+  <Group> 107 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps107 }
+      <VertexRef> { 376 377 378 379 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 380 <Ref> { vpool } }
+    }
+  }
+  <Group> 108 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps108 }
+      <VertexRef> { 381 382 383 384 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 385 <Ref> { vpool } }
+    }
+  }
+  <Group> 109 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps109 }
+      <VertexRef> { 386 387 388 389 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 390 <Ref> { vpool } }
+    }
+  }
+  <Group> 110 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps110 }
+      <VertexRef> { 391 392 393 394 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 395 <Ref> { vpool } }
+    }
+  }
+  <Group> 111 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps111 }
+      <VertexRef> { 396 397 398 399 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 400 <Ref> { vpool } }
+    }
+  }
+  <Group> 112 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps112 }
+      <VertexRef> { 401 402 403 404 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 405 <Ref> { vpool } }
+    }
+  }
+  <Group> 113 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps113 }
+      <VertexRef> { 406 407 408 409 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 410 <Ref> { vpool } }
+    }
+  }
+  <Group> 114 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps114 }
+      <VertexRef> { 411 412 413 414 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 415 <Ref> { vpool } }
+    }
+  }
+  <Group> 115 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps115 }
+      <VertexRef> { 416 417 418 419 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 420 <Ref> { vpool } }
+    }
+  }
+  <Group> 116 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps116 }
+      <VertexRef> { 421 422 423 424 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 425 <Ref> { vpool } }
+    }
+  }
+  <Group> 117 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps117 }
+      <VertexRef> { 426 427 428 429 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 430 <Ref> { vpool } }
+    }
+  }
+  <Group> 118 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps118 }
+      <VertexRef> { 431 432 433 434 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 435 <Ref> { vpool } }
+    }
+  }
+  <Group> 119 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps119 }
+      <VertexRef> { 436 437 438 439 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 440 <Ref> { vpool } }
+    }
+  }
+  <Group> 120 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps120 }
+      <VertexRef> { 441 442 443 444 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 445 <Ref> { vpool } }
+    }
+  }
+  <Group> 121 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps121 }
+      <VertexRef> { 446 447 448 449 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 450 <Ref> { vpool } }
+    }
+  }
+  <Group> 122 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps122 }
+      <VertexRef> { 451 452 453 454 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 455 <Ref> { vpool } }
+    }
+  }
+  <Group> 123 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps123 }
+      <VertexRef> { 456 457 458 459 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 460 <Ref> { vpool } }
+    }
+  }
+  <Group> 124 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps124 }
+      <VertexRef> { 461 462 463 464 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 465 <Ref> { vpool } }
+    }
+  }
+  <Group> 125 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps125 }
+      <VertexRef> { 466 467 468 469 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 470 <Ref> { vpool } }
+    }
+  }
+  <Group> 126 {
+    <Polygon> {
+      <TRef> { fftwhite-small-caps096 }
+      <VertexRef> { 471 472 473 474 <Ref> { vpool } }
+    }
+    <PointLight> {
+      <VertexRef> { 475 <Ref> { vpool } }
+    }
+  }
+}
