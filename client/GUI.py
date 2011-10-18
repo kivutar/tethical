@@ -696,7 +696,7 @@ class CharBarsRight:
             frameSize=(0,0,0,0),
             parent = self.fbgframe,
             geom = bar.container,
-            pos = (-.72, 0, .12),
+            pos = (-v*87, 0, v*14),
         )
         self.hpbar.setTransparency(True)
         
@@ -707,7 +707,7 @@ class CharBarsRight:
             frameSize=(0,0,0,0),
             parent = self.fbgframe,
             geom = bar.container,
-            pos = (-.72, 0, .03),
+            pos = (-v*87, 0, v*3),
         )
         self.mpbar.setTransparency(True)
         
@@ -718,24 +718,24 @@ class CharBarsRight:
             frameSize=(0,0,0,0),
             parent = self.fbgframe,
             geom = bar.container,
-            pos = (-.72, 0, -.07),
+            pos = (-v*87, 0, -v*8),
         )
         self.ctbar.setTransparency(True)
 
         infos = [
-            { 'x':   16, 'z': -29, 'text':  '%02d' % char['lv']   , 'font':   whitefont },
-            { 'x':   48, 'z': -29, 'text':  '%02d' % char['exp']  , 'font':   whitefont },
-            { 'x':   14, 'z':   9, 'text':  '%03d' % char['hp']   , 'font':   whitefont },
-            { 'x':   28, 'z':   5, 'text': '/%03d' % char['hpmax'], 'font':   whitefont },
-            { 'x':   14, 'z':  -2, 'text':  '%03d' % char['mp']   , 'font':   whitefont },
-            { 'x':   28, 'z':  -6, 'text': '/%03d' % char['mpmax'], 'font':   whitefont },
-            { 'x':   14, 'z': -13, 'text':  '%03d' % char['ct']   , 'font':   whitefont },
-            { 'x':   28, 'z': -17, 'text':  '/100'                , 'font':   whitefont },            
+            { 'x':   15, 'z': -31, 'text':  '%02d' % char['lv']   , 'font':   whitefont },
+            { 'x':   48, 'z': -31, 'text':  '%02d' % char['exp']  , 'font':   whitefont },
+            { 'x':   14, 'z':   7, 'text':  '%03d' % char['hp']   , 'font':   whitefont },
+            { 'x':   28, 'z':   3, 'text': '/%03d' % char['hpmax'], 'font':   whitefont },
+            { 'x':   14, 'z':  -4, 'text':  '%03d' % char['mp']   , 'font':   whitefont },
+            { 'x':   28, 'z':  -8, 'text': '/%03d' % char['mpmax'], 'font':   whitefont },
+            { 'x':   14, 'z': -15, 'text':  '%03d' % char['ct']   , 'font':   whitefont },
+            { 'x':   28, 'z': -19, 'text':  '/100'                , 'font':   whitefont },            
             { 'x':  -33, 'z':   8, 'text':    'Hp'                , 'font': smwhitefont },
-            { 'x':  -33, 'z':   3, 'text':    'Mp'                , 'font': smwhitefont },
+            { 'x':  -33, 'z':  -3, 'text':    'Mp'                , 'font': smwhitefont },
             { 'x':  -33, 'z': -13, 'text':    'Ct'                , 'font': smwhitefont },
-            { 'x':    2, 'z': -29, 'text':   'Lv.'                , 'font': smwhitefont },
-            { 'x':   29, 'z': -29, 'text':  'Exp.'                , 'font': smwhitefont },
+            { 'x':    3, 'z': -31, 'text':   'Lv.'                , 'font': smwhitefont },
+            { 'x':   31, 'z': -31, 'text':  'Exp.'                , 'font': smwhitefont },
         ]
         
         for info in infos:
@@ -751,7 +751,7 @@ class CharBarsRight:
             )
             label.setPos(v*info['x'], -1, v*info['z'])
 
-        i1 = LerpPosInterval(self.fbgframe, 0.2, (u*107,0,-u*82), (2,0,-u*82))
+        i1 = LerpPosInterval(self.fbgframe, 0.2, (u*107,0,-u*02), (2,0,-u*02))
         s = Sequence(i1)
         s.start()
 
