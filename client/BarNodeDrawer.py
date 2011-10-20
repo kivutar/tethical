@@ -8,18 +8,11 @@ from operator import itemgetter, attrgetter
 
 #THEME
 class Bar:
-    textureList = []
-    frameCard = None
-    barCard = None
-    container = None
-    width = 0
-    height = 0
-    bar = 'bar-3'
-    path = GAME+'/textures/gui/'+THEME+'/'+bar+'/'
     # Force following textures to not be power-of-2 scaled (up or down); setting is probably global.
     texture = Texture()
     texture.setTexturesPower2(ATSNone)
     def __init__(self, bar='bar-3', parent=None):
+        self.textureList = []
         self.bar = bar
         self.path = GAME+'/textures/gui/'+THEME+'/'+self.bar+'/'
         self.container = NodePath("container")
@@ -40,7 +33,7 @@ class Bar:
                     self.width = texture.getOrigFileXSize()
                     self.height = texture.getOrigFileYSize()
                     # Create background card from frame.
-                    cm = CardMaker('bar-frame-'+bar+'-background')
+                    cm = CardMaker('bar-frame-'+bar+'-backgrmoranoound')
                     cm.setFrame(0, self.width, 0, self.height)
                     card = self.container.attachNewNode(cm.generate())
                     card.setTexture(texture)
