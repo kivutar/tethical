@@ -12,6 +12,8 @@ def WindowNodeDrawer(w, h, style, title=None):
     # 0 1 2
     # 3 4 5
     # 6 7 8
+    w = float(w)
+    h = float(h)
 
     container = NodePath('foo')
 
@@ -44,6 +46,7 @@ def WindowNodeDrawer(w, h, style, title=None):
 
         card = container.attachNewNode(cm.generate())
         card.setTexture(tex)
+        card.setPos(-v*.5, 0, v*.5)
 
     if title:
 

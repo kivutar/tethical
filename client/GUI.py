@@ -550,18 +550,15 @@ class Help(DirectObject.DirectObject):
 class CharBarsLeft:
 
     def __init__(self, char):
-        fbgtex = loader.loadTexture(GAME+'/textures/gui/face_background.png')
-        fbgtex.setMagfilter(Texture.FTNearest)
-        fbgtex.setMinfilter(Texture.FTNearest)
 
         self.fbgframe = DirectFrame(
-            frameTexture = fbgtex, 
-            frameColor=(1, 1, 1, 1),
+            frameColor=(1, 1, 1, 0),
             frameSize = ( -v*32.0, v*32.0, -v*32.0, v*32.0 ),
+            geom = WindowNodeDrawer(37, 53, 'flat'),
+            pos = (-2, 0, -v*82)
         )
         self.fbgframe.setTransparency(True)
-        self.fbgframe.setPos(-2, 0, -v*82)
-        
+
         facetex = loader.loadTexture(GAME+'/textures/sprites/'+char['sprite']+'_face.png')
         facetex.setMagfilter(Texture.FTNearest)
         facetex.setMinfilter(Texture.FTNearest)
