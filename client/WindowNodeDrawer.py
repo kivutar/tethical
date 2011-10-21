@@ -46,7 +46,10 @@ def WindowNodeDrawer(w, h, style, title=None):
 
         card = container.attachNewNode(cm.generate())
         card.setTexture(tex)
-        card.setPos(-v*.5, 0, v*.5)
+        if w%2:
+            card.setX(-v*.5)
+        if h%2:
+            card.setZ( v*.5)
 
     if title:
 
