@@ -553,7 +553,6 @@ class CharBarsLeft:
 
         self.fbgframe = DirectFrame(
             frameColor=(1, 1, 1, 0),
-            frameSize = ( -v*32.0, v*32.0, -v*32.0, v*32.0 ),
             geom = WindowNodeDrawer(37, 53, 'flat'),
             pos = (-2, 0, -v*82)
         )
@@ -654,15 +653,11 @@ class CharBarsLeft:
 class CharBarsRight:
 
     def __init__(self, char):
-        fbgtex = loader.loadTexture(GAME+'/textures/gui/face_background.png')
-        fbgtex.setMagfilter(Texture.FTNearest)
-        fbgtex.setMinfilter(Texture.FTNearest)
 
         self.fbgframe = DirectFrame(
-            frameTexture = fbgtex, 
-            frameColor=(1, 1, 1, 1),
-            frameSize = ( -v*32.0, v*32.0, -v*32.0, v*32.0 ),
-            pos = (2, 0, -v*82),
+            frameColor=(1, 1, 1, 0),
+            geom = WindowNodeDrawer(37, 53, 'flat'),
+            pos = (2, 0, -v*82)
         )
         self.fbgframe.setTransparency(True)
         
@@ -895,18 +890,13 @@ class ActionPreview(DirectObject.DirectObject):
         )
         self.blackframe.setTransparency(True)
         self.blackframe.setPos(0, 0, u*-82)
-    
-        fbgtex1 = loader.loadTexture(GAME+'/textures/gui/face_background.png')
-        fbgtex1.setMagfilter(Texture.FTNearest)
-        fbgtex1.setMinfilter(Texture.FTNearest)
 
         self.fbgframe1 = DirectFrame(
-            frameTexture = fbgtex1, 
-            frameColor=(1, 1, 1, 1),
-            frameSize = ( -v*32.0, v*32.0, -v*32.0, v*32.0 ),
+            frameColor=(1, 1, 1, 0),
+            geom = WindowNodeDrawer(37, 53, 'flat'),
+            pos = (-2, 0, -v*82)
         )
         self.fbgframe1.setTransparency(True)
-        self.fbgframe1.setPos(-2, 0, -v*82)
         
         facetex1 = loader.loadTexture(GAME+'/textures/sprites/'+char1['sprite']+'_face.png')
         facetex1.setMagfilter(Texture.FTNearest)
@@ -999,17 +989,13 @@ class ActionPreview(DirectObject.DirectObject):
             )
             label.setPos(v*info['x'], 0, v*info['z'])
 
-        fbgtex2 = loader.loadTexture(GAME+'/textures/gui/face_background.png')
-        fbgtex2.setMagfilter(Texture.FTNearest)
-        fbgtex2.setMinfilter(Texture.FTNearest)
-
         self.fbgframe2 = DirectFrame(
-            frameTexture = fbgtex2, 
-            frameColor=(1, 1, 1, 1),
+            frameColor=(1, 1, 1, 0),
             frameSize = ( -v*32.0, v*32.0, -v*32.0, v*32.0 ),
+            geom = WindowNodeDrawer(37, 53, 'flat'),
+            pos = (2, 0, -v*82)
         )
         self.fbgframe2.setTransparency(True)
-        self.fbgframe2.setPos(2, 0, -v*82)
 
         facetex2 = loader.loadTexture(GAME+'/textures/sprites/'+char2['sprite']+'_face.png')
         facetex2.setMagfilter(Texture.FTNearest)
@@ -1656,17 +1642,12 @@ class Formation(DirectObject.DirectObject):
         self.cursor.setColor(1, 1, 1, 1)
         self.cursor.setTexture(self.curtex)
 
-        fbgtex = loader.loadTexture(GAME+'/textures/gui/face_background.png')
-        fbgtex.setMagfilter(Texture.FTNearest)
-        fbgtex.setMinfilter(Texture.FTNearest)
-
         self.fbgframe = DirectFrame(
-            frameTexture = fbgtex, 
-            frameColor=(1, 1, 1, 1),
-            frameSize = ( -v*32.0, v*32.0, -v*32.0, v*32.0 ),
+            frameColor=(1, 1, 1, 0),
+            geom = WindowNodeDrawer(37, 53, 'flat'),
+            pos = (-v*97, 0, v*61)
         )
         self.fbgframe.setTransparency(True)
-        self.fbgframe.setPos(-v*97, 0, v*61)
 
         facetex = loader.loadTexture(GAME+'/textures/sprites/'+self.char['sprite']+'_face.png')
         facetex.setMagfilter(Texture.FTNearest)
@@ -1674,7 +1655,7 @@ class Formation(DirectObject.DirectObject):
 
         self.face = DirectFrame(
             frameTexture = facetex, 
-            frameColor=(1, 1, 1, 1),
+            frameColor=(1, 1, 1, 0),
             frameSize = ( 0, v*32, 0, v*64 ),
             parent = self.fbgframe,
         )
@@ -1923,7 +1904,7 @@ class Formation(DirectObject.DirectObject):
         self.falabel['text_fg'] = color
         self.face['frameColor'] = color
         #self.barsframe['frameColor'] = color
-        self.fbgframe['frameColor'] = color
+        #self.fbgframe['frameColor'] = color
         for label in self.labels:
             label['text_fg'] = color
 
