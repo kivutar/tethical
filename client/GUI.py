@@ -94,6 +94,7 @@ class LoginWindow(DirectObject.DirectObject):
             frameSize = ( -v*56, v*56, -v*22, v*22 ),
             pos = (v*10, 0, -v*0),
             geom = WindowNodeDrawer(112, 44, 'shadowed', 'Login'),
+            scale = 0.1,
         )
         self.frame.setTransparency(True)
 
