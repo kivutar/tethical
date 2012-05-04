@@ -430,36 +430,13 @@ class Client(DirectObject):
         self.actionpreview = None
 
         # Generate the sky and attach it to the camera
-        self.battleGraphics.createSky()
+        self.sky = BattleGraphics.Sky(self.party['map'])
         
         # Tasks
         taskMgr.add(self.characterDirectionTask , 'characterDirectionTask')
 
         # Cursor stuff
-        self.curtex = loader.loadTexture(GAME+'/textures/cursor.png')
-        self.curtex.setMagfilter(Texture.FTNearest)
-        self.curtex.setMinfilter(Texture.FTNearest)
-        self.cux = False
-        self.cuy = False
-        self.cuz = False
-        self.cursor = loader.loadModel(GAME+'/models/slopes/flat')
-        self.cursor.reparentTo( self.tileRoot )
-        self.cursor.setScale(3.7)
-        self.cursor.setTransparency(TransparencyAttrib.MAlpha)
-        self.cursor.setColor( 1, 1, 1, 1 )
-        self.cursor.setTexture(self.curtex)
-
-        pointertex = loader.loadTexture(GAME+'/textures/pointer.png')
-        pointertex.setMagfilter(Texture.FTNearest)
-        pointertex.setMinfilter(Texture.FTNearest)
-        cm = CardMaker('card')
-        cm.setFrame(-2, 2, -2, 2) 
-        self.pointer = render.attachNewNode(cm.generate())
-        self.pointer.setTexture(pointertex)
-        self.pointer.setTransparency(True)
-        self.pointer.setBillboardPointEye()
-        self.pointer.reparentTo(render)
-        self.pointer.setScale(256.0/240.0)
+        self.cursor = BattleGraphics.Cursor(self.battleGraphics, self.tileRoot)
 
         self.wtex = loader.loadTexture(GAME+'/textures/walkable.png')
         self.wtex.setMagfilter(Texture.FTNearest)
@@ -787,25 +764,7 @@ class Client(DirectObject):
         (x, y, z) = pos
         tile = self.party['map']['tiles'][x][y][z]
 
-        self.camhandler.move(self.battleGraphics.logic2terrain(pos))
-
-        self.cursor.detachNode()
-        self.cursor = loader.loadModel(GAME+"/models/slopes/"+tile['slope'])
-        self.cursor.reparentTo( self.tileRoot )
-        self.cursor.setScale(3.7, 3.7, 6.0/7.0*3.7*tile['scale'])
-        self.cursor.setTransparency(TransparencyAttrib.MAlpha)
-        self.cursor.setTexture(self.curtex)
-        self.cursor.setPos(self.battleGraphics.logic2terrain((x, y, z+tile['depth']+0.1)))
-        self.pointer.setPos(self.battleGraphics.logic2terrain((x, y, z+tile['depth']+12)))
-
-        if tile['walkable']:
-            self.cursor.setColor( 1, 1, 1, .75 )
-        else:
-            self.cursor.setColor( 1, 0, 0, .75 )
-
-        self.cux = x
-        self.cuy = y
-        self.cuz = z
+        self.cursor.move(x, y, z, tile)
 
         if self.charbars:
             self.charbars.hide()
@@ -825,27 +784,27 @@ class Client(DirectObject):
 
     # You clicked on a tile, this can mean different things, so this is a dispatcher
     def onCircleClicked(self):
-        if self.phase == 'tile' and self.cux is not False and self.party['yourturn']:
+        if self.phase == 'tile' and self.cursor.x is not False and self.party['yourturn']:
 
             if self.charcard:
                 self.charcard.hide()
             
             # we clicked an active walkable tile, let's move the character
-            if self.party['map']['tiles'][self.cux][self.cuy][self.cuz].has_key('walkablezone'):
-                charid = self.party['map']['tiles'][self.cux][self.cuy][self.cuz]['walkablezone']
+            if self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z].has_key('walkablezone'):
+                charid = self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z]['walkablezone']
                 self.clicked_snd.play()
-                dest = (self.cux, self.cuy, self.cuz)
+                dest = (self.cursor.x, self.cursor.y, self.cursor.z)
                 self.path(charid, dest)
                 return
 
             # we clicked on a character
-            if self.party['map']['tiles'][self.cux][self.cuy][self.cuz].has_key('char'):
-                charid = self.party['map']['tiles'][self.cux][self.cuy][self.cuz]['char']
+            if self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z].has_key('char'):
+                charid = self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z]['char']
                 self.clicked_snd.play()
 
                 # we clicked on a target, let's attack it!
-                if self.party['map']['tiles'][self.cux][self.cuy][self.cuz].has_key('attackablezone'):
-                    attackable = self.party['map']['tiles'][self.cux][self.cuy][self.cuz]['attackablezone']
+                if self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z].has_key('attackablezone'):
+                    attackable = self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z]['attackablezone']
                     self.setPhase('gui')
                     if self.charbars:
                         self.charbars.hide()
@@ -871,13 +830,13 @@ class Client(DirectObject):
                 self.turn()
     
     def onCrossClicked(self):
-        if self.phase == 'tile' and self.cux is not False and self.party['yourturn']:
+        if self.phase == 'tile' and self.cursor.x is not False and self.party['yourturn']:
 
             if self.subphase == 'free':
 
                 # if we clicked on a character
-                if self.party['map']['tiles'][self.cux][self.cuy][self.cuz].has_key('char'):
-                    charid = self.party['map']['tiles'][self.cux][self.cuy][self.cuz]['char']
+                if self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z].has_key('char'):
+                    charid = self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z]['char']
                     myPyDatagram = PyDatagram()
                     myPyDatagram.addUint8(GET_PASSIVE_WALKABLES)
                     myPyDatagram.addString(charid)
@@ -908,40 +867,40 @@ class Client(DirectObject):
 
         if direction == 'up':
             if h >=    0 and h <  90:
-                self.findTileAndUpdateCursorPos((self.cux+1,self.cuy))
+                self.findTileAndUpdateCursorPos((self.cursor.x+1,self.cursor.y))
             if h >=  -90 and h <   0:
-                self.findTileAndUpdateCursorPos((self.cux,self.cuy-1))
+                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y-1))
             if h >= -180 and h < -90:
-                self.findTileAndUpdateCursorPos((self.cux-1,self.cuy))
+                self.findTileAndUpdateCursorPos((self.cursor.x-1,self.cursor.y))
             if h >=   90 and h < 180:
-                self.findTileAndUpdateCursorPos((self.cux,self.cuy+1))
+                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y+1))
         elif direction == 'down':
             if h >=    0 and h <  90:
-                self.findTileAndUpdateCursorPos((self.cux-1,self.cuy))
+                self.findTileAndUpdateCursorPos((self.cursor.x-1,self.cursor.y))
             if h >=  -90 and h <   0:
-                self.findTileAndUpdateCursorPos((self.cux,self.cuy+1))
+                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y+1))
             if h >= -180 and h < -90:
-                self.findTileAndUpdateCursorPos((self.cux+1,self.cuy))
+                self.findTileAndUpdateCursorPos((self.cursor.x+1,self.cursor.y))
             if h >=   90 and h < 180:
-                self.findTileAndUpdateCursorPos((self.cux,self.cuy-1))
+                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y-1))
         elif direction == 'left':
             if h >=    0 and h <  90:
-                self.findTileAndUpdateCursorPos((self.cux,self.cuy+1))
+                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y+1))
             if h >=  -90 and h <   0:
-                self.findTileAndUpdateCursorPos((self.cux+1,self.cuy))
+                self.findTileAndUpdateCursorPos((self.cursor.x+1,self.cursor.y))
             if h >= -180 and h < -90:
-                self.findTileAndUpdateCursorPos((self.cux,self.cuy-1))
+                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y-1))
             if h >=   90 and h < 180:
-                self.findTileAndUpdateCursorPos((self.cux-1,self.cuy))
+                self.findTileAndUpdateCursorPos((self.cursor.x-1,self.cursor.y))
         elif direction == 'right':
             if h >=    0 and h <  90:
-                self.findTileAndUpdateCursorPos((self.cux,self.cuy-1))
+                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y-1))
             if h >=  -90 and h <   0:
-                self.findTileAndUpdateCursorPos((self.cux-1,self.cuy))
+                self.findTileAndUpdateCursorPos((self.cursor.x-1,self.cursor.y))
             if h >= -180 and h < -90:
-                self.findTileAndUpdateCursorPos((self.cux,self.cuy+1))
+                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y+1))
             if h >=   90 and h < 180:
-                self.findTileAndUpdateCursorPos((self.cux+1,self.cuy))
+                self.findTileAndUpdateCursorPos((self.cursor.x+1,self.cursor.y))
 
     # Returns the closest tile for the given x and y
     def findTileAndUpdateCursorPos(self, pos):
@@ -954,7 +913,7 @@ class Client(DirectObject):
                 for z,zs in enumerate(ys):
                     if not self.party['map']['tiles'][x][y][z] is None:
                         if fux == x and fuy == y:
-                            d = math.fabs(z-self.cuz) # for each possible, compute the Z delta with the current tile
+                            d = math.fabs(z-self.cursor.z) # for each possible, compute the Z delta with the current tile
                             possibles.append((x, y, z, d))
 
         if len(possibles):

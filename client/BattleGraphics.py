@@ -27,31 +27,6 @@ class BattleGraphics(object):
         self.terrain.reparentTo( render )
         self.terrain.setScale( *self.mp['scale'] )
 
-    # Draw the gradient background representing the sky during a battle
-    def createSky(self):
-        vdata = GeomVertexData('name_me', GeomVertexFormat.getV3c4(), Geom.UHStatic)
-        vertex = GeomVertexWriter(vdata, 'vertex')
-        color = GeomVertexWriter(vdata, 'color')
-        primitive = GeomTristrips(Geom.UHStatic)
-        film_size = base.cam.node().getLens().getFilmSize()
-        x = film_size.getX() / 2.0
-        z = x * 256.0/240.0
-        vertex.addData3f( x, 90,  z)
-        vertex.addData3f(-x, 90,  z)
-        vertex.addData3f( x, 90, -z)
-        vertex.addData3f(-x, 90, -z)
-        color.addData4f(VBase4(*self.mp['backgroundcolor1']))
-        color.addData4f(VBase4(*self.mp['backgroundcolor1']))
-        color.addData4f(VBase4(*self.mp['backgroundcolor2']))
-        color.addData4f(VBase4(*self.mp['backgroundcolor2']))
-        primitive.addNextVertices(4)
-        primitive.closePrimitive()
-        geom = Geom(vdata)
-        geom.addPrimitive(primitive)
-        sky = GeomNode('sky')
-        sky.addGeom(geom)
-        base.camera.attachNewNode(sky)
-
     # Loop over the lights defined in a map, and light the scene
     def lightScene(self):
         for i, light in enumerate(self.mp['lights']):
@@ -109,3 +84,82 @@ class AT(object):
 
     def hide(self):
         self.atcontainer.detachNode()
+
+# Draw the gradient background representing the sky during a battle
+class Sky(object):
+
+    def __init__(self, mp):
+        vdata = GeomVertexData('name_me', GeomVertexFormat.getV3c4(), Geom.UHStatic)
+        vertex = GeomVertexWriter(vdata, 'vertex')
+        color = GeomVertexWriter(vdata, 'color')
+        primitive = GeomTristrips(Geom.UHStatic)
+        film_size = base.cam.node().getLens().getFilmSize()
+        x = film_size.getX() / 2.0
+        z = x * 256.0/240.0
+        vertex.addData3f( x, 90,  z)
+        vertex.addData3f(-x, 90,  z)
+        vertex.addData3f( x, 90, -z)
+        vertex.addData3f(-x, 90, -z)
+        color.addData4f(VBase4(*mp['backgroundcolor1']))
+        color.addData4f(VBase4(*mp['backgroundcolor1']))
+        color.addData4f(VBase4(*mp['backgroundcolor2']))
+        color.addData4f(VBase4(*mp['backgroundcolor2']))
+        primitive.addNextVertices(4)
+        primitive.closePrimitive()
+        geom = Geom(vdata)
+        geom.addPrimitive(primitive)
+        sky = GeomNode('sky')
+        sky.addGeom(geom)
+        base.camera.attachNewNode(sky)
+
+class Cursor(object):
+
+    def __init__(self, battleGraphics, tileRoot):
+        self.battleGraphics = battleGraphics
+        self.tileRoot = tileRoot
+
+        self.curtex = loader.loadTexture(GAME+'/textures/cursor.png')
+        self.curtex.setMagfilter(Texture.FTNearest)
+        self.curtex.setMinfilter(Texture.FTNearest)
+
+        self.x = False
+        self.y = False
+        self.z = False
+
+        self.cursor = loader.loadModel(GAME+'/models/slopes/flat')
+        self.cursor.reparentTo( self.tileRoot )
+        self.cursor.setScale(3.7)
+        self.cursor.setTransparency(TransparencyAttrib.MAlpha)
+        self.cursor.setColor( 1, 1, 1, 1 )
+        self.cursor.setTexture(self.curtex)
+
+        pointertex = loader.loadTexture(GAME+'/textures/pointer.png')
+        pointertex.setMagfilter(Texture.FTNearest)
+        pointertex.setMinfilter(Texture.FTNearest)
+        cm = CardMaker('card')
+        cm.setFrame(-2, 2, -2, 2) 
+        self.pointer = render.attachNewNode(cm.generate())
+        self.pointer.setTexture(pointertex)
+        self.pointer.setTransparency(True)
+        self.pointer.setBillboardPointEye()
+        self.pointer.reparentTo(render)
+        self.pointer.setScale(256.0/240.0)
+
+    def move(self, x, y, z, tile):
+        self.cursor.detachNode()
+        self.cursor = loader.loadModel(GAME+"/models/slopes/"+tile['slope'])
+        self.cursor.reparentTo( self.tileRoot )
+        self.cursor.setScale(3.7, 3.7, 6.0/7.0*3.7*tile['scale'])
+        self.cursor.setTransparency(TransparencyAttrib.MAlpha)
+        self.cursor.setTexture(self.curtex)
+        self.cursor.setPos(self.battleGraphics.logic2terrain((x, y, z+tile['depth']+0.1)))
+        self.pointer.setPos(self.battleGraphics.logic2terrain((x, y, z+tile['depth']+12)))
+
+        if tile['walkable']:
+            self.cursor.setColor( 1, 1, 1, .75 )
+        else:
+            self.cursor.setColor( 1, 0, 0, .75 )
+
+        self.x = x
+        self.y = y
+        self.z = z
