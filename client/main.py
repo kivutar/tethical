@@ -8,12 +8,6 @@ from direct.distributed.PyDatagramIterator import *
 from direct.distributed.PyDatagram import *
 from direct.interval.IntervalGlobal import *
 from direct.filter.CommonFilters import CommonFilters
-from panda3d.physics import BaseParticleEmitter,BaseParticleRenderer
-from panda3d.physics import PointParticleFactory,SpriteParticleRenderer
-from panda3d.physics import LinearNoiseForce,DiscEmitter
-from direct.particles.Particles import Particles
-from direct.particles.ParticleEffect import ParticleEffect
-from direct.particles.ForceGroup import ForceGroup
 import math
 from operator import itemgetter
 import json
@@ -24,6 +18,7 @@ try:
 except:
     import Direction
 import Sprite
+import BattleGraphics
 
 LOGIN_MESSAGE = 1
 LOGIN_SUCCESS = 2
@@ -155,7 +150,7 @@ class Client(DirectObject):
             path = json.loads(iterator.getString())
             
             seq = Sequence()
-            seq.append( Func(self.hideAT) )
+            seq.append( Func(self.battleGraphics.hideAT) )
             seq.append( Func(self.updateSpriteAnimation, charid, 'run') )
             seq.append( Func(self.clearZone) )
             seq.append( self.getCharacterMoveSequence(charid, path) )
@@ -168,7 +163,7 @@ class Client(DirectObject):
             y2 = iterator.getUint8()
             z2 = iterator.getUint8()
 
-            (x1, y1, z1) = self.getCharacterCoords(charid)
+            (x1, y1, z1) = self.battleGraphics.getCharacterCoords(charid)
             del self.party['map']['tiles'][x1][y1][z1]['char']
             self.party['map']['tiles'][x2][y2][z2]['char'] = charid
             self.turn()
@@ -187,14 +182,14 @@ class Client(DirectObject):
             seq.append( Wait(0.5) )
             seq.append( Func(self.updateCursorPos, (x2, y2, z2)) )
             seq.append( Wait(0.5) )
-            seq.append( Func(self.hideAT) )
+            seq.append( Func(self.battleGraphics.hideAT) )
             seq.append( Func(self.updateSpriteAnimation, charid, 'run') )
-            seq.append( Func(self.camhandler.move, self.logic2terrain((x2, y2, z2))) )
+            seq.append( Func(self.camhandler.move, self.battleGraphics.logic2terrain((x2, y2, z2))) )
             seq.append( self.getCharacterMoveSequence(charid, path) )
             seq.append( Wait(0.5) )
             seq.append( Func(self.updateSpriteAnimation, charid) )
             seq.append( Func(self.clearZone) )
-            seq.append( Func(self.showAT, self.sprites[charid]) )
+            seq.append( Func(self.battleGraphics.showAT, self.sprites[charid]) )
             seq.append( Func(self.setPhase, 'listen') )
             seq.start()
         elif msgID == WAIT_SUCCESS:
@@ -205,7 +200,7 @@ class Client(DirectObject):
             
             self.setPhase('animation')
             seq = Sequence()
-            seq.append( Func(self.hideAT) )
+            seq.append( Func(self.battleGraphics.hideAT) )
             seq.append( Wait(0.5) )
             seq.append( Func(self.sprites[charid].setRealDir, direction) )
             seq.append( Wait(0.5) )
@@ -252,11 +247,11 @@ class Client(DirectObject):
             seq = Sequence()
             seq.append( Func(self.setupAttackableZone, charid, attackables) )
             seq.append( Wait(0.5) )
-            seq.append( Func(self.updateCursorPos, self.getCharacterCoords(targetid)) )
-            seq.append( Func(self.camhandler.move, self.logic2terrain(self.getCharacterCoords(targetid))) )
+            seq.append( Func(self.updateCursorPos, self.battleGraphics.getCharacterCoords(targetid)) )
+            seq.append( Func(self.camhandler.move, self.battleGraphics.logic2terrain(self.battleGraphics.getCharacterCoords(targetid))) )
             seq.append( Wait(0.5) )
             seq.append( self.getCharacterAttackSequence(charid, targetid) )
-            seq.append( Func(self.camhandler.move, self.logic2terrain(self.getCharacterCoords(charid))) )
+            seq.append( Func(self.camhandler.move, self.battleGraphics.logic2terrain(self.battleGraphics.getCharacterCoords(charid))) )
             seq.append( Func(self.setPhase, 'listen') )
             seq.start()
         elif msgID == GAME_OVER:
@@ -373,14 +368,17 @@ class Client(DirectObject):
         self.phase = None
         self.subphase = None
         
+        # Instanciate the camera handler
         self.camhandler = CameraHandler.CameraHandler()
+
+        # Instanciate the battle graphics
+        self.battleGraphics = BattleGraphics.BattleGraphics(self.party['map'])
         
-        self.lightScene()
+        # Light the scene
+        self.battleGraphics.lightScene()
         
         # Display the terrain
-        terrain = loader.loadModel(GAME+'/models/maps/'+self.party['map']['model'])
-        terrain.reparentTo( render )
-        terrain.setScale( *self.party['map']['scale'] )
+        self.battleGraphics.displayTerrain()
         
         # Play the background music
         self.music = base.loader.loadSfx(GAME+'/music/'+self.party['map']['music']+'.ogg')
@@ -409,7 +407,7 @@ class Client(DirectObject):
 
                         self.tiles[x][y][z] = loader.loadModel(GAME+"/models/slopes/"+slope)
                         self.tiles[x][y][z].reparentTo( self.tileRoot )
-                        self.tiles[x][y][z].setPos(self.logic2terrain( (x, y, z+depth+0.05) ))
+                        self.tiles[x][y][z].setPos(self.battleGraphics.logic2terrain( (x, y, z+depth+0.05) ))
                         self.tiles[x][y][z].setScale(3.7, 3.7, 6.0/7.0*3.7*scale)
                         self.tiles[x][y][z].setTransparency(TransparencyAttrib.MAlpha)
                         self.tiles[x][y][z].setColor( 0, 0, 0, 0 )
@@ -419,25 +417,20 @@ class Client(DirectObject):
                             char = self.party['chars'][charid]
                             sprite = Sprite.Sprite(GAME+'/textures/sprites/'+char['sprite']+'.png', int(char['direction']))
                             sprite.animation = 'stand'
-                            sprite.node.setPos(self.logic2terrain((x,y,z)))
+                            sprite.node.setPos(self.battleGraphics.logic2terrain((x,y,z)))
                             sprite.node.reparentTo( render )
                             self.sprites[charid] = sprite
         
-        self.atcontainer = render.attachNewNode("atcontainer")
-        self.atcontainer.setPos(0,0,3.5)
-        self.atcontainer.setBillboardPointEye()
-        at = loader.loadModel(GAME+'/models/gui/AT')
-        at.setTransparency(True)
-        at.reparentTo(self.atcontainer)
-        at.setPos(.75,0,0)
-        at.setScale(2.0*256.0/240.0)
-        self.hideAT()
+        # Instanciate and hide the AT flag
+        self.battleGraphics.initAT()
+        self.battleGraphics.hideAT()
         
         self.charbars = None
         self.charcard = None
         self.actionpreview = None
 
-        self.drawBackground()
+        # Generate the sky and attach it to the camera
+        self.battleGraphics.createSky()
         
         # Tasks
         taskMgr.add(self.characterDirectionTask , 'characterDirectionTask')
@@ -475,24 +468,14 @@ class Client(DirectObject):
         self.atex = loader.loadTexture(GAME+'/textures/attackable.png')
         self.atex.setMagfilter(Texture.FTNearest)
         self.atex.setMinfilter(Texture.FTNearest)
-        
-        #filters = CommonFilters(base.win, base.cam)
-        #filters.setBloom(blend=(0,0,0,1), desat=-0.5, intensity=3.0, size="medium")
-        #filters.setAmbientOcclusion()
-        #filters.setCartoonInk()
 
-        if self.party['map'].has_key('effects'):
-            base.enableParticles()
-            for effect in self.party['map']['effects']:
-                p = ParticleEffect()
-                p.loadConfig(GAME+'/particles/'+effect['file']+'.ptf') 
-                p.start(render)
-                p.setPos(self.logic2terrain( effect['position'] ))
+        # Add the special effects
+        self.battleGraphics.addEffects()
 
         # Battle intro animation
         seq = Sequence()
         i1 = LerpColorInterval(self.transitionframe, 5, (0,0,0,0), startColor=(0,0,0,1))
-        cx, cy, cz = terrain.getBounds().getCenter()
+        cx, cy, cz = self.battleGraphics.terrain.getBounds().getCenter()
         i2 = LerpPosInterval(self.camhandler.container, 5, (cx,cy,cz), startPos=(cx,cy,cz+50))
         ch, cp, cr = self.camhandler.container.getHpr()
         i3 = LerpHprInterval(self.camhandler.container, 5, (ch+90, cp, cr), (ch-180, cp, cr))
@@ -537,8 +520,8 @@ class Client(DirectObject):
                             char = self.party['chars'][charid]
 
                             if char['active']:
-                                self.camhandler.move(self.logic2terrain((x, y, z)))
-                                self.showAT(self.sprites[charid])
+                                self.camhandler.move(self.battleGraphics.logic2terrain((x, y, z)))
+                                self.battleGraphics.showAT(self.sprites[charid])
 
                                 self.updateCursorPos((x,y,z))
 
@@ -585,7 +568,7 @@ class Client(DirectObject):
 
     # Get the path from the server, and makes the character walk on it
     def path(self, charid, dest):
-        orig = self.getCharacterCoords(charid)
+        orig = self.battleGraphics.getCharacterCoords(charid)
         origdir = self.sprites[charid].realdir
         (x, y, z) = dest
         
@@ -605,7 +588,7 @@ class Client(DirectObject):
         )
 
     def cancelMove(self, charid, orig, origdir):
-        self.sprites[charid].node.setPos(self.logic2terrain(orig))
+        self.sprites[charid].node.setPos(self.battleGraphics.logic2terrain(orig))
         self.sprites[charid].setRealDir(origdir)
         self.turn()
 
@@ -634,8 +617,8 @@ class Client(DirectObject):
 
     # Makes a character look at another one
     def characterLookAt(self, charid, targetid):
-        (x1, y1, z1) = self.getCharacterCoords(charid)
-        (x2, y2, z2) = self.getCharacterCoords(targetid)
+        (x1, y1, z1) = self.battleGraphics.getCharacterCoords(charid)
+        (x2, y2, z2) = self.battleGraphics.getCharacterCoords(targetid)
         if x1 > x2:
             self.sprites[charid].setRealDir(3)
         if x1 < x2:
@@ -648,7 +631,7 @@ class Client(DirectObject):
     # Returns the sequence of a character punching another
     def getCharacterAttackSequence(self, charid, targetid):
         seq = Sequence()
-        seq.append( Func(self.hideAT) )
+        seq.append( Func(self.battleGraphics.hideAT) )
         seq.append( Func(self.characterLookAt,       charid, targetid) )
         seq.append( Func(self.updateSpriteAnimation, charid, 'attack') )
         seq.append( Wait(0.5) )
@@ -747,14 +730,14 @@ class Client(DirectObject):
                             LerpPosInterval(
                                 sprite.node, 
                                 0.125,
-                                self.logic2terrain(middle), 
-                                startPos=self.logic2terrain(origin)
+                                self.battleGraphics.logic2terrain(middle), 
+                                startPos=self.battleGraphics.logic2terrain(origin)
                             ),
                             LerpPosInterval(
                                 sprite.node, 
                                 0.125,
-                                self.logic2terrain(destination), 
-                                startPos=self.logic2terrain(middle)
+                                self.battleGraphics.logic2terrain(destination), 
+                                startPos=self.battleGraphics.logic2terrain(middle)
                             ),
                             Func(self.updateSpriteAnimation, charid, 'run'),
                         )
@@ -771,14 +754,14 @@ class Client(DirectObject):
                             LerpPosInterval(
                                 sprite.node, 
                                 0.125,
-                                self.logic2terrain(middle), 
-                                startPos=self.logic2terrain(origin)
+                                self.battleGraphics.logic2terrain(middle), 
+                                startPos=self.battleGraphics.logic2terrain(origin)
                             ),
                             LerpPosInterval(
                                 sprite.node, 
                                 0.125,
-                                self.logic2terrain(destination), 
-                                startPos=self.logic2terrain(middle)
+                                self.battleGraphics.logic2terrain(destination), 
+                                startPos=self.battleGraphics.logic2terrain(middle)
                             ),
                             Func(self.updateSpriteAnimation, charid, 'run'),
                         )
@@ -788,8 +771,8 @@ class Client(DirectObject):
                         LerpPosInterval(
                             sprite.node, 
                             0.25,
-                            self.logic2terrain(destination), 
-                            startPos=self.logic2terrain(origin)
+                            self.battleGraphics.logic2terrain(destination), 
+                            startPos=self.battleGraphics.logic2terrain(origin)
                         )
                     )
             origin = destination
@@ -799,12 +782,12 @@ class Client(DirectObject):
 
     def updateCursorPos(self, pos):
 
-        self.camhandler.move(self.logic2terrain(pos))
+        self.camhandler.move(self.battleGraphics.logic2terrain(pos))
 
         (x, y, z) = pos
         tile = self.party['map']['tiles'][x][y][z]
 
-        self.camhandler.move(self.logic2terrain(pos))
+        self.camhandler.move(self.battleGraphics.logic2terrain(pos))
 
         self.cursor.detachNode()
         self.cursor = loader.loadModel(GAME+"/models/slopes/"+tile['slope'])
@@ -812,8 +795,8 @@ class Client(DirectObject):
         self.cursor.setScale(3.7, 3.7, 6.0/7.0*3.7*tile['scale'])
         self.cursor.setTransparency(TransparencyAttrib.MAlpha)
         self.cursor.setTexture(self.curtex)
-        self.cursor.setPos(self.logic2terrain((x, y, z+tile['depth']+0.1)))
-        self.pointer.setPos(self.logic2terrain((x, y, z+tile['depth']+12)))
+        self.cursor.setPos(self.battleGraphics.logic2terrain((x, y, z+tile['depth']+0.1)))
+        self.pointer.setPos(self.battleGraphics.logic2terrain((x, y, z+tile['depth']+12)))
 
         if tile['walkable']:
             self.cursor.setColor( 1, 1, 1, .75 )
@@ -1025,7 +1008,7 @@ class Client(DirectObject):
     
     def setupDirectionChooser(self, charid):
         self.setPhase('direction')
-        self.hideAT()
+        self.battleGraphics.hideAT()
         Direction.Chooser(charid, self.sprites[charid], self.camhandler, self.directionChosen, self.turn)
 
     # Cancel button clicked
@@ -1035,6 +1018,7 @@ class Client(DirectObject):
         if self.charcard:
             self.charcard.hide()
 
+    # The direction has been chosen, send the WAIT datagram
     def directionChosen(self, charid, direction):
         myPyDatagram = PyDatagram()
         myPyDatagram.addUint8(WAIT)
@@ -1052,25 +1036,6 @@ class Client(DirectObject):
         return Task.cont
 
 ### Utilities
-
-    # Converts logic coordinates to panda3d coordinates
-    def logic2terrain(self, tile):
-        (x, y, z) = tile
-        return Point3(
-            (x+self.party['map']['offset'][0]+0.5) * 3.7,
-            (y+self.party['map']['offset'][1]+0.5) * 3.7,
-            (z+self.party['map']['offset'][2]+0.0) * 3.7/4.0*6.0/7.0,
-        )
-
-    # Returns the logic coordinates of a character
-    def getCharacterCoords(self, charid):
-        for x,xs in enumerate(self.party['map']['tiles']):
-            for y,ys in enumerate(xs):
-                for z,zs in enumerate(ys):
-                    if not self.party['map']['tiles'][x][y][z] is None:
-                        if self.party['map']['tiles'][x][y][z].has_key('char') and self.party['map']['tiles'][x][y][z]['char'] != 0:
-                            if charid == self.party['map']['tiles'][x][y][z]['char']:
-                                return (x, y, z)
 
     def setPhase(self, phase):
         self.phase = phase
@@ -1090,60 +1055,6 @@ class Client(DirectObject):
         else:
             self.subphase = False
             self.ignoreAll()
-
-# Graphic
-
-    # Draw the gradient background
-    def drawBackground(self):
-        vdata = GeomVertexData('name_me', GeomVertexFormat.getV3c4(), Geom.UHStatic)
-        vertex = GeomVertexWriter(vdata, 'vertex')
-        color = GeomVertexWriter(vdata, 'color')
-        primitive = GeomTristrips(Geom.UHStatic)
-        film_size = base.cam.node().getLens().getFilmSize()
-        x = film_size.getX() / 2.0
-        z = x * 256.0/240.0
-        vertex.addData3f( x, 90,  z)
-        vertex.addData3f(-x, 90,  z)
-        vertex.addData3f( x, 90, -z)
-        vertex.addData3f(-x, 90, -z)
-        color.addData4f(VBase4(*self.party['map']['backgroundcolor1']))
-        color.addData4f(VBase4(*self.party['map']['backgroundcolor1']))
-        color.addData4f(VBase4(*self.party['map']['backgroundcolor2']))
-        color.addData4f(VBase4(*self.party['map']['backgroundcolor2']))
-        primitive.addNextVertices(4)
-        primitive.closePrimitive()
-        geom = Geom(vdata)
-        geom.addPrimitive(primitive)
-        self.sky = GeomNode('sky')
-        self.sky.addGeom(geom)
-        base.camera.attachNewNode(self.sky)
-
-    # Light the scene
-    def lightScene(self):
-
-        for i, light in enumerate(self.party['map']['lights']):
-            if light.has_key('direction'):
-                directionalLight = DirectionalLight( "directionalLight_"+str(i) )
-                directionalLight.setDirection( Vec3( *light['direction'] ) )
-                directionalLight.setColor( Vec4( *light['color'] ) )
-                render.setLight( render.attachNewNode( directionalLight ) )
-            elif light.has_key('position'):
-                plight = PointLight('plighti_'+str(i))
-                plight.setColor( Vec4( *light['color'] ) )
-                plight.setAttenuation(Point3( *light['attenuation'] ))
-                plnp = render.attachNewNode(plight)
-                plnp.setPos( self.logic2terrain( light['position'] ) )
-                render.setLight( plnp )
-            else:
-                ambientLight = AmbientLight( "ambientLight"+str(i) )
-                ambientLight.setColor( Vec4( *light['color'] ) )
-                render.setLight( render.attachNewNode( ambientLight ) )
-
-    def showAT(self, sprite):
-        self.atcontainer.reparentTo(sprite.node)
-
-    def hideAT(self):
-        self.atcontainer.detachNode()
 
 Client()
 run()
