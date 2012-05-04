@@ -150,7 +150,7 @@ class Client(DirectObject):
             path = json.loads(iterator.getString())
             
             seq = Sequence()
-            seq.append( Func(self.battleGraphics.hideAT) )
+            seq.append( Func(self.at.hide) )
             seq.append( Func(self.updateSpriteAnimation, charid, 'run') )
             seq.append( Func(self.clearZone) )
             seq.append( self.getCharacterMoveSequence(charid, path) )
@@ -182,14 +182,14 @@ class Client(DirectObject):
             seq.append( Wait(0.5) )
             seq.append( Func(self.updateCursorPos, (x2, y2, z2)) )
             seq.append( Wait(0.5) )
-            seq.append( Func(self.battleGraphics.hideAT) )
+            seq.append( Func(self.at.hide) )
             seq.append( Func(self.updateSpriteAnimation, charid, 'run') )
             seq.append( Func(self.camhandler.move, self.battleGraphics.logic2terrain((x2, y2, z2))) )
             seq.append( self.getCharacterMoveSequence(charid, path) )
             seq.append( Wait(0.5) )
             seq.append( Func(self.updateSpriteAnimation, charid) )
             seq.append( Func(self.clearZone) )
-            seq.append( Func(self.battleGraphics.showAT, self.sprites[charid]) )
+            seq.append( Func(self.at.showOnSprite, self.sprites[charid]) )
             seq.append( Func(self.setPhase, 'listen') )
             seq.start()
         elif msgID == WAIT_SUCCESS:
@@ -200,7 +200,7 @@ class Client(DirectObject):
             
             self.setPhase('animation')
             seq = Sequence()
-            seq.append( Func(self.battleGraphics.hideAT) )
+            seq.append( Func(self.at.hide) )
             seq.append( Wait(0.5) )
             seq.append( Func(self.sprites[charid].setRealDir, direction) )
             seq.append( Wait(0.5) )
@@ -422,8 +422,8 @@ class Client(DirectObject):
                             self.sprites[charid] = sprite
         
         # Instanciate and hide the AT flag
-        self.battleGraphics.initAT()
-        self.battleGraphics.hideAT()
+        self.at = BattleGraphics.AT()
+        self.at.hide()
         
         self.charbars = None
         self.charcard = None
@@ -521,7 +521,7 @@ class Client(DirectObject):
 
                             if char['active']:
                                 self.camhandler.move(self.battleGraphics.logic2terrain((x, y, z)))
-                                self.battleGraphics.showAT(self.sprites[charid])
+                                self.at.showOnSprite(self.sprites[charid])
 
                                 self.updateCursorPos((x,y,z))
 
@@ -631,7 +631,7 @@ class Client(DirectObject):
     # Returns the sequence of a character punching another
     def getCharacterAttackSequence(self, charid, targetid):
         seq = Sequence()
-        seq.append( Func(self.battleGraphics.hideAT) )
+        seq.append( Func(self.at.hide) )
         seq.append( Func(self.characterLookAt,       charid, targetid) )
         seq.append( Func(self.updateSpriteAnimation, charid, 'attack') )
         seq.append( Wait(0.5) )
@@ -1008,7 +1008,7 @@ class Client(DirectObject):
     
     def setupDirectionChooser(self, charid):
         self.setPhase('direction')
-        self.battleGraphics.hideAT()
+        self.at.hide()
         Direction.Chooser(charid, self.sprites[charid], self.camhandler, self.directionChosen, self.turn)
 
     # Cancel button clicked

@@ -82,22 +82,6 @@ class BattleGraphics(object):
                 p.start(render)
                 p.setPos(self.logic2terrain( effect['position'] ))
 
-    def initAT(self):
-        self.atcontainer = render.attachNewNode("atcontainer")
-        self.atcontainer.setPos(0,0,3.5)
-        self.atcontainer.setBillboardPointEye()
-        at = loader.loadModel(GAME+'/models/gui/AT')
-        at.setTransparency(True)
-        at.reparentTo(self.atcontainer)
-        at.setPos(.75,0,0)
-        at.setScale(2.0*256.0/240.0)
-
-    def showAT(self, sprite):
-        self.atcontainer.reparentTo(sprite.node)
-
-    def hideAT(self):
-        self.atcontainer.detachNode()
-
     # Returns the logic coordinates of a character
     def getCharacterCoords(self, charid):
         for x,xs in enumerate(self.mp['tiles']):
@@ -107,3 +91,21 @@ class BattleGraphics(object):
                         if self.mp['tiles'][x][y][z].has_key('char') and self.mp['tiles'][x][y][z]['char'] != 0:
                             if charid == self.mp['tiles'][x][y][z]['char']:
                                 return (x, y, z)
+
+class AT(object):
+
+    def __init__(self):
+        self.atcontainer = render.attachNewNode("atcontainer")
+        self.atcontainer.setPos(0,0,3.5)
+        self.atcontainer.setBillboardPointEye()
+        at = loader.loadModel(GAME+'/models/gui/AT')
+        at.setTransparency(True)
+        at.reparentTo(self.atcontainer)
+        at.setPos(.75,0,0)
+        at.setScale(2.0*256.0/240.0)
+
+    def showOnSprite(self, sprite):
+        self.atcontainer.reparentTo(sprite.node)
+
+    def hide(self):
+        self.atcontainer.detachNode()
