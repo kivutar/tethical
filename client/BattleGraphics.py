@@ -58,16 +58,6 @@ class BattleGraphics(object):
                 p.start(render)
                 p.setPos(self.logic2terrain( effect['position'] ))
 
-    # Returns the logic coordinates of a character
-    def getCharacterCoords(self, charid):
-        for x,xs in enumerate(self.mp['tiles']):
-            for y,ys in enumerate(xs):
-                for z,zs in enumerate(ys):
-                    if not self.mp['tiles'][x][y][z] is None:
-                        if self.mp['tiles'][x][y][z].has_key('char') and self.mp['tiles'][x][y][z]['char'] != 0:
-                            if charid == self.mp['tiles'][x][y][z]['char']:
-                                return (x, y, z)
-
 class AT(object):
 
     def __init__(self):
@@ -222,3 +212,13 @@ class Matrix(object):
                             del self.mp['tiles'][x][y][z]['walkablezone']
                         if self.mp['tiles'][x][y][z].has_key('attackablezone'):
                             del self.mp['tiles'][x][y][z]['attackablezone']
+
+    # Returns the logic coordinates of a character
+    def getCharacterCoords(self, charid):
+        for x,xs in enumerate(self.mp['tiles']):
+            for y,ys in enumerate(xs):
+                for z,zs in enumerate(ys):
+                    if not self.mp['tiles'][x][y][z] is None:
+                        if self.mp['tiles'][x][y][z].has_key('char') and self.mp['tiles'][x][y][z]['char'] != 0:
+                            if charid == self.mp['tiles'][x][y][z]['char']:
+                                return (x, y, z)

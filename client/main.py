@@ -163,7 +163,7 @@ class Client(DirectObject):
             y2 = iterator.getUint8()
             z2 = iterator.getUint8()
 
-            (x1, y1, z1) = self.battleGraphics.getCharacterCoords(charid)
+            (x1, y1, z1) = self.matrix.getCharacterCoords(charid)
             del self.party['map']['tiles'][x1][y1][z1]['char']
             self.party['map']['tiles'][x2][y2][z2]['char'] = charid
             self.turn()
@@ -247,11 +247,11 @@ class Client(DirectObject):
             seq = Sequence()
             seq.append( Func(self.matrix.setupAttackableZone, charid, attackables) )
             seq.append( Wait(0.5) )
-            seq.append( Func(self.updateCursorPos, self.battleGraphics.getCharacterCoords(targetid)) )
-            seq.append( Func(self.camhandler.move, self.battleGraphics.logic2terrain(self.battleGraphics.getCharacterCoords(targetid))) )
+            seq.append( Func(self.updateCursorPos, self.matrix.getCharacterCoords(targetid)) )
+            seq.append( Func(self.camhandler.move, self.battleGraphics.logic2terrain(self.matrix.getCharacterCoords(targetid))) )
             seq.append( Wait(0.5) )
             seq.append( self.getCharacterAttackSequence(charid, targetid) )
-            seq.append( Func(self.camhandler.move, self.battleGraphics.logic2terrain(self.battleGraphics.getCharacterCoords(charid))) )
+            seq.append( Func(self.camhandler.move, self.battleGraphics.logic2terrain(self.matrix.getCharacterCoords(charid))) )
             seq.append( Func(self.setPhase, 'listen') )
             seq.start()
         elif msgID == GAME_OVER:
@@ -512,7 +512,7 @@ class Client(DirectObject):
 
     # Get the path from the server, and makes the character walk on it
     def path(self, charid, dest):
-        orig = self.battleGraphics.getCharacterCoords(charid)
+        orig = self.matrix.getCharacterCoords(charid)
         origdir = self.matrix.sprites[charid].realdir
         (x, y, z) = dest
         
@@ -561,8 +561,8 @@ class Client(DirectObject):
 
     # Makes a character look at another one
     def characterLookAt(self, charid, targetid):
-        (x1, y1, z1) = self.battleGraphics.getCharacterCoords(charid)
-        (x2, y2, z2) = self.battleGraphics.getCharacterCoords(targetid)
+        (x1, y1, z1) = self.matrix.getCharacterCoords(charid)
+        (x2, y2, z2) = self.matrix.getCharacterCoords(targetid)
         if x1 > x2:
             self.matrix.sprites[charid].setRealDir(3)
         if x1 < x2:
