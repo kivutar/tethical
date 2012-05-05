@@ -20,6 +20,7 @@ except:
 import BattleGraphics
 from Sky import *
 from Matrix import *
+from Cursor import *
 
 LOGIN_MESSAGE = 1
 LOGIN_SUCCESS = 2
@@ -412,7 +413,7 @@ class Client(DirectObject):
         taskMgr.add(self.characterDirectionTask , 'characterDirectionTask')
 
         # Cursor stuff
-        self.cursor = BattleGraphics.Cursor(self.battleGraphics, self.matrix.container)
+        self.cursor = Cursor(self.battleGraphics, self.matrix.container)
 
         # Add the special effects
         self.battleGraphics.addEffects()
