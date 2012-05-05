@@ -9,20 +9,19 @@ from direct.distributed.PyDatagram import *
 import os, sys, json
 from copy import deepcopy
 import Map, Move, Attack, Character
-
 GAME = ConfigVariableString('game', 'fft').getValue()
 
 class Server:
 
     def __init__(self):
 
-        self.activeConnections = []
-        self.players = {}
-        self.parties = {}
-        self.sessions = {}
-        self.playersinlobby = []
-        self.charid = 0
-        self.chars = []
+        self.activeConnections = [] # lists all connections
+        self.players = {} # keys are the players logins, values are the players datagram connections
+        self.parties = {} # keys are the parties names, values are dicts representing parties data
+        self.sessions = {} # keys are the datagram connections, values are dicts storing the characters of the player and its party
+        self.playersinlobby = [] # lists players in the party screen
+        self.charid = 0 # used for random team generation
+        self.chars = [] # lists of dicts representing characters data
 
         self.cManager  = QueuedConnectionManager()
         self.cListener = QueuedConnectionListener(self.cManager, 0)
@@ -42,10 +41,17 @@ class Server:
         taskMgr.add(self.tskListenerPolling, "Poll the connection listener", -39)
         taskMgr.add(self.tskReaderPolling, "Poll the connection reader", -40)
 
-    def get_LOGIN_MESSAGE(self, iterator):
+    # The following functions prefixed by get_ are controllers.
+    # These controllers are triggered when the server recieve packets.
+    # They access packet data, do stuff, and send back instructions to one or more clients
+
+    # A client is trying to log into the server. Let's check its credentials and sent it back a reply
+    def get_LOGIN_MESSAGE(self, iterator, source):
         login = iterator.getString()
         password = iterator.getString()
 
+        # since the server code is not connected to the database yet,
+        # we authenticate the client if login == password
         if login != password:
             self.send_LOGIN_FAIL('Wrong credentials.', source)
         elif self.sessions.has_key(source):
@@ -57,6 +63,8 @@ class Server:
             self.sessions[source] = {}
             self.sessions[source]['login'] = login
             print login, 'logged in.'
+            # since the server code is not connected to the database yet,
+            # we generate a random team for each player
             self.sessions[source]['characters'] = []
             for i in range(10):
                 self.charid = self.charid + 1
@@ -65,7 +73,8 @@ class Server:
                 self.chars.append(char)
             self.send_LOGIN_SUCCESS(source)
 
-    def get_CREATE_PARTY(self, iterator):
+    # A player tries to create a party.
+    def get_CREATE_PARTY(self, iterator, source):
         name = iterator.getString()
         mapname = iterator.getString()
         
@@ -90,7 +99,7 @@ class Server:
         print self.sessions[source]['login'], "created the party", name, "using the map", mapname
         self.send_PARTY_CREATED(party, source)
 
-    def get_GET_MAPS(self, iterator):
+    def get_GET_MAPS(self, iterator, source):
         self.playersinlobby.remove(source)
 
         mapnames = map( lambda m: m.split('.')[0], os.listdir(GAME+'/maps'))
@@ -103,7 +112,7 @@ class Server:
 
         self.send_MAP_LIST(maps, source)
 
-    def get_GET_PARTIES(self, iterator):
+    def get_GET_PARTIES(self, iterator, source):
         self.playersinlobby.append(source)
 
         parties = deepcopy(self.parties)
@@ -112,7 +121,7 @@ class Server:
 
         self.send_PARTY_LIST(parties, source)
 
-    def get_JOIN_PARTY(self, iterator):
+    def get_JOIN_PARTY(self, iterator, source):
         name = iterator.getString()
         party = self.parties[name]
         
@@ -136,7 +145,7 @@ class Server:
 
             self.updateAllPartyLists()
 
-    def get_UPDATE_PARTY(self, iterator):
+    def get_UPDATE_PARTY(self, iterator, source):
         party = self.parties[self.sessions[source]['party']]
         chars = party['chars']
         
@@ -178,21 +187,21 @@ class Server:
                     else:
                         char['ct'] = 0
 
-    def get_GET_WALKABLES(self, iterator):
+    def get_GET_WALKABLES(self, iterator, source):
         charid = iterator.getString()
         party = self.parties[self.sessions[source]['party']]
         walkables = Move.GetWalkables( party, charid )
 
         self.send_WALKABLES_LIST(charid, walkables, source)
 
-    def get_GET_PASSIVE_WALKABLES(self, iterator):
+    def get_GET_PASSIVE_WALKABLES(self, iterator, source):
         charid = iterator.getString()
         party = self.parties[self.sessions[source]['party']]
         walkables = Move.GetWalkables( party, charid )
         
         self.send_PASSIVE_WALKABLES_LIST(charid, walkables, source)
 
-    def get_GET_PATH(self, iterator):
+    def get_GET_PATH(self, iterator, source):
         charid = iterator.getString()
         x2 = iterator.getUint8()
         y2 = iterator.getUint8()
@@ -209,7 +218,7 @@ class Server:
 
         self.send_PATH(charid, orig, party['chars'][charid]['direction'], (x2,y2,z2), path, source)
 
-    def get_MOVE_TO(self, iterator):
+    def get_MOVE_TO(self, iterator, source):
         charid = iterator.getString()
         x2 = iterator.getUint8()
         y2 = iterator.getUint8()
@@ -237,7 +246,7 @@ class Server:
             if playerid != self.sessions[source]['player']:
                 self.send_MOVED_PASSIVE(charid, walkables, path, self.players[playerlogin])
 
-    def get_WAIT(self, iterator):
+    def get_WAIT(self, iterator, source):
         charid = iterator.getString()
         direction = iterator.getUint8()
         
@@ -265,7 +274,7 @@ class Server:
             if playerid != self.sessions[source]['player']:
                 self.send_WAIT_PASSIVE(charid, direction, self.players[playerlogin])
 
-    def get_GET_ATTACKABLES(self, iterator):
+    def get_GET_ATTACKABLES(self, iterator, source):
         charid = iterator.getString()
         
         party = self.parties[self.sessions[source]['party']]
@@ -274,7 +283,7 @@ class Server:
 
         self.send_ATTACKABLES_LIST(charid, attackables, source)
 
-    def get_ATTACK(self, iterator):
+    def get_ATTACK(self, iterator, source):
         charid1 = iterator.getString()
         charid2 = iterator.getString()
         party = self.parties[self.sessions[source]['party']]
@@ -297,7 +306,7 @@ class Server:
             if playerid != self.sessions[source]['player']:
                 self.send_ATTACK_PASSIVE(charid1, charid2, damages, attackables, self.players[playerlogin])
 
-    def get_FORMATION_READY(self, iterator):
+    def get_FORMATION_READY(self, iterator, source):
         formation = json.loads(iterator.getString())
 
         party = self.parties[self.sessions[source]['party']]
@@ -322,7 +331,7 @@ class Server:
         iterator = PyDatagramIterator(datagram)
         source = datagram.getConnection()
         callback = iterator.getString()
-        getattr(self, 'get_'+callback)(iterator)
+        getattr(self, 'get_'+callback)(iterator, source)
 
     def send_LOGIN_FAIL(self, errormsg, player):
         myPyDatagram = PyDatagram()

@@ -12,12 +12,9 @@ import math
 from operator import itemgetter
 import json
 import GUI
-import CameraHandler
-try:
-    Direction = __import__(GAME+'.Direction', globals(), locals(), ['*'], -1)
-except:
-    import Direction
-import BattleGraphics
+from CameraHandler import *
+from DirectionChooser import *
+from BattleGraphics import *
 from Sky import *
 from Matrix import *
 from Cursor import *
@@ -316,10 +313,10 @@ class Client(DirectObject):
         self.subphase = None
         
         # Instanciate the camera handler
-        self.camhandler = CameraHandler.CameraHandler()
+        self.camhandler = CameraHandler()
 
         # Instanciate the battle graphics
-        self.battleGraphics = BattleGraphics.BattleGraphics(self.party['map'])
+        self.battleGraphics = BattleGraphics(self.party['map'])
         
         # Light the scene
         self.battleGraphics.lightScene()
@@ -798,6 +795,7 @@ class Client(DirectObject):
                 self.subphase = None
                 self.send_UPDATE_PARTY()
 
+    # Keyboard related callback
     def onArrowClicked(self, direction):
         h = self.camhandler.container.getH()
         while h > 180:
@@ -843,6 +841,7 @@ class Client(DirectObject):
                 self.findTileAndUpdateCursorPos((self.cursor.x+1,self.cursor.y))
 
     # Returns the closest tile for the given x and y
+    # Keyboard related callback
     def findTileAndUpdateCursorPos(self, pos):
         fux, fuy = pos
 
@@ -881,7 +880,7 @@ class Client(DirectObject):
             self.send_UPDATE_PARTY,
         )
 
-    # Wait button clicked
+    # Wait menu item chosen
     def onWaitClicked(self, charid):
         self.setPhase('gui')
         GUI.Help(
@@ -895,9 +894,9 @@ class Client(DirectObject):
     def setupDirectionChooser(self, charid):
         self.setPhase('direction')
         self.at.hide()
-        Direction.Chooser(charid, self.matrix.sprites[charid], self.camhandler, self.send_WAIT, self.send_UPDATE_PARTY)
+        DirectionChooser(charid, self.matrix.sprites[charid], self.camhandler, self.send_WAIT, self.send_UPDATE_PARTY)
 
-    # Cancel button clicked
+    # Cancel menu item chosen
     def onCancelClicked(self, charid):
         self.setPhase('tile')
         self.subphase = 'free'

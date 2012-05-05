@@ -1,10 +1,10 @@
 from Config import *
 from pandac.PandaModules import *
-from direct.showbase import DirectObject
+from direct.showbase.DirectObject import DirectObject
 from panda3d.core import CollisionTraverser, CollisionNode, CollisionHandlerQueue, CollisionRay, BitMask32, CardMaker, NodePath, Texture, TextureStage
 from direct.task.Task import Task
 
-class Chooser(DirectObject.DirectObject):
+class DirectionChooser(DirectObject):
     
     def __init__(self, charid, sprite, camhandler, callback, cancelcallback):
     
@@ -145,4 +145,3 @@ class Chooser(DirectObject.DirectObject):
                 self.hidir = '1'
 
         self.sprite.setRealDir(self.hidir)
-
