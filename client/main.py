@@ -135,7 +135,7 @@ class Client(DirectObject):
             walkables = json.loads(iterator.getString())
             if walkables:
                 self.clicked_snd.play()
-                self.setupPassiveWalkableZone(walkables)
+                self.matrix.setupPassiveWalkableZone(walkables)
                 self.subphase = 'passivewalkables'
             else:
                 #TODO: show message "no walkable tile"
@@ -151,7 +151,7 @@ class Client(DirectObject):
             seq = Sequence()
             seq.append( Func(self.at.hide) )
             seq.append( Func(self.updateSpriteAnimation, charid, 'run') )
-            seq.append( Func(self.clearZone) )
+            seq.append( Func(self.matrix.clearZone) )
             seq.append( self.getCharacterMoveSequence(charid, path) )
             seq.append( Func(self.updateSpriteAnimation, charid) )
             seq.append( Func(self.moveCheck, charid, orig, origdir, dest) )
@@ -177,7 +177,7 @@ class Client(DirectObject):
             del self.party['map']['tiles'][x1][y1][z1]['char']
             self.party['map']['tiles'][x2][y2][z2]['char'] = charid
             seq = Sequence()
-            seq.append( Func(self.setupPassiveWalkableZone, walkables) )
+            seq.append( Func(self.matrix.setupPassiveWalkableZone, walkables) )
             seq.append( Wait(0.5) )
             seq.append( Func(self.updateCursorPos, (x2, y2, z2)) )
             seq.append( Wait(0.5) )
@@ -187,7 +187,7 @@ class Client(DirectObject):
             seq.append( self.getCharacterMoveSequence(charid, path) )
             seq.append( Wait(0.5) )
             seq.append( Func(self.updateSpriteAnimation, charid) )
-            seq.append( Func(self.clearZone) )
+            seq.append( Func(self.matrix.clearZone) )
             seq.append( Func(self.at.showOnSprite, self.matrix.sprites[charid]) )
             seq.append( Func(self.setPhase, 'listen') )
             seq.start()
@@ -212,7 +212,7 @@ class Client(DirectObject):
 
             self.setPhase('tile')
             self.subphase = 'attack'
-            self.setupAttackableZone(charid, attackables)
+            self.matrix.setupAttackableZone(charid, attackables)
             if self.charcard:
                 self.charcard.hide()
         elif msgID == ATTACK_SUCCESS:
@@ -244,7 +244,7 @@ class Client(DirectObject):
 
             self.setPhase('animation')
             seq = Sequence()
-            seq.append( Func(self.setupAttackableZone, charid, attackables) )
+            seq.append( Func(self.matrix.setupAttackableZone, charid, attackables) )
             seq.append( Wait(0.5) )
             seq.append( Func(self.updateCursorPos, self.battleGraphics.getCharacterCoords(targetid)) )
             seq.append( Func(self.camhandler.move, self.battleGraphics.logic2terrain(self.battleGraphics.getCharacterCoords(targetid))) )
@@ -389,7 +389,7 @@ class Client(DirectObject):
         self.clicked_snd = base.loader.loadSfx(GAME+"/sounds/clicked.ogg")
         self.cancel_snd  = base.loader.loadSfx(GAME+"/sounds/cancel.ogg")
         self.attack_snd  = base.loader.loadSfx(GAME+"/sounds/attack.ogg")
-        self.die_snd    = base.loader.loadSfx(GAME+"/sounds/die.ogg")
+        self.die_snd     = base.loader.loadSfx(GAME+"/sounds/die.ogg")
         
         # Place highlightable tiles on the map
         self.matrix = BattleGraphics.Matrix(self.battleGraphics, self.party['map'])
@@ -405,20 +405,12 @@ class Client(DirectObject):
 
         # Generate the sky and attach it to the camera
         self.sky = BattleGraphics.Sky(self.party['map'])
-        
+
         # Tasks
         taskMgr.add(self.characterDirectionTask , 'characterDirectionTask')
 
         # Cursor stuff
         self.cursor = BattleGraphics.Cursor(self.battleGraphics, self.matrix.container)
-
-        self.wtex = loader.loadTexture(GAME+'/textures/walkable.png')
-        self.wtex.setMagfilter(Texture.FTNearest)
-        self.wtex.setMinfilter(Texture.FTNearest)
-        
-        self.atex = loader.loadTexture(GAME+'/textures/attackable.png')
-        self.atex.setMagfilter(Texture.FTNearest)
-        self.atex.setMinfilter(Texture.FTNearest)
 
         # Add the special effects
         self.battleGraphics.addEffects()
@@ -453,7 +445,7 @@ class Client(DirectObject):
 
     def party_updated(self):
 
-        self.clearZone()
+        self.matrix.clearZone()
         if self.charbars:
             self.charbars.hide()
         if self.charcard:
@@ -593,7 +585,7 @@ class Client(DirectObject):
         seq.append( Wait(0.5) )
         seq.append( Func(self.updateSpriteAnimation, targetid) )
         seq.append( Wait(0.5) )
-        seq.append( Func(self.clearZone) )
+        seq.append( Func(self.matrix.clearZone) )
         return seq
 
     # Update the status (animation) of a sprite after something happened
@@ -613,38 +605,6 @@ class Client(DirectObject):
                 self.die_snd.play()
             h = self.camhandler.container.getH()
             self.matrix.sprites[charid].updateDisplayDir( h, True )
-
-    # Draw blue tile zone
-    def setupPassiveWalkableZone(self, walkables):
-        for x,y,z in walkables:
-            self.matrix.tiles[x][y][z].setColor(1, 1, 1, 1)
-            self.matrix.tiles[x][y][z].setTexture(self.wtex)
-
-    # Tag a zone as walkable or active-walkable
-    def setupWalkableZone(self, charid, walkables):
-        for x,y,z in walkables:
-            self.matrix.tiles[x][y][z].setColor(1, 1, 1, 1)
-            self.matrix.tiles[x][y][z].setTexture(self.wtex)
-            self.party['map']['tiles'][x][y][z]['walkablezone'] = charid
-
-    # Draw and tag the red tile zone
-    def setupAttackableZone(self, charid, attackables):
-        for x,y,z in attackables:
-            self.matrix.tiles[x][y][z].setColor(1, 1, 1, 1)
-            self.matrix.tiles[x][y][z].setTexture(self.atex)
-            self.party['map']['tiles'][x][y][z]['attackablezone'] = charid
-
-    # Clear any tile zone
-    def clearZone(self):
-        for x,xs in enumerate(self.party['map']['tiles']):
-            for y,ys in enumerate(xs):
-                for z,zs in enumerate(ys):
-                    if not self.party['map']['tiles'][x][y][z] is None:
-                        self.matrix.tiles[x][y][z].setColor(0, 0, 0, 0)
-                        if self.party['map']['tiles'][x][y][z].has_key('walkablezone'):
-                            del self.party['map']['tiles'][x][y][z]['walkablezone']
-                        if self.party['map']['tiles'][x][y][z].has_key('attackablezone'):
-                            del self.party['map']['tiles'][x][y][z]['attackablezone']
 
     # Returns a sequence showing the character moving through a path
     def getCharacterMoveSequence(self, charid, path):
@@ -817,17 +777,17 @@ class Client(DirectObject):
                     self.cWriter.send(myPyDatagram, self.myConnection)
 
             elif self.subphase == 'passivewalkables':
-                self.clearZone()
+                self.matrix.clearZone()
                 self.cancel_snd.play()
                 self.subphase = 'free'
 
             elif self.subphase == 'move':
-                self.clearZone()
+                self.matrix.clearZone()
                 self.cancel_snd.play()
                 self.subphase = None
                 self.turn()
             elif self.subphase == 'attack':
-                self.clearZone()
+                self.matrix.clearZone()
                 self.cancel_snd.play()
                 self.subphase = None
                 self.turn()
@@ -907,7 +867,7 @@ class Client(DirectObject):
     def setupWalkableTileChooser(self, charid, walkables):
         self.setPhase('tile')
         self.subphase = 'move'
-        self.setupWalkableZone(charid, walkables)
+        self.matrix.setupWalkableZone(charid, walkables)
         if self.charcard:
             self.charcard.hide()
 

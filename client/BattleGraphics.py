@@ -189,6 +189,14 @@ class Matrix(object):
                         self.tiles[x][y][z].setTransparency(TransparencyAttrib.MAlpha)
                         self.tiles[x][y][z].setColor( 0, 0, 0, 0 )
 
+        self.wtex = loader.loadTexture(GAME+'/textures/walkable.png')
+        self.wtex.setMagfilter(Texture.FTNearest)
+        self.wtex.setMinfilter(Texture.FTNearest)
+        
+        self.atex = loader.loadTexture(GAME+'/textures/attackable.png')
+        self.atex.setMagfilter(Texture.FTNearest)
+        self.atex.setMinfilter(Texture.FTNearest)
+
     def placeChars(self, chars):
         self.chars = chars
         self.sprites = {}
@@ -209,3 +217,35 @@ class Matrix(object):
                             sprite.node.setPos(self.battleGraphics.logic2terrain((x,y,z)))
                             sprite.node.reparentTo( render )
                             self.sprites[charid] = sprite
+
+    # Draw blue tile zone
+    def setupPassiveWalkableZone(self, walkables):
+        for x,y,z in walkables:
+            self.tiles[x][y][z].setColor(1, 1, 1, 1)
+            self.tiles[x][y][z].setTexture(self.wtex)
+
+    # Tag a zone as walkable or active-walkable
+    def setupWalkableZone(self, charid, walkables):
+        for x,y,z in walkables:
+            self.tiles[x][y][z].setColor(1, 1, 1, 1)
+            self.tiles[x][y][z].setTexture(self.wtex)
+            self.mp['tiles'][x][y][z]['walkablezone'] = charid
+
+    # Draw and tag the red tile zone
+    def setupAttackableZone(self, charid, attackables):
+        for x,y,z in attackables:
+            self.tiles[x][y][z].setColor(1, 1, 1, 1)
+            self.tiles[x][y][z].setTexture(self.atex)
+            self.mp['tiles'][x][y][z]['attackablezone'] = charid
+
+    # Clear any tile zone
+    def clearZone(self):
+        for x,xs in enumerate(self.mp['tiles']):
+            for y,ys in enumerate(xs):
+                for z,zs in enumerate(ys):
+                    if not self.mp['tiles'][x][y][z] is None:
+                        self.tiles[x][y][z].setColor(0, 0, 0, 0)
+                        if self.mp['tiles'][x][y][z].has_key('walkablezone'):
+                            del self.mp['tiles'][x][y][z]['walkablezone']
+                        if self.mp['tiles'][x][y][z].has_key('attackablezone'):
+                            del self.mp['tiles'][x][y][z]['attackablezone']
