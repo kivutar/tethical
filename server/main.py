@@ -12,44 +12,6 @@ import Map, Move, Attack, Character
 
 GAME = ConfigVariableString('game', 'fft').getValue()
 
-LOGIN_MESSAGE = 1
-LOGIN_SUCCESS = 2
-LOGIN_FAIL = 3
-CREATE_PARTY = 4
-PARTY_CREATED = 5
-GET_MAPS = 6
-MAP_LIST = 7
-GET_PARTIES = 8
-PARTY_LIST = 9
-JOIN_PARTY = 10
-PARTY_JOINED = 11
-START_BATTLE = 12
-UPDATE_PARTY = 13
-PARTY_UPDATED = 14
-GET_WALKABLES = 15
-WALKABLES_LIST = 16
-GET_PATH = 17
-PATH = 18
-MOVE_TO = 19
-MOVED = 20
-MOVED_PASSIVE = 21
-WAIT = 22
-WAIT_SUCCESS = 23
-WAIT_PASSIVE = 24
-GET_ATTACKABLES = 25
-ATTACKABLES_LIST = 26
-ATTACK = 27
-ATTACK_SUCCESS = 28
-ATTACK_PASSIVE = 29
-UPDATE_PARTY_LIST = 30
-PARTY_JOIN_FAIL = 31
-BATTLE_COMPLETE = 32
-GAME_OVER = 33
-GET_PASSIVE_WALKABLES = 34
-PASSIVE_WALKABLES_LIST = 35
-START_FORMATION = 36
-FORMATION_READY = 37
-
 class Server:
 
     def __init__(self):
@@ -80,389 +42,437 @@ class Server:
         taskMgr.add(self.tskListenerPolling, "Poll the connection listener", -39)
         taskMgr.add(self.tskReaderPolling, "Poll the connection reader", -40)
 
-    def processData(self, datagram):
-        iterator = PyDatagramIterator(datagram)
-        source = datagram.getConnection()
-        msgID = iterator.getUint8()
+    def get_LOGIN_MESSAGE(self, iterator):
+        login = iterator.getString()
+        password = iterator.getString()
+
+        if login != password:
+            self.send_LOGIN_FAIL('Wrong credentials.', source)
+        elif self.sessions.has_key(source):
+            self.send_LOGIN_FAIL('Already logged in.', source)
+        elif login in self.players.keys():
+            self.send_LOGIN_FAIL('Username already in use.', source)
+        else:
+            self.players[login] = source
+            self.sessions[source] = {}
+            self.sessions[source]['login'] = login
+            print login, 'logged in.'
+            self.sessions[source]['characters'] = []
+            for i in range(10):
+                self.charid = self.charid + 1
+                char = Character.Random(self.charid)
+                self.sessions[source]['characters'].append(char)
+                self.chars.append(char)
+            self.send_LOGIN_SUCCESS(source)
+
+    def get_CREATE_PARTY(self, iterator):
+        name = iterator.getString()
+        mapname = iterator.getString()
         
-        if msgID == LOGIN_MESSAGE:
+        party = {
+            'name': name,
+            'mapname': mapname,
+            'map' : Map.load(mapname),
+            'chars': {},
+            'log': {},
+            'creator': self.sessions[source]['login'],
+            'players': [],
+            'formations': [],
+        }
+        party['players'].append(self.sessions[source]['login'])
 
-            login = iterator.getString()
-            password = iterator.getString()
-
-            if login != password:
-                myPyDatagram = PyDatagram()
-                myPyDatagram.addUint8(LOGIN_FAIL)
-                myPyDatagram.addString('Wrong credentials.')
-                self.cWriter.send(myPyDatagram, source)
-            elif self.sessions.has_key(source):
-                myPyDatagram = PyDatagram()
-                myPyDatagram.addUint8(LOGIN_FAIL)
-                myPyDatagram.addString('Already logged in.')
-                self.cWriter.send(myPyDatagram, source)
-            elif login in self.players.keys():
-                myPyDatagram = PyDatagram()
-                myPyDatagram.addUint8(LOGIN_FAIL)
-                myPyDatagram.addString('Username already in use.')
-                self.cWriter.send(myPyDatagram, source)
-            else:
-                self.players[login] = source
-                self.sessions[source] = {}
-                self.sessions[source]['login'] = login
-                print login, 'logged in.'
-                self.sessions[source]['characters'] = []
-                for i in range(10):
-                    self.charid = self.charid + 1
-                    char = Character.Random(self.charid)
-                    self.sessions[source]['characters'].append(char)
-                    self.chars.append(char)
-                myPyDatagram = PyDatagram()
-                myPyDatagram.addUint8(LOGIN_SUCCESS)
-                self.cWriter.send(myPyDatagram, source)
+        self.parties[name] = party
+        self.sessions[source]['party'] = name
+        self.sessions[source]['player'] = len(party['players'])-1
         
-        elif msgID == CREATE_PARTY:
-
-            name = iterator.getString()
-            mapname = iterator.getString()
-            
-            party = {
-                'name': name,
-                'mapname': mapname,
-                'map' : Map.load(mapname),
-                'chars': {},
-                'log': {},
-                'creator': self.sessions[source]['login'],
-                'players': [],
-                'formations': [],
-            }
-            party['players'].append(self.sessions[source]['login'])
-
-            self.parties[name] = party
-            self.sessions[source]['party'] = name
-            self.sessions[source]['player'] = len(party['players'])-1
-            
-            self.updateAllPartyLists()
-            
-            print self.sessions[source]['login'], "created the party", name, "using the map", mapname
-            myPyDatagram = PyDatagram()
-            myPyDatagram.addUint8(PARTY_CREATED)
-            myPyDatagram.addString32(json.dumps(party))
-            self.cWriter.send(myPyDatagram, source)
-
-        elif msgID == GET_MAPS:
-            self.playersinlobby.remove(source)
-
-            mapnames = map( lambda m: m.split('.')[0], os.listdir(GAME+'/maps'))
-
-            maps = []
-            for mapname in mapnames:
-                mp = Map.load(mapname)
-                del mp['tiles']
-                maps.append(mp)
-
-            myPyDatagram = PyDatagram()
-            myPyDatagram.addUint8(MAP_LIST)
-            myPyDatagram.addString(json.dumps(maps))
-            self.cWriter.send(myPyDatagram, source)
+        self.updateAllPartyLists()
         
-        elif msgID == GET_PARTIES:
-            self.playersinlobby.append(source)
+        print self.sessions[source]['login'], "created the party", name, "using the map", mapname
+        self.send_PARTY_CREATED(party, source)
 
+    def get_GET_MAPS(self, iterator):
+        self.playersinlobby.remove(source)
+
+        mapnames = map( lambda m: m.split('.')[0], os.listdir(GAME+'/maps'))
+
+        maps = []
+        for mapname in mapnames:
+            mp = Map.load(mapname)
+            del mp['tiles']
+            maps.append(mp)
+
+        self.send_MAP_LIST(maps, source)
+
+    def get_GET_PARTIES(self, iterator):
+        self.playersinlobby.append(source)
+
+        parties = deepcopy(self.parties)
+        for party in parties.values():
+            del party['map']['tiles']
+
+        self.send_PARTY_LIST(parties, source)
+
+    def get_JOIN_PARTY(self, iterator):
+        name = iterator.getString()
+        party = self.parties[name]
+        
+        if len(party['players']) >= len(party['map']['tilesets']):
             parties = deepcopy(self.parties)
             for party in parties.values():
                 del party['map']['tiles']
+            self.send_PARTY_JOIN_FAIL(name, parties, source)
+        else:
+            party['players'].append(self.sessions[source]['login'])
+            self.sessions[source]['party'] = name
+            self.sessions[source]['player'] = len(party['players'])-1
+            self.playersinlobby.remove(source)
 
-            myPyDatagram = PyDatagram()
-            myPyDatagram.addUint8(PARTY_LIST)
-            myPyDatagram.addString32(json.dumps(parties))
-            self.cWriter.send(myPyDatagram, source)
+            print self.sessions[source]['login'], "joined the party", name
+            self.send_PARTY_JOINED(party, source)
+
+            if len(party['players']) == len(party['map']['tilesets']):
+                for tilesetid,player in enumerate(party['players']):
+                    self.send_START_FORMATION(party['map']['tilesets'][tilesetid], self.sessions[self.players[player]]['characters'], self.players[player])
+
+            self.updateAllPartyLists()
+
+    def get_UPDATE_PARTY(self, iterator):
+        party = self.parties[self.sessions[source]['party']]
+        chars = party['chars']
         
-        elif msgID == JOIN_PARTY:
-        
-            name = iterator.getString()
-            party = self.parties[name]
-            
-            if len(party['players']) >= len(party['map']['tilesets']):
-                parties = deepcopy(self.parties)
-                for party in parties.values():
-                    del party['map']['tiles']
-                myPyDatagram = PyDatagram()
-                myPyDatagram.addUint8(PARTY_JOIN_FAIL)
-                myPyDatagram.addString('Party '+name+' is full.')
-                myPyDatagram.addString32(json.dumps(parties))
-                self.cWriter.send(myPyDatagram, source)
-            else:
-                party['players'].append(self.sessions[source]['login'])
-                self.sessions[source]['party'] = name
-                self.sessions[source]['player'] = len(party['players'])-1
-                self.playersinlobby.remove(source)
+        aliveteams = {}
+        for charid in chars.keys():
+            if chars[charid]['hp'] > 0:
+                if aliveteams.has_key(chars[charid]['team']):
+                    aliveteams[chars[charid]['team']] = aliveteams[chars[charid]['team']] + 1
+                else:
+                    aliveteams[chars[charid]['team']] = 1
+        if len(aliveteams) < 2:
+            for client in party['players']:
+                if source == self.players[client]:
+                    self.send_BATTLE_COMPLETE(self.players[client])
+                else:
+                    self.send_GAME_OVER(self.players[client])
+            del self.parties[self.sessions[source]['party']]
+            self.updateAllPartyLists()
+            return
 
-                print self.sessions[source]['login'], "joined the party", name
-                myPyDatagram = PyDatagram()
-                myPyDatagram.addUint8(PARTY_JOINED)
-                myPyDatagram.addString32(json.dumps(party))
-                self.cWriter.send(myPyDatagram, source)
-
-                if len(party['players']) == len(party['map']['tilesets']):
-                    for tilesetid,player in enumerate(party['players']):
-                        myPyDatagram = PyDatagram()
-                        myPyDatagram.addUint8(START_FORMATION)
-                        myPyDatagram.addString32(json.dumps(party['map']['tilesets'][tilesetid]))
-                        myPyDatagram.addString32(json.dumps(self.sessions[self.players[player]]['characters']))
-                        self.cWriter.send(myPyDatagram, self.players[player])
-
-                self.updateAllPartyLists()
-
-        elif msgID == UPDATE_PARTY:
-
-            party = self.parties[self.sessions[source]['party']]
-            chars = party['chars']
-            
-            aliveteams = {}
-            for charid in chars.keys():
-                if chars[charid]['hp'] > 0:
-                    if aliveteams.has_key(chars[charid]['team']):
-                        aliveteams[chars[charid]['team']] = aliveteams[chars[charid]['team']] + 1
-                    else:
-                        aliveteams[chars[charid]['team']] = 1
-            if len(aliveteams) < 2:
-                for client in party['players']:
-                    if source == self.players[client]:
-                        myPyDatagram = PyDatagram()
-                        myPyDatagram.addUint8(BATTLE_COMPLETE)
-                        self.cWriter.send(myPyDatagram, self.players[client])
-                    else:
-                        myPyDatagram = PyDatagram()
-                        myPyDatagram.addUint8(GAME_OVER)
-                        self.cWriter.send(myPyDatagram, self.players[client])
-                del self.parties[self.sessions[source]['party']]
-                self.updateAllPartyLists()
+        for charid in chars.keys():
+            party['yourturn'] = int(chars[charid]['team']) == int(self.sessions[source]['player'])
+            if chars[charid]['active']:
+                self.send_PARTY_UPDATED(party['yourturn'], chars, source)
                 return
-
+        
+        while True:
             for charid in chars.keys():
-                party['yourturn'] = int(chars[charid]['team']) == int(self.sessions[source]['player'])
-                if chars[charid]['active']:
-                    myPyDatagram = PyDatagram()
-                    myPyDatagram.addUint8(PARTY_UPDATED)
-                    myPyDatagram.addBool(party['yourturn'])
-                    myPyDatagram.addString32(json.dumps(chars))
-                    self.cWriter.send(myPyDatagram, source)
-                    return
-            
-            while True:
-                for charid in chars.keys():
-                    char = chars[charid]
-                    char['ct'] = char['ct'] + char['speed']
-                    if char['ct'] >= 100:
-                        if char['hp'] > 0:
-                            char['active'] = True
-                            char['canmove'] = True
-                            char['canact'] = True
-                            party['yourturn'] = int(chars[charid]['team']) == int(self.sessions[source]['player'])
-                            myPyDatagram = PyDatagram()
-                            myPyDatagram.addUint8(PARTY_UPDATED)
-                            myPyDatagram.addBool(party['yourturn'])
-                            myPyDatagram.addString32(json.dumps(chars))
-                            self.cWriter.send(myPyDatagram, source)
-                            return
-                        else:
-                            char['ct'] = 0
+                char = chars[charid]
+                char['ct'] = char['ct'] + char['speed']
+                if char['ct'] >= 100:
+                    if char['hp'] > 0:
+                        char['active'] = True
+                        char['canmove'] = True
+                        char['canact'] = True
+                        party['yourturn'] = int(chars[charid]['team']) == int(self.sessions[source]['player'])
+                        self.send_PARTY_UPDATED(party['yourturn'], chars, source)
+                        return
+                    else:
+                        char['ct'] = 0
 
-        elif msgID == GET_WALKABLES:
+    def get_GET_WALKABLES(self, iterator):
+        charid = iterator.getString()
+        party = self.parties[self.sessions[source]['party']]
+        walkables = Move.GetWalkables( party, charid )
+
+        self.send_WALKABLES_LIST(charid, walkables, source)
+
+    def get_GET_PASSIVE_WALKABLES(self, iterator):
+        charid = iterator.getString()
+        party = self.parties[self.sessions[source]['party']]
+        walkables = Move.GetWalkables( party, charid )
         
-            charid = iterator.getString()
-            party = self.parties[self.sessions[source]['party']]
-            walkables = Move.GetWalkables( party, charid )
-            
-            myPyDatagram = PyDatagram()
-            myPyDatagram.addUint8(WALKABLES_LIST)
-            myPyDatagram.addString(charid)
-            myPyDatagram.addString(json.dumps(walkables))
-            self.cWriter.send(myPyDatagram, source)
+        self.send_PASSIVE_WALKABLES_LIST(charid, walkables, source)
+
+    def get_GET_PATH(self, iterator):
+        charid = iterator.getString()
+        x2 = iterator.getUint8()
+        y2 = iterator.getUint8()
+        z2 = iterator.getUint8()
         
-        elif msgID == GET_PASSIVE_WALKABLES:
+        party = self.parties[self.sessions[source]['party']]
         
-            charid = iterator.getString()
-            party = self.parties[self.sessions[source]['party']]
-            walkables = Move.GetWalkables( party, charid )
-            
-            myPyDatagram = PyDatagram()
-            myPyDatagram.addUint8(PASSIVE_WALKABLES_LIST)
-            myPyDatagram.addString(charid)
-            myPyDatagram.addString(json.dumps(walkables))
-            self.cWriter.send(myPyDatagram, source)
+        orig = Character.Coords( party, charid )
+        x1 = orig[0]
+        y1 = orig[1]
+        z1 = orig[2]
         
-        elif msgID == GET_PATH:
+        path = Move.GetPath( party, charid, x1, y1, z1, x2, y2, z2 )
+
+        self.send_PATH(charid, orig, party['chars'][charid]['direction'], (x2,y2,z2), path, source)
+
+    def get_MOVE_TO(self, iterator):
+        charid = iterator.getString()
+        x2 = iterator.getUint8()
+        y2 = iterator.getUint8()
+        z2 = iterator.getUint8()
         
-            charid = iterator.getString()
-            x2 = iterator.getUint8()
-            y2 = iterator.getUint8()
-            z2 = iterator.getUint8()
-            
-            party = self.parties[self.sessions[source]['party']]
-            
-            orig = Character.Coords( party, charid )
-            x1 = orig[0]
-            y1 = orig[1]
-            z1 = orig[2]
-            
-            path = Move.GetPath( party, charid, x1, y1, z1, x2, y2, z2 )
-            
-            myPyDatagram = PyDatagram()
-            myPyDatagram.addUint8(PATH)
-            myPyDatagram.addString(charid)
-            myPyDatagram.addString(json.dumps(orig))
-            myPyDatagram.addUint8(party['chars'][charid]['direction'])
-            myPyDatagram.addString(json.dumps((x2,y2,z2)))
-            myPyDatagram.addString(json.dumps(path))
-            self.cWriter.send(myPyDatagram, source)
+        party = self.parties[self.sessions[source]['party']]
         
-        elif msgID == MOVE_TO:
-            
-            charid = iterator.getString()
-            x2 = iterator.getUint8()
-            y2 = iterator.getUint8()
-            z2 = iterator.getUint8()
-            
-            party = self.parties[self.sessions[source]['party']]
-            
-            orig = Character.Coords( party, charid )
-            x1 = orig[0]
-            y1 = orig[1]
-            z1 = orig[2]
+        orig = Character.Coords( party, charid )
+        x1 = orig[0]
+        y1 = orig[1]
+        z1 = orig[2]
 
-            path = Move.GetPath( party, charid, x1, y1, z1, x2, y2, z2 )
-            walkables = Move.GetWalkables( party, charid )
+        path = Move.GetPath( party, charid, x1, y1, z1, x2, y2, z2 )
+        walkables = Move.GetWalkables( party, charid )
 
-            del party['map']['tiles'][x1][y1][z1]['char']
-            party['map']['tiles'][x2][y2][z2]['char'] = charid
+        del party['map']['tiles'][x1][y1][z1]['char']
+        party['map']['tiles'][x2][y2][z2]['char'] = charid
 
-            party['chars'][charid]['direction'] = Move.GetNewDirection( x1, y1, x2, y2 )
-            party['chars'][charid]['canmove'] = False
-            
-            myPyDatagram = PyDatagram()
-            myPyDatagram.addUint8(MOVED)
-            myPyDatagram.addString(charid)
-            myPyDatagram.addUint8(x2)
-            myPyDatagram.addUint8(y2)
-            myPyDatagram.addUint8(z2)
-            self.cWriter.send(myPyDatagram, source)
-            
-            for playerid,playerlogin in enumerate(party['players']):
-                if playerid != self.sessions[source]['player']:
-                    myPyDatagram = PyDatagram()
-                    myPyDatagram.addUint8(MOVED_PASSIVE)
-                    myPyDatagram.addString(charid)
-                    myPyDatagram.addString(json.dumps(walkables))
-                    myPyDatagram.addString(json.dumps(path))
-                    self.cWriter.send(myPyDatagram, self.players[playerlogin])
-
-        elif msgID == WAIT:
+        party['chars'][charid]['direction'] = Move.GetNewDirection( x1, y1, x2, y2 )
+        party['chars'][charid]['canmove'] = False
         
-            charid = iterator.getString()
-            direction = iterator.getUint8()
-            
-            party = self.parties[self.sessions[source]['party']]
-            char = party['chars'][charid]
-
-            if char['canmove'] and char['canact']:
-                char['ct'] = char['ct'] - 60
-            elif char['canmove'] or char['canact']:
-                char['ct'] = char['ct'] - 80
-            else:
-                char['ct'] = char['ct'] - 100
-
-            char['direction'] = direction
-
-            char['active'] = False
-            char['canmove'] = False
-            char['canact'] = False
-            
-            myPyDatagram = PyDatagram()
-            myPyDatagram.addUint8(WAIT_SUCCESS)
-            self.cWriter.send(myPyDatagram, source)
-
-            for playerid,playerlogin in enumerate(party['players']):
-                if playerid != self.sessions[source]['player']:
-                    myPyDatagram = PyDatagram()
-                    myPyDatagram.addUint8(WAIT_PASSIVE)
-                    myPyDatagram.addString(charid)
-                    myPyDatagram.addUint8(direction)
-                    self.cWriter.send(myPyDatagram, self.players[playerlogin])
-
-        elif msgID == GET_ATTACKABLES:
+        self.send_MOVED(charid, x2, y2, z2, source)
         
-            charid = iterator.getString()
-            
-            party = self.parties[self.sessions[source]['party']]
-            
-            attackables = Attack.GetAttackables( party, charid )
-            
-            myPyDatagram = PyDatagram()
-            myPyDatagram.addUint8(ATTACKABLES_LIST)
-            myPyDatagram.addString(charid)
-            myPyDatagram.addString(json.dumps(attackables))
-            self.cWriter.send(myPyDatagram, source)
+        for playerid,playerlogin in enumerate(party['players']):
+            if playerid != self.sessions[source]['player']:
+                self.send_MOVED_PASSIVE(charid, walkables, path, self.players[playerlogin])
 
-        elif msgID == ATTACK:
+    def get_WAIT(self, iterator):
+        charid = iterator.getString()
+        direction = iterator.getUint8()
         
-            charid1 = iterator.getString()
-            charid2 = iterator.getString()
-            party = self.parties[self.sessions[source]['party']]
-            char1 = party['chars'][charid1]
-            char2 = party['chars'][charid2]
-            
-            damages = char1['pa'] * char1['br'] / 100 * char1['pa']
-            
-            char2['hp'] = char2['hp'] - damages*4
-            if char2['hp'] < 0:
-                char2['hp'] = 0
-            
-            char1['canact'] = False
-            
-            myPyDatagram = PyDatagram()
-            myPyDatagram.addUint8(ATTACK_SUCCESS)
-            myPyDatagram.addString(charid1)
-            myPyDatagram.addString(charid2)
-            myPyDatagram.addUint8(damages)
-            self.cWriter.send(myPyDatagram, source)
-            
-            attackables = Attack.GetAttackables( party, charid1 )
-            
-            for playerid,playerlogin in enumerate(party['players']):
-                if playerid != self.sessions[source]['player']:
-                    myPyDatagram = PyDatagram()
-                    myPyDatagram.addUint8(ATTACK_PASSIVE)
-                    myPyDatagram.addString(charid1)
-                    myPyDatagram.addString(charid2)
-                    myPyDatagram.addUint8(damages)
-                    myPyDatagram.addString(json.dumps(attackables))
-                    self.cWriter.send(myPyDatagram, self.players[playerlogin])
+        party = self.parties[self.sessions[source]['party']]
+        char = party['chars'][charid]
 
-        elif msgID == FORMATION_READY:
+        if char['canmove'] and char['canact']:
+            char['ct'] = char['ct'] - 60
+        elif char['canmove'] or char['canact']:
+            char['ct'] = char['ct'] - 80
+        else:
+            char['ct'] = char['ct'] - 100
 
-            formation = json.loads(iterator.getString())
+        char['direction'] = direction
 
-            party = self.parties[self.sessions[source]['party']]
-            party['formations'].append(formation)
+        char['active'] = False
+        char['canmove'] = False
+        char['canact'] = False
+        
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('WAIT_SUCCESS')
+        self.cWriter.send(myPyDatagram, source)
 
-            if len(party['formations']) == len(party['map']['tilesets']):
+        for playerid,playerlogin in enumerate(party['players']):
+            if playerid != self.sessions[source]['player']:
+                self.send_WAIT_PASSIVE(charid, direction, self.players[playerlogin])
 
-                for team,formation in enumerate(party['formations']):
-                    for line in formation:
-                        x, y, z = line['coords']
-                        charid = line['charid']
-                        party['map']['tiles'][x][y][z]['char'] = str(charid)
-                        char = filter(lambda x: x['id'] == charid, self.chars)[0]
-                        char['team'] = team
-                        char['direction'] = line['direction']
-                        party['chars'][str(charid)] = char
+    def get_GET_ATTACKABLES(self, iterator):
+        charid = iterator.getString()
+        
+        party = self.parties[self.sessions[source]['party']]
+        
+        attackables = Attack.GetAttackables( party, charid )
 
-                for playerlogin in party['players']:
-                    myPyDatagram = PyDatagram()
-                    myPyDatagram.addUint8(START_BATTLE)
-                    myPyDatagram.addString32(json.dumps(party))
-                    self.cWriter.send(myPyDatagram, self.players[playerlogin])
+        self.send_ATTACKABLES_LIST(charid, attackables, source)
+
+    def get_ATTACK(self, iterator):
+        charid1 = iterator.getString()
+        charid2 = iterator.getString()
+        party = self.parties[self.sessions[source]['party']]
+        char1 = party['chars'][charid1]
+        char2 = party['chars'][charid2]
+        
+        damages = char1['pa'] * char1['br'] / 100 * char1['pa']
+        
+        char2['hp'] = char2['hp'] - damages*4
+        if char2['hp'] < 0:
+            char2['hp'] = 0
+        
+        char1['canact'] = False
+        
+        self.send_ATTACK_SUCCESS(charid1, charid2, damages, source)
+        
+        attackables = Attack.GetAttackables( party, charid1 )
+        
+        for playerid,playerlogin in enumerate(party['players']):
+            if playerid != self.sessions[source]['player']:
+                self.send_ATTACK_PASSIVE(charid1, charid2, damages, attackables, self.players[playerlogin])
+
+    def get_FORMATION_READY(self, iterator):
+        formation = json.loads(iterator.getString())
+
+        party = self.parties[self.sessions[source]['party']]
+        party['formations'].append(formation)
+
+        if len(party['formations']) == len(party['map']['tilesets']):
+
+            for team,formation in enumerate(party['formations']):
+                for line in formation:
+                    x, y, z = line['coords']
+                    charid = line['charid']
+                    party['map']['tiles'][x][y][z]['char'] = str(charid)
+                    char = filter(lambda x: x['id'] == charid, self.chars)[0]
+                    char['team'] = team
+                    char['direction'] = line['direction']
+                    party['chars'][str(charid)] = char
+
+            for playerlogin in party['players']:
+                self.send_START_BATTLE(party, self.players[playerlogin])
+
+    def processData(self, datagram):
+        iterator = PyDatagramIterator(datagram)
+        source = datagram.getConnection()
+        callback = iterator.getString()
+        getattr(self, 'get_'+callback)(iterator)
+
+    def send_LOGIN_FAIL(self, errormsg, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('LOGIN_FAIL')
+        myPyDatagram.addString(errormsg)
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_LOGIN_SUCCESS(self, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('LOGIN_SUCCESS')
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_PARTY_CREATED(self, party, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('PARTY_CREATED')
+        myPyDatagram.addString32(json.dumps(party))
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_MAP_LIST(self, maps, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('MAP_LIST')
+        myPyDatagram.addString(json.dumps(maps))
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_PARTY_LIST(self, parties, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('PARTY_LIST')
+        myPyDatagram.addString32(json.dumps(parties))
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_PARTY_JOIN_FAIL(self, name, parties, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('PARTY_JOIN_FAIL')
+        myPyDatagram.addString('Party '+name+' is full.')
+        myPyDatagram.addString32(json.dumps(parties))
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_PARTY_JOINED(self, party, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('PARTY_JOINED')
+        myPyDatagram.addString32(json.dumps(party))
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_START_FORMATION(self, tileset, team, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('START_FORMATION')
+        myPyDatagram.addString32(json.dumps(tileset))
+        myPyDatagram.addString32(json.dumps(team))
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_BATTLE_COMPLETE(self, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('BATTLE_COMPLETE')
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_GAME_OVER(self, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('GAME_OVER')
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_PARTY_UPDATED(self, yourturn, chars, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('PARTY_UPDATED')
+        myPyDatagram.addBool(yourturn)
+        myPyDatagram.addString32(json.dumps(chars))
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_WALKABLES_LIST(self, charid, walkables, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('WALKABLES_LIST')
+        myPyDatagram.addString(charid)
+        myPyDatagram.addString(json.dumps(walkables))
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_PASSIVE_WALKABLES_LIST(self, charid, walkables, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('PASSIVE_WALKABLES_LIST')
+        myPyDatagram.addString(charid)
+        myPyDatagram.addString(json.dumps(walkables))
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_PATH(self, charid, orig, direction, dest, path, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('PATH')
+        myPyDatagram.addString(charid)
+        myPyDatagram.addString(json.dumps(orig))
+        myPyDatagram.addUint8(direction)
+        myPyDatagram.addString(json.dumps(dest))
+        myPyDatagram.addString(json.dumps(path))
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_MOVED(self, charid, x, y, z, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('MOVED')
+        myPyDatagram.addString(charid)
+        myPyDatagram.addUint8(x)
+        myPyDatagram.addUint8(y)
+        myPyDatagram.addUint8(z)
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_MOVED_PASSIVE(self, charid, walkables, path, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('MOVED_PASSIVE')
+        myPyDatagram.addString(charid)
+        myPyDatagram.addString(json.dumps(walkables))
+        myPyDatagram.addString(json.dumps(path))
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_WAIT_PASSIVE(self, charid, direction, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('WAIT_PASSIVE')
+        myPyDatagram.addString(charid)
+        myPyDatagram.addUint8(direction)
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_ATTACKABLES_LIST(self, charid, attackables, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('ATTACKABLES_LIST')
+        myPyDatagram.addString(charid)
+        myPyDatagram.addString(json.dumps(attackables))
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_ATTACK_SUCCESS(self, charid1, charid2, damages, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('ATTACK_SUCCESS')
+        myPyDatagram.addString(charid1)
+        myPyDatagram.addString(charid2)
+        myPyDatagram.addUint8(damages)
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_ATTACK_PASSIVE(self, charid1, charid2, damages, attackables, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('ATTACK_PASSIVE')
+        myPyDatagram.addString(charid1)
+        myPyDatagram.addString(charid2)
+        myPyDatagram.addUint8(damages)
+        myPyDatagram.addString(json.dumps(attackables))
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_START_BATTLE(self, party, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('START_BATTLE')
+        myPyDatagram.addString32(json.dumps(party))
+        self.cWriter.send(myPyDatagram, player)
+
+    def send_UPDATE_PARTY_LIST(self, parties, player):
+        myPyDatagram = PyDatagram()
+        myPyDatagram.addString('UPDATE_PARTY_LIST')
+        myPyDatagram.addString32(json.dumps(parties))
+        self.cWriter.send(myPyDatagram, player)
 
     def updateAllPartyLists(self):
         parties = deepcopy(self.parties)
@@ -470,10 +480,7 @@ class Server:
             del party['map']['tiles']
 
         for player in self.playersinlobby:
-            myPyDatagram = PyDatagram()
-            myPyDatagram.addUint8(UPDATE_PARTY_LIST)
-            myPyDatagram.addString32(json.dumps(parties))
-            self.cWriter.send(myPyDatagram, player)
+            self.send_UPDATE_PARTY_LIST(parties, player)
 
     def tskListenerPolling(self, taskdata):
         if self.cListener.newConnectionAvailable():
