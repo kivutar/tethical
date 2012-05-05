@@ -19,6 +19,7 @@ except:
     import Direction
 import BattleGraphics
 from Sky import *
+from Matrix import *
 
 LOGIN_MESSAGE = 1
 LOGIN_SUCCESS = 2
@@ -393,7 +394,7 @@ class Client(DirectObject):
         self.die_snd     = base.loader.loadSfx(GAME+"/sounds/die.ogg")
         
         # Place highlightable tiles on the map
-        self.matrix = BattleGraphics.Matrix(self.battleGraphics, self.party['map'])
+        self.matrix = Matrix(self.battleGraphics, self.party['map'])
         self.matrix.placeChars(self.party['chars'])
         
         # Instanciate and hide the AT flag
@@ -483,7 +484,7 @@ class Client(DirectObject):
             child.removeNode()
         self.camhandler.destroy()
         self.coords.destroy()
-        NodePath(self.sky).removeNode()
+        self.sky.remove()
         self.background = GUI.Background(self.partyListScreen)
 
     def showMenu(self, charid):

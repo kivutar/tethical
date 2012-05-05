@@ -1,4 +1,4 @@
-from panda3d.core import *
+from panda3d.core import GeomVertexFormat, Geom, GeomVertexData, GeomVertexWriter, GeomTristrips, VBase4, GeomNode, NodePath
 
 # Draw the gradient background representing the sky during a battle
 class Sky(object):
@@ -23,6 +23,9 @@ class Sky(object):
         primitive.closePrimitive()
         geom = Geom(vdata)
         geom.addPrimitive(primitive)
-        sky = GeomNode('sky')
-        sky.addGeom(geom)
-        base.camera.attachNewNode(sky)
+        self.node = GeomNode('sky')
+        self.node.addGeom(geom)
+        base.camera.attachNewNode(self.node)
+
+    def remove(self):
+        NodePath(self.node).removeNode()
