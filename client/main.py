@@ -19,6 +19,7 @@ from Sky import *
 from Matrix import *
 from Cursor import *
 from AT import *
+from Send import *
 
 class Client(DirectObject):
 
@@ -29,14 +30,14 @@ class Client(DirectObject):
         self.background = GUI.Background(self.loginScreen)
 
     def get_LOGIN_SUCCESS(self, iterator):
-        self.loginwindow.commandanddestroy(self.send_GET_PARTIES)
+        self.loginwindow.commandanddestroy(self.send.GET_PARTIES)
 
     def get_LOGIN_FAIL(self, iterator):
         print iterator.getString()
 
     def get_PARTY_LIST(self, iterator):
         parties = json.loads(iterator.getString32())
-        self.partylistwindow = GUI.PartyListWindow(self.send_JOIN_PARTY, self.send_GET_MAPS)
+        self.partylistwindow = GUI.PartyListWindow(self.send.JOIN_PARTY, self.send.GET_MAPS)
         self.partylistwindow.refresh(parties)
 
     def get_PARTY_CREATED(self, iterator):
@@ -45,7 +46,7 @@ class Client(DirectObject):
 
     def get_MAP_LIST(self, iterator):
         maps = json.loads(iterator.getString())
-        self.mapchooserwindow = GUI.MapChooser(maps, self.background.frame, self.send_CREATE_PARTY, self.send_GET_PARTIES)
+        self.mapchooserwindow = GUI.MapChooser(maps, self.background.frame, self.send.CREATE_PARTY, self.send.GET_PARTIES)
 
     def get_UPDATE_PARTY_LIST(self, iterator):
         parties = json.loads(iterator.getString32())
@@ -58,7 +59,7 @@ class Client(DirectObject):
     def get_PARTY_JOIN_FAIL(self, iterator):
         print iterator.getString()
         parties = json.loads(iterator.getString32())
-        self.partylistwindow = GUI.PartyListWindow(self.send_JOIN_PARTY, self.send_GET_MAPS)
+        self.partylistwindow = GUI.PartyListWindow(self.send.JOIN_PARTY, self.send.GET_MAPS)
         self.partylistwindow.refresh(parties)
 
     def get_START_BATTLE(self, iterator):
@@ -92,12 +93,12 @@ class Client(DirectObject):
                 'shadowed', 'Check',
                 'Specify the point to move with\nthe cursor. Press the %c button\nto select.' % CIRCLE_BTN.upper(),
                 lambda: self.setupWalkableTileChooser(charid, walkables),
-                self.send_UPDATE_PARTY,
+                self.send.UPDATE_PARTY,
             )
         else:
             #TODO: show message "no walkable tile"
             print "no walkable tile"
-            self.send_UPDATE_PARTY()
+            self.send.UPDATE_PARTY()
     
     def get_PASSIVE_WALKABLES_LIST(self, iterator):
         charid = iterator.getString()
@@ -109,7 +110,7 @@ class Client(DirectObject):
         else:
             #TODO: show message "no walkable tile"
             print "no walkable tile"
-            self.send_UPDATE_PARTY()
+            self.send.UPDATE_PARTY()
     
     def get_PATH(self, iterator):
         charid = iterator.getString()
@@ -136,7 +137,7 @@ class Client(DirectObject):
         (x1, y1, z1) = self.matrix.getCharacterCoords(charid)
         del self.party['map']['tiles'][x1][y1][z1]['char']
         self.party['map']['tiles'][x2][y2][z2]['char'] = charid
-        self.send_UPDATE_PARTY()
+        self.send.UPDATE_PARTY()
     
     def get_MOVED_PASSIVE(self, iterator):
         charid = iterator.getString()
@@ -165,7 +166,7 @@ class Client(DirectObject):
         seq.start()
     
     def get_WAIT_SUCCESS(self, iterator):
-        self.send_UPDATE_PARTY()
+        self.send.UPDATE_PARTY()
 
     def get_WAIT_PASSIVE(self, iterator):
         charid = iterator.getString()
@@ -178,7 +179,7 @@ class Client(DirectObject):
         seq.append( Func(self.matrix.sprites[charid].setRealDir, direction) )
         seq.append( Wait(0.5) )
         seq.append( Func(self.setPhase, 'listen') )
-        seq.append( Func(self.send_UPDATE_PARTY) )
+        seq.append( Func(self.send.UPDATE_PARTY) )
         seq.start()
 
     def get_ATTACKABLES_LIST(self, iterator):
@@ -204,7 +205,7 @@ class Client(DirectObject):
 
         seq = Sequence()
         seq.append( self.getCharacterAttackSequence(charid, targetid) )
-        seq.append( Func(self.send_UPDATE_PARTY) )
+        seq.append( Func(self.send.UPDATE_PARTY) )
         seq.start()
 
     def get_ATTACK_PASSIVE(self, iterator):
@@ -265,7 +266,7 @@ class Client(DirectObject):
         self.music.stop()
         self.music = base.loader.loadSfx(GAME+'/music/11.ogg')
         self.music.play()
-        GUI.Formation(self.background.frame, tilesets, characters, self.send_FORMATION_READY)
+        GUI.Formation(self.background.frame, tilesets, characters, self.send.FORMATION_READY)
 
     def processData(self, datagram):
         iterator = PyDatagramIterator(datagram)
@@ -292,17 +293,16 @@ class Client(DirectObject):
         self.cManager  = QueuedConnectionManager()
         self.cListener = QueuedConnectionListener(self.cManager, 0)
         self.cReader   = QueuedConnectionReader(self.cManager, 0)
-        self.cWriter   = ConnectionWriter(self.cManager, 0)
         self.cReader.setTcpHeaderSize(4)
-        self.cWriter.setTcpHeaderSize(4)
 
         self.myConnection = self.cManager.openTCPClientConnection(IP, PORT, 5000)
         if self.myConnection:
             self.cReader.addConnection(self.myConnection)
+            self.send = Send(self.cManager, self.myConnection)
             print 'Client listening on', IP, ':', PORT
             taskMgr.add(self.tskReaderPolling, "Poll the connection reader")
 
-            self.send_LOGIN_MESSAGE(login, password)
+            self.send.LOGIN_MESSAGE(login, password)
 
         else:
             print 'Can\'t connect to server on', IP, ':', PORT
@@ -372,7 +372,7 @@ class Client(DirectObject):
         seq.append(Func(self.transitionframe.destroy))
         seq.append(Wait(1))
         seq.append(Func(self.updateAllSpritesAnimations, 'walk'))
-        seq.append(Func(lambda: GUI.BrownOverlay(GUI.ConditionsForWinning, self.send_UPDATE_PARTY)))
+        seq.append(Func(lambda: GUI.BrownOverlay(GUI.ConditionsForWinning, self.send.UPDATE_PARTY)))
         seq.start()
 
     def updateAllSpritesAnimations(self, animation):
@@ -422,7 +422,7 @@ class Client(DirectObject):
         self.camhandler.destroy()
         self.coords.destroy()
         self.sky.remove()
-        self.background = GUI.Background(self.send_GET_PARTIES)
+        self.background = GUI.Background(self.send.GET_PARTIES)
 
     def showMenu(self, charid):
         self.setPhase('gui')
@@ -433,7 +433,7 @@ class Client(DirectObject):
         columns = [ { 'x': -25, 'font': GUI.regularfont, 'align': TextNode.ALeft   }, ]
 
         rows = [
-            { 'cells': ['Move'        ], 'enabled': canmove, 'callback': lambda: self.send_GET_WALKABLES  (charid) },
+            { 'cells': ['Move'        ], 'enabled': canmove, 'callback': lambda: self.send.GET_WALKABLES  (charid) },
             { 'cells': ['Act'         ], 'enabled': canact , 'callback': lambda: self.onAttackClicked(charid) },
             { 'cells': ['Wait'        ], 'enabled': True   , 'callback': lambda: self.onWaitClicked  (charid) },
             { 'cells': ['Status'      ], 'enabled': False  , 'callback': lambda: self.onWaitClicked  (charid) },
@@ -450,119 +450,14 @@ class Client(DirectObject):
     def moveCheck(self, charid, orig, origdir, dest):
         self.setPhase('gui')
         GUI.MoveCheck(
-            lambda: self.send_MOVE_TO(charid, dest),
+            lambda: self.send.MOVE_TO(charid, dest),
             lambda: self.cancelMove(charid, orig, origdir)
         )
 
     def cancelMove(self, charid, orig, origdir):
         self.matrix.sprites[charid].node.setPos(self.battleGraphics.logic2terrain(orig))
         self.matrix.sprites[charid].setRealDir(origdir)
-        self.send_UPDATE_PARTY()
-
-    # Get the path from the server, and makes the character walk on it
-    def send_GET_PATH(self, charid, dest):
-        (x, y, z) = dest
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addString('GET_PATH')
-        myPyDatagram.addString(charid)
-        myPyDatagram.addUint8(x)
-        myPyDatagram.addUint8(y)
-        myPyDatagram.addUint8(z)
-        self.cWriter.send(myPyDatagram, self.myConnection)
-
-    # Send the MOVE_TO packet and update the map tags with new char coords
-    def send_MOVE_TO(self, charid, dest):
-        (x2, y2, z2) = dest
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addString('MOVE_TO')
-        myPyDatagram.addString(charid)
-        myPyDatagram.addUint8(x2)
-        myPyDatagram.addUint8(y2)
-        myPyDatagram.addUint8(z2)
-        self.cWriter.send(myPyDatagram, self.myConnection)
-
-    # Send the ATTACK packet, get the returned damages and display the attack animation
-    def send_ATTACK(self, charid, targetid):
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addString('ATTACK')
-        myPyDatagram.addString(charid)
-        myPyDatagram.addString(targetid)
-        self.cWriter.send(myPyDatagram, self.myConnection)
-
-    # The team is formed, send the formation data to the server
-    def send_FORMATION_READY(self, formation):
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addString('FORMATION_READY')
-        myPyDatagram.addString(json.dumps(formation))
-        self.cWriter.send(myPyDatagram, self.myConnection)
-
-    def send_GET_PARTIES(self):
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addString('GET_PARTIES')
-        self.cWriter.send(myPyDatagram, self.myConnection)
-
-    def send_GET_MAPS(self):
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addString('GET_MAPS')
-        self.cWriter.send(myPyDatagram, self.myConnection)
-
-    # Send the party details to the server in order to instanciate a party
-    def send_CREATE_PARTY(self, mapname):
-        import time
-        partyname = str(int(time.time()))
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addString('CREATE_PARTY')
-        myPyDatagram.addString(partyname)
-        myPyDatagram.addString(mapname)
-        self.cWriter.send(myPyDatagram, self.myConnection)
-
-    # Join a party
-    def send_JOIN_PARTY(self, name):
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addString('JOIN_PARTY')
-        myPyDatagram.addString(name)
-        self.cWriter.send(myPyDatagram, self.myConnection)
-
-    # Try to log into the server
-    def send_LOGIN_MESSAGE(self, login, password):
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addString('LOGIN_MESSAGE')
-        myPyDatagram.addString(login)
-        myPyDatagram.addString(password)
-        self.cWriter.send(myPyDatagram, self.myConnection)
-
-    # The battle main dispatcher, see it as a "next turn"
-    def send_UPDATE_PARTY(self):
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addString('UPDATE_PARTY')
-        self.cWriter.send(myPyDatagram, self.myConnection)
-
-    def send_GET_PASSIVE_WALKABLES(self, charid):
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addString('GET_PASSIVE_WALKABLES')
-        myPyDatagram.addString(charid)
-        self.cWriter.send(myPyDatagram, self.myConnection)
-
-    # Move button clicked
-    def send_GET_WALKABLES(self, charid):
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addString('GET_WALKABLES')
-        myPyDatagram.addString(charid)
-        self.cWriter.send(myPyDatagram, self.myConnection)
-
-    def send_GET_ATTACKABLES(self, charid):
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addString('GET_ATTACKABLES')
-        myPyDatagram.addString(charid)
-        self.cWriter.send(myPyDatagram, self.myConnection)
-
-    # The direction has been chosen, send the WAIT datagram
-    def send_WAIT(self, charid, direction):
-        myPyDatagram = PyDatagram()
-        myPyDatagram.addString('WAIT')
-        myPyDatagram.addString(charid)
-        myPyDatagram.addUint8(direction)
-        self.cWriter.send(myPyDatagram, self.myConnection)
+        self.send.UPDATE_PARTY()
 
     # Makes a character look at another one
     def characterLookAt(self, charid, targetid):
@@ -734,7 +629,7 @@ class Client(DirectObject):
                 charid = self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z]['walkablezone']
                 self.clicked_snd.play()
                 dest = (self.cursor.x, self.cursor.y, self.cursor.z)
-                self.send_GET_PATH(charid, dest)
+                self.send.GET_PATH(charid, dest)
                 return
 
             # we clicked on a character
@@ -754,20 +649,20 @@ class Client(DirectObject):
                         16,
                         99,
                         lambda: GUI.AttackCheck(
-                            lambda: self.send_ATTACK(attackable, charid),
-                            self.send_UPDATE_PARTY
+                            lambda: self.send.ATTACK(attackable, charid),
+                            self.send.UPDATE_PARTY
                         ),
-                        self.send_UPDATE_PARTY
+                        self.send.UPDATE_PARTY
                     )
                     
             
                 # we clicked on the currently active character, let's display the menu
                 elif self.party['chars'][charid]['active'] and self.party['yourturn']:
                     
-                    self.send_UPDATE_PARTY()
+                    self.send.UPDATE_PARTY()
             else:
                 self.clicked_snd.play()
-                self.send_UPDATE_PARTY()
+                self.send.UPDATE_PARTY()
     
     def onCrossClicked(self):
         if self.phase == 'tile' and self.cursor.x is not False and self.party['yourturn']:
@@ -777,7 +672,7 @@ class Client(DirectObject):
                 # if we clicked on a character
                 if self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z].has_key('char'):
                     charid = self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z]['char']
-                    self.send_GET_PASSIVE_WALKABLES(charid)
+                    self.send.GET_PASSIVE_WALKABLES(charid)
 
             elif self.subphase == 'passivewalkables':
                 self.matrix.clearZone()
@@ -788,12 +683,12 @@ class Client(DirectObject):
                 self.matrix.clearZone()
                 self.cancel_snd.play()
                 self.subphase = None
-                self.send_UPDATE_PARTY()
+                self.send.UPDATE_PARTY()
             elif self.subphase == 'attack':
                 self.matrix.clearZone()
                 self.cancel_snd.play()
                 self.subphase = None
-                self.send_UPDATE_PARTY()
+                self.send.UPDATE_PARTY()
 
     # Keyboard related callback
     def onArrowClicked(self, direction):
@@ -876,8 +771,8 @@ class Client(DirectObject):
             0, 25, 155, 44,
             'shadowed', 'Check',
             'Specify the target with the cursor.\nPress the %c button to select.' % CIRCLE_BTN.upper(),
-            lambda: self.send_GET_ATTACKABLES(charid),
-            self.send_UPDATE_PARTY,
+            lambda: self.send.GET_ATTACKABLES(charid),
+            self.send.UPDATE_PARTY,
         )
 
     # Wait menu item chosen
@@ -888,13 +783,13 @@ class Client(DirectObject):
             'shadowed', 'Check',
             'Specify the direction with\nthe Directional buttons.\nPress the %c button to select.' % CIRCLE_BTN.upper(),
             lambda: self.setupDirectionChooser(charid),
-            self.send_UPDATE_PARTY,
+            self.send.UPDATE_PARTY,
         )
     
     def setupDirectionChooser(self, charid):
         self.setPhase('direction')
         self.at.hide()
-        DirectionChooser(charid, self.matrix.sprites[charid], self.camhandler, self.send_WAIT, self.send_UPDATE_PARTY)
+        DirectionChooser(charid, self.matrix.sprites[charid], self.camhandler, self.send.WAIT, self.send.UPDATE_PARTY)
 
     # Cancel menu item chosen
     def onCancelClicked(self, charid):
