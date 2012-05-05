@@ -18,6 +18,7 @@ try:
 except:
     import Direction
 import BattleGraphics
+from Sky import *
 
 LOGIN_MESSAGE = 1
 LOGIN_SUCCESS = 2
@@ -404,7 +405,7 @@ class Client(DirectObject):
         self.actionpreview = None
 
         # Generate the sky and attach it to the camera
-        self.sky = BattleGraphics.Sky(self.party['map'])
+        self.sky = Sky(self.party['map'])
 
         # Tasks
         taskMgr.add(self.characterDirectionTask , 'characterDirectionTask')
