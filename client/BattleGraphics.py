@@ -6,6 +6,7 @@ from panda3d.physics import LinearNoiseForce,DiscEmitter
 from direct.particles.Particles import Particles
 from direct.particles.ParticleEffect import ParticleEffect
 from direct.particles.ForceGroup import ForceGroup
+import Sprite
 
 class BattleGraphics(object):
 
@@ -114,9 +115,9 @@ class Sky(object):
 
 class Cursor(object):
 
-    def __init__(self, battleGraphics, tileRoot):
+    def __init__(self, battleGraphics, matrixContainer):
         self.battleGraphics = battleGraphics
-        self.tileRoot = tileRoot
+        self.matrixContainer = matrixContainer
 
         self.curtex = loader.loadTexture(GAME+'/textures/cursor.png')
         self.curtex.setMagfilter(Texture.FTNearest)
@@ -127,7 +128,7 @@ class Cursor(object):
         self.z = False
 
         self.cursor = loader.loadModel(GAME+'/models/slopes/flat')
-        self.cursor.reparentTo( self.tileRoot )
+        self.cursor.reparentTo( self.matrixContainer )
         self.cursor.setScale(3.7)
         self.cursor.setTransparency(TransparencyAttrib.MAlpha)
         self.cursor.setColor( 1, 1, 1, 1 )
@@ -148,7 +149,7 @@ class Cursor(object):
     def move(self, x, y, z, tile):
         self.cursor.detachNode()
         self.cursor = loader.loadModel(GAME+"/models/slopes/"+tile['slope'])
-        self.cursor.reparentTo( self.tileRoot )
+        self.cursor.reparentTo( self.matrixContainer )
         self.cursor.setScale(3.7, 3.7, 6.0/7.0*3.7*tile['scale'])
         self.cursor.setTransparency(TransparencyAttrib.MAlpha)
         self.cursor.setTexture(self.curtex)
@@ -163,3 +164,48 @@ class Cursor(object):
         self.x = x
         self.y = y
         self.z = z
+
+class Matrix(object):
+
+    def __init__(self, battleGraphics, mp):
+        self.battleGraphics = battleGraphics
+        self.mp = mp
+        self.container = render.attachNewNode( "matrixContainer" )
+
+        self.tiles = [ [ [ None for z in range(self.mp['z']) ] for y in range(self.mp['y']) ] for x in range(self.mp['x']) ]
+
+        for x,xs in enumerate(self.mp['tiles']):
+            for y,ys in enumerate(xs):
+                for z,zs in enumerate(ys):
+                    if not self.mp['tiles'][x][y][z] is None:
+                        slope = self.mp['tiles'][x][y][z]['slope']
+                        scale = self.mp['tiles'][x][y][z]['scale']
+                        depth = self.mp['tiles'][x][y][z]['depth']
+
+                        self.tiles[x][y][z] = loader.loadModel(GAME+"/models/slopes/"+slope)
+                        self.tiles[x][y][z].reparentTo( self.container )
+                        self.tiles[x][y][z].setPos(self.battleGraphics.logic2terrain( (x, y, z+depth+0.05) ))
+                        self.tiles[x][y][z].setScale(3.7, 3.7, 6.0/7.0*3.7*scale)
+                        self.tiles[x][y][z].setTransparency(TransparencyAttrib.MAlpha)
+                        self.tiles[x][y][z].setColor( 0, 0, 0, 0 )
+
+    def placeChars(self, chars):
+        self.chars = chars
+        self.sprites = {}
+
+        for x,xs in enumerate(self.mp['tiles']):
+            for y,ys in enumerate(xs):
+                for z,zs in enumerate(ys):
+                    if not self.mp['tiles'][x][y][z] is None:
+                        slope = self.mp['tiles'][x][y][z]['slope']
+                        scale = self.mp['tiles'][x][y][z]['scale']
+                        depth = self.mp['tiles'][x][y][z]['depth']
+
+                        if self.mp['tiles'][x][y][z].has_key('char'):
+                            charid = self.mp['tiles'][x][y][z]['char']
+                            char = self.chars[charid]
+                            sprite = Sprite.Sprite(GAME+'/textures/sprites/'+char['sprite']+'.png', int(char['direction']))
+                            sprite.animation = 'stand'
+                            sprite.node.setPos(self.battleGraphics.logic2terrain((x,y,z)))
+                            sprite.node.reparentTo( render )
+                            self.sprites[charid] = sprite

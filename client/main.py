@@ -17,7 +17,6 @@ try:
     Direction = __import__(GAME+'.Direction', globals(), locals(), ['*'], -1)
 except:
     import Direction
-import Sprite
 import BattleGraphics
 
 LOGIN_MESSAGE = 1
@@ -189,7 +188,7 @@ class Client(DirectObject):
             seq.append( Wait(0.5) )
             seq.append( Func(self.updateSpriteAnimation, charid) )
             seq.append( Func(self.clearZone) )
-            seq.append( Func(self.at.showOnSprite, self.sprites[charid]) )
+            seq.append( Func(self.at.showOnSprite, self.matrix.sprites[charid]) )
             seq.append( Func(self.setPhase, 'listen') )
             seq.start()
         elif msgID == WAIT_SUCCESS:
@@ -202,7 +201,7 @@ class Client(DirectObject):
             seq = Sequence()
             seq.append( Func(self.at.hide) )
             seq.append( Wait(0.5) )
-            seq.append( Func(self.sprites[charid].setRealDir, direction) )
+            seq.append( Func(self.matrix.sprites[charid].setRealDir, direction) )
             seq.append( Wait(0.5) )
             seq.append( Func(self.setPhase, 'listen') )
             seq.append( Func(self.turn) )
@@ -259,8 +258,8 @@ class Client(DirectObject):
                 self.charbars.hide()
             if self.charcard:
                 self.charcard.hide()
-            for i,charid in enumerate(self.sprites):
-                if self.sprites[charid].animation == 'walk':
+            for i,charid in enumerate(self.matrix.sprites):
+                if self.matrix.sprites[charid].animation == 'walk':
                     self.updateSpriteAnimation(charid, 'stand')
             self.music.stop()
             self.music = base.loader.loadSfx(GAME+'/music/33.ogg')
@@ -273,8 +272,8 @@ class Client(DirectObject):
                 self.charcard.hide()
             if self.actionpreview:
                 self.actionpreview.hide()
-            for i,charid in enumerate(self.sprites):
-                if self.sprites[charid].animation == 'walk':
+            for i,charid in enumerate(self.matrix.sprites):
+                if self.matrix.sprites[charid].animation == 'walk':
                     self.updateSpriteAnimation(charid, 'stand')
             self.music.stop()
             self.music = base.loader.loadSfx(GAME+'/music/13.ogg')
@@ -393,33 +392,8 @@ class Client(DirectObject):
         self.die_snd    = base.loader.loadSfx(GAME+"/sounds/die.ogg")
         
         # Place highlightable tiles on the map
-        self.tileRoot = render.attachNewNode( "tileRoot" )
-        self.tiles = [ [ [ None for z in range(self.party['map']['z']) ] for y in range(self.party['map']['y']) ] for x in range(self.party['map']['x']) ]
-        self.sprites = {}
-
-        for x,xs in enumerate(self.party['map']['tiles']):
-            for y,ys in enumerate(xs):
-                for z,zs in enumerate(ys):
-                    if not self.party['map']['tiles'][x][y][z] is None:
-                        slope = self.party['map']['tiles'][x][y][z]['slope']
-                        scale = self.party['map']['tiles'][x][y][z]['scale']
-                        depth = self.party['map']['tiles'][x][y][z]['depth']
-
-                        self.tiles[x][y][z] = loader.loadModel(GAME+"/models/slopes/"+slope)
-                        self.tiles[x][y][z].reparentTo( self.tileRoot )
-                        self.tiles[x][y][z].setPos(self.battleGraphics.logic2terrain( (x, y, z+depth+0.05) ))
-                        self.tiles[x][y][z].setScale(3.7, 3.7, 6.0/7.0*3.7*scale)
-                        self.tiles[x][y][z].setTransparency(TransparencyAttrib.MAlpha)
-                        self.tiles[x][y][z].setColor( 0, 0, 0, 0 )
-
-                        if self.party['map']['tiles'][x][y][z].has_key('char'):
-                            charid = self.party['map']['tiles'][x][y][z]['char']
-                            char = self.party['chars'][charid]
-                            sprite = Sprite.Sprite(GAME+'/textures/sprites/'+char['sprite']+'.png', int(char['direction']))
-                            sprite.animation = 'stand'
-                            sprite.node.setPos(self.battleGraphics.logic2terrain((x,y,z)))
-                            sprite.node.reparentTo( render )
-                            self.sprites[charid] = sprite
+        self.matrix = BattleGraphics.Matrix(self.battleGraphics, self.party['map'])
+        self.matrix.placeChars(self.party['chars'])
         
         # Instanciate and hide the AT flag
         self.at = BattleGraphics.AT()
@@ -436,7 +410,7 @@ class Client(DirectObject):
         taskMgr.add(self.characterDirectionTask , 'characterDirectionTask')
 
         # Cursor stuff
-        self.cursor = BattleGraphics.Cursor(self.battleGraphics, self.tileRoot)
+        self.cursor = BattleGraphics.Cursor(self.battleGraphics, self.matrix.container)
 
         self.wtex = loader.loadTexture(GAME+'/textures/walkable.png')
         self.wtex.setMagfilter(Texture.FTNearest)
@@ -465,7 +439,7 @@ class Client(DirectObject):
         seq.start()
 
     def updateAllSpritesAnimations(self, animation):
-        for i,charid in enumerate(self.sprites):
+        for i,charid in enumerate(self.matrix.sprites):
             Sequence(
                 Wait(float(i)/6.0),
                 Func(self.updateSpriteAnimation, charid, animation),
@@ -498,7 +472,7 @@ class Client(DirectObject):
 
                             if char['active']:
                                 self.camhandler.move(self.battleGraphics.logic2terrain((x, y, z)))
-                                self.at.showOnSprite(self.sprites[charid])
+                                self.at.showOnSprite(self.matrix.sprites[charid])
 
                                 self.updateCursorPos((x,y,z))
 
@@ -546,7 +520,7 @@ class Client(DirectObject):
     # Get the path from the server, and makes the character walk on it
     def path(self, charid, dest):
         orig = self.battleGraphics.getCharacterCoords(charid)
-        origdir = self.sprites[charid].realdir
+        origdir = self.matrix.sprites[charid].realdir
         (x, y, z) = dest
         
         myPyDatagram = PyDatagram()
@@ -565,8 +539,8 @@ class Client(DirectObject):
         )
 
     def cancelMove(self, charid, orig, origdir):
-        self.sprites[charid].node.setPos(self.battleGraphics.logic2terrain(orig))
-        self.sprites[charid].setRealDir(origdir)
+        self.matrix.sprites[charid].node.setPos(self.battleGraphics.logic2terrain(orig))
+        self.matrix.sprites[charid].setRealDir(origdir)
         self.turn()
 
     # Send the moveto packet and update the map tags with new char coords
@@ -597,13 +571,13 @@ class Client(DirectObject):
         (x1, y1, z1) = self.battleGraphics.getCharacterCoords(charid)
         (x2, y2, z2) = self.battleGraphics.getCharacterCoords(targetid)
         if x1 > x2:
-            self.sprites[charid].setRealDir(3)
+            self.matrix.sprites[charid].setRealDir(3)
         if x1 < x2:
-            self.sprites[charid].setRealDir(1)
+            self.matrix.sprites[charid].setRealDir(1)
         if y1 > y2:
-            self.sprites[charid].setRealDir(4)
+            self.matrix.sprites[charid].setRealDir(4)
         if y1 < y2:
-            self.sprites[charid].setRealDir(2)
+            self.matrix.sprites[charid].setRealDir(2)
 
     # Returns the sequence of a character punching another
     def getCharacterAttackSequence(self, charid, targetid):
@@ -625,39 +599,39 @@ class Client(DirectObject):
     # Update the status (animation) of a sprite after something happened
     def updateSpriteAnimation(self, charid, animation=False):
         if animation:
-            self.sprites[charid].animation = animation
+            self.matrix.sprites[charid].animation = animation
             h = self.camhandler.container.getH()
-            self.sprites[charid].updateDisplayDir( h, True )
+            self.matrix.sprites[charid].updateDisplayDir( h, True )
         else:
             stats = self.party['chars'][charid]
             if stats['hp'] >= (stats['hpmax']/2):
-                self.sprites[charid].animation = 'walk'
+                self.matrix.sprites[charid].animation = 'walk'
             if stats['hp'] < (stats['hpmax']/2):
-                self.sprites[charid].animation = 'weak'
+                self.matrix.sprites[charid].animation = 'weak'
             if stats['hp'] <= 0:
-                self.sprites[charid].animation = 'dead'
+                self.matrix.sprites[charid].animation = 'dead'
                 self.die_snd.play()
             h = self.camhandler.container.getH()
-            self.sprites[charid].updateDisplayDir( h, True )
+            self.matrix.sprites[charid].updateDisplayDir( h, True )
 
     # Draw blue tile zone
     def setupPassiveWalkableZone(self, walkables):
         for x,y,z in walkables:
-            self.tiles[x][y][z].setColor(1, 1, 1, 1)
-            self.tiles[x][y][z].setTexture(self.wtex)
+            self.matrix.tiles[x][y][z].setColor(1, 1, 1, 1)
+            self.matrix.tiles[x][y][z].setTexture(self.wtex)
 
     # Tag a zone as walkable or active-walkable
     def setupWalkableZone(self, charid, walkables):
         for x,y,z in walkables:
-            self.tiles[x][y][z].setColor(1, 1, 1, 1)
-            self.tiles[x][y][z].setTexture(self.wtex)
+            self.matrix.tiles[x][y][z].setColor(1, 1, 1, 1)
+            self.matrix.tiles[x][y][z].setTexture(self.wtex)
             self.party['map']['tiles'][x][y][z]['walkablezone'] = charid
 
     # Draw and tag the red tile zone
     def setupAttackableZone(self, charid, attackables):
         for x,y,z in attackables:
-            self.tiles[x][y][z].setColor(1, 1, 1, 1)
-            self.tiles[x][y][z].setTexture(self.atex)
+            self.matrix.tiles[x][y][z].setColor(1, 1, 1, 1)
+            self.matrix.tiles[x][y][z].setTexture(self.atex)
             self.party['map']['tiles'][x][y][z]['attackablezone'] = charid
 
     # Clear any tile zone
@@ -666,7 +640,7 @@ class Client(DirectObject):
             for y,ys in enumerate(xs):
                 for z,zs in enumerate(ys):
                     if not self.party['map']['tiles'][x][y][z] is None:
-                        self.tiles[x][y][z].setColor(0, 0, 0, 0)
+                        self.matrix.tiles[x][y][z].setColor(0, 0, 0, 0)
                         if self.party['map']['tiles'][x][y][z].has_key('walkablezone'):
                             del self.party['map']['tiles'][x][y][z]['walkablezone']
                         if self.party['map']['tiles'][x][y][z].has_key('attackablezone'):
@@ -674,7 +648,7 @@ class Client(DirectObject):
 
     # Returns a sequence showing the character moving through a path
     def getCharacterMoveSequence(self, charid, path):
-        sprite = self.sprites[charid]
+        sprite = self.matrix.sprites[charid]
         seq = Sequence()
         origin = False
         for destination in path:
@@ -968,7 +942,7 @@ class Client(DirectObject):
     def setupDirectionChooser(self, charid):
         self.setPhase('direction')
         self.at.hide()
-        Direction.Chooser(charid, self.sprites[charid], self.camhandler, self.directionChosen, self.turn)
+        Direction.Chooser(charid, self.matrix.sprites[charid], self.camhandler, self.directionChosen, self.turn)
 
     # Cancel button clicked
     def onCancelClicked(self, charid):
@@ -990,8 +964,8 @@ class Client(DirectObject):
     # Updates the displayed direction of a character according to the camera angle
     def characterDirectionTask(self, task):
         h = self.camhandler.container.getH()
-        for charid in self.sprites:
-            self.sprites[charid].updateDisplayDir( h );
+        for charid in self.matrix.sprites:
+            self.matrix.sprites[charid].updateDisplayDir( h );
         return Task.cont
 
 ### Utilities
