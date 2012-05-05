@@ -21,6 +21,7 @@ import BattleGraphics
 from Sky import *
 from Matrix import *
 from Cursor import *
+from AT import *
 
 LOGIN_MESSAGE = 1
 LOGIN_SUCCESS = 2
@@ -399,7 +400,7 @@ class Client(DirectObject):
         self.matrix.placeChars(self.party['chars'])
         
         # Instanciate and hide the AT flag
-        self.at = BattleGraphics.AT()
+        self.at = AT()
         self.at.hide()
         
         self.charbars = None
