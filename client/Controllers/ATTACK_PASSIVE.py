@@ -1,4 +1,5 @@
 from direct.interval.IntervalGlobal import Sequence, Func, Wait
+import SequenceBuilder
 import json
 
 def execute(client, iterator):
@@ -20,7 +21,7 @@ def execute(client, iterator):
     seq.append( Func(client.updateCursorPos, client.matrix.getCharacterCoords(targetid)) )
     seq.append( Func(client.camhandler.move, client.battleGraphics.logic2terrain(client.matrix.getCharacterCoords(targetid))) )
     seq.append( Wait(0.5) )
-    seq.append( client.getCharacterAttackSequence(charid, targetid) )
+    seq.append( SequenceBuilder.characterAttackSequence(client, charid, targetid) )
     seq.append( Func(client.camhandler.move, client.battleGraphics.logic2terrain(client.matrix.getCharacterCoords(charid))) )
     seq.append( Func(client.setPhase, 'listen') )
     seq.start()

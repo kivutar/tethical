@@ -21,6 +21,7 @@ from Cursor import *
 from AT import *
 from Send import *
 from Controllers import *
+import SequenceBuilder
 
 class Client(DirectObject):
 
@@ -124,19 +125,7 @@ class Client(DirectObject):
         self.battleGraphics.addEffects()
 
         # Battle intro animation
-        seq = Sequence()
-        i1 = LerpColorInterval(self.transitionframe, 5, (0,0,0,0), startColor=(0,0,0,1))
-        cx, cy, cz = self.battleGraphics.terrain.getBounds().getCenter()
-        i2 = LerpPosInterval(self.camhandler.container, 5, (cx,cy,cz), startPos=(cx,cy,cz+50))
-        ch, cp, cr = self.camhandler.container.getHpr()
-        i3 = LerpHprInterval(self.camhandler.container, 5, (ch+90, cp, cr), (ch-180, cp, cr))
-        p1 = Parallel(i1,i2,i3)
-        seq.append(p1)
-        seq.append(Func(self.transitionframe.destroy))
-        seq.append(Wait(1))
-        seq.append(Func(self.updateAllSpritesAnimations, 'walk'))
-        seq.append(Func(lambda: GUI.BrownOverlay(GUI.ConditionsForWinning, self.send.UPDATE_PARTY)))
-        seq.start()
+        SequenceBuilder.battleIntroduction(self).start()
 
     def updateAllSpritesAnimations(self, animation):
         for i,charid in enumerate(self.matrix.sprites):
@@ -202,23 +191,6 @@ class Client(DirectObject):
         if y1 < y2:
             self.matrix.sprites[charid].setRealDir(2)
 
-    # Returns the sequence of a character punching another
-    def getCharacterAttackSequence(self, charid, targetid):
-        seq = Sequence()
-        seq.append( Func(self.at.hide) )
-        seq.append( Func(self.characterLookAt,       charid, targetid) )
-        seq.append( Func(self.updateSpriteAnimation, charid, 'attack') )
-        seq.append( Wait(0.5) )
-        seq.append( Func(self.updateSpriteAnimation, targetid, 'hit') )
-        seq.append( Func(self.attack_snd.play) )
-        seq.append( Wait(0.5) )
-        seq.append( Func(self.updateSpriteAnimation, charid) )
-        seq.append( Wait(0.5) )
-        seq.append( Func(self.updateSpriteAnimation, targetid) )
-        seq.append( Wait(0.5) )
-        seq.append( Func(self.matrix.clearZone) )
-        return seq
-
     # Update the status (animation) of a sprite after something happened
     def updateSpriteAnimation(self, charid, animation=False):
         if animation:
@@ -236,89 +208,6 @@ class Client(DirectObject):
                 self.die_snd.play()
             h = self.camhandler.container.getH()
             self.matrix.sprites[charid].updateDisplayDir( h, True )
-
-    # Returns a sequence showing the character moving through a path
-    def getCharacterMoveSequence(self, charid, path):
-        sprite = self.matrix.sprites[charid]
-        seq = Sequence()
-        origin = False
-        for destination in path:
-            if origin:
-
-                (x1, y1, z1) = origin
-                (x2, y2, z2) = destination
-
-                # first, face the right direction
-                if x2 > x1:
-                    d = 1
-                elif x2 < x1:
-                    d = 3
-                elif y2 > y1:
-                    d = 2
-                elif y2 < y1:
-                    d = 4
-                seq.append( Func(sprite.setRealDir, d) )
-
-                # then, add the move animation from one tile to the next
-                if z2 - z1 >= 4:
-                    middle = (
-                        origin[0] + (destination[0] - origin[0]) / 2.0,
-                        origin[1] + (destination[1] - origin[1]) / 2.0,
-                        destination[2] + 0.5
-                    )
-                    seq.append(
-                        Sequence(
-                            Func(self.updateSpriteAnimation, charid, 'smalljump'),
-                            LerpPosInterval(
-                                sprite.node, 
-                                0.125,
-                                self.battleGraphics.logic2terrain(middle), 
-                                startPos=self.battleGraphics.logic2terrain(origin)
-                            ),
-                            LerpPosInterval(
-                                sprite.node, 
-                                0.125,
-                                self.battleGraphics.logic2terrain(destination), 
-                                startPos=self.battleGraphics.logic2terrain(middle)
-                            ),
-                            Func(self.updateSpriteAnimation, charid, 'run'),
-                        )
-                    )
-                elif z1 - z2 >= 4:
-                    middle = (
-                        origin[0] + (destination[0] - origin[0]) / 2.0,
-                        origin[1] + (destination[1] - origin[1]) / 2.0,
-                        origin[2] + 0.5
-                    )
-                    seq.append(
-                        Sequence(
-                            Func(self.updateSpriteAnimation, charid, 'smalljump'),
-                            LerpPosInterval(
-                                sprite.node, 
-                                0.125,
-                                self.battleGraphics.logic2terrain(middle), 
-                                startPos=self.battleGraphics.logic2terrain(origin)
-                            ),
-                            LerpPosInterval(
-                                sprite.node, 
-                                0.125,
-                                self.battleGraphics.logic2terrain(destination), 
-                                startPos=self.battleGraphics.logic2terrain(middle)
-                            ),
-                            Func(self.updateSpriteAnimation, charid, 'run'),
-                        )
-                    )
-                else:
-                    seq.append(
-                        LerpPosInterval(
-                            sprite.node, 
-                            0.25,
-                            self.battleGraphics.logic2terrain(destination), 
-                            startPos=self.battleGraphics.logic2terrain(origin)
-                        )
-                    )
-            origin = destination
-        return seq
 
 ### Events
 

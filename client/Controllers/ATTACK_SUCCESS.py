@@ -1,4 +1,5 @@
 from direct.interval.IntervalGlobal import Sequence, Func
+import SequenceBuilder
 
 def execute(client, iterator):
     charid = iterator.getString()
@@ -12,6 +13,6 @@ def execute(client, iterator):
         target['hp'] = 0
 
     seq = Sequence()
-    seq.append( client.getCharacterAttackSequence(charid, targetid) )
+    seq.append( SequenceBuilder.characterAttackSequence(client, charid, targetid) )
     seq.append( Func(client.send.UPDATE_PARTY) )
     seq.start()

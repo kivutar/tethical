@@ -1,5 +1,6 @@
 from direct.interval.IntervalGlobal import Sequence, Func, Wait
 import json
+import SequenceBuilder
 
 def execute(client, iterator):
     charid = iterator.getString()
@@ -19,7 +20,7 @@ def execute(client, iterator):
     seq.append( Func(client.at.hide) )
     seq.append( Func(client.updateSpriteAnimation, charid, 'run') )
     seq.append( Func(client.camhandler.move, client.battleGraphics.logic2terrain((x2, y2, z2))) )
-    seq.append( client.getCharacterMoveSequence(charid, path) )
+    seq.append( SequenceBuilder.characterMoveSequence(client, charid, path) )
     seq.append( Wait(0.5) )
     seq.append( Func(client.updateSpriteAnimation, charid) )
     seq.append( Func(client.matrix.clearZone) )
