@@ -6,6 +6,7 @@ from direct.distributed.PyDatagramIterator import *
 import sys
 from copy import deepcopy
 from Send import Send
+from Controllers import *
 
 class Server:
 
@@ -40,8 +41,7 @@ class Server:
         iterator = PyDatagramIterator(datagram)
         source = datagram.getConnection()
         callback = iterator.getString()
-        controller = __import__(callback, fromlist=[])
-        controller.execute(self, iterator, source)
+        getattr(globals()[callback], 'execute')(self, iterator, source)
 
     def updateAllPartyLists(self):
         parties = deepcopy(self.parties)
