@@ -4,11 +4,7 @@ from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.task.Task import Task
 from direct.distributed.PyDatagramIterator import *
-from direct.distributed.PyDatagram import *
 from direct.interval.IntervalGlobal import *
-import math
-from operator import itemgetter
-import json
 import GUI
 from CameraHandler import *
 from DirectionChooser import *
@@ -210,8 +206,6 @@ class Client(object):
         h = self.camhandler.container.getH()
         self.matrix.sprites[charid].updateDisplayDir( h, True )
 
-### Events
-
     def updateCursorPos(self, pos):
 
         self.camhandler.move(self.battleGraphics.logic2terrain(pos))
@@ -237,27 +231,7 @@ class Client(object):
         except:
             self.coords = GUI.Coords(tile)
 
-    # Returns the closest tile for the given x and y
-    # Keyboard related callback, move this to the KeyboardTileTraverser
-    def findTileAndUpdateCursorPos(self, pos):
-        fux, fuy = pos
-
-        # list the possibles tiles, on official maps, this list should not excess 2 items
-        possibles = []
-        for x,xs in enumerate(self.party['map']['tiles']):
-            for y,ys in enumerate(xs):
-                for z,zs in enumerate(ys):
-                    if not self.party['map']['tiles'][x][y][z] is None:
-                        if fux == x and fuy == y:
-                            d = math.fabs(z-self.cursor.z) # for each possible, compute the Z delta with the current tile
-                            possibles.append((x, y, z, d))
-
-        if len(possibles):
-            # sort the possibles on Z delta, and get the closer tile
-            selected = sorted(possibles, key=itemgetter(3))[0][0:3]
-
-            self.hover_snd.play()
-            self.updateCursorPos(selected)
+### Events
 
     # Battle func
     def setupWalkableTileChooser(self, charid, walkables):

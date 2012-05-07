@@ -1,5 +1,7 @@
-from direct.showbase.DirectObject import DirectObject
 from Config import *
+from direct.showbase.DirectObject import DirectObject
+import math
+from operator import itemgetter
 import GUI
 
 class KeyboardTileTraverser(DirectObject):
@@ -32,40 +34,40 @@ class KeyboardTileTraverser(DirectObject):
 
         if direction == 'up':
             if h >=    0 and h <  90:
-                self.client.findTileAndUpdateCursorPos((x+1, y  ))
+                self.findTileAndUpdateCursorPos((x+1, y  ))
             if h >=  -90 and h <   0:
-                self.client.findTileAndUpdateCursorPos((x  , y-1))
+                self.findTileAndUpdateCursorPos((x  , y-1))
             if h >= -180 and h < -90:
-                self.client.findTileAndUpdateCursorPos((x-1, y  ))
+                self.findTileAndUpdateCursorPos((x-1, y  ))
             if h >=   90 and h < 180:
-                self.client.findTileAndUpdateCursorPos((x  , y+1))
+                self.findTileAndUpdateCursorPos((x  , y+1))
         elif direction == 'down':
             if h >=    0 and h <  90:
-                self.client.findTileAndUpdateCursorPos((x-1, y  ))
+                self.findTileAndUpdateCursorPos((x-1, y  ))
             if h >=  -90 and h <   0:
-                self.client.findTileAndUpdateCursorPos((x  , y+1))
+                self.findTileAndUpdateCursorPos((x  , y+1))
             if h >= -180 and h < -90:
-                self.client.findTileAndUpdateCursorPos((x+1, y  ))
+                self.findTileAndUpdateCursorPos((x+1, y  ))
             if h >=   90 and h < 180:
-                self.client.findTileAndUpdateCursorPos((x  , y-1))
+                self.findTileAndUpdateCursorPos((x  , y-1))
         elif direction == 'left':
             if h >=    0 and h <  90:
-                self.client.findTileAndUpdateCursorPos((x  , y+1))
+                self.findTileAndUpdateCursorPos((x  , y+1))
             if h >=  -90 and h <   0:
-                self.client.findTileAndUpdateCursorPos((x+1, y  ))
+                self.findTileAndUpdateCursorPos((x+1, y  ))
             if h >= -180 and h < -90:
-                self.client.findTileAndUpdateCursorPos((x  , y-1))
+                self.findTileAndUpdateCursorPos((x  , y-1))
             if h >=   90 and h < 180:
-                self.client.findTileAndUpdateCursorPos((x-1, y  ))
+                self.findTileAndUpdateCursorPos((x-1, y  ))
         elif direction == 'right':
             if h >=    0 and h <  90:
-                self.client.findTileAndUpdateCursorPos((x  , y-1))
+                self.findTileAndUpdateCursorPos((x  , y-1))
             if h >=  -90 and h <   0:
-                self.client.findTileAndUpdateCursorPos((x-1, y  ))
+                self.findTileAndUpdateCursorPos((x-1, y  ))
             if h >= -180 and h < -90:
-                self.client.findTileAndUpdateCursorPos((x  , y+1))
+                self.findTileAndUpdateCursorPos((x  , y+1))
             if h >=   90 and h < 180:
-                self.client.findTileAndUpdateCursorPos((x+1, y  ))
+                self.findTileAndUpdateCursorPos((x+1, y  ))
 
     # You clicked on a tile, this can mean different things, so this is a dispatcher
     def onCircleClicked(self):
@@ -145,3 +147,24 @@ class KeyboardTileTraverser(DirectObject):
                 self.client.cancel_snd.play()
                 self.client.subphase = None
                 self.client.send.UPDATE_PARTY()
+
+    # Returns the closest tile for the given x and y
+    def findTileAndUpdateCursorPos(self, pos):
+        fux, fuy = pos
+
+        # list the possibles tiles, on official maps, this list should not excess 2 items
+        possibles = []
+        for x,xs in enumerate(self.client.party['map']['tiles']):
+            for y,ys in enumerate(xs):
+                for z,zs in enumerate(ys):
+                    if not self.client.party['map']['tiles'][x][y][z] is None:
+                        if fux == x and fuy == y:
+                            d = math.fabs(z-self.client.cursor.z) # for each possible, compute the Z delta with the current tile
+                            possibles.append((x, y, z, d))
+
+        if len(possibles):
+            # sort the possibles on Z delta, and get the closer tile
+            selected = sorted(possibles, key=itemgetter(3))[0][0:3]
+
+            self.client.hover_snd.play()
+            self.client.updateCursorPos(selected)
