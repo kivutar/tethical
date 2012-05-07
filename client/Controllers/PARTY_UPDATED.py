@@ -34,3 +34,5 @@ def execute(client, iterator):
                                     client.showMenu(charid)
                                 else:
                                     client.onWaitClicked(charid)
+                            else:
+                                client.camhandler.ignoreAll()

@@ -1,13 +1,11 @@
 from Config import *
 import direct.directbase.DirectStart
-from direct.showbase.DirectObject import DirectObject
 from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.task.Task import Task
 from direct.distributed.PyDatagramIterator import *
 from direct.distributed.PyDatagram import *
 from direct.interval.IntervalGlobal import *
-from direct.filter.CommonFilters import CommonFilters
 import math
 from operator import itemgetter
 import json
@@ -21,15 +19,20 @@ from Cursor import *
 from AT import *
 from Send import *
 from Controllers import *
+from KeyboardTileTraverser import *
 import SequenceBuilder
 
-class Client(DirectObject):
+class Client(object):
 
     def __init__(self):
         self.music = base.loader.loadSfx(GAME+'/music/24.ogg')
         self.music.setLoop(True)
         self.music.play()
         self.background = GUI.Background(self.loginScreen)
+
+    # Display the login window
+    def loginScreen(self):
+        self.loginwindow = GUI.LoginWindow(self.authenticate)
 
     def processData(self, datagram):
         iterator = PyDatagramIterator(datagram)
@@ -44,10 +47,6 @@ class Client(DirectObject):
             if self.cReader.getData(datagram):
                 self.processData(datagram)
         return Task.cont
-
-    # Display the login window
-    def loginScreen(self):
-        self.loginwindow = GUI.LoginWindow(self.authenticate)
 
     # Setup connection and send the LOGIN datagram with credentials
     def authenticate(self):
@@ -73,11 +72,13 @@ class Client(DirectObject):
 
     # The battle begins
     def battle_init(self):
-        self.phase = None
         self.subphase = None
-        
+
         # Instanciate the camera handler
         self.camhandler = CameraHandler()
+
+        # Instanciate the keyboard tile traverser
+        self.inputs = KeyboardTileTraverser(self)
 
         # Instanciate the battle graphics
         self.battleGraphics = BattleGraphics(self.party['map'])
@@ -144,7 +145,8 @@ class Client(DirectObject):
         self.background = GUI.Background(self.send.GET_PARTIES)
 
     def showMenu(self, charid):
-        self.setPhase('gui')
+        self.inputs.ignoreAll()
+        self.camhandler.ignoreAll()
 
         canmove = self.party['chars'][charid]['canmove']
         canact  = self.party['chars'][charid]['canact']
@@ -167,7 +169,8 @@ class Client(DirectObject):
         )
 
     def moveCheck(self, charid, orig, origdir, dest):
-        self.setPhase('gui')
+        self.inputs.ignoreAll()
+        self.camhandler.ignoreAll()
         GUI.MoveCheck(
             lambda: self.send.MOVE_TO(charid, dest),
             lambda: self.cancelMove(charid, orig, origdir)
@@ -236,126 +239,8 @@ class Client(DirectObject):
         except:
             self.coords = GUI.Coords(tile)
 
-    # You clicked on a tile, this can mean different things, so this is a dispatcher
-    def onCircleClicked(self):
-        if self.phase == 'tile' and self.cursor.x is not False and self.party['yourturn']:
-
-            if self.charcard:
-                self.charcard.hide()
-            
-            # we clicked an active walkable tile, let's move the character
-            if self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z].has_key('walkablezone'):
-                charid = self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z]['walkablezone']
-                self.clicked_snd.play()
-                dest = (self.cursor.x, self.cursor.y, self.cursor.z)
-                self.send.GET_PATH(charid, dest)
-                return
-
-            # we clicked on a character
-            if self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z].has_key('char'):
-                charid = self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z]['char']
-                self.clicked_snd.play()
-
-                # we clicked on a target, let's attack it!
-                if self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z].has_key('attackablezone'):
-                    attackable = self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z]['attackablezone']
-                    self.setPhase('gui')
-                    if self.charbars:
-                        self.charbars.hide()
-                    self.actionpreview = GUI.ActionPreview(
-                        self.party['chars'][attackable],
-                        self.party['chars'][charid],
-                        16,
-                        99,
-                        lambda: GUI.AttackCheck(
-                            lambda: self.send.ATTACK(attackable, charid),
-                            self.send.UPDATE_PARTY
-                        ),
-                        self.send.UPDATE_PARTY
-                    )
-                    
-            
-                # we clicked on the currently active character, let's display the menu
-                elif self.party['chars'][charid]['active'] and self.party['yourturn']:
-                    
-                    self.send.UPDATE_PARTY()
-            else:
-                self.clicked_snd.play()
-                self.send.UPDATE_PARTY()
-    
-    def onCrossClicked(self):
-        if self.phase == 'tile' and self.cursor.x is not False and self.party['yourturn']:
-
-            if self.subphase == 'free':
-
-                # if we clicked on a character
-                if self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z].has_key('char'):
-                    charid = self.party['map']['tiles'][self.cursor.x][self.cursor.y][self.cursor.z]['char']
-                    self.send.GET_PASSIVE_WALKABLES(charid)
-
-            elif self.subphase == 'passivewalkables':
-                self.matrix.clearZone()
-                self.cancel_snd.play()
-                self.subphase = 'free'
-
-            elif self.subphase == 'move':
-                self.matrix.clearZone()
-                self.cancel_snd.play()
-                self.subphase = None
-                self.send.UPDATE_PARTY()
-            elif self.subphase == 'attack':
-                self.matrix.clearZone()
-                self.cancel_snd.play()
-                self.subphase = None
-                self.send.UPDATE_PARTY()
-
-    # Keyboard related callback
-    def onArrowClicked(self, direction):
-        h = self.camhandler.container.getH()
-        while h > 180:
-            h -= 360
-        while h < -180:
-            h += 360
-
-        if direction == 'up':
-            if h >=    0 and h <  90:
-                self.findTileAndUpdateCursorPos((self.cursor.x+1,self.cursor.y))
-            if h >=  -90 and h <   0:
-                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y-1))
-            if h >= -180 and h < -90:
-                self.findTileAndUpdateCursorPos((self.cursor.x-1,self.cursor.y))
-            if h >=   90 and h < 180:
-                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y+1))
-        elif direction == 'down':
-            if h >=    0 and h <  90:
-                self.findTileAndUpdateCursorPos((self.cursor.x-1,self.cursor.y))
-            if h >=  -90 and h <   0:
-                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y+1))
-            if h >= -180 and h < -90:
-                self.findTileAndUpdateCursorPos((self.cursor.x+1,self.cursor.y))
-            if h >=   90 and h < 180:
-                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y-1))
-        elif direction == 'left':
-            if h >=    0 and h <  90:
-                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y+1))
-            if h >=  -90 and h <   0:
-                self.findTileAndUpdateCursorPos((self.cursor.x+1,self.cursor.y))
-            if h >= -180 and h < -90:
-                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y-1))
-            if h >=   90 and h < 180:
-                self.findTileAndUpdateCursorPos((self.cursor.x-1,self.cursor.y))
-        elif direction == 'right':
-            if h >=    0 and h <  90:
-                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y-1))
-            if h >=  -90 and h <   0:
-                self.findTileAndUpdateCursorPos((self.cursor.x-1,self.cursor.y))
-            if h >= -180 and h < -90:
-                self.findTileAndUpdateCursorPos((self.cursor.x,self.cursor.y+1))
-            if h >=   90 and h < 180:
-                self.findTileAndUpdateCursorPos((self.cursor.x+1,self.cursor.y))
-
     # Returns the closest tile for the given x and y
-    # Keyboard related callback
+    # Keyboard related callback, move this to the KeyboardTileTraverser
     def findTileAndUpdateCursorPos(self, pos):
         fux, fuy = pos
 
@@ -375,17 +260,36 @@ class Client(DirectObject):
 
             self.hover_snd.play()
             self.updateCursorPos(selected)
-    
+
+    # Battle func
     def setupWalkableTileChooser(self, charid, walkables):
-        self.setPhase('tile')
+        self.inputs.acceptAll()
+        self.camhandler.acceptAll()
         self.subphase = 'move'
         self.matrix.setupWalkableZone(charid, walkables)
         if self.charcard:
             self.charcard.hide()
 
+    # Battle func
+    def setupAttackableTileChooser(self, charid, attackables):
+        self.inputs.acceptAll()
+        self.camhandler.acceptAll()
+        self.subphase = 'attack'
+        self.matrix.setupAttackableZone(charid, attackables)
+        if self.charcard:
+            self.charcard.hide()
+
+    # Battle func
+    def setupDirectionChooser(self, charid):
+        self.inputs.ignoreAll()
+        self.camhandler.acceptAll()
+        self.at.hide()
+        DirectionChooser(charid, self.matrix.sprites[charid], self.camhandler, self.send.WAIT, self.send.UPDATE_PARTY)
+
     # Attack button clicked
     def onAttackClicked(self, charid):
-        self.setPhase('gui')
+        self.inputs.ignoreAll()
+        self.camhandler.ignoreAll()
         GUI.Help(
             0, 25, 155, 44,
             'shadowed', 'Check',
@@ -396,7 +300,8 @@ class Client(DirectObject):
 
     # Wait menu item chosen
     def onWaitClicked(self, charid):
-        self.setPhase('gui')
+        self.inputs.ignoreAll()
+        self.camhandler.ignoreAll()
         GUI.Help(
             0, 25, 135, 60,
             'shadowed', 'Check',
@@ -404,16 +309,11 @@ class Client(DirectObject):
             lambda: self.setupDirectionChooser(charid),
             self.send.UPDATE_PARTY,
         )
-    
-    def setupDirectionChooser(self, charid):
-        self.setPhase('direction')
-        self.at.hide()
-        DirectionChooser(charid, self.matrix.sprites[charid], self.camhandler, self.send.WAIT, self.send.UPDATE_PARTY)
 
     # Cancel menu item chosen
     def onCancelClicked(self, charid):
-        self.setPhase('tile')
-        self.subphase = 'free'
+        self.inputs.acceptAll()
+        self.camhandler.acceptAll()
         if self.charcard:
             self.charcard.hide()
 
@@ -425,27 +325,6 @@ class Client(DirectObject):
         for charid in self.matrix.sprites:
             self.matrix.sprites[charid].updateDisplayDir( h );
         return Task.cont
-
-### Utilities
-
-    def setPhase(self, phase):
-        self.phase = phase
-        self.camhandler.phase = phase
-        
-        if phase == 'tile':
-            self.accept(CIRCLE_BTN, self.onCircleClicked)
-            self.accept(CROSS_BTN, self.onCrossClicked)
-            self.accept("arrow_up", lambda: self.onArrowClicked('up'))
-            self.accept("arrow_down", lambda: self.onArrowClicked('down'))
-            self.accept("arrow_left", lambda: self.onArrowClicked('left'))
-            self.accept("arrow_right", lambda: self.onArrowClicked('right'))
-            self.accept("arrow_up-repeat", lambda: self.onArrowClicked('up'))
-            self.accept("arrow_down-repeat", lambda: self.onArrowClicked('down'))
-            self.accept("arrow_left-repeat", lambda: self.onArrowClicked('left'))
-            self.accept("arrow_right-repeat", lambda: self.onArrowClicked('right'))
-        else:
-            self.subphase = False
-            self.ignoreAll()
 
 Client()
 run()

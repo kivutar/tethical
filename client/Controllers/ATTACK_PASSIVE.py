@@ -14,7 +14,7 @@ def execute(client, iterator):
     if target['hp'] < 0:
         target['hp'] = 0
 
-    client.setPhase('animation')
+    client.inputs.ignoreAll()
     seq = Sequence()
     seq.append( Func(client.matrix.setupAttackableZone, charid, attackables) )
     seq.append( Wait(0.5) )
@@ -23,5 +23,4 @@ def execute(client, iterator):
     seq.append( Wait(0.5) )
     seq.append( SequenceBuilder.characterAttackSequence(client, charid, targetid) )
     seq.append( Func(client.camhandler.move, client.battleGraphics.logic2terrain(client.matrix.getCharacterCoords(charid))) )
-    seq.append( Func(client.setPhase, 'listen') )
     seq.start()

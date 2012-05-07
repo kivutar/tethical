@@ -7,7 +7,7 @@ def execute(client, iterator):
     walkables = json.loads(iterator.getString())
     path = json.loads(iterator.getString())
 
-    client.setPhase('animation')
+    client.inputs.ignoreAll()
     (x1, y1, z1) = path[0]
     (x2, y2, z2) = path[-1]
     del client.party['map']['tiles'][x1][y1][z1]['char']
@@ -25,5 +25,4 @@ def execute(client, iterator):
     seq.append( Func(client.updateSpriteAnimation, charid) )
     seq.append( Func(client.matrix.clearZone) )
     seq.append( Func(client.at.showOnSprite, client.matrix.sprites[charid]) )
-    seq.append( Func(client.setPhase, 'listen') )
     seq.start()
