@@ -198,8 +198,6 @@ class Client(object):
     def updateSpriteAnimation(self, charid, animation=False):
         if animation:
             self.matrix.sprites[charid].animation = animation
-            h = self.camhandler.container.getH()
-            self.matrix.sprites[charid].updateDisplayDir( h, True )
         else:
             stats = self.party['chars'][charid]
             if stats['hp'] >= (stats['hpmax']/2):
@@ -209,8 +207,8 @@ class Client(object):
             if stats['hp'] <= 0:
                 self.matrix.sprites[charid].animation = 'dead'
                 self.die_snd.play()
-            h = self.camhandler.container.getH()
-            self.matrix.sprites[charid].updateDisplayDir( h, True )
+        h = self.camhandler.container.getH()
+        self.matrix.sprites[charid].updateDisplayDir( h, True )
 
 ### Events
 
