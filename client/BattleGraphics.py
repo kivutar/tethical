@@ -10,8 +10,13 @@ import Sprite
 
 class BattleGraphics(object):
 
-    def __init__(self, mp):
-        self.mp = mp
+    def __init__(self, mp, game = None):
+		self.mp = mp
+		# Honor a custom GAME value (ex: 'fft','lijj') if one is being provided; used by the testing environment.
+		if not game is None:
+			global GAME
+			GAME = game
+		pass
 
     # Converts logic coordinates to panda3d coordinates
     def logic2terrain(self, tile):
