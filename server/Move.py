@@ -1,6 +1,28 @@
 import math
 import Character
 
+def DoMove( server, source, party, charid, x1, y1, z1, x2, y2, z2 ):
+
+    char = party['chars'][charid]
+
+    path = GetPath( party, charid, x1, y1, z1, x2, y2, z2 )
+    walkables = GetWalkables( party, charid )
+
+    del party['map']['tiles'][x1][y1][z1]['char']
+    party['map']['tiles'][x2][y2][z2]['char'] = charid
+
+    party['chars'][charid]['direction'] = GetNewDirection( x1, y1, x2, y2 )
+    party['chars'][charid]['canmove'] = False
+    
+    if char['ai']:
+        for playerid,playerlogin in enumerate(party['players']):
+            server.send.MOVED_PASSIVE(charid, walkables, path, server.players[playerlogin])
+    else:
+        server.send.MOVED(charid, x2, y2, z2, source)
+        for playerid,playerlogin in enumerate(party['players']):
+            if playerid != server.sessions[source]['player']:
+                server.send.MOVED_PASSIVE(charid, walkables, path, server.players[playerlogin])
+
 def getadjacentwalkables( party, charid, tiles ):
 
     walkables = []

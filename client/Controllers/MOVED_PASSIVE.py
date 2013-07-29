@@ -25,4 +25,5 @@ def execute(client, iterator):
     seq.append( Func(client.updateSpriteAnimation, charid) )
     seq.append( Func(client.matrix.clearZone) )
     seq.append( Func(client.at.showOnSprite, client.matrix.sprites[charid]) )
+    seq.append( Func(client.send.UPDATE_PARTY) )
     seq.start()

@@ -20,6 +20,7 @@ def execute(server, iterator, source):
     server.parties[name] = party
     server.sessions[source]['party'] = name
     server.sessions[source]['player'] = len(party['players'])-1
+    server.readysources[name] = set()
     
     server.updateAllPartyLists()
     

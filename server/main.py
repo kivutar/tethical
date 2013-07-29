@@ -19,6 +19,7 @@ class Server:
         self.playersinlobby = [] # lists players in the party screen
         self.charid = 0 # used for random team generation
         self.chars = [] # lists of dicts representing characters data
+        self.readysources = {}
 
         self.cManager  = QueuedConnectionManager()
         self.cListener = QueuedConnectionListener(self.cManager, 0)

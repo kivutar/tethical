@@ -35,12 +35,14 @@ def Random( charid, teamid=0, direction=0 ):
         rsp = 98304
         rpa = 65536
         rma = 81920
+        ai = True
     elif gender == 'M':
         rhp = random.randint(491520, 524287)
         rmp = random.randint(229376, 245759)
         rsp = 98304
         rpa = 81920
         rma = 65536
+        ai = False
 
     hp = rhp * job['hpm'] / 1638400
     mp = rmp * job['mpm'] / 1638400
@@ -79,6 +81,7 @@ def Random( charid, teamid=0, direction=0 ):
            , 'sprite': sprite
            , 'gender': gender
            , 'active': 0
+           , 'ai': ai
            }
 
 def GetRandomName( gender ):

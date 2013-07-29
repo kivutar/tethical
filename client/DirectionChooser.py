@@ -14,7 +14,7 @@ class DirectionChooser(DirectObject):
         self.callback = callback
         self.cancelcallback = cancelcallback
         self.initdir  = self.sprite.realdir
-        self.hidir = None
+        self.hidir = 1
 
         # Textures
         self.readytex = loader.loadTexture(GAME+'/textures/gui/direction.png')

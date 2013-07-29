@@ -29,7 +29,7 @@ def execute(client, iterator):
 
                             client.charcard = GUI.CharCard(char)
 
-                            if client.party['yourturn']:
+                            if client.party['yourturn'] and not char['ai']:
                                 if char['canmove'] or char['canact']:
                                     client.showMenu(charid)
                                 else:
