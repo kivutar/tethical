@@ -966,7 +966,7 @@ class ActionPreview(DirectObject.DirectObject):
         self.ctbar.setTransparency(True)
 
         infos = [
-            { 'x':  16, 'z':  23, 'text':  '%02d' % chance        , 'font':   whitefont },
+            { 'x': -25, 'z':  23, 'text': '-%03d Hp     %02d%%' % (damages, chance), 'font':   whitefont },
             { 'x':  15, 'z':   9, 'text':  '%03d' % char1['hp']   , 'font':   whitefont },
             { 'x':  28, 'z':   5, 'text': '/%03d' % char1['hpmax'], 'font':   whitefont },
             { 'x':  15, 'z':  -2, 'text':  '%03d' % char1['mp']   , 'font':   whitefont },
